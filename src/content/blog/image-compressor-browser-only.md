@@ -6,9 +6,9 @@ tags: ["image-compression", "privacy", "web-development", "client-side", "free-t
 draft: false
 ---
 
-Every day, millions of people upload photos to online image compressors. They drag a JPEG into a website, hit "Compress," and wait. What they don't realize is that their photo just got copied onto someone else's server — often permanently.
+Many online image compressors require a photo to be uploaded before processing. That adds a remote service to a task modern browsers can often complete locally.
 
-At Free Online Tools Nest, we built our [Image Compressor](/tools/image-compressor) differently. No upload. No server. Your images never leave your computer.
+At Free Online Tools Nest, we built our [Image Compressor](/tools/image-compressor/) differently. The selected image is decoded and re-encoded in the browser instead of being sent to our processing server.
 
 Here's how it works, why it matters, and what it taught us about building privacy-first web tools in 2026.
 
@@ -116,4 +116,4 @@ We're exploring WebAssembly-based compression using the same libraries the serve
 
 ---
 
-*Try the [Image Compressor](/tools/image-compressor) yourself. Your photos stay on your computer — we don't need to see them.*
+*Try the [Image Compressor](/tools/image-compressor/) yourself. The selected photo is processed locally rather than uploaded to our processing server.*

@@ -24,6 +24,7 @@ export interface Tool {
   keywords: string[];
   metaTitle?: string;
   metaDescription?: string;
+  adEligible?: boolean;
 }
 
 export interface MatchResult {

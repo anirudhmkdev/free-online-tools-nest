@@ -195,44 +195,94 @@ function copy(name: string, description: string, longDescription: string, primar
   return { name, description, longDescription, primaryKeyword, metaTitle, metaDescription };
 }
 
-function localizedSteps(lang: Exclude<Lang, "en">, toolName: string, keyword: string): UsageStep[] {
+const localizedDetails: Record<Exclude<Lang, "en">, Record<LocalizedToolSlug, { example: string; limitation: string; engine: string }>> = {
+  es: {
+    "image-compressor": { example: "Ejemplo: un JPEG de 2400 × 1600 se vuelve a codificar con la calidad elegida, manteniendo esas dimensiones.", limitation: "Los PNG pueden no reducirse; animación, metadatos y perfiles de color no se conservan.", engine: "Canvas API: decodificación, drawImage y toBlob." },
+    "json-formatter": { example: "Ejemplo: {\"id\":7,\"active\":true} se convierte en JSON indentado y legible.", limitation: "Comentarios, comas finales, NaN y claves con comillas simples no son JSON válido.", engine: "JSON.parse y JSON.stringify nativos." },
+    "pdf-compressor": { example: "Ejemplo: el resultado muestra el tamaño antes y después de reescribir el PDF.", limitation: "Un PDF ya optimizado o dominado por escaneos puede reducirse muy poco.", engine: "Carga y guardado local con pdf-lib." },
+    "pdf-merger": { example: "Ejemplo: un PDF de dos páginas y otro de una página producen un documento de tres páginas.", limitation: "Los PDF cifrados o dañados pueden fallar y todos los archivos deben caber en memoria.", engine: "Copia de páginas con pdf-lib PDFDocument." },
+    "word-counter": { example: "Ejemplo: «Hola mundo» contiene dos palabras y once caracteres con el espacio.", limitation: "Idiomas sin espacios, emoji y puntuación inusual pueden contarse de forma distinta en otras plataformas.", engine: "Segmentación y estadísticas de texto en JavaScript." },
+    "qr-code-generator": { example: "Ejemplo: una URL se codifica en un QR descargable como PNG.", limitation: "La descarga actual es solo PNG; textos muy largos crean códigos más densos.", engine: "Biblioteca qrcode dibujada en canvas." },
+    "jwt-decoder": { example: "Ejemplo: un payload con {\"sub\":\"123\"} muestra el claim sub, pero no prueba su autenticidad.", limitation: "Decodificar no verifica firma, emisor, audiencia ni revocación.", engine: "Decodificación Base64URL y análisis JSON." },
+    "epoch-converter": { example: "Ejemplo: 0 segundos corresponde a 1970-01-01T00:00:00.000Z.", limitation: "Confundir segundos y milisegundos produce fechas muy alejadas; la hora local depende de la zona del navegador.", engine: "JavaScript Date y aritmética de timestamps." },
+    "word-cloud-generator": { example: "Ejemplo: si «privacidad» aparece tres veces, se dibuja más grande que una palabra que aparece una vez.", limitation: "Frecuencia no equivale a sentimiento o tema; stop words y tokenización cambian el resultado.", engine: "Conteo de tokens y renderizado visual en JavaScript." },
+    "grammar-checker": { example: "Ejemplo: «Esto esto tiene  doble espacio» detecta repetición y espacio duplicado.", limitation: "Es un corrector heurístico de inglés, no una revisión humana ni un sistema de IA contextual.", engine: "Reglas deterministas de gramática y estilo." },
+    "csv-to-json": { example: "Ejemplo: name,age seguido de Ada,36 produce un array con un objeto.", limitation: "Comillas mal cerradas, encabezados duplicados y saltos de línea incrustados requieren revisión.", engine: "Parser local de delimitadores y campos entrecomillados." },
+    "json-to-csv": { example: "Ejemplo: [{\"name\":\"Ada\"}] produce una cabecera name y una fila Ada.", limitation: "Objetos anidados necesitan aplanado y claves inconsistentes generan celdas vacías.", engine: "JSON.parse y escape de campos CSV." },
+    "unit-converter": { example: "Ejemplo: 1 kilómetro se convierte en 1000 metros.", limitation: "Los valores redondeados no sustituyen cálculos científicos o de calibración regulada.", engine: "Factores de conversión JavaScript por categoría." },
+    "color-contrast-checker": { example: "Ejemplo: texto #000000 sobre #FFFFFF da 21:1 y supera AA y AAA.", limitation: "No evalúa imágenes de fondo, transparencia, estados de foco ni toda la accesibilidad de la interfaz.", engine: "Fórmula de luminancia relativa y contraste WCAG." },
+    "character-counter": { example: "Ejemplo: «Hola mundo» da 11 caracteres con espacio y 10 sin espacio.", limitation: "Emoji y símbolos Unicode combinados pueden contar distinto en la plataforma de destino.", engine: "Análisis de cadenas y espacios en JavaScript." },
+    "image-resizer": { example: "Ejemplo: 1600 × 900 a 800 px de ancho con proporción bloqueada produce 800 × 450.", limitation: "Ampliar no recupera detalle y canvas puede eliminar metadatos o animación.", engine: "Canvas drawImage con escalado y exportación local." },
+    "image-cropper": { example: "Ejemplo: una selección central de 600 × 600 produce un recorte cuadrado.", limitation: "La exportación no conserva animación ni metadatos originales.", engine: "Canvas drawImage con región de origen." },
+    "markdown-to-html": { example: "Ejemplo: # Hola produce <h1>Hola</h1>.", limitation: "La vista previa elimina scripts, eventos y URL peligrosas; el CSS final depende del destino.", engine: "Parser marked más el sanitizador HTML del sitio." },
+    "password-generator": { example: "Ejemplo: longitud 16 con cuatro grupos produce una contraseña aleatoria nueva de 16 caracteres.", limitation: "La seguridad también depende de guardarla correctamente y no reutilizarla.", engine: "Web Crypto getRandomValues." },
+    "regex-tester": { example: "Ejemplo: \\b\\d{4}\\b encuentra 2026 en «Año 2026».", limitation: "Usa JavaScript RegExp; sintaxis exclusiva de PCRE, Python, Java o .NET puede fallar.", engine: "RegExp nativo de JavaScript." },
+  },
+  hi: {
+    "image-compressor": { example: "उदाहरण: 2400 × 1600 JPEG चुनी हुई गुणवत्ता पर उसी आकार में दोबारा एन्कोड होता है।", limitation: "PNG हमेशा छोटा नहीं होता; एनीमेशन, मेटाडेटा और रंग प्रोफाइल सुरक्षित नहीं रहते।", engine: "Canvas API decode, drawImage और toBlob।" },
+    "json-formatter": { example: "उदाहरण: {\"id\":7,\"active\":true} पढ़ने योग्य इंडेंटेड JSON बनता है।", limitation: "टिप्पणी, अंतिम कॉमा, NaN और एकल उद्धरण वाली कुंजी मान्य JSON नहीं हैं।", engine: "ब्राउज़र के JSON.parse और JSON.stringify।" },
+    "pdf-compressor": { example: "उदाहरण: परिणाम मूल और दोबारा लिखी PDF का आकार दिखाता है।", limitation: "पहले से अनुकूलित या स्कैन-प्रधान PDF बहुत कम घट सकती है।", engine: "pdf-lib से स्थानीय लोड और सेव।" },
+    "pdf-merger": { example: "उदाहरण: दो पृष्ठ और एक पृष्ठ की PDF मिलकर तीन पृष्ठ की PDF बनाती हैं।", limitation: "एन्क्रिप्टेड या खराब PDF विफल हो सकती है और सभी फ़ाइलें मेमोरी में आनी चाहिए।", engine: "pdf-lib PDFDocument से पृष्ठ कॉपी।" },
+    "word-counter": { example: "उदाहरण: ‘Hello world’ में दो शब्द और स्पेस सहित ग्यारह अक्षर हैं।", limitation: "बिना स्पेस वाली भाषाओं, इमोजी और असामान्य विराम में दूसरी सेवाओं से गिनती अलग हो सकती है।", engine: "JavaScript पाठ विभाजन और आंकड़े।" },
+    "qr-code-generator": { example: "उदाहरण: URL को PNG रूप में डाउनलोड होने वाले QR में बदला जाता है।", limitation: "वर्तमान डाउनलोड केवल PNG है; लंबा पाठ QR को अधिक घना बनाता है।", engine: "qrcode लाइब्रेरी और canvas।" },
+    "jwt-decoder": { example: "उदाहरण: {\"sub\":\"123\"} वाला payload sub दिखाता है, पर उसकी सत्यता सिद्ध नहीं करता।", limitation: "डिकोड करना हस्ताक्षर, जारीकर्ता, दर्शक या निरस्तीकरण सत्यापित नहीं करता।", engine: "Base64URL डिकोड और JSON पार्सिंग।" },
+    "epoch-converter": { example: "उदाहरण: 0 सेकंड 1970-01-01T00:00:00.000Z है।", limitation: "सेकंड और मिलीसेकंड की गड़बड़ी गलत तारीख देती है; स्थानीय समय ब्राउज़र क्षेत्र पर निर्भर है।", engine: "JavaScript Date और टाइमस्टैम्प गणना।" },
+    "word-cloud-generator": { example: "उदाहरण: तीन बार आया शब्द एक बार आए शब्द से बड़ा दिखता है।", limitation: "आवृत्ति भावना या विषय विश्लेषण नहीं है; stop words परिणाम बदलते हैं।", engine: "JavaScript शब्द आवृत्ति और दृश्य रेंडरिंग।" },
+    "grammar-checker": { example: "उदाहरण: दोहराया शब्द और दोहरा स्पेस नियमों से पहचाना जाता है।", limitation: "यह अंग्रेजी के लिए नियम-आधारित सहायता है, मानव संपादन या संदर्भ समझने वाली AI नहीं।", engine: "निश्चित व्याकरण और शैली नियम।" },
+    "csv-to-json": { example: "उदाहरण: name,age और Ada,36 से एक वस्तु वाला JSON array बनता है।", limitation: "टूटा उद्धरण, दोहरे header और embedded newline को समीक्षा चाहिए।", engine: "स्थानीय delimiter और quoted-field parser।" },
+    "json-to-csv": { example: "उदाहरण: [{\"name\":\"Ada\"}] से name header और Ada row बनती है।", limitation: "Nested object को flatten करना पड़ता है और अलग keys खाली cells बनाती हैं।", engine: "JSON.parse और CSV field escaping।" },
+    "unit-converter": { example: "उदाहरण: 1 किलोमीटर 1000 मीटर बनता है।", limitation: "Rounded परिणाम वैज्ञानिक या विनियमित calibration का विकल्प नहीं है।", engine: "श्रेणीवार JavaScript conversion factors।" },
+    "color-contrast-checker": { example: "उदाहरण: #000000 और #FFFFFF का अनुपात 21:1 है और AA/AAA पास करता है।", limitation: "यह background image, transparency, focus state या पूरी accessibility नहीं जांचता।", engine: "WCAG relative luminance और contrast formula।" },
+    "character-counter": { example: "उदाहरण: ‘Hello world’ में space सहित 11 और बिना space 10 characters हैं।", limitation: "Emoji और संयुक्त Unicode symbols destination platform पर अलग गिने जा सकते हैं।", engine: "JavaScript string और whitespace analysis।" },
+    "image-resizer": { example: "उदाहरण: 1600 × 900 को 800 width और locked ratio पर बदलने से 800 × 450 मिलता है।", limitation: "Upscale खोया detail वापस नहीं लाता; metadata और animation बच नहीं सकते।", engine: "Canvas drawImage scaling और local export।" },
+    "image-cropper": { example: "उदाहरण: 600 × 600 चयन से square crop बनता है।", limitation: "Export मूल animation और metadata सुरक्षित नहीं रखता।", engine: "Canvas source-region drawImage।" },
+    "markdown-to-html": { example: "उदाहरण: # नमस्ते से <h1>नमस्ते</h1> बनता है।", limitation: "Preview script, event handler और खतरनाक URL हटाती है; final CSS destination पर निर्भर है।", engine: "marked parser और site HTML sanitizer।" },
+    "password-generator": { example: "उदाहरण: चार character groups और length 16 से नया random 16-character password बनता है।", limitation: "सुरक्षा सही storage और password reuse न करने पर भी निर्भर है।", engine: "Web Crypto getRandomValues।" },
+    "regex-tester": { example: "उदाहरण: \\b\\d{4}\\b ‘Year 2026’ में 2026 खोजता है।", limitation: "यह JavaScript RegExp है; PCRE, Python, Java या .NET की खास syntax विफल हो सकती है।", engine: "JavaScript का native RegExp।" },
+  },
+};
+
+function localizedSteps(lang: Exclude<Lang, "en">, slug: LocalizedToolSlug, toolName: string, keyword: string): UsageStep[] {
+  const detail = localizedDetails[lang][slug];
   if (lang === "es") {
     return [
       { title: "Pega o carga tus datos", content: `Abre ${toolName} y añade el texto, archivo o valor que quieres procesar. La herramienta está pensada para ${keyword} con un flujo rápido.` },
-      { title: "Ajusta las opciones", content: "Revisa los controles disponibles y elige la configuración que mejor encaje con tu tarea antes de generar el resultado." },
+      { title: "Ajusta y comprueba", content: `${detail.engine} ${detail.example}` },
       { title: "Copia o descarga el resultado", content: "Cuando el resultado esté listo, cópialo o descárgalo desde el navegador. No necesitas crear una cuenta." },
     ];
   }
   return [
     { title: "डेटा जोड़ें", content: `${toolName} खोलें और text, file या value जोड़ें. यह ${keyword} workflow के लिए fast browser-based tool है.` },
-    { title: "Options चुनें", content: "Available controls review करें और अपनी task के हिसाब से settings adjust करें." },
+    { title: "विकल्प चुनें और जांचें", content: `${detail.engine} ${detail.example}` },
     { title: "Result copy या download करें", content: "Result ready होने पर उसे browser से copy या download करें. Account की जरूरत नहीं है." },
   ];
 }
 
-function localizedFaq(lang: Exclude<Lang, "en">, toolName: string, keyword: string): FAQPair[] {
+function localizedFaq(lang: Exclude<Lang, "en">, slug: LocalizedToolSlug, toolName: string, keyword: string): FAQPair[] {
+  const detail = localizedDetails[lang][slug];
   if (lang === "es") {
     return [
       { question: `¿${toolName} es gratis?`, answer: `Sí. Puedes usar ${toolName} gratis para ${keyword}, sin registro y sin instalar software.` },
-      { question: `¿${toolName} sube mis datos?`, answer: "La herramienta está diseñada para ejecutarse en tu navegador cuando el flujo lo permite. Evita subir datos privados a servicios externos innecesarios." },
+      { question: `¿Qué limitaciones tiene ${toolName}?`, answer: detail.limitation },
     ];
   }
   return [
     { question: `क्या ${toolName} मुफ्त है?`, answer: `हाँ. ${toolName} को ${keyword} के लिए मुफ्त इस्तेमाल किया जा सकता है, बिना signup या installation.` },
-    { question: `क्या ${toolName} मेरा data upload करता है?`, answer: "Tool browser-first workflow के लिए बना है जहां संभव हो. Private data को unnecessary external services पर भेजने से बचाता है." },
+    { question: `${toolName} की सीमा क्या है?`, answer: detail.limitation },
   ];
 }
 
-function localizedContent(lang: Exclude<Lang, "en">, toolName: string): ContentSection[] {
+function localizedContent(lang: Exclude<Lang, "en">, slug: LocalizedToolSlug, toolName: string): ContentSection[] {
+  const detail = localizedDetails[lang][slug];
   if (lang === "es") {
     return [
-      { heading: "Privacidad y uso local", content: `${toolName} forma parte de una colección de herramientas pensadas para trabajar rápido sin fricción. Cuando el navegador puede hacer el procesamiento, tus entradas se quedan en tu dispositivo.` },
-      { heading: "Cuándo usar esta herramienta", content: "Úsala para tareas rápidas de trabajo, estudio, desarrollo, contenido o publicación. Está optimizada para resultados inmediatos y una interfaz simple." },
+      { heading: `Cómo funciona ${toolName}`, content: `${detail.engine} ${detail.example}` },
+      { heading: "Límites y revisión", content: detail.limitation },
     ];
   }
   return [
-    { heading: "Privacy और local use", content: `${toolName} fast utility workflows के लिए बनाया गया है. जहां browser processing possible है, input आपके device पर रहता है.` },
-    { heading: "कब इस्तेमाल करें", content: "Work, study, development, content और publishing tasks में quick results के लिए यह tool उपयोगी है." },
+    { heading: `${toolName} कैसे काम करता है`, content: `${detail.engine} ${detail.example}` },
+    { heading: "सीमाएँ और समीक्षा", content: detail.limitation },
   ];
 }
 
@@ -246,7 +296,17 @@ export function getLocalizedCategory(lang: Lang, slug: string): Category | undef
 }
 
 export function getLocalizedCategories(lang: Lang): Category[] {
-  return CATEGORIES.map((category) => getLocalizedCategory(lang, category.slug) ?? category);
+  if (lang === "en") return CATEGORIES;
+  return CATEGORIES.filter((category) => hasLocalizedCategory(lang, category.slug))
+    .map((category) => getLocalizedCategory(lang, category.slug) ?? category);
+}
+
+export function hasLocalizedCategory(lang: Lang, categorySlug: string): boolean {
+  return lang === "en" ? Boolean(getCategoryBySlug(categorySlug)) : getLocalizedToolsByCategory(lang, categorySlug).length > 0;
+}
+
+export function getPublishedLocalizedCategorySlugs(lang: Lang): string[] {
+  return getLocalizedCategories(lang).map((category) => category.slug);
 }
 
 export function getLocalizedTool(lang: Lang, slug: string): Tool | undefined {
@@ -259,9 +319,9 @@ export function getLocalizedTool(lang: Lang, slug: string): Tool | undefined {
     ...tool,
     ...translation,
     keywords: [translation.primaryKeyword, ...tool.keywords.filter((keyword) => keyword !== translation.primaryKeyword).slice(0, 5)],
-    usageSteps: localizedSteps(lang, translation.name, translation.primaryKeyword),
-    faq: localizedFaq(lang, translation.name, translation.primaryKeyword),
-    additionalContent: localizedContent(lang, translation.name),
+    usageSteps: localizedSteps(lang, slug as LocalizedToolSlug, translation.name, translation.primaryKeyword),
+    faq: localizedFaq(lang, slug as LocalizedToolSlug, translation.name, translation.primaryKeyword),
+    additionalContent: localizedContent(lang, slug as LocalizedToolSlug, translation.name),
   };
 }
 

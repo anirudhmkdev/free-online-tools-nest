@@ -5,7 +5,7 @@ import { PUBLISHED_LOCALES } from "../../data/localized";
 import { getDefaultAlternates } from "../../i18n/utils";
 import type { Lang } from "../../i18n/ui";
 
-const staticPages = ["about", "contact", "faq", "privacy-policy", "terms-and-conditions"] as const;
+const staticPages = ["about", "contact", "faq", "privacy-policy", "terms-and-conditions", "standards"] as const;
 type StaticPage = (typeof staticPages)[number];
 
 type PageCopy = {
@@ -27,6 +27,7 @@ const copies: Record<Exclude<Lang, "en">, Record<StaticPage, PageCopy>> = {
       sections: [
         { heading: "Privacidad primero", body: "Siempre que una herramienta puede ejecutarse en el navegador, tus datos se procesan localmente y no se suben a un servidor." },
         { heading: "Para trabajo real", body: "La colección está pensada para escritores, desarrolladores, estudiantes y equipos que necesitan resolver tareas pequeñas sin instalar software." },
+        { heading: "El equipo", body: "El equipo de Free Online Tools Nest diseña, programa, prueba y documenta las herramientas. Las normas editoriales explican cómo verificamos ejemplos, privacidad y limitaciones." },
       ],
       cta: { label: "Contactar", href: "/es/contact/" },
     },
@@ -50,6 +51,7 @@ const copies: Record<Exclude<Lang, "en">, Record<StaticPage, PageCopy>> = {
         { heading: "¿Son gratis?", body: "Sí. Las herramientas son gratuitas y no requieren cuenta ni tarjeta." },
         { heading: "¿Mis datos se suben?", body: "Las herramientas están diseñadas para trabajar en el navegador cuando es posible. No tenemos un backend que reciba tus archivos o entradas de herramienta." },
         { heading: "¿Por qué no están todas las herramientas traducidas?", body: "La internacionalización se está lanzando por fases para mantener calidad y evitar páginas traducidas de forma incompleta." },
+        { heading: "¿Cómo se financia el sitio?", body: "Algunas páginas de contenido muestran publicidad de Google para financiar alojamiento y mantenimiento. Los anuncios no afectan los resultados y están separados de entradas, resultados y descargas." },
       ],
       cta: { label: "Ver herramientas", href: "/es/tools/" },
     },
@@ -57,25 +59,39 @@ const copies: Record<Exclude<Lang, "en">, Record<StaticPage, PageCopy>> = {
       title: "Política de privacidad — Free Online Tools Nest",
       description: "Resumen de privacidad para las herramientas localizadas de Free Online Tools Nest.",
       heading: "Política de privacidad",
-      intro: "Esta página resume cómo tratamos la privacidad en las páginas localizadas. La versión inglesa principal contiene la política completa.",
+      intro: "Esta política explica cómo tratamos los datos de herramientas, analítica, publicidad y preferencias en las páginas en español.",
       sections: [
         { heading: "Datos de herramientas", body: "Los textos, archivos, contraseñas, imágenes y PDFs que usas en las herramientas permanecen en tu navegador cuando la herramienta funciona localmente." },
         { heading: "Analítica y servicios externos", body: "Usamos Google Analytics para medir uso agregado del sitio, Google Fonts para tipografía y servicios externos cuando haces clic en enlaces externos." },
+        { heading: "Publicidad, cookies y consentimiento", body: "Google AdSense puede mostrar anuncios en páginas de contenido seleccionadas. Google y sus proveedores pueden usar cookies, almacenamiento local, dirección IP y datos del dispositivo para servir, limitar y medir anuncios personalizados o no personalizados. Cuando la ley lo exige, un mensaje de consentimiento certificado por Google permite aceptar, rechazar o gestionar estas opciones. Puedes cambiar la personalización en https://adssettings.google.com/." },
+        { heading: "Separación de los datos de herramientas", body: "La publicidad no recibe el texto, los archivos, las contraseñas, los PDF, las imágenes ni los resultados que procesas dentro de las herramientas. Los anuncios se mantienen separados de entradas, resultados y botones de descarga." },
         { heading: "Contacto", body: "Para preguntas de privacidad, escribe a openprojects50@gmail.com." },
       ],
-      cta: { label: "Política completa en inglés", href: "/privacy-policy/" },
     },
     "terms-and-conditions": {
       title: "Términos y condiciones — Free Online Tools Nest",
       description: "Resumen de términos para usar las herramientas localizadas de Free Online Tools Nest.",
       heading: "Términos y condiciones",
-      intro: "Este resumen localizado explica el uso básico del sitio. La versión inglesa principal contiene los términos completos.",
+      intro: "Estas condiciones regulan el uso de las herramientas y el contenido disponible en las páginas en español.",
       sections: [
         { heading: "Uso permitido", body: "Puedes usar las herramientas gratis para fines personales o comerciales, siempre que el uso sea legal." },
         { heading: "Sin garantía profesional", body: "Las herramientas se ofrecen tal cual y no reemplazan asesoría legal, financiera, médica, fiscal o profesional." },
         { heading: "Responsabilidad", body: "Eres responsable de revisar los resultados antes de depender de ellos." },
+        { heading: "Publicidad y servicios externos", body: "Las páginas de contenido seleccionadas pueden mostrar publicidad de Google AdSense. La publicidad financia el servicio gratuito, pero no influye en los resultados ni en las conclusiones editoriales." },
+        { heading: "Contenido y propiedad", body: "Eres responsable del contenido que procesas y debes tener derecho a usarlo. Los resultados creados a partir de tus propios datos te pertenecen; el diseño, el código y el contenido editorial del sitio pertenecen a Free Online Tools Nest." },
       ],
-      cta: { label: "Términos completos en inglés", href: "/terms-and-conditions/" },
+    },
+    standards: {
+      title: "Normas editoriales y de pruebas — Free Online Tools Nest",
+      description: "Cómo el equipo revisa herramientas, privacidad, limitaciones, fuentes y correcciones.",
+      heading: "Normas editoriales y de pruebas",
+      intro: "El equipo de Free Online Tools Nest crea, prueba y documenta las herramientas y guías publicadas en el sitio.",
+      sections: [
+        { heading: "Pruebas de herramientas", body: "Comprobamos el flujo principal, entradas vacías e inválidas, acciones de copia y descarga, teclado, diseño adaptable y modo oscuro. También registramos la API del navegador o biblioteca real que usa cada herramienta revisada." },
+        { heading: "Verificación de privacidad", body: "Revisamos el código y la actividad de red para confirmar que las entradas de herramientas no se envían a un servidor de procesamiento. Fuentes, analítica, consentimiento y publicidad se describen por separado en la política de privacidad." },
+        { heading: "Revisión editorial y correcciones", body: "Las guías incluyen ejemplos reproducibles, limitaciones y enlaces descriptivos. Corregimos afirmaciones inexactas cuando cambia una implementación o un lector informa un problema verificable." },
+        { heading: "Independencia publicitaria", body: "La publicidad financia alojamiento y mantenimiento, pero no influye en los resultados. Se mantiene separada de entradas, resultados, descargas y navegación." },
+      ],
     },
   },
   hi: {
@@ -87,6 +103,7 @@ const copies: Record<Exclude<Lang, "en">, Record<StaticPage, PageCopy>> = {
       sections: [
         { heading: "Privacy first", body: "जहां tool browser में चल सकता है, आपका data local process होता है और server पर upload नहीं होता." },
         { heading: "Real work के लिए", body: "Collection writers, developers, students और teams के लिए है जिन्हें छोटे काम बिना software install किए करने हैं." },
+        { heading: "हमारी टीम", body: "Free Online Tools Nest टीम टूल का डिजाइन, विकास, परीक्षण और दस्तावेजीकरण करती है। संपादकीय मानक बताते हैं कि उदाहरण, गोपनीयता और सीमाएँ कैसे जांची जाती हैं।" },
       ],
       cta: { label: "संपर्क करें", href: "/hi/contact/" },
     },
@@ -110,6 +127,7 @@ const copies: Record<Exclude<Lang, "en">, Record<StaticPage, PageCopy>> = {
         { heading: "क्या tools free हैं?", body: "हाँ. Tools free हैं और account या card की जरूरत नहीं है." },
         { heading: "क्या मेरा data upload होता है?", body: "Tools browser-first बनाए गए हैं जहां possible हो. Tool input receive करने के लिए कोई backend नहीं है." },
         { heading: "सभी tools translated क्यों नहीं हैं?", body: "Localization phased rollout है ताकि pages incomplete translation के साथ publish न हों." },
+        { heading: "साइट का खर्च कैसे चलता है?", body: "कुछ सामग्री पृष्ठ होस्टिंग और रखरखाव के लिए Google विज्ञापन दिखाते हैं। विज्ञापन परिणाम को प्रभावित नहीं करते और इनपुट, परिणाम तथा डाउनलोड से अलग रहते हैं।" },
       ],
       cta: { label: "Tools देखें", href: "/hi/tools/" },
     },
@@ -117,31 +135,45 @@ const copies: Record<Exclude<Lang, "en">, Record<StaticPage, PageCopy>> = {
       title: "गोपनीयता नीति — Free Online Tools Nest",
       description: "Free Online Tools Nest localized pages के लिए privacy summary.",
       heading: "गोपनीयता नीति",
-      intro: "यह localized privacy summary है. Complete policy English page पर उपलब्ध है.",
+      intro: "यह नीति बताती है कि हिन्दी पृष्ठों पर टूल डेटा, विश्लेषण, विज्ञापन और ब्राउज़र प्राथमिकताओं का उपयोग कैसे होता है।",
       sections: [
         { heading: "Tool data", body: "Text, files, passwords, images और PDFs browser में रहते हैं जब tool local processing support करता है." },
         { heading: "Analytics और external services", body: "हम aggregate usage measurement के लिए Google Analytics, typography के लिए Google Fonts और clicked external links पर third-party services use करते हैं." },
+        { heading: "विज्ञापन, कुकी और सहमति", body: "चुने हुए सामग्री पृष्ठों पर Google AdSense विज्ञापन दिखा सकता है। Google और उसके विक्रेता व्यक्तिगत या गैर-व्यक्तिगत विज्ञापन दिखाने और मापने के लिए कुकी, स्थानीय भंडारण, IP पता और डिवाइस जानकारी का उपयोग कर सकते हैं। कानून के अनुसार Google का प्रमाणित सहमति संदेश विकल्प स्वीकार, अस्वीकार या प्रबंधित करने देता है। विज्ञापन सेटिंग https://adssettings.google.com/ पर बदली जा सकती है।" },
+        { heading: "टूल डेटा से अलगाव", body: "विज्ञापन को वह पाठ, फ़ाइल, पासवर्ड, PDF, चित्र या परिणाम नहीं मिलता जिसे आप टूल में संसाधित करते हैं। विज्ञापन इनपुट, परिणाम और डाउनलोड बटन से अलग रखे जाते हैं।" },
         { heading: "Contact", body: "Privacy questions के लिए openprojects50@gmail.com पर लिखें." },
       ],
-      cta: { label: "English full policy", href: "/privacy-policy/" },
     },
     "terms-and-conditions": {
       title: "नियम और शर्तें — Free Online Tools Nest",
       description: "Free Online Tools Nest localized tools use करने के terms का summary.",
       heading: "नियम और शर्तें",
-      intro: "यह localized terms summary है. Complete English terms main page पर उपलब्ध हैं.",
+      intro: "ये शर्तें हिन्दी पृष्ठों पर उपलब्ध टूल और सामग्री के उपयोग को नियंत्रित करती हैं।",
       sections: [
         { heading: "Allowed use", body: "Tools personal या commercial work के लिए free use कर सकते हैं, जब तक use legal है." },
         { heading: "Professional advice नहीं", body: "Tools as-is दिए जाते हैं और legal, financial, medical, tax या professional advice नहीं हैं." },
         { heading: "Responsibility", body: "Outputs पर rely करने से पहले उन्हें review करना आपकी responsibility है." },
+        { heading: "विज्ञापन और बाहरी सेवाएँ", body: "चुने हुए सामग्री पृष्ठ Google AdSense विज्ञापन दिखा सकते हैं। विज्ञापन मुफ्त सेवा को चलाने में सहायता करता है, लेकिन टूल परिणाम या संपादकीय निष्कर्ष को प्रभावित नहीं करता।" },
+        { heading: "सामग्री और स्वामित्व", body: "आप अपने द्वारा संसाधित सामग्री के लिए जिम्मेदार हैं और आपके पास उसे उपयोग करने का अधिकार होना चाहिए। अपने डेटा से बने परिणाम आपके हैं; साइट का डिजाइन, कोड और संपादकीय सामग्री Free Online Tools Nest की संपत्ति है।" },
       ],
-      cta: { label: "English full terms", href: "/terms-and-conditions/" },
+    },
+    standards: {
+      title: "संपादकीय और टूल परीक्षण मानक — Free Online Tools Nest",
+      description: "टीम टूल, गोपनीयता, सीमाओं, स्रोतों और सुधारों की समीक्षा कैसे करती है।",
+      heading: "संपादकीय और टूल परीक्षण मानक",
+      intro: "Free Online Tools Nest टीम साइट पर प्रकाशित हर टूल और मार्गदर्शिका को बनाती, जांचती और दस्तावेजित करती है।",
+      sections: [
+        { heading: "टूल परीक्षण", body: "हम मुख्य प्रक्रिया, खाली और गलत इनपुट, कॉपी और डाउनलोड, कीबोर्ड फोकस, मोबाइल लेआउट और डार्क मोड जांचते हैं। हर समीक्षा किए गए टूल में उपयोग हुई वास्तविक ब्राउज़र API या लाइब्रेरी दर्ज की जाती है।" },
+        { heading: "गोपनीयता सत्यापन", body: "हम कोड और ब्राउज़र नेटवर्क गतिविधि देखकर पुष्टि करते हैं कि टूल इनपुट किसी प्रसंस्करण सर्वर को नहीं भेजा जाता। फॉन्ट, विश्लेषण, सहमति और विज्ञापन को गोपनीयता नीति में अलग समझाया गया है।" },
+        { heading: "संपादकीय समीक्षा और सुधार", body: "मार्गदर्शिकाओं में दोहराए जा सकने वाले उदाहरण, सीमाएँ और उपयोगी आंतरिक लिंक होते हैं। कार्यप्रणाली बदलने या प्रमाणित त्रुटि मिलने पर दावे सुधारे जाते हैं।" },
+        { heading: "विज्ञापन स्वतंत्रता", body: "विज्ञापन होस्टिंग और रखरखाव में सहायता करता है, लेकिन परिणाम को प्रभावित नहीं करता और इनपुट, परिणाम, डाउनलोड तथा नेविगेशन से अलग रहता है।" },
+      ],
     },
   },
 };
 
 export function getStaticPaths() {
-  const paths = ["about", "contact", "faq", "privacy-policy", "terms-and-conditions"] as const;
+  const paths = ["about", "contact", "faq", "privacy-policy", "terms-and-conditions", "standards"] as const;
   return PUBLISHED_LOCALES.flatMap((locale) =>
     paths.map((staticPage) => ({ params: { locale, staticPage } }))
   );
@@ -161,6 +193,8 @@ const webPageJsonLd = {
   description: copy.description,
   url: `${SITE.url}${canonicalPath}`,
   isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.url },
+  author: { "@type": "Organization", name: `${SITE.name} Team`, url: `${SITE.url}/${lang}/about/` },
+  dateModified: "2026-08-26",
 };
 ---
 
@@ -171,6 +205,7 @@ const webPageJsonLd = {
   alternatePaths={alternatePaths}
   jsonLd={webPageJsonLd}
   lang={lang}
+  enableAds={["about", "faq", "standards"].includes(staticPage)}
 >
   <div class="container-narrow py-12 md:py-20">
     <h1 class="text-3xl md:text-4xl font-semibold text-ink mb-4" style="letter-spacing: 0;">

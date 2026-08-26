@@ -80,6 +80,7 @@ const websiteJsonLd = {
   canonicalPath="/"
   alternatePaths={getDefaultAlternates("/")}
   jsonLd={[websiteJsonLd, organizationJsonLd]}
+  enableAds={true}
 >
   <!-- Hero -->
   <Hero />
@@ -237,7 +238,7 @@ const websiteJsonLd = {
         </p>
 
         <p class="text-body leading-relaxed mb-6">
-          We provide a diverse suite of <strong>free online browser-based tools</strong> and frontier utilities built with a single core philosophy: they must be fast, completely free, and 100% private. Unlike many other platforms that require complex registrations, credit cards, or software installations, our tools work instantly, directly inside your web browser. By operating entirely client-side, we ensure that your sensitive data remains yours and yours alone.
+          We provide a diverse suite of <strong>free online browser-based tools</strong> built around fast access, no signup, and local tool processing. Unlike platforms that require registrations, credit cards, or software installations, the utilities work directly inside your browser. Tool inputs are not sent to a Free Online Tools Nest processing server; analytics and advertising resources are described separately in our privacy policy.
         </p>
 
         <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">
@@ -245,7 +246,7 @@ const websiteJsonLd = {
         </h3>
 
         <p class="text-body leading-relaxed mb-6">
-          Traditional utility software often comes with high friction: downloading installers, updating applications, managing license keys, or dealing with intrusive advertisements. Many web-based alternatives also require you to upload your files or text to their servers, exposing your data to potential privacy risks or server-side security vulnerabilities.
+          Traditional utility software can add friction through installers, updates, and license management. Many web-based alternatives also require files or text to be uploaded to remote servers, which may be unsuitable for private drafts or local documents.
         </p>
 
         <p class="text-body leading-relaxed mb-6">
@@ -253,9 +254,9 @@ const websiteJsonLd = {
         </p>
 
         <ul class="list-disc pl-6 mb-6 space-y-2 text-body">
-          <li><strong>Absolute Privacy</strong>: Since your input data is never sent to a backend server, there is zero risk of data leaks, interception, or unauthorized storage. This is particularly important for developers formatting API keys or payload data, and writers handling proprietary content.</li>
+          <li><strong>Local tool processing</strong>: Tool input is not sent to our backend for processing, which reduces exposure compared with an upload-based workflow. Device security, browser extensions, clipboard history, and third-party page resources remain separate considerations.</li>
           <li><strong>Instant Speed</strong>: Without the need to transmit data back and forth across a network, results are processed in real-time. As you type, the tool outputs update instantly.</li>
-          <li><strong>Offline Compatibility</strong>: Once a tool page is loaded in your browser, it can function completely offline. You can continue to count words, convert cases, or generate dummy text even without an active internet connection.</li>
+          <li><strong>Local computation</strong>: Once the required code has loaded, many text and calculation workflows can continue without a processing-server round trip. Reloading pages and third-party resources still requires a network connection.</li>
         </ul>
 
         <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">
@@ -317,7 +318,7 @@ const websiteJsonLd = {
          <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
            <li><strong>PDF Merger Online</strong>: Combine multiple PDF files into a single document with page reordering.</li>
            <li><strong>PDF Splitter Online</strong>: Split large PDFs into individual pages or extract specific page ranges.</li>
-           <li><strong>PDF Compressor Online</strong>: Reduce PDF file sizes by compressing embedded images and removing redundant data.</li>
+           <li><strong>PDF Compressor Online</strong>: Attempt to reduce PDF size by rewriting document structure locally, with savings depending on the source file.</li>
            <li><strong>PDF to Text Converter</strong>: Extract and copy text content from PDF documents with preserved formatting.</li>
            <li><strong>PDF to Image Converter</strong>: Convert PDF pages into high-quality PNG or JPEG images with custom quality settings.</li>
          </ul>
@@ -355,28 +356,15 @@ const websiteJsonLd = {
         </h3>
 
         <p class="text-body leading-relaxed mb-6">
-          By bringing all these tools under a single, cohesive interface, <strong>Free Online Tools Nest</strong> acts as your digital Swiss Army knife. Instead of bookmarking dozens of different single-purpose websites — many of which are cluttered with cookie banners and video ads — you can rely on our clean, fast interface.
+          By bringing these tools under a single, cohesive interface, <strong>Free Online Tools Nest</strong> provides a consistent place for common utility tasks. Advertising supports the free service, but it does not affect tool results and is kept separate from inputs, outputs, and download actions.
         </p>
 
         <p class="text-body leading-relaxed mb-6">
           Our <strong>free productivity tools</strong> and frontier utilities are designed with responsive layouts, ensuring that they work flawlessly on any screen size. Whether you are on a smartphone, a tablet, or a large desktop monitor, the layout adjusts to optimize screen space and usability. With keyboard navigation and accessible color contrasts, we ensure that every user can work comfortably and efficiently.
         </p>
 
-        <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">
-          Looking Ahead: Continuous Platform Expansion
-        </h3>
-
-        <p class="text-body leading-relaxed mb-6">
-          We believe that a great utility platform should never stop growing. While our current library covers the most frequent text, code, math, and conversion needs, we have an ambitious roadmap for the future expansion of Free Online Tools Nest.
-        </p>
-
-        <p class="text-body leading-relaxed mb-6">
-          We plan to add more advanced <strong>developer tools</strong>, such as CSS formatters, SQL prettifiers, and JWT decoders. In our <strong>calculators</strong> section, we will introduce financial planning tools, scientific calculators, and unit converters (length, weight, temperature). For content creators, we will release text diff tools to compare documents side-by-side and SEO analyzers.
-        </p>
-
-        <p class="text-body leading-relaxed">
-          We listen closely to our community. If you have a specific tool request or find an area where we can improve, we invite you to contact us. We are dedicated to continuously polishing existing features and rolling out new utilities weekly.
-        </p>
+        <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">How we maintain the collection</h3>
+        <p class="text-body leading-relaxed">The team reviews tool behavior, browser compatibility, privacy claims, and documentation as the collection evolves. Our <a href="/standards/" class="text-link underline">editorial and testing standards</a> explain the checks used for reviewed tools and how to report a correction.</p>
       </article>
     </div>
   </section>

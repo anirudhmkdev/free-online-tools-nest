@@ -9,7 +9,7 @@
 
 ## 1. Project Overview
 
-**What it is**: A collection of 77 free, browser-based utility tools (text, code, math, SEO, PDF, design, converters, calculators). All processing happens client-side — no server uploads, no signups, no ads. Includes a companion Chrome extension for quick tool access.
+**What it is**: A collection of 77 free, browser-based utility tools (text, code, math, SEO, PDF, design, converters, calculators). Tool inputs are processed client-side with no signups. Selected substantive pages may load clearly separated Google advertising. Includes a companion Chrome extension for quick tool access.
 
 **Domain**: `https://freeonlinetoolsnest.com`  
 **GitHub**: `https://github.com/AnirudhMKumar/free-online-tools-nest`  
@@ -192,7 +192,7 @@ export const SITE = {
   name: "Free Online Tools Nest",
   domain: "freeonlinetoolsnest.com",
   url: "https://freeonlinetoolsnest.com",
-  description: "77 free web tools and frontier utilities for text, code, math, and more. No uploads, no signups — everything runs in your browser, 100% private.",
+  description: "77 free web tools for text, code, math, and more. No signup required, and tool inputs are processed locally in your browser.",
   tagline: "Free web tools and frontier utilities for text, code, and math.",
 };
 ```

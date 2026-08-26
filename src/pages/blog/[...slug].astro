@@ -22,9 +22,9 @@ const blogJsonLd = {
   datePublished: post.data.pubDate.toISOString(),
   dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
   author: {
-    "@type": "Person",
+    "@type": "Organization",
     name: "Free Online Tools Nest Team",
-    url: SITE.url,
+    url: `${SITE.url}/about/`,
   },
   publisher: {
     "@type": "Organization",

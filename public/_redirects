@@ -27,6 +27,12 @@
 /hi/privacy-policy  /hi/privacy-policy/  301
 /es/terms-and-conditions  /es/terms-and-conditions/  301
 /hi/terms-and-conditions  /hi/terms-and-conditions/  301
+/es/standards  /es/standards/  301
+/hi/standards  /hi/standards/  301
+/es/categories/calculators/  /es/categories/  301
+/hi/categories/calculators/  /hi/categories/  301
+/es/categories/seo-tools/  /es/categories/  301
+/hi/categories/seo-tools/  /hi/categories/  301
 /es/tools/*/  /es/tools/:splat/  200
 /hi/tools/*/  /hi/tools/:splat/  200
 /es/categories/*/  /es/categories/:splat/  200
@@ -48,6 +54,7 @@
 /favorites  /favorites/ 301
 /privacy-policy  /privacy-policy/ 301
 /terms-and-conditions  /terms-and-conditions/ 301
+/standards  /standards/ 301
 
 # Section indexes
 /tools  /tools/ 301

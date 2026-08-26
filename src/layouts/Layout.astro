@@ -13,6 +13,7 @@ interface Props {
   noindex?: boolean;
   lang?: Lang;
   alternatePaths?: Record<string, string>;
+  enableAds?: boolean;
 }
 
 import Nav from "../components/Nav.astro";
@@ -36,6 +37,7 @@ const {
   noindex,
   lang = detectedLang,
   alternatePaths,
+  enableAds = false,
 } = Astro.props;
 const meta = localeMeta[lang];
 ---
@@ -53,13 +55,14 @@ const meta = localeMeta[lang];
       gtag('config', 'G-KW0NXYM3MN');
     </script>
 
-    <!-- Google AdSense -->
-    <script
-      is:inline
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7189536685341014"
-      crossorigin="anonymous"
-    ></script>
+    {enableAds && (
+      <script
+        is:inline
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7189536685341014"
+        crossorigin="anonymous"
+      ></script>
+    )}
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

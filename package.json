@@ -14,7 +14,8 @@
     "test": "vitest run",
     "lint": "eslint .",
     "check": "astro check",
-    "indexnow:submit": "node scripts/submit-indexnow.mjs"
+    "indexnow:submit": "node scripts/submit-indexnow.mjs",
+    "validate:build": "node scripts/validate-built-site.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",

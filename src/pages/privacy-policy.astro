@@ -18,12 +18,12 @@ const webPageJsonLd = {
     url: SITE.url,
   },
   author: {
-    "@type": "Person",
+    "@type": "Organization",
     name: "Free Online Tools Nest Team",
     url: "https://freeonlinetoolsnest.com/about/",
   },
   datePublished: "2026-01-15",
-  dateModified: "2026-07-03",
+  dateModified: "2026-08-26",
 };
 ---
 
@@ -38,7 +38,7 @@ const webPageJsonLd = {
     <h1 class="text-3xl md:text-4xl font-semibold text-ink mb-3" style="letter-spacing: -1.28px;">
       {t("privacy.title")}
     </h1>
-    <p class="text-sm text-mute mb-10">{t("privacy.lastUpdated").replace("{date}", "July 3, 2026")}</p>
+    <p class="text-sm text-mute mb-10">{t("privacy.lastUpdated").replace("{date}", "August 26, 2026")}</p>
 
     <article class="space-y-6 text-body leading-relaxed">
       <section>
@@ -84,9 +84,16 @@ const webPageJsonLd = {
       </section>
 
       <section>
+        <h2 class="text-xl font-semibold text-ink mb-3">Advertising, cookies, and consent</h2>
+        <p>We use Google AdSense on selected content pages to support free access. Google and its advertising partners may use cookies, local storage, IP addresses, device information, and prior visits to this or other websites to serve, measure, and limit personalized or non-personalized ads.</p>
+        <p class="mt-3">Where required, a Google-certified consent message lets you accept, reject, or manage advertising choices before personalized advertising is used. You can review or change ad personalization in <a class="text-link underline" href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Google Ads Settings</a> and learn about participating vendor opt-outs at <a class="text-link underline" href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">AboutAds</a>.</p>
+        <p class="mt-3">Advertising does not receive the text, files, passwords, PDFs, images, or results you process inside our tools. Ads are kept separate from tool inputs, results, and download controls.</p>
+      </section>
+
+      <section>
         <h2 class="text-xl font-semibold text-ink mb-3" style="letter-spacing: -0.6px;">{t("privacy.thirdPartyTitle")}</h2>
         <p>
-          {t("privacy.thirdPartyP1")}
+          {t("privacy.thirdPartyP1")} Google AdSense supplies and measures advertising on selected eligible pages; its vendors operate under their own privacy policies.
         </p>
         <p class="mt-3">
           {t("privacy.thirdPartyP2")}

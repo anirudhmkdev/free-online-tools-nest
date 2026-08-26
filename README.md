@@ -1,8 +1,8 @@
 # Free Online Tools Nest
 
-**77 free, client-side browser tools — no uploads, no signups, no ads.**
+**77 free, client-side browser tools — no tool-input uploads and no signups. Selected content pages may carry clearly separated advertising.**
 
-All processing happens in your browser. Your data never leaves your device.
+Tool inputs are processed in your browser and are not sent to a Free Online Tools Nest processing server. Analytics and advertising resources are documented separately.
 
 **Site**: https://freeonlinetoolsnest.com
 

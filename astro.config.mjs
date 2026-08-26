@@ -18,7 +18,8 @@ export default defineConfig({
           path === "/tools/" ||
           path === "/categories/" ||
           path === "/blog/" ||
-          path === "/about/"
+          path === "/about/" ||
+          path === "/standards/"
         )
           return true;
 

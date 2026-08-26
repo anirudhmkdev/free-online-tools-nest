@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { SITE } from "../data/tools";
+import { getDefaultAlternates } from "../i18n/utils";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Editorial and Tool-Testing Standards",
+  url: `${SITE.url}/standards/`,
+  author: { "@type": "Organization", name: `${SITE.name} Team`, url: `${SITE.url}/about/` },
+  dateModified: "2026-08-26",
+};
+---
+
+<Layout title="Editorial & Tool-Testing Standards | Free Online Tools Nest" description="How the Free Online Tools Nest Team tests browser tools, verifies privacy claims, reviews guides, documents limitations, and corrects errors." canonicalPath="/standards/" alternatePaths={getDefaultAlternates("/standards/")} jsonLd={jsonLd} enableAds={true}>
+  <article class="container-narrow py-12 md:py-20 prose-like">
+    <p class="section-eyebrow">Trust and accountability</p>
+    <h1>Editorial and tool-testing standards</h1>
+    <p class="text-lg text-body">The Free Online Tools Nest Team builds, tests, and documents every utility. This page explains what we check, what our claims mean, and how corrections are handled.</p>
+
+    <h2>Tool testing</h2>
+    <p>Before a tool is marked as reviewed, we test its primary workflow, invalid input, empty input, copy or download action, keyboard focus, responsive layout, and dark mode. File tools are checked with representative supported files and with files that exceed documented guardrails. We record the actual browser API or library used and avoid claiming features the implementation does not provide.</p>
+
+    <h2>Privacy verification</h2>
+    <p>“Runs in your browser” refers to tool input processing, not every network request made by the website. We inspect the implementation and browser network activity to confirm that tool text and files are not sent to a Free Online Tools Nest processing server. The site can still request fonts, analytics, consent services, and advertising resources as described in the Privacy Policy.</p>
+
+    <h2>Editorial review</h2>
+    <p>Guides are team-authored and must include a reproducible example, practical limitations, and links to relevant tools. Standards-based claims link to primary documentation where practical. We do not publish copied vendor descriptions, invented benchmarks, or unsupported claims about accuracy.</p>
+
+    <h2>Limits and responsible use</h2>
+    <p>Browser tools are constrained by device memory, browser support, input quality, and the algorithms described on each reviewed tool page. Results should be checked before professional or high-stakes use. JWT decoding is not signature verification, grammar suggestions are heuristic, and text similarity is not a web-wide plagiarism search.</p>
+
+    <h2>Corrections and review dates</h2>
+    <p>Reviewed tool pages show a verification date. When behavior changes, we update both the implementation and documentation. Report an error through our <a href="/contact/">contact page</a> with the tool name, sample input that can be shared safely, browser, and expected result.</p>
+
+    <h2>Advertising independence</h2>
+    <p>Advertising helps fund hosting and maintenance. It does not influence tool results or editorial conclusions, and ad placements are kept separate from tool inputs, results, download actions, and navigation. Legal and support pages do not load the AdSense script.</p>
+  </article>
+</Layout>

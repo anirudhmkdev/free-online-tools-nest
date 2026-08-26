@@ -23,7 +23,7 @@ Error pages (404, 500) and Favorites page are **noindexed** — they won't appea
 | Field | Current Value |
 |-------|---------------|
 | **metaTitle** | `62 Free Online Tools — Private Browser Utilities, No Signup` |
-| **metaDesc** | `Access 62 free online tools for text, code, math, SEO, and design — all running 100% in your browser with zero uploads. No signup, no ads, just fast utilities.` |
+| **metaDesc** | `Access free online tools for text, code, math, SEO, and design. Tool inputs are processed in your browser with no signup required.` |
 | **Source** | `home.metaTitle` / `home.metaDesc` in `src/i18n/ui.ts` |
 | **Implicit keywords** | free online tools, browser utilities, no signup, private browser tools |
 | **Target Keyword (fill in)** | online tools, free web tools, frontier utilities |

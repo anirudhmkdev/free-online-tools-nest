@@ -22,6 +22,7 @@ const organizationJsonLd = {
   canonicalPath="/about/"
   alternatePaths={getDefaultAlternates("/about/")}
   jsonLd={organizationJsonLd}
+  enableAds={true}
 >
   <div class="container-narrow py-12 md:py-20">
     <h1 class="text-3xl md:text-4xl font-semibold text-ink mb-6" style="letter-spacing: -1.28px;">
@@ -63,6 +64,10 @@ const organizationJsonLd = {
           </div>
         ))}
       </div>
+
+      <h2 class="text-xl font-semibold text-ink mt-8" style="letter-spacing: -0.6px;">Who builds and reviews the site</h2>
+      <p>The <strong>Free Online Tools Nest Team</strong> designs, implements, and reviews the tools and guides published here. We test representative inputs, document browser and library behavior, correct inaccurate claims, and keep tool processing separate from advertising.</p>
+      <p>Read our <a href="/standards/" class="text-link underline">editorial and tool-testing standards</a> for the review checklist, privacy verification method, limitations policy, and corrections process.</p>
 
       <p class="mt-8">
         {t("about.ctaText")}

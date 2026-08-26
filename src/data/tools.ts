@@ -1,3 +1,5 @@
+import { TOOL_QUALITY } from "./tool-quality";
+
 /**
  * Tool Registry — single source of truth for all tools on the site.
  * To add a new tool: append to the TOOLS array below and create
@@ -28,6 +30,19 @@ export interface FAQPair {
 export interface ContentSection {
   heading: string;
   content: string;
+  bullets?: string[];
+  example?: { input: string; output: string };
+  comparison?: { option: string; bestFor: string; tradeoff: string }[];
+}
+
+export interface ToolQuality {
+  engine: string;
+  supportedInputs: string[];
+  outputFormats: string[];
+  limits: string[];
+  limitations: string[];
+  verifiedOn: string;
+  sections: ContentSection[];
 }
 
 export interface Tool {
@@ -44,6 +59,8 @@ export interface Tool {
   usageSteps?: UsageStep[];
   faq?: FAQPair[];
   additionalContent?: ContentSection[];
+  adEligible?: boolean;
+  quality?: ToolQuality;
 }
 
 // ── Categories ──────────────────────────────────────────────
@@ -1066,7 +1083,7 @@ export const TOOLS: Tool[] = [
       {
         question: "Can I use this regex tester for languages other than Ruby?",
         answer:
-          "Yes — while this regex tester is designed with common regex syntax in mind, it supports common regex flavors including PCRE-compatible patterns, JavaScript regular expressions, and Python-style expressions. You can test patterns for any language and then adapt the final expression to your specific runtime syntax.",
+          "This tester uses the browser's JavaScript RegExp engine and therefore supports ECMAScript syntax and flags. PCRE, Python, .NET, and Java have different features, so test the final pattern again in its actual target runtime.",
       },
     ],
   },
@@ -1174,7 +1191,7 @@ export const TOOLS: Tool[] = [
     name: "Image Compressor",
     description: "Compress and resize PNG, JPEG, and WebP images client-side.",
     longDescription:
-      "Reduce image file sizes directly in your browser. Adjust compression quality, resize dimensions, choose output formats (JPEG, WebP, PNG), and compare before/after file sizes. 100% private with no server uploads.",
+      "Reduce image file sizes directly in your browser. Adjust compression quality, resize dimensions, choose JPEG, WebP, or PNG output, and compare before/after file sizes without sending the selected image to our processing server.",
     categorySlug: "converters",
     icon: "🖼️",
     featured: true,
@@ -1198,7 +1215,7 @@ export const TOOLS: Tool[] = [
       {
         title: "Adjust Compression Quality",
         content:
-          "Use the quality slider to balance file size reduction against image fidelity. All processing happens locally as you compress image without uploading, keeping your files completely private on your own device.",
+          "Use the quality slider to balance file size reduction against image fidelity. The selected image is decoded and re-encoded locally instead of being sent to our processing server; keep the original because browser export can remove metadata.",
       },
       {
         title: "Download the Optimized Image",
@@ -1259,7 +1276,7 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Merge PDF Files Online Free — Combine PDFs",
     metaDescription:
-      "Merge PDF files online free — combine multiple PDFs into one document. Upload, reorder, and merge instantly in your browser, 100% private.",
+      "Merge PDF files online free — select, reorder, and combine multiple PDFs in your browser without sending the selected documents to our processing server.",
     usageSteps: [
       {
         title: "Upload Your PDF Files",
@@ -3643,7 +3660,7 @@ export const TOOLS: Tool[] = [
       {
         question: "Is the JWT decoder safe to use with production tokens?",
         answer:
-          "Yes, the JWT decoder runs entirely in your browser — no data is sent to any server. Your JWT tokens, including any sensitive claims in the payload, never leave your device, making it safe for debugging production authentication tokens.",
+          "The decoder processes the pasted token locally and does not send it to our processing server. Tokens are credentials and can still be exposed through clipboard history, extensions, screenshots, or device compromise, so use an expired or redacted sample instead of an active production token.",
       },
       {
         question: "Does the JWT decoder verify token signatures?",
@@ -4240,6 +4257,14 @@ export const TOOLS: Tool[] = [
 
 // ── Helper functions ────────────────────────────────────────
 
+for (const tool of TOOLS) {
+  const quality = TOOL_QUALITY[tool.slug];
+  if (!quality) continue;
+  tool.adEligible = true;
+  tool.quality = quality;
+  tool.additionalContent = [...(tool.additionalContent ?? []), ...quality.sections];
+}
+
 export function getToolsByCategory(categorySlug: string): Tool[] {
   return TOOLS.filter((t) => t.categorySlug === categorySlug);
 }
@@ -4273,6 +4298,6 @@ export const SITE = {
   domain: "freeonlinetoolsnest.com",
   url: "https://freeonlinetoolsnest.com",
   description:
-    "77 free web tools and frontier utilities for text, code, math, and more. No uploads, no signups — everything runs in your browser, 100% private.",
+    "77 free web tools for text, code, math, and more. No signup required, and tool inputs are processed locally in your browser.",
   tagline: "Free web tools and frontier utilities for text, code, and math.",
 };
