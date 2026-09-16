@@ -1,6 +1,6 @@
 # Free Online Tools Nest
 
-**Free tools for study, assignments and everyday documents, with all 77 existing browser tools still available. No signups or tool-input uploads. Selected content pages may carry clearly separated advertising.**
+**83 free browser tools for students, assignments and everyday tasks, including attendance, SGPA, CGPA, marks and Image to PDF. No signups or tool-input uploads. Selected existing content pages may carry clearly separated advertising.**
 
 Tool inputs are processed in your browser and are not sent to a Free Online Tools Nest processing server. Analytics and advertising resources are documented separately.
 
@@ -12,9 +12,9 @@ Tool inputs are processed in your browser and are not sent to a Free Online Tool
 |----------|-------|------|
 | ✏️ Text Tools | 15 | Word counter, text summarizer, grammar checker, plagiarism checker, text diff, case converter, and more |
 | ⚡ Developer Tools | 16 | JSON/HTML/SQL formatter, regex tester, JWT decoder, Base64 encoder, password generator, and more |
-| 🔢 Calculators | 10 | Percentage, loan, mortgage, BMI, age, tip, date difference, random number generator |
+| 🔢 Calculators | 15 | Attendance, SGPA, CGPA, marks percentage, required marks and the ten existing calculators |
 | 🔄 Converters | 16 | Unit converter, QR code generator, image compressor/cropper/resizer, CSV/JSON/YAML, epoch converter |
-| 📄 PDF Tools | 5 | PDF merger, splitter, compressor, PDF to text, PDF to images |
+| 📄 PDF Tools | 6 | Image to PDF, PDF merger, splitter, compressor, PDF to text, PDF to images |
 | 🔍 SEO Tools | 11 | Meta tag generator, sitemap generator, SERP preview, keyword density checker, schema markup generator |
 | 🎨 Design Tools | 4 | Color contrast checker, color palette generator, gradient generator, border radius generator |
 
@@ -38,17 +38,21 @@ npm run check   # Astro / TypeScript diagnostics
 npm run lint
 ```
 
-## Phase 1 publishing policy
+## Student tools and publishing policy
 
-The homepage promotes Study & Assignment Tools, Document Tools, Writing Tools and existing practical guides. Its navigation uses homepage anchors until dedicated hubs are implemented. Attendance, SGPA, CGPA, new workflows and new guide routes are outside Phase 1.
+The homepage promotes the completed Student Tools, Document Tools, Writing Tools and existing practical guides. Navigation retains the existing homepage anchors; Phase 2 adds no hubs, workflows or guides. The six new tools are English-only. Spanish and Hindi each retain 20 localized tools and 34 generated pages.
+
+Student arithmetic lives in `src/helpers/student-calculators.ts`, separate from React interfaces. SGPA uses entered credits and points; CGPA requires a chosen weighting method. No university mapping, attendance threshold or GPA-to-percentage conversion is assumed. Image to PDF uses local image decoding and the existing pdf-lib dependency, with application guardrails and no file uploads.
 
 `src/data/page-policies.json` records audience, intent, hub, tier, review evidence, related content, indexing, sitemap membership and existing ad loading for each generated page. `page-policy.ts` is the server-side accessor; the full policy is not added to the client search registry. Unknown pages require an explicit policy.
 
 The Phase 1 baseline is **176 routes, 173 indexable pages, 3 noindex pages and 74 sitemap URLs**. These are generated directives, not claims about Google's index. `src/data/__fixtures__/pre-pivot-routes.json` freezes the pre-pivot route, robots, redirect, sitemap and advertising state for regression checks. De-emphasizing a category does not change its indexing. Spanish and Hindi routes retain their indexing and sitemap exclusions.
 
+Phase 2 adds exactly six reviewed English routes through `src/data/__fixtures__/phase-2-additions.json`: **182 routes, 179 indexable pages, 3 noindex pages and 80 sitemap URLs**. All six additions have `adEligible: false`; the existing 117 loader pages and 30 ad-eligible tool dossiers remain unchanged. See [the Phase 2 verification report](docs/student-tools-phase-2-verification.md) for formulas, test evidence and limitations.
+
 `npm run build` validates local output only. Sitemap-eligible pages must be generated, indexable, self-canonical and non-redirecting. Validation also checks internal links, anchors, hreflang, JSON-LD syntax, metadata, ads.txt and retained integrations. Keep live production checks outside the build.
 
-The existing AdSense loader and ownership method remain unchanged because independent ownership verification has not been confirmed. Do not generate an account verification meta tag. A future deployment requires a separate live ads.txt check; Phase 1 does not authorize deployment or another AdSense review. See [the Phase 1 review report](docs/student-first-phase-1.md) for evidence and the route migration table.
+The existing AdSense loader and ownership method remain unchanged because independent ownership verification has not been confirmed. Do not generate an account verification meta tag. A future deployment requires a separate live ads.txt check. Phase 2 implementation does not authorize merging, deployment, Phase 3 or another AdSense review. See [the Phase 1 review report](docs/student-first-phase-1.md) for historical evidence and the legacy route table.
 
 ## License
 

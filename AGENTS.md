@@ -1,6 +1,21 @@
 # Free Online Tools Nest — Project Knowledge Base
 
-## Current Phase 1 override — 2026-09-16
+## Current Phase 2 override — 2026-09-16
+
+This section supersedes the Phase 1 notes and historical counts below. Phase 1 was merged and verified; Phase 2 is implemented locally on `codex/student-tools-phase-2`, based on main `23148941ce4b9fdbd405b66b831e75ee3fd13cf7`.
+
+- Exactly six English tools were added: attendance-calculator, sgpa-calculator, cgpa-calculator, marks-percentage-calculator, required-marks-calculator and image-to-pdf, all under existing `/tools/` URL conventions.
+- There are 83 tools, 182 generated pages (114 English, 34 Spanish, 34 Hindi), 179 indexable directives, three existing noindex pages and 80 sitemap URLs. Spanish/Hindi each still have only 20 localized tools; do not claim the new English-only tools are translated.
+- Preserve the frozen 176-route Phase 1 baseline exactly. Approved additions are separately listed in `src/data/__fixtures__/phase-2-additions.json`; never rewrite the baseline to make a regression pass.
+- All six additions are reviewed, self-canonical, indexable and sitemap-eligible, but remain **adEligible: false**. Existing AdSense loading stays on the same 117 pages. Do not change advertising configuration or invent verification tags.
+- Student math is isolated in `src/helpers/student-calculators.ts` with unit tests. Attendance handles zero classes and 0%/100% targets explicitly. CGPA requires weights unless equal weighting is explicitly selected. Grade maps reject blank, duplicate/case-equivalent labels and invalid points. Do not add unsupported university claims.
+- Image to PDF uses the existing pdf-lib dependency with local JPEG/PNG decoding, sequential processing and application guardrails. Never upload user files or describe the guardrails as universal browser limits.
+- Homepage/navigation now say **Student Tools**, but the existing `#study-assignment-tools` anchor is preserved. No new hub, workflow, guide or localized route was created.
+- `npm run build` remains offline and validates `dist/ads.txt`; production ads.txt verification is a separate post-deployment step.
+- Stop after implementation and local verification. Do not push, merge, deploy, begin Phase 3 or request AdSense review automatically. Later AdSense review requires additional substantive work and human review.
+- See `docs/student-tools-phase-2-verification.md` for actual checks and limitations. Older sections below describe historical states.
+
+## Historical Phase 1 override — 2026-09-16
 
 This section supersedes the historical counts and publishing guidance below. Branch: `pivot/student-first-v1`, baseline `16427aa`. Repository: https://github.com/anirudhmkdev/free-online-tools-nest.
 
