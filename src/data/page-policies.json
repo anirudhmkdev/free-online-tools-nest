@@ -2497,5 +2497,19 @@
     "relatedGuides": [],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
+  },
+  "/tools/attendance-calculator/": {
+    "indexable": false,
+    "sitemapEligible": false,
+    "canonicalPath": "/tools/attendance-calculator/",
+    "primaryAudience": "students",
+    "primaryIntent": "Calculate attendance and future class scenarios against an entered target",
+    "hub": "study-assignment",
+    "tier": "core",
+    "lastReviewed": null,
+    "adEligible": false,
+    "relatedGuides": [],
+    "relatedWorkflows": [],
+    "reviewStatus": "pending-evidence"
   }
 }

@@ -85,3 +85,29 @@ const LEGACY_TOOL_QUALITY: Record<string, ToolQuality> = {
 // Preserve the existing advertising set independently of new quality dossiers.
 export const AD_ELIGIBLE_TOOL_SLUGS = Object.freeze(Object.keys(LEGACY_TOOL_QUALITY));
 export const TOOL_QUALITY: Record<string, ToolQuality> = { ...LEGACY_TOOL_QUALITY };
+
+TOOL_QUALITY["attendance-calculator"] = dossier({
+  "engine": "Integer class counts and exact basis-point threshold arithmetic",
+  "supportedInputs": [
+    "whole attended and conducted class counts",
+    "0–100% target with up to two decimals",
+    "optional whole remaining-class count"
+  ],
+  "outputFormats": [
+    "attendance percentage, class counts and formula breakdown"
+  ],
+  "limits": [
+    "Class-count inputs are limited to one billion to keep results within supported arithmetic bounds."
+  ],
+  "limitations": [
+    "No university rules, excused-absence policy or subject eligibility are inferred.",
+    "Catch-up assumes every additional class is attended; display rounding never determines eligibility."
+  ],
+  "how": "Current percentage is A/T × 100. For a target fraction q between 0 and 1, catch-up is max(0, ceil((qT − A)/(1 − q))). When already at target, missable classes are floor(A/q − T). Zero conducted classes and 0%/100% targets use explicit boundary rules.",
+  "example": {
+    "input": "30 attended, 50 conducted, target 75%",
+    "output": "60% current attendance; 30 consecutive attended classes reach 60/80 = 75%."
+  },
+  "useCase": "Use the remaining-class field to distinguish eventual mathematical catch-up from what is possible this term. With only 20 classes left in this example, the maximum is 50/70 = 71.4286%.",
+  "alternative": "Use the institution's official attendance portal when hours, excused sessions, practicals or separate subject requirements affect eligibility."
+}, "");

@@ -61,6 +61,7 @@ export interface Tool {
   additionalContent?: ContentSection[];
   adEligible?: boolean;
   quality?: ToolQuality;
+  relatedToolSlugs?: string[];
 }
 
 // ── Categories ──────────────────────────────────────────────
@@ -4255,6 +4256,52 @@ export const TOOLS: Tool[] = [
   },
 ];
 
+TOOLS.push({
+  "slug": "attendance-calculator",
+  "name": "Attendance Calculator",
+  "description": "Check your attendance and the classes needed to reach your own target.",
+  "longDescription": "Calculate your current class attendance, how many consecutive classes you need to attend, and how many you can miss while meeting an entered target.",
+  "categorySlug": "calculators",
+  "icon": "📅",
+  "keywords": [
+    "attendance calculator",
+    "attendance percentage"
+  ],
+  "metaTitle": "Attendance Calculator — Classes Needed & Percentage",
+  "metaDescription": "Calculate attendance percentage, catch-up classes and remaining-class scenarios using your own target. See the formula and exact class counts.",
+  "relatedToolSlugs": [
+    "marks-percentage-calculator",
+    "required-marks-calculator",
+    "percentage-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Enter completed classes",
+      "content": "Enter attended and conducted class counts. Use one consistent unit: classes, not a mixture of classes and hours."
+    },
+    {
+      "title": "Set your target",
+      "content": "Enter the percentage that applies to you. Add remaining classes only if you know the schedule; no university threshold is assumed."
+    },
+    {
+      "title": "Read the scenario",
+      "content": "Calculate to see the current fraction, consecutive attendance needed and maximum extra absences. A target may be impossible within the remaining schedule."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is 75% a universal attendance requirement?",
+      "answer": "No. The example uses 75% only to demonstrate the arithmetic. Enter your own target and check subject-specific, excused-absence and eligibility rules with your institution."
+    },
+    {
+      "question": "Can I recover exact 100% after missing a class?",
+      "answer": "No finite number of additional attended classes removes an earlier absence from the conducted total. If every conducted class was attended, catch-up is zero. If no classes were conducted, one attended class establishes a percentage."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
 // ── Helper functions ────────────────────────────────────────
 
 for (const tool of TOOLS) {
@@ -4284,6 +4331,7 @@ export function getCategoryBySlug(slug: string): Category | undefined {
 export function getRelatedTools(currentSlug: string, limit = 4): Tool[] {
   const current = getToolBySlug(currentSlug);
   if (!current) return TOOLS.slice(0, limit);
+  if (current.relatedToolSlugs) return current.relatedToolSlugs.map(slug => getToolBySlug(slug)).filter((tool): tool is Tool => Boolean(tool)).slice(0, limit);
   return TOOLS.filter(
     (t) => t.categorySlug === current.categorySlug && t.slug !== currentSlug,
   ).slice(0, limit);
