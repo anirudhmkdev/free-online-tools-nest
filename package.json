@@ -7,9 +7,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && npm run validate:build",
     "preview": "astro preview",
-    "deploy": "astro build && npx wrangler pages deploy dist/ --project-name=freeonlinetoolsnest --branch=main",
+    "deploy": "npm run build && npx wrangler pages deploy dist/ --project-name=freeonlinetoolsnest --branch=main",
     "astro": "astro",
     "test": "vitest run",
     "lint": "eslint .",

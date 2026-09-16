@@ -1,172 +1,79 @@
 ---
-/**
- * Hero - compact utility-first homepage hero.
- */
-import { SITE } from "../data/tools";
-import { useTranslations, getLangFromUrl } from "../i18n/utils";
-
-const t = useTranslations(getLangFromUrl(Astro.url));
-
 const quickTasks = [
-  { label: "Compress images", href: "/tools/image-compressor/", accent: "#00a78e" },
-  { label: "Format JSON", href: "/tools/json-formatter/", accent: "#7928ca" },
-  { label: "Compress PDF", href: "/tools/pdf-compressor/", accent: "#ee0000" },
-  { label: "Merge PDF", href: "/tools/pdf-merger/", accent: "#f97316" },
-  { label: "QR codes", href: "/tools/qr-code-generator/", accent: "#007cf0" },
-  { label: "Decode JWT", href: "/tools/jwt-decoder/", accent: "#f5a623" },
+  { label: "Check a percentage", href: "/tools/percentage-calculator/", note: "Parts, totals and changes" },
+  { label: "Compress a PDF", href: "/tools/pdf-compressor/", note: "Check the final file size" },
+  { label: "Merge PDFs", href: "/tools/pdf-merger/", note: "Combine assignment pages" },
+  { label: "Compress an image", href: "/tools/image-compressor/", note: "Prepare an upload" },
+  { label: "Count assignment words", href: "/tools/word-counter/", note: "Check your draft length" },
+  { label: "Resize an image", href: "/tools/image-resizer/", note: "Meet pixel requirements" },
 ];
 ---
 
-<section class="hero-shell relative overflow-hidden" id="hero">
-  <div class="hero-atmosphere absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-  <div class="hero-grid absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-  <div class="hero-vignette absolute inset-x-0 bottom-0 h-24 pointer-events-none" aria-hidden="true"></div>
-
-  <div class="container-page relative z-10 py-10 md:py-14 lg:py-16 text-center">
-    <div class="w-fit mx-auto flex items-center gap-2 mb-5 px-4 py-1.5 bg-canvas-soft rounded-full shadow-card text-xs font-mono text-body">
-      <span class="inline-block w-1.5 h-1.5 rounded-full bg-success motion-safe:animate-pulse" aria-hidden="true"></span>
-      {t('hero.badge')}
-    </div>
-
-    <h1 class="text-3xl md:text-5xl lg:text-6xl font-semibold text-ink max-w-3xl mx-auto text-balance" style="line-height: 1.02; letter-spacing: 0;">
-      Free Online Tools - Text, Code, Math, SEO &amp;&nbsp;More
-    </h1>
-
-    <p class="mt-4 text-base md:text-lg text-body max-w-2xl mx-auto leading-relaxed text-pretty">
-      {SITE.description}
-    </p>
-
-    <div class="mt-7 max-w-2xl mx-auto">
-      <div class="relative">
-        <svg
-          class="absolute left-4 top-1/2 -translate-y-1/2 text-mute pointer-events-none"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.35-4.35"/>
-        </svg>
-        <input
-          id="hero-search"
-          type="search"
-          placeholder={t('hero.searchPlaceholder')}
-          autocomplete="off"
-          class="w-full h-12 pl-12 pr-4 bg-canvas border border-hairline rounded-xl text-base text-ink placeholder:text-mute shadow-card focus:shadow-elevated focus:border-link transition-shadow duration-200"
-          aria-label={t('hero.searchLabel')}
-          role="combobox"
-          aria-expanded="false"
-          aria-controls="hero-search-results"
-          aria-autocomplete="list"
-        />
+<section class="study-hero" aria-labelledby="home-heading">
+  <div class="container-page hero-layout">
+    <div class="hero-copy">
+      <p class="section-eyebrow">Free · No signup · Local tool processing</p>
+      <h1 id="home-heading">Free tools for study, assignments and everyday documents</h1>
+      <p class="hero-intro">Check percentages, prepare assignments, compress files and work with PDFs directly in your browser.</p>
+      <div class="hero-search-wrap">
+        <label for="hero-search">What do you need to do?</label>
+        <div class="hero-search-field">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="hero-search" type="search" placeholder="Try word count, PDF or image…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="hero-search-results" aria-autocomplete="list" />
+        </div>
+        <div id="hero-search-results" class="hidden hero-search-results" role="listbox" aria-label="Matching tools"></div>
       </div>
-      <div id="hero-search-results" class="hidden mt-2 bg-canvas rounded-lg shadow-modal border border-hairline overflow-hidden text-left" role="listbox"></div>
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-2" aria-label="Quick tool categories">
-        {quickTasks.map((task) => (
-          <a href={task.href} class="quick-task" style={`--task-accent: ${task.accent}`}>
-            {task.label}
-          </a>
+      <div class="hero-actions">
+        <a href="#study-assignment-tools" class="btn-primary">Explore study &amp; assignment tools</a>
+        <a href="/tools/" class="btn-secondary">Find a tool</a>
+      </div>
+      <p class="hero-privacy">Tool inputs are processed in your browser. <a href="#local-processing">How processing and privacy work</a></p>
+    </div>
+    <aside class="task-launcher" aria-labelledby="quick-tasks-heading">
+      <div class="task-launcher-heading">
+        <p class="section-eyebrow">Ready when you are</p>
+        <h2 id="quick-tasks-heading">Start with a task</h2>
+      </div>
+      <ul>
+        {quickTasks.map(task => (
+          <li><a href={task.href}><span><strong>{task.label}</strong><small>{task.note}</small></span><span aria-hidden="true">↗</span></a></li>
         ))}
-      </div>
-    </div>
-
-    <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
-      <a href="/tools/" class="btn-primary">
-        {t('hero.cta')}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </a>
-    </div>
+      </ul>
+      <p class="task-launcher-footer">Your files. Your browser. A little less busywork.</p>
+    </aside>
   </div>
 </section>
 
 <style>
-  .hero-shell {
-    background:
-      linear-gradient(180deg, var(--color-canvas) 0%, color-mix(in srgb, var(--color-canvas-soft) 78%, var(--color-canvas)) 100%);
-  }
-
-  .hero-atmosphere {
-    opacity: 0.92;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(0, 124, 240, 0.16), transparent 34%),
-      radial-gradient(circle at 16% 24%, rgba(0, 223, 216, 0.10), transparent 24%),
-      radial-gradient(circle at 84% 26%, rgba(255, 0, 128, 0.08), transparent 25%),
-      radial-gradient(circle at 50% 68%, rgba(249, 203, 40, 0.07), transparent 32%);
-  }
-
-  .hero-grid {
-    opacity: 0.42;
-    background-image:
-      linear-gradient(color-mix(in srgb, var(--color-ink) 7%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 7%, transparent) 1px, transparent 1px);
-    background-size: 44px 44px;
-    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 58%, transparent 88%);
-  }
-
-  .hero-vignette {
-    background: linear-gradient(180deg, transparent, var(--color-canvas));
-  }
-
-  :global(.dark) .hero-shell {
-    background:
-      linear-gradient(180deg, #080808 0%, var(--color-canvas) 52%, var(--color-canvas-soft) 100%);
-  }
-
-  :global(.dark) .hero-atmosphere {
-    opacity: 0.76;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(0, 124, 240, 0.24), transparent 36%),
-      radial-gradient(circle at 18% 30%, rgba(0, 223, 216, 0.12), transparent 28%),
-      radial-gradient(circle at 82% 28%, rgba(121, 40, 202, 0.16), transparent 30%),
-      radial-gradient(circle at 50% 72%, rgba(245, 166, 35, 0.08), transparent 34%);
-  }
-
-  :global(.dark) .hero-grid {
-    opacity: 0.34;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  }
-
-  :global(.dark) .hero-vignette {
-    background: linear-gradient(180deg, transparent, var(--color-canvas));
-  }
-
-  .quick-task {
-    display: inline-flex;
-    align-items: center;
-    min-height: 36px;
-    padding: 0 12px;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--task-accent) 8%, var(--color-canvas));
-    color: var(--color-ink);
-    font-size: 13px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
-  }
-
-  .quick-task:hover {
-    border-color: var(--task-accent);
-    background: color-mix(in srgb, var(--task-accent) 14%, var(--color-canvas));
-    transform: translateY(-1px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .quick-task:hover {
-      transform: none;
-    }
-  }
+  .study-hero { padding: 64px 0 56px; background: var(--color-canvas); border-bottom: 1px solid var(--color-hairline); }
+  .hero-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 64px; align-items: center; }
+  .hero-copy h1 { font-size: clamp(34px, 4vw, 54px); line-height: 1.1; font-weight: 600; letter-spacing: -1.5px; text-wrap: balance; max-width: 700px; }
+  .hero-intro { font-size: 18px; line-height: 1.7; color: var(--color-body); margin-top: 22px; max-width: 580px; }
+  .hero-search-wrap { margin-top: 28px; position: relative; max-width: 590px; }
+  .hero-search-wrap label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 500; }
+  .hero-search-field { display: flex; align-items: center; gap: 12px; border: 1px solid var(--color-hairline-strong); border-radius: 10px; padding: 0 16px; background: var(--color-canvas); }
+  .hero-search-field:focus-within { outline: 2px solid var(--color-link); outline-offset: 2px; }
+  .hero-search-field svg { flex-shrink: 0; color: var(--color-body); }
+  .hero-search-field input { min-width: 0; width: 100%; height: 54px; background: transparent; border: 0; color: var(--color-ink); font-size: 16px; }
+  .hero-search-field input:focus-visible { outline: none; }
+  .hero-search-results { position: absolute; top: 100%; margin-top: 8px; left: 0; right: 0; z-index: 20; background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-modal); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .hero-actions a { font-size: 14px; }
+  .hero-privacy { margin-top: 20px; font-size: 12px; line-height: 1.7; color: var(--color-body); }
+  .hero-privacy a { color: var(--color-link); text-decoration: underline; text-underline-offset: 3px; }
+  .task-launcher { border: 1px solid var(--color-hairline); border-radius: 16px; background: var(--color-canvas-soft); overflow: hidden; }
+  .task-launcher-heading { padding: 24px 24px 16px; }
+  .task-launcher-heading h2 { font-size: 22px; font-weight: 600; }
+  .task-launcher-heading .section-eyebrow { margin-bottom: 8px; }
+  .task-launcher ul { padding: 0 12px; list-style: none; }
+  .task-launcher li + li { border-top: 1px solid var(--color-hairline); }
+  .task-launcher li a { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 15px 12px; text-decoration: none; color: var(--color-ink); border-radius: 6px; }
+  .task-launcher li a:hover { background: var(--color-canvas-soft-2); }
+  .task-launcher strong { display: block; font-size: 14px; font-weight: 500; }
+  .task-launcher small { display: block; font-size: 12px; color: var(--color-body); margin-top: 4px; }
+  .task-launcher-footer { padding: 18px 24px; font-size: 12px; line-height: 1.6; color: var(--color-body); border-top: 1px solid var(--color-hairline); margin-top: 8px; }
+  @media (max-width: 900px) { .hero-layout { grid-template-columns: 1fr; gap: 32px; } .study-hero { padding-top: 36px; } .hero-copy h1 { max-width: 650px; } }
+  @media (max-width: 480px) { .hero-actions { flex-direction: column; } .hero-actions a { text-align: center; justify-content: center; white-space: normal; } .hero-copy h1 { letter-spacing: -0.8px; } }
 </style>
 
 <script>

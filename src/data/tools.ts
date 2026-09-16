@@ -4298,6 +4298,6 @@ export const SITE = {
   domain: "freeonlinetoolsnest.com",
   url: "https://freeonlinetoolsnest.com",
   description:
-    "77 free web tools for text, code, math, and more. No signup required, and tool inputs are processed locally in your browser.",
-  tagline: "Free web tools and frontier utilities for text, code, and math.",
+    "Free tools for study, assignments and everyday documents. No signup required; tool inputs are processed locally in your browser.",
+  tagline: "Free tools for study, assignments and everyday documents.",
 };

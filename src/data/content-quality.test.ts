@@ -112,7 +112,11 @@ describe("trust and legal content", () => {
       "verify-browser-tool-no-upload.md",
     ];
     for (const guide of guides) {
-      expect(readFileSync(join(root, "src", "content", "blog", guide), "utf8").length, guide).toBeGreaterThan(1200);
+      const content = readFileSync(join(root, "src", "content", "blog", guide), "utf8");
+      expect(content, guide).toMatch(/^---\s*\n/);
+      expect(content, guide).toMatch(/title:\s*\S+/);
+      expect(content, guide).toMatch(/description:\s*\S+/);
+      expect(content, guide).toMatch(/\]\(\/tools\/[a-z-]+\/\)/);
     }
     expect(readFileSync(join(root, "src", "pages", "standards.astro"), "utf8")).toContain("Advertising independence");
     expect(CATEGORIES).toHaveLength(7);

@@ -1,818 +1,117 @@
 ---
-/**
- * Nav — sticky navigation bar.
- * Logo left, compact desktop navigation, prominent search, utility actions.
- * Mobile: compact command-sheet menu.
- */
-import { SITE, getToolsByCategory, getToolBySlug } from "../data/tools";
-import { getLocalizedCategories, getLocalizedTool, getLocalizedTools, getLocalizedToolsByCategory, hasLocalizedTool } from "../data/localized";
-import { useTranslations, getLangFromUrl } from "../i18n/utils";
-import { defaultLang } from "../i18n/ui";
-
+import { SITE } from "../data/tools";
+import { useTranslations, getLangFromUrl, localizePath } from "../i18n/utils";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const localePrefix = lang === defaultLang ? "" : `/${lang}`;
-const pathname = Astro.url.pathname;
-const activePath = lang === defaultLang ? pathname : pathname.replace(`/${lang}`, "") || "/";
-
-const lh = (path: string) => `${localePrefix}${path}`;
-const toolHref = (slug: string) => lang === defaultLang || hasLocalizedTool(lang, slug) ? lh(`/tools/${slug}/`) : `/tools/${slug}/`;
-const isActive = (href: string) => href === "/" ? activePath === "/" : activePath.startsWith(href);
-
-const localizedToolCount = getLocalizedTools(lang).length;
-const searchCountLabel = (lang === defaultLang ? t("nav.searchAllToolsCount") : t("nav.searchToolsCount")).replace("{count}", String(localizedToolCount));
-const toolCountLabel = (count: number) => `${count} ${count === 1 ? t("common.toolSingular") : t("common.toolPlural")}`;
-
-const categoryNav = getLocalizedCategories(lang).map((cat) => ({
-  ...cat,
-  count: lang === defaultLang ? getToolsByCategory(cat.slug).length : getLocalizedToolsByCategory(lang, cat.slug).length,
-}));
-
-const workflowGroups = [
-  {
-    label: "PDF",
-    description: t("workflow.pdf.desc"),
-    slugs: ["pdf-compressor", "pdf-merger", "pdf-to-images"],
-  },
-  {
-    label: t("workflow.images.label"),
-    description: t("workflow.images.desc"),
-    slugs: ["image-compressor", "image-resizer", "image-cropper"],
-  },
-  {
-    label: t("workflow.code.label"),
-    description: t("workflow.code.desc"),
-    slugs: ["json-formatter", "jwt-decoder", "regex-tester"],
-  },
-  {
-    label: t("workflow.text.label"),
-    description: t("workflow.text.desc"),
-    slugs: ["word-counter", "character-counter", "grammar-checker"],
-  },
-  {
-    label: "SEO",
-    description: t("workflow.seo.desc"),
-    slugs: ["meta-tag-generator", "serp-preview-generator", "schema-markup-generator"],
-  },
-  {
-    label: t("workflow.calculators.label"),
-    description: t("workflow.calculators.desc"),
-    slugs: ["percentage-calculator", "tip-calculator", "age-calculator"],
-  },
-].map((group) => ({
-  ...group,
-  tools: group.slugs.map((slug) => (lang === defaultLang ? getToolBySlug(slug) : getLocalizedTool(lang, slug))).filter(Boolean),
-})).filter((group) => group.tools.length > 0);
+const lh = (path: string) => localizePath(path, lang);
+const links = lang === "en" ? [
+  { label: "Study & Assignment Tools", href: "/#study-assignment-tools" },
+  { label: "Document Tools", href: "/#document-tools" },
+  { label: "Writing Tools", href: "/#writing-tools" },
+  { label: "Guides", href: "/#practical-guides" },
+  { label: "More Tools", href: "/tools/" },
+] : [
+  { label: t("nav.tools"), href: lh("/tools/") },
+  { label: t("nav.categories"), href: lh("/categories/") },
+  { label: t("nav.blog"), href: "/blog/" },
+];
 ---
-
-<header
-  id="site-nav"
-  class="fixed top-0 left-0 right-0 z-50 bg-canvas/90 backdrop-blur-xl border-b border-hairline"
-  style="height: 64px;"
->
-  <nav class="container-page flex items-center justify-between h-full gap-4" aria-label={t('nav.mainNav')}>
-    <a href={lh("/")} class="nav-brand flex min-w-0 items-center gap-2 no-underline group" aria-label={`${SITE.name} ${t('nav.homeLabel')}`}>
-      <span class="truncate text-base sm:text-lg font-semibold tracking-tight text-ink" style="letter-spacing: -0.6px;">
-        FreeOnlineToolsNest
-      </span>
-    </a>
-
-    <div class="desktop-nav hidden lg:flex items-center gap-1 min-w-0" aria-label="Primary desktop navigation">
-      <div class="nav-menu-shell" data-desktop-menu="tools">
-        <button
-          id="desktop-tools-trigger"
-          type="button"
-          class:list={["nav-link nav-trigger", isActive("/tools/") && "active"]}
-          aria-expanded="false"
-          aria-controls="desktop-tools-menu"
-        >
-          {t("nav.tools")}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div id="desktop-tools-menu" class="nav-dropdown nav-mega hidden" data-menu-panel role="menu" aria-labelledby="desktop-tools-trigger">
-          <div class="mega-sidebar" aria-label="Tool categories">
-            <p class="nav-menu-label">{t("nav.toolCategories")}</p>
-            {categoryNav.map((cat) => (
-              <a href={lh(`/categories/${cat.slug}/`)} class="mega-category-link" role="menuitem">
-                <span class="mega-category-icon" aria-hidden="true">{cat.icon}</span>
-                <span class="min-w-0 flex-1">
-                  <span class="mega-category-name">{cat.name}</span>
-                  <span class="mega-category-meta">{toolCountLabel(cat.count)}</span>
-                </span>
-              </a>
-            ))}
-          </div>
-
-          <div class="mega-main">
-            <div class="mega-heading-row">
-              <div>
-                <p class="nav-menu-label">{t("nav.popularWorkflows")}</p>
-                <p class="mega-title">{t("nav.popularWorkflowsDesc")}</p>
-              </div>
-              <a href={lh("/tools/")} class="mega-all-link" role="menuitem">{t("nav.viewAllTools")}</a>
-            </div>
-
-            <div class="workflow-grid">
-              {workflowGroups.map((group) => (
-                <section class="workflow-card" aria-label={`${group.label} tools`}>
-                  <div class="workflow-card-header">
-                    <span class="workflow-label">{group.label}</span>
-                    <span class="workflow-description">{group.description}</span>
-                  </div>
-                  <div class="workflow-links">
-                    {group.tools.map((tool) => tool && (
-                      <a href={toolHref(tool.slug)} class="workflow-tool-link" role="menuitem">
-                        <span aria-hidden="true">{tool.icon}</span>
-                        <span>{tool.name}</span>
-                      </a>
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </div>
-
-            <div class="mega-footer-row">
-              <span>{t("nav.noUploads")}</span>
-              <a href={lh("/privacy-policy/")} role="menuitem">{t("nav.privacyPromise")}</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="nav-menu-shell" data-desktop-menu="categories">
-        <button
-          id="desktop-categories-trigger"
-          type="button"
-          class:list={["nav-link nav-trigger", isActive("/categories/") && "active"]}
-          aria-expanded="false"
-          aria-controls="desktop-categories-menu"
-        >
-          {t("nav.categories")}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </button>
-        <div id="desktop-categories-menu" class="nav-dropdown nav-category-menu hidden" data-menu-panel role="menu" aria-labelledby="desktop-categories-trigger">
-          <div class="category-menu-grid">
-            {categoryNav.map((cat) => (
-              <a href={lh(`/categories/${cat.slug}/`)} class="category-menu-link" role="menuitem">
-                <span class="category-menu-icon" aria-hidden="true">{cat.icon}</span>
-                <span class="min-w-0">
-                  <span class="category-menu-name">{cat.name}</span>
-                  <span class="category-menu-desc">{cat.description}</span>
-                </span>
-                <span class="category-menu-count">{cat.count}</span>
-              </a>
-            ))}
-          </div>
-          <a href={lh("/categories/")} class="category-menu-all" role="menuitem">{t("nav.browseAllCategories")}</a>
-        </div>
-      </div>
-
-      <a href="/blog/" class:list={["nav-link", isActive("/blog/") && "active"]} aria-current={isActive("/blog/") ? "page" : undefined}>{t('nav.blog')}</a>
+<header class="site-header">
+  <nav class="container-page nav-row" aria-label={t("nav.mainNav")}>
+    <a href={lh("/")} class="site-brand" aria-label={SITE.name + " " + t("nav.homeLabel")}>Free Online<br /><span>Tools Nest</span></a>
+    <div class="desktop-links">
+      {links.map(link => <a href={link.href} aria-current={Astro.url.pathname === link.href ? "page" : undefined}>{link.label}</a>)}
     </div>
-
-    <div class="nav-actions flex items-center gap-2">
-      <button
-        id="cmd-k-trigger"
-        type="button"
-        class="nav-search-trigger"
-        aria-label={t('nav.search')}
-      >
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8"/>
-          <path d="m21 21-4.35-4.35"/>
-        </svg>
-        <span class="hidden md:inline">{searchCountLabel}</span>
-        <kbd class="hidden md:inline-flex" aria-hidden="true">⌘ K</kbd>
+    <div class="nav-actions">
+      <button id="cmd-k-trigger" class="nav-button" type="button" aria-label={t("nav.search")}>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </button>
-
-      <a
-        href="https://github.com/AnirudhMKumar/free-online-tools-nest"
-        class="nav-icon-btn hidden lg:inline-flex"
-        aria-label="View Free Online Tools Nest on GitHub"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 2C6.48 2 2 6.58 2 12.24c0 4.52 2.87 8.35 6.84 9.71.5.09.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.51.47-3.16-.63-3.36-1.2-.11-.29-.6-1.2-1.03-1.44-.35-.19-.85-.66-.01-.67.79-.01 1.35.74 1.54 1.05.9 1.55 2.34 1.11 2.91.85.09-.67.35-1.11.64-1.37-2.22-.26-4.55-1.14-4.55-5.05 0-1.11.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.27 9.27 0 0 1 12 7c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.79-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.59.69.49A10.05 10.05 0 0 0 22 12.24C22 6.58 17.52 2 12 2z" />
-        </svg>
-      </a>
-
-      <button
-        id="theme-toggle"
-        type="button"
-        class="nav-icon-btn"
-        aria-label={t('nav.theme')}
-      >
-        <svg class="sun-icon hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
+      <button id="theme-toggle" class="nav-button" type="button" aria-label={t("nav.theme")}>
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg>
       </button>
-
-      <button
-        id="mobile-menu-btn"
-        type="button"
-        class="nav-icon-btn lg:hidden"
-        aria-label={t('nav.menu')}
-        aria-expanded="false"
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-        </svg>
+      <button id="mobile-menu-btn" class="nav-button menu-trigger" type="button" aria-label={t("nav.menu")} aria-controls="mobile-menu" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
     </div>
   </nav>
 </header>
-
-<div
-  id="mobile-menu"
-  class="fixed inset-0 z-40 hidden bg-canvas/95 backdrop-blur-xl pt-20 px-4 pb-6 lg:hidden"
-  role="dialog"
-  aria-modal="true"
-  aria-label={t('nav.mobileNav')}
->
-  <div class="mx-auto flex h-full max-w-md flex-col overflow-y-auto rounded-xl border border-hairline bg-canvas p-4 shadow-modal mobile-menu-panel">
-    <div class="mb-4 flex items-center justify-between gap-4">
-      <div>
-        <p class="section-eyebrow mb-1">{t("nav.navigation")}</p>
-        <p class="text-lg font-semibold text-ink">{t("nav.menuTitle")}</p>
-      </div>
-      <button
-        id="mobile-menu-close"
-        type="button"
-        class="nav-icon-btn"
-        aria-label={t('nav.closeMenu')}
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
-
-    <button type="button" class="mobile-search-entry" data-open-cmdk>
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-      <span>{searchCountLabel}</span>
-      <kbd aria-hidden="true">⌘ K</kbd>
-    </button>
-
-    <nav class="mt-5 flex flex-col gap-1" aria-label={t('nav.mobileNav')}>
-      <a href={lh("/tools/")} class:list={["mobile-nav-link", isActive("/tools/") && "active"]}>{t('nav.tools')}</a>
-      <a href="/blog/" class:list={["mobile-nav-link", isActive("/blog/") && "active"]}>{t('nav.blog')}</a>
-      <p class="mt-4 px-3 text-xs font-mono text-mute">{t("nav.categories")}</p>
-      {categoryNav.map((cat) => (
-        <a href={lh(`/categories/${cat.slug}/`)} class:list={["mobile-nav-link", isActive(`/categories/${cat.slug}/`) && "active"]}>
-          <span class="mr-2" aria-hidden="true">{cat.icon}</span> {cat.name}
-        </a>
-      ))}
-      <hr class="my-4 border-hairline" />
-      <a href={lh("/about/")} class="mobile-nav-link">{t('nav.about')}</a>
-      <a href={lh("/contact/")} class="mobile-nav-link">{t('nav.contact')}</a>
-      <a href={lh("/faq/")} class="mobile-nav-link">{t('nav.faq')}</a>
-    </nav>
-  </div>
-</div>
-
-<div style="height: 64px;" aria-hidden="true"></div>
-
+<dialog id="mobile-menu" aria-label={t("nav.mobileNav")}>
+  <div class="menu-heading"><p>{t("nav.navigation")}</p><button id="mobile-menu-close" class="nav-button" type="button" aria-label={t("nav.closeMenu")} autofocus><span aria-hidden="true">✕</span></button></div>
+  <nav class="mobile-links" aria-label={t("nav.mobileNav")}>
+    {links.map(link => <a href={link.href}>{link.label}</a>)}
+    <hr />
+    <a href={lh("/about/")}>{t("nav.about")}</a>
+    <a href={lh("/standards/")}>{t("footer.standards")}</a>
+    <a href={lh("/contact/")}>{t("nav.contact")}</a>
+    <button type="button" data-open-cmdk>{t("nav.search")}</button>
+  </nav>
+</dialog>
+<div class="header-spacer" aria-hidden="true"></div>
 <style>
-  .nav-brand {
-    flex: 0 1 220px;
-  }
-  .desktop-nav {
-    flex: 1 1 auto;
-    justify-content: center;
-  }
-  .nav-actions {
-    flex: 0 0 auto;
-  }
-  .nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 11px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    color: var(--color-body);
-    border-radius: var(--radius-full);
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .nav-link:hover,
-  .nav-link.active,
-  .nav-link[aria-expanded="true"] {
-    color: var(--color-ink);
-    background-color: var(--color-canvas-soft-2);
-  }
-  .nav-trigger {
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-  }
-  .nav-trigger svg {
-    color: var(--color-mute);
-    transition: transform 0.15s ease, color 0.15s ease;
-  }
-  .nav-trigger[aria-expanded="true"] svg {
-    color: var(--color-ink);
-    transform: rotate(180deg);
-  }
-  .nav-menu-shell {
-    position: relative;
-  }
-  .nav-dropdown {
-    position: absolute;
-    top: calc(100% + 12px);
-    left: 50%;
-    z-index: 60;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--color-canvas) 96%, transparent);
-    box-shadow: var(--shadow-modal);
-    backdrop-filter: blur(18px);
-    transform: translateX(-50%) translateY(0);
-  }
-  .nav-dropdown.hidden {
-    display: none;
-  }
-  .nav-mega {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 16px;
-    width: min(820px, calc(100vw - 32px));
-    padding: 12px;
-  }
-  .nav-category-menu {
-    width: min(520px, calc(100vw - 32px));
-    padding: 10px;
-  }
-  .nav-menu-label {
-    color: var(--color-mute);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 16px;
-    margin-bottom: 8px;
-  }
-  .mega-sidebar {
-    border-right: 1px solid var(--color-hairline);
-    padding: 4px 12px 4px 4px;
-  }
-  .mega-category-link,
-  .category-menu-link,
-  .workflow-tool-link,
-  .mega-all-link,
-  .category-menu-all,
-  .mega-footer-row a {
-    text-decoration: none;
-  }
-  .mega-category-link {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 42px;
-    padding: 7px 8px;
-    border-radius: var(--radius-sm);
-    color: var(--color-body);
-    transition: color 0.15s ease, background-color 0.15s ease;
-  }
-  .mega-category-link:hover,
-  .mega-category-link:focus-visible {
-    color: var(--color-ink);
-    background: var(--color-canvas-soft-2);
-  }
-  .mega-category-icon,
-  .category-menu-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-sm);
-    background: var(--color-canvas-soft);
-    flex: 0 0 auto;
-  }
-  .mega-category-name,
-  .category-menu-name {
-    display: block;
-    color: var(--color-ink);
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 18px;
-  }
-  .mega-category-meta,
-  .category-menu-desc {
-    display: block;
-    color: var(--color-mute);
-    font-size: 12px;
-    line-height: 16px;
-  }
-  .mega-main {
-    min-width: 0;
-    padding: 4px;
-  }
-  .mega-heading-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
-  .mega-title {
-    color: var(--color-body);
-    font-size: 13px;
-    line-height: 18px;
-  }
-  .mega-all-link,
-  .category-menu-all {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 32px;
-    padding: 0 10px;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-sm);
-    color: var(--color-ink);
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
-  }
-  .mega-all-link:hover,
-  .category-menu-all:hover,
-  .mega-all-link:focus-visible,
-  .category-menu-all:focus-visible {
-    background: var(--color-canvas-soft-2);
-    border-color: var(--color-hairline-strong);
-  }
-  .workflow-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-  .workflow-card {
-    min-width: 0;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-md);
-    background: var(--color-canvas-soft);
-    padding: 10px;
-  }
-  .workflow-card-header {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-bottom: 8px;
-  }
-  .workflow-label {
-    color: var(--color-ink);
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 18px;
-  }
-  .workflow-description {
-    color: var(--color-mute);
-    font-size: 12px;
-    line-height: 16px;
-  }
-  .workflow-links {
-    display: grid;
-    gap: 3px;
-  }
-  .workflow-tool-link {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    min-width: 0;
-    min-height: 28px;
-    padding: 4px 6px;
-    border-radius: var(--radius-sm);
-    color: var(--color-body);
-    font-size: 12px;
-    line-height: 16px;
-    transition: color 0.15s ease, background-color 0.15s ease;
-  }
-  .workflow-tool-link span:last-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .workflow-tool-link:hover,
-  .workflow-tool-link:focus-visible {
-    color: var(--color-ink);
-    background: var(--color-canvas-soft-2);
-  }
-  .mega-footer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 10px;
-    padding: 9px 10px 0;
-    border-top: 1px solid var(--color-hairline);
-    color: var(--color-mute);
-    font-size: 12px;
-    line-height: 16px;
-  }
-  .mega-footer-row a {
-    color: var(--color-link);
-    font-weight: 600;
-  }
-  .category-menu-grid {
-    display: grid;
-    gap: 4px;
-  }
-  .category-menu-link {
-    display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 10px;
-    min-height: 50px;
-    padding: 8px;
-    border-radius: var(--radius-md);
-    color: var(--color-body);
-    transition: color 0.15s ease, background-color 0.15s ease;
-  }
-  .category-menu-link:hover,
-  .category-menu-link:focus-visible {
-    color: var(--color-ink);
-    background: var(--color-canvas-soft-2);
-  }
-  .category-menu-desc {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .category-menu-count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 28px;
-    height: 22px;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-full);
-    color: var(--color-mute);
-    background: var(--color-canvas);
-    font-family: var(--font-mono);
-    font-size: 11px;
-  }
-  .category-menu-all {
-    width: 100%;
-    margin-top: 8px;
-  }
-  .nav-search-trigger,
-  .nav-icon-btn {
-    min-width: 44px;
-    height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-full);
-    color: var(--color-body);
-    background: transparent;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-  .nav-search-trigger {
-    width: clamp(220px, 24vw, 340px);
-    justify-content: flex-start;
-    gap: 9px;
-    padding: 0 11px 0 14px;
-    border: 1px solid var(--color-hairline);
-    background: var(--color-canvas);
-    box-shadow: var(--shadow-card);
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .nav-search-trigger span {
-    flex: 1;
-    min-width: 0;
-    text-align: left;
-  }
-  .nav-search-trigger:hover,
-  .nav-icon-btn:hover {
-    color: var(--color-ink);
-    background-color: var(--color-canvas-soft-2);
-    border-color: var(--color-hairline-strong);
-  }
-  .nav-search-trigger:hover {
-    box-shadow: var(--shadow-card-hover);
-    transform: translateY(-1px);
-  }
-  @media (max-width: 1180px) {
-    .nav-brand {
-      flex-basis: 190px;
-    }
-    .nav-search-trigger {
-      width: 260px;
-    }
-    .nav-mega {
-      width: min(760px, calc(100vw - 32px));
-    }
-  }
-  @media (min-width: 1024px) {
-    #mobile-menu-btn {
-      display: none;
-    }
-  }
-  @media (max-width: 767px) {
-    .nav-search-trigger {
-      width: 44px;
-      padding: 0;
-      justify-content: center;
-    }
-  }
-  .nav-search-trigger kbd,
-  .mobile-search-entry kbd {
-    align-items: center;
-    height: 22px;
-    padding: 0 6px;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-sm);
-    color: var(--color-mute);
-    background: var(--color-canvas-soft-2);
-    font-family: var(--font-mono);
-    font-size: 11px;
-  }
-  .mobile-menu-panel {
-    overscroll-behavior: contain;
-  }
-  .mobile-search-entry {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    min-height: 46px;
-    padding: 0 12px;
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-lg);
-    background: var(--color-canvas-soft);
-    color: var(--color-body);
-    font-size: 14px;
-    text-align: left;
-  }
-  .mobile-search-entry span {
-    min-width: 0;
-    flex: 1;
-  }
-  .mobile-nav-link {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 10px 12px;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--color-ink);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    transition: background-color 0.15s ease, color 0.15s ease;
-  }
-  .mobile-nav-link:hover,
-  .mobile-nav-link.active {
-    background-color: var(--color-canvas-soft-2);
-    color: var(--color-link);
-  }
-  .dark .sun-icon { display: block; }
-  .dark .moon-icon { display: none; }
+  .site-header { position: fixed; inset: 0 0 auto; height: 72px; z-index: 50; border-bottom: 1px solid var(--color-hairline); background: var(--color-canvas); }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 100%; }
+  .site-brand { color: var(--color-body); line-height: 1.15; font-size: 11px; font-weight: 500; text-decoration: none; flex-shrink: 0; }
+  .site-brand span { color: var(--color-ink); font-size: 22px; font-weight: 600; letter-spacing: -0.6px; }
+  .desktop-links { display: none; align-items: center; gap: 4px; }
+  .desktop-links a { padding: 10px 12px; font-size: 13px; font-weight: 500; border-radius: 6px; text-decoration: none; color: var(--color-body); white-space: nowrap; }
+  .desktop-links a:hover, .desktop-links a[aria-current] { color: var(--color-ink); background: var(--color-canvas-soft-2); }
+  .nav-actions { display: flex; align-items: center; gap: 4px; }
+  .nav-button { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--color-ink); cursor: pointer; }
+  .nav-button:hover { background: var(--color-canvas-soft-2); }
+  .header-spacer { height: 72px; }
+  dialog { width: min(100%, 380px); height: 100dvh; max-height: 100dvh; max-width: 100vw; margin: 0 0 0 auto; padding: 24px; border: 0; border-left: 1px solid var(--color-hairline); background: var(--color-canvas); color: var(--color-ink); }
+  dialog::backdrop { background: rgb(0 0 0 / 45%); }
+  .menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; font-size: 18px; font-weight: 500; }
+  .mobile-links { display: flex; flex-direction: column; gap: 8px; }
+  .mobile-links a, .mobile-links button { display: block; padding: 14px 12px; text-align: left; border-radius: 8px; color: var(--color-ink); font-size: 15px; text-decoration: none; border: 0; background: transparent; }
+  .mobile-links a:hover, .mobile-links button:hover { background: var(--color-canvas-soft-2); }
+  .mobile-links hr { border-color: var(--color-hairline); margin-block: 8px; }
+  @media (min-width: 1280px) { .desktop-links { display: flex; } .menu-trigger { display: none; } }
 </style>
-
 <script>
-  function initTheme() {
-    const toggle = document.getElementById("theme-toggle");
-    const html = document.documentElement;
-    const saved = localStorage.getItem("theme");
-    if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-      html.classList.add("dark");
+  const menu = document.getElementById("mobile-menu") as HTMLDialogElement;
+  const trigger = document.getElementById("mobile-menu-btn");
+  function closeMenu() { menu?.close(); }
+  trigger?.addEventListener("click", () => {
+    menu.showModal();
+    trigger.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  });
+  menu?.addEventListener("close", () => {
+    trigger?.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  });
+  menu?.addEventListener("keydown", (event) => {
+    if (event.key !== "Tab") return;
+    const controls = [...menu.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")];
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
     }
-    toggle?.addEventListener("click", () => {
-      html.classList.toggle("dark");
-      localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
-    });
-  }
-
-  function initDesktopMenus() {
-    const shells = Array.from(document.querySelectorAll("[data-desktop-menu]"));
-    let closeTimer: number | undefined;
-
-    function closeShell(shell: Element) {
-      const trigger = shell.querySelector("button[aria-controls]");
-      const panel = shell.querySelector("[data-menu-panel]");
-      trigger?.setAttribute("aria-expanded", "false");
-      panel?.classList.add("hidden");
+  });
+  menu?.addEventListener("click", (event) => {
+    if (event.target === menu) {
+      const bounds = menu.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right) closeMenu();
     }
-
-    function closeAll(except?: Element | null) {
-      shells.forEach((shell) => {
-        if (shell !== except) closeShell(shell);
-      });
-    }
-
-    function openShell(shell: Element) {
-      window.clearTimeout(closeTimer);
-      const trigger = shell.querySelector("button[aria-controls]");
-      const panel = shell.querySelector("[data-menu-panel]");
-      closeAll(shell);
-      trigger?.setAttribute("aria-expanded", "true");
-      panel?.classList.remove("hidden");
-    }
-
-    function scheduleClose(shell: Element) {
-      window.clearTimeout(closeTimer);
-      closeTimer = window.setTimeout(() => closeShell(shell), 140);
-    }
-
-    shells.forEach((shell) => {
-      const trigger = shell.querySelector("button[aria-controls]");
-      const panel = shell.querySelector("[data-menu-panel]");
-      if (!(trigger instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
-
-      shell.addEventListener("pointerenter", () => openShell(shell));
-      shell.addEventListener("pointerleave", () => scheduleClose(shell));
-      trigger.addEventListener("click", () => {
-        const isOpen = trigger.getAttribute("aria-expanded") === "true";
-        if (isOpen) closeShell(shell);
-        else openShell(shell);
-      });
-      trigger.addEventListener("keydown", (e: KeyboardEvent) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openShell(shell);
-        }
-        if (e.key === "Escape") {
-          closeShell(shell);
-          if (trigger instanceof HTMLElement) trigger.focus();
-        }
-      });
-      panel.addEventListener("keydown", (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          closeShell(shell);
-          if (trigger instanceof HTMLElement) trigger.focus();
-        }
-      });
-      panel.querySelectorAll("a").forEach((link) => {
-        link.addEventListener("click", () => closeShell(shell));
-      });
-    });
-
-    document.addEventListener("click", (e: MouseEvent) => {
-      const target = e.target;
-      if (!(target instanceof Node)) return;
-      if (!shells.some((shell) => shell.contains(target))) closeAll();
-    });
-    document.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeAll();
-    });
-  }
-
-  function initMobileMenu() {
-    const btn = document.getElementById("mobile-menu-btn");
-    const closeBtn = document.getElementById("mobile-menu-close");
-    const menu = document.getElementById("mobile-menu");
-    const cmdkButtons = document.querySelectorAll("[data-open-cmdk]");
-
-    function openMenu() {
-      menu?.classList.remove("hidden");
-      btn?.setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
-    }
-    function closeMenu() {
-      menu?.classList.add("hidden");
-      btn?.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-    }
-    btn?.addEventListener("click", () => {
-      if (menu?.classList.contains("hidden")) openMenu();
-      else closeMenu();
-    });
-    closeBtn?.addEventListener("click", closeMenu);
-    cmdkButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        closeMenu();
-        document.dispatchEvent(new CustomEvent("open-cmdk"));
-      });
-    });
-    document.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !menu?.classList.contains("hidden")) closeMenu();
-    });
-  }
-
-  function initCmdK() {
-    document.getElementById("cmd-k-trigger")?.addEventListener("click", () => {
-      document.dispatchEvent(new CustomEvent("open-cmdk"));
-    });
-  }
-
-  initTheme();
-  initDesktopMenus();
-  initMobileMenu();
-  initCmdK();
+  });
+  document.getElementById("mobile-menu-close")?.addEventListener("click", closeMenu);
+  menu?.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
+  document.getElementById("cmd-k-trigger")?.addEventListener("click", () => document.dispatchEvent(new CustomEvent("open-cmdk")));
+  document.querySelector("[data-open-cmdk]")?.addEventListener("click", () => {
+    closeMenu();
+    document.dispatchEvent(new CustomEvent("open-cmdk"));
+  });
+  document.getElementById("theme-toggle")?.addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("dark");
+    try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch { /* Theme works even when storage is unavailable. */ }
+  });
+  window.matchMedia("(min-width: 1280px)").addEventListener("change", event => {
+    if (event.matches && menu?.open) closeMenu();
+  });
 </script>

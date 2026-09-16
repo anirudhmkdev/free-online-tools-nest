@@ -1,0 +1,33 @@
+import { describe, expect, it } from "vitest";
+import baseline from "./__fixtures__/pre-pivot-routes.json";
+import { getPagePolicy, isSitemapEligible, PAGE_POLICIES } from "./page-policy";
+
+describe("Phase 1 publishing migration", () => {
+  it("preserves every route, indexing decision, sitemap member and ad eligibility", () => {
+    expect(Object.keys(PAGE_POLICIES).sort()).toEqual(baseline.pages.map(page => page.route).sort());
+    for (const page of baseline.pages) {
+      const policy = getPagePolicy(page.route);
+      expect(policy.indexable, page.route).toBe(page.indexable);
+      expect(policy.adEligible, page.route).toBe(page.adEligible);
+      expect(isSitemapEligible(`https://freeonlinetoolsnest.com${page.route}`), page.route).toBe(page.sitemapEligible);
+      expect(policy.canonicalPath, page.route).toBe(page.route);
+    }
+  });
+
+  it("requires explicit metadata for additions rather than silently publishing them", () => {
+    expect(() => getPagePolicy("/tools/not-reviewed/")).toThrow("Missing publishing policy");
+    expect(isSitemapEligible("https://freeonlinetoolsnest.com/tools/not-reviewed/")).toBe(false);
+    expect(getPagePolicy("/tools/word-counter")).toBe(getPagePolicy("/tools/word-counter/"));
+  });
+
+  it("has meaningful intent and valid references without invented review dates", () => {
+    for (const [route, policy] of Object.entries(PAGE_POLICIES)) {
+      expect(policy.primaryAudience.trim(), route).not.toBe("");
+      expect(policy.primaryIntent.trim(), route).not.toBe("");
+      if (policy.lastReviewed) expect(policy.lastReviewed, route).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      for (const target of [...policy.relatedGuides, ...policy.relatedWorkflows]) {
+        expect(PAGE_POLICIES[target], `${route} -> ${target}`).toBeDefined();
+      }
+    }
+  });
+});

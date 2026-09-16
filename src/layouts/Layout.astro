@@ -16,6 +16,7 @@ interface Props {
   enableAds?: boolean;
 }
 
+import { getPagePolicy } from "../data/page-policy";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import SEOHead from "../components/SEOHead.astro";
@@ -40,6 +41,12 @@ const {
   enableAds = false,
 } = Astro.props;
 const meta = localeMeta[lang];
+const pagePolicy = getPagePolicy(canonicalPath ?? Astro.url.pathname);
+if (noindex !== undefined && noindex !== !pagePolicy.indexable) {
+  throw new Error(`Indexing prop conflicts with publishing policy: ${Astro.url.pathname}`);
+}
+// Preserve the existing verification mechanism until independent ownership is confirmed.
+const loadAds = enableAds && pagePolicy.adEligible;
 ---
 
 <!doctype html>
@@ -55,7 +62,7 @@ const meta = localeMeta[lang];
       gtag('config', 'G-KW0NXYM3MN');
     </script>
 
-    {enableAds && (
+    {loadAds && (
       <script
         is:inline
         async
@@ -86,11 +93,11 @@ const meta = localeMeta[lang];
     <SEOHead
       title={title}
       description={description}
-      canonicalPath={canonicalPath}
+      canonicalPath={pagePolicy.canonicalPath}
       ogImage={ogImage}
       ogType={ogType}
       jsonLd={jsonLd}
-      noindex={noindex}
+      noindex={!pagePolicy.indexable}
       lang={meta.htmlLang}
       ogLocale={meta.ogLocale}
       contentLanguage={meta.contentLanguage}
