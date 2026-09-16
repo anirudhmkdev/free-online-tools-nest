@@ -85,8 +85,8 @@ export const ui = {
     "common.error": "Something went wrong",
 
     // ── Homepage ────────────────────────────────────────────
-    "home.metaTitle": "Free Online Tools — 77 Browser Utilities, No Signup",
-    "home.metaDesc": "Access 77 free online tools for text, code, math, SEO and design. Tool inputs are processed in your browser with no signup required.",
+    "home.metaTitle": "Free Online Tools — Browser Utilities, No Signup",
+    "home.metaDesc": "Free online tools for study, documents, text, code, math and design. Tool inputs are processed in your browser with no signup required.",
     "home.browseByCategory": "Browse by category",
     "home.browseByCategoryDesc": "Find the right tool for your task across {count} curated categories.",
     "home.popularTools": "Popular tools",
@@ -102,23 +102,23 @@ export const ui = {
 
     // Homepage FAQs (7 items)
     "home.faq.q1": "Are all tools on this site completely free?",
-    "home.faq.a1": "Yes, every tool on {name} is completely free to use — no sign-up, no credit card, no hidden fees, no premium tiers. All 77 tools are fully accessible with zero restrictions. Essential online tools should be available to everyone.",
+    "home.faq.a1": "Yes, the tools on {name} are free to use, with no signup, payment or premium tier. Individual tools document their supported inputs and practical limits.",
     "home.faq.q2": "Is my data safe when I use these tools?",
     "home.faq.a2": "Tool input is processed locally and is not sent to a Free Online Tools Nest processing server. The page can still request analytics, consent, font, and advertising resources described in our Privacy Policy. You can inspect Fetch/XHR payloads in browser DevTools using harmless test data.",
     "home.faq.q3": "Do I need to create an account to use the tools?",
     "home.faq.a3": "No account or registration needed. Every tool works instantly — no login, no email, no personal information. Just open a tool page and start using it.",
     "home.faq.q4": "Are there any daily usage limits?",
-    "home.faq.a4": "There are no daily usage limits whatsoever. Use every tool as many times as you want — no daily caps, no file count limits, no premium tiers. All 77 tools are completely free and unlimited.",
+    "home.faq.a4": "There are no daily usage quotas. Individual tools may limit file counts, sizes or input ranges to keep browser processing reliable. Check the limits shown on each tool page.",
     "home.faq.q5": "Do you sell my data? How do you make money?",
     "home.faq.a5": "We do not sell tool input or output. Tool processing happens in your browser, while selected content pages may show Google advertising that supports hosting and maintenance. Advertising is kept separate from tool controls and results.",
     "home.faq.q6": "Can I use these tools on my phone or tablet?",
     "home.faq.a6": "Yes, all tools are fully responsive and work on mobile phones, tablets, and desktop computers. The interface adapts to your screen size so you can use any tool on any device without downloading an app.",
     "home.faq.q7": "How often do you add new tools?",
-    "home.faq.a7": "We add new tools regularly based on user demand and our development roadmap. The collection has grown from 37 to 77 tools. Users can suggest new tools by emailing openprojects50@gmail.com.",
+    "home.faq.a7": "We add tools after implementation and testing. Users can suggest useful additions by emailing openprojects50@gmail.com.",
 
     // ── About ───────────────────────────────────────────────
     "about.metaTitle": "About Free Online Tools Nest — Browser-Based Utility Tools",
-    "about.metaDesc": "Learn about Free Online Tools Nest, the free online tools website that builds fast, private browser-based utility tools. 77 tools, no signup, 100% client-side.",
+    "about.metaDesc": "Learn about Free Online Tools Nest and its free browser tools for students, documents and everyday tasks. Tool inputs are processed locally with no signup.",
     "about.title": "About {name}",
     "about.p1": "{name} is a collection of free online tools built for speed, privacy, and simplicity. We serve writers, developers, students, marketers, and anyone who needs quick utility tools without the hassle of downloads, sign-ups, or subscriptions.",
     "about.missionTitle": "Our mission",

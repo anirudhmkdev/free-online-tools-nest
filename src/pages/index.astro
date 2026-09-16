@@ -6,12 +6,17 @@ import { getDefaultAlternates } from "../i18n/utils";
 import { getCollection } from "astro:content";
 
 const toolkits = [
-  { id: "study-assignment-tools", label: "Study & Assignment Tools", intro: "A few useful checks before you hand it in.", tasks: [
-    { slug: "percentage-calculator", purpose: "Check a proportion, percentage or change." },
+  { id: "study-assignment-tools", label: "Student Tools", intro: "Plan attendance and grades using the rules and targets you enter.", tasks: [
+    { slug: "attendance-calculator", purpose: "Check attendance and classes needed for your target." },
+    { slug: "sgpa-calculator", purpose: "Calculate semester GPA with your credits and grade scale." },
+    { slug: "cgpa-calculator", purpose: "Combine semesters using the weighting you choose." },
+    { slug: "marks-percentage-calculator", purpose: "Calculate a percentage from subject marks and maxima." },
+    { slug: "required-marks-calculator", purpose: "Find the remaining score needed for your overall target." },
     { slug: "word-counter", purpose: "Check the length of an assignment draft." },
     { slug: "qr-code-generator", purpose: "Make a QR code for a project or reference link." },
   ] },
   { id: "document-tools", label: "Assignment & Document Toolkit", intro: "Get the right pages, dimensions and file size for your submission.", tasks: [
+    { slug: "image-to-pdf", purpose: "Turn JPEG and PNG assignment pages into one PDF." },
     { slug: "pdf-merger", purpose: "Combine PDFs into one document." },
     { slug: "pdf-splitter", purpose: "Keep only the pages you need." },
     { slug: "pdf-compressor", purpose: "Try reducing file size; savings depend on the PDF." },
@@ -63,7 +68,7 @@ const websiteJsonLd = {
 };
 ---
 
-<Layout title="Study, Assignment & Document Tools" description="Prepare assignments, check percentages and word counts, and work with PDFs and images. Free tools with local input processing and no signup." canonicalPath="/" alternatePaths={getDefaultAlternates("/")} jsonLd={[websiteJsonLd, organizationJsonLd]} enableAds={true}>
+<Layout title="Student, Assignment & Document Tools" description="Calculate attendance, SGPA, CGPA and marks using your own inputs. Prepare assignments and turn images into PDFs locally in your browser, with no signup." canonicalPath="/" alternatePaths={getDefaultAlternates("/")} jsonLd={[websiteJsonLd, organizationJsonLd]} enableAds={true}>
   <Hero />
   <div class="container-page home-toolkit-sections">
     {toolkits.map(kit => (
