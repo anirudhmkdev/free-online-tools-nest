@@ -2511,5 +2511,33 @@
     "relatedGuides": [],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
+  },
+  "/tools/sgpa-calculator/": {
+    "indexable": false,
+    "sitemapEligible": false,
+    "canonicalPath": "/tools/sgpa-calculator/",
+    "primaryAudience": "students",
+    "primaryIntent": "Calculate semester GPA using supplied credits and grade points",
+    "hub": "study-assignment",
+    "tier": "core",
+    "lastReviewed": null,
+    "adEligible": false,
+    "relatedGuides": [],
+    "relatedWorkflows": [],
+    "reviewStatus": "pending-evidence"
+  },
+  "/tools/cgpa-calculator/": {
+    "indexable": false,
+    "sitemapEligible": false,
+    "canonicalPath": "/tools/cgpa-calculator/",
+    "primaryAudience": "students",
+    "primaryIntent": "Combine course or semester results with explicitly selected weights",
+    "hub": "study-assignment",
+    "tier": "core",
+    "lastReviewed": null,
+    "adEligible": false,
+    "relatedGuides": [],
+    "relatedWorkflows": [],
+    "reviewStatus": "pending-evidence"
   }
 }

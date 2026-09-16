@@ -57,7 +57,7 @@ describe("configurable grade points", () => {
     [{ label: "Ａ", points: 1 }, { label: "a", points: 2 }],
     [{ label: "A", points: NaN }], [{ label: "A", points: Infinity }],
     [{ label: "A", points: -1 }], [{ label: "A", points: 11 }],
-  ])("rejects invalid grade mappings", mapping => expect(() => validateGradeMapping(mapping, 10)).toThrow());
+  ].map(mapping => ({ mapping })))("rejects invalid grade mappings", ({ mapping }) => expect(() => validateGradeMapping(mapping, 10)).toThrow());
   it("rejects unknown labels and invalid included values", () => {
     expect(() => pointsForGrade("C", [{ label: "A", points: 4 }], 4)).toThrow();
     expect(() => sgpa([{ credits: 2, points: 5 }], 4)).toThrow();
@@ -88,7 +88,7 @@ describe("subject marks", () => {
     expect(() => marks([{ obtained: 80, maximum: 100 }], thresholds.slice(0, 2))).toThrow("0%");
     expect(() => marks([{ obtained: 80, maximum: 100 }], [...thresholds, { label: "D", minimum: 0 }])).toThrow("different minimum");
   });
-  it.each([[{ obtained: 1, maximum: 0 }], [{ obtained: 101, maximum: 100 }], [{ obtained: -1, maximum: 100 }], []])("rejects invalid subject rows", rows => expect(() => marks(rows)).toThrow());
+  it.each([[{ obtained: 1, maximum: 0 }], [{ obtained: 101, maximum: 100 }], [{ obtained: -1, maximum: 100 }], []].map(rows => ({ rows })))("rejects invalid subject rows", ({ rows }) => expect(() => marks(rows)).toThrow());
 });
 
 describe("required assessment score", () => {

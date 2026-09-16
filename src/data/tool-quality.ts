@@ -111,3 +111,57 @@ TOOL_QUALITY["attendance-calculator"] = dossier({
   "useCase": "Use the remaining-class field to distinguish eventual mathematical catch-up from what is possible this term. With only 20 classes left in this example, the maximum is 50/70 = 71.4286%.",
   "alternative": "Use the institution's official attendance portal when hours, excused sessions, practicals or separate subject requirements affect eligibility."
 }, "");
+
+TOOL_QUALITY["sgpa-calculator"] = dossier({
+  "engine": "Pure credit-weighted arithmetic with validated custom grade mappings",
+  "supportedInputs": [
+    "positive course credits",
+    "grade points from zero to the selected maximum",
+    "case-insensitive custom grade labels"
+  ],
+  "outputFormats": [
+    "SGPA, weighted point totals, included credits and formula breakdown"
+  ],
+  "limits": [
+    "The interface supports up to 100 courses and 30 custom grade labels.",
+    "Numeric totals must remain within supported finite arithmetic bounds."
+  ],
+  "limitations": [
+    "Repeated-attempt forgiveness, subject pass rules and GPA-to-percentage conversion are not inferred.",
+    "Only display rounding is applied; your institution may specify a different method."
+  ],
+  "how": "For included courses, SGPA = Σ(credits × points) / Σ(credits). Excluded rows contribute neither credits nor points. Mappings reject blank or case-equivalent duplicate labels and point values outside the selected scale.",
+  "example": {
+    "input": "Credits/points: (4,9), (3,8), (2,7), scale maximum 10",
+    "output": "(36 + 24 + 14) / (4 + 3 + 2) = 74/9 = 8.222222…; displayed SGPA 8.22."
+  },
+  "useCase": "Use numeric grade points from a transcript or build your own mapping. A grade label with no mapping is an error rather than an assumed zero. Zero-credit courses must be explicitly excluded.",
+  "alternative": "Use your institution's official calculator or transcript when special regulations, course replacement or non-credit-weighted formulas apply."
+}, "");
+
+TOOL_QUALITY["cgpa-calculator"] = dossier({
+  "engine": "Pure weighted-mean arithmetic with explicit weighting selection",
+  "supportedInputs": [
+    "course credits and grade points on one scale",
+    "semester SGPAs with credits or custom positive weights",
+    "explicit equal semester weighting"
+  ],
+  "outputFormats": [
+    "CGPA, selected weighting method, contributions and denominator"
+  ],
+  "limits": [
+    "The interface supports up to 100 semesters or 100 courses.",
+    "Numeric totals must remain within supported finite arithmetic bounds."
+  ],
+  "limitations": [
+    "Rounded semester SGPAs produce an approximate aggregate.",
+    "Different scales, nonlinear university formulas and repeated-course replacement are not converted automatically."
+  ],
+  "how": "Course mode uses Σ(credits × points)/Σ(credits). Semester mode uses Σ(SGPA × weight)/Σ(weight). Credits and custom modes require every weight; explicit equal weighting uses weight 1 for each semester.",
+  "example": {
+    "input": "SGPA 8 with 20 credits; SGPA 9 with 24 credits",
+    "output": "(8×20 + 9×24)/(20+24) = 376/44 = 8.545454…; displayed CGPA 8.55. Explicit equal weighting would give 8.50."
+  },
+  "useCase": "Use included GPA credits rather than blindly copying all enrolled credits. Confirm the selected weighting method in the result and prefer course-level data when semester rounding matters.",
+  "alternative": "Use official institutional records for special weighting schemes, transfer credits, scale conversion and course-repeat regulations."
+}, "");

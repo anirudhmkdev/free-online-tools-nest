@@ -1,0 +1,10 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import SgpaCalculator from "../../components/tools/SgpaCalculator";
+import { getToolBySlug, getCategoryBySlug } from "../../data/tools";
+const tool = getToolBySlug("sgpa-calculator")!;
+const category = getCategoryBySlug(tool.categorySlug)!;
+---
+<ToolLayout title={tool.name} description={tool.description} toolSlug={tool.slug} categorySlug={tool.categorySlug} categoryName={category.name} longDescription={tool.longDescription}>
+  <SgpaCalculator client:load />
+</ToolLayout>

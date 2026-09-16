@@ -1,9 +1,9 @@
-import type { FormEvent, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 export const inputClass = "w-full min-w-0 rounded-lg border border-hairline bg-canvas px-3 py-3 text-base text-ink";
 export function NumberField({ id, label, value, onChange, hint, disabled = false }: { id: string; label: string; value: string; onChange: (value: string) => void; hint?: string; disabled?: boolean }) {
   return <div className="min-w-0"><label htmlFor={id} className="mb-2 block text-sm font-medium text-ink">{label}</label><input id={id} type="number" inputMode="decimal" step="any" value={value} disabled={disabled} onChange={e => onChange(e.target.value)} className={inputClass} aria-describedby={hint ? id + "-hint" : undefined} /><p id={id + "-hint"} className="mt-1 text-xs leading-relaxed text-body">{hint}</p></div>;
 }
-export function CalculatorForm({ children, onSubmit, onEdit, error }: { children: ReactNode; onSubmit: (event: FormEvent) => void; onEdit: () => void; error: string }) {
+export function CalculatorForm({ children, onSubmit, onEdit, error }: { children: ReactNode; onSubmit: NonNullable<ComponentProps<"form">["onSubmit"]>; onEdit: () => void; error: string }) {
   return <form noValidate onSubmit={onSubmit} onChangeCapture={onEdit} className="space-y-5">{children}{error && <div role="alert" className="rounded-lg border border-hairline bg-canvas-soft-2 p-4 text-sm text-ink"><strong>Check your entries.</strong> {error}</div>}</form>;
 }
 export default function CalculationResult({ label, value, lines, notes = [], impossible = false }: { label: string; value: string; lines: string[]; notes?: string[]; impossible?: boolean }) {

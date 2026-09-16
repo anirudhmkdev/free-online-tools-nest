@@ -4302,6 +4302,98 @@ TOOLS.push({
   "adEligible": false
 });
 
+TOOLS.push({
+  "slug": "sgpa-calculator",
+  "name": "SGPA Calculator",
+  "description": "Calculate semester GPA using your credits and grade-point scale.",
+  "longDescription": "Enter course credits and numeric points or your own grade-label mapping to calculate a credit-weighted semester GPA with a visible breakdown.",
+  "categorySlug": "calculators",
+  "icon": "🎓",
+  "keywords": [
+    "sgpa calculator",
+    "credit weighted semester GPA"
+  ],
+  "metaTitle": "SGPA Calculator — Your Credits & Grade Scale",
+  "metaDescription": "Calculate credit-weighted SGPA using numeric points or a custom grade mapping. See included credits, weighted points, exclusions and the formula.",
+  "relatedToolSlugs": [
+    "cgpa-calculator",
+    "marks-percentage-calculator",
+    "required-marks-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Choose your scale",
+      "content": "Enter your institution's grade-point maximum. Use numerical points or define each grade label and its point value yourself."
+    },
+    {
+      "title": "Enter included courses",
+      "content": "Enter positive credits and grade points for each counted course. Explicitly exclude pass/fail, audit or repeated attempts that your institution does not count."
+    },
+    {
+      "title": "Check the weighted result",
+      "content": "Calculate and inspect each credit × point contribution and total included credits. Display rounding does not alter intermediate calculations."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Does this use one university's SGPA rules?",
+      "answer": "No. It calculates a credit-weighted mean from your selected scale and included courses. Check your institution's course inclusion, repeated-attempt and rounding rules before using the result."
+    },
+    {
+      "question": "Are failed courses excluded automatically?",
+      "answer": "No. An included course with zero points contributes its credits and zero weighted points. Exclude a course only when your official rules exclude it."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "cgpa-calculator",
+  "name": "CGPA Calculator",
+  "description": "Combine semesters or courses using credits or explicitly selected weights.",
+  "longDescription": "Calculate cumulative GPA from individual courses or semester SGPAs, with explicit credit, custom or equal weighting and a visible calculation.",
+  "categorySlug": "calculators",
+  "icon": "📚",
+  "keywords": [
+    "cgpa calculator",
+    "credit weighted cumulative GPA"
+  ],
+  "metaTitle": "CGPA Calculator — Explicit Semester & Course Weights",
+  "metaDescription": "Calculate CGPA from courses or semester SGPAs with explicit credits, custom weights or chosen equal weighting. View the method and full breakdown.",
+  "relatedToolSlugs": [
+    "sgpa-calculator",
+    "marks-percentage-calculator",
+    "required-marks-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Choose your input method",
+      "content": "Use individual courses for underlying credit and grade-point data, or semester SGPAs for an aggregate. Keep every entry on the same grade-point scale."
+    },
+    {
+      "title": "Supply the weighting",
+      "content": "For semesters, select credits or custom institutional weights and enter every weight. Equal weighting is used only when explicitly selected."
+    },
+    {
+      "title": "Review the calculation",
+      "content": "Check the selected weighting method and each weighted contribution. An aggregate of rounded SGPAs is an estimate, not a recovery of unrounded course totals."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Can I simply average my semester SGPAs?",
+      "answer": "Only if you deliberately select equal weighting and that method fits your requirements. Credit-weighted results differ when semester credit totals differ; no weights are inferred."
+    },
+    {
+      "question": "Can I combine a 4-point SGPA with a 10-point SGPA?",
+      "answer": "Not directly. Supply entries on one consistent scale. This tool does not invent conversions between grading systems or a CGPA-to-percentage formula."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
 // ── Helper functions ────────────────────────────────────────
 
 for (const tool of TOOLS) {
