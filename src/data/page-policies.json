@@ -2567,5 +2567,19 @@
     "relatedGuides": [],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
+  },
+  "/tools/image-to-pdf/": {
+    "indexable": false,
+    "sitemapEligible": false,
+    "canonicalPath": "/tools/image-to-pdf/",
+    "primaryAudience": "students and document submitters",
+    "primaryIntent": "Combine local JPEG and PNG images into an ordered PDF without uploading files",
+    "hub": "documents",
+    "tier": "core",
+    "lastReviewed": null,
+    "adEligible": false,
+    "relatedGuides": [],
+    "relatedWorkflows": [],
+    "reviewStatus": "pending-evidence"
   }
 }

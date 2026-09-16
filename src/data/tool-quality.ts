@@ -218,3 +218,31 @@ TOOL_QUALITY["required-marks-calculator"] = dossier({
   "useCase": "Plan a remaining exam using the completed-work average rather than mistaking already-weighted contribution points for that average.",
   "alternative": "Consult the official assessment scheme where final grades use non-linear rules, minimum component scores or moderation."
 }, "");
+
+TOOL_QUALITY["image-to-pdf"] = dossier({
+  "engine": "Local image signature checks, createImageBitmap, Canvas and the bundled pdf-lib library",
+  "supportedInputs": [
+    "still JPEG images",
+    "still PNG images including transparency"
+  ],
+  "outputFormats": [
+    "one image-only PDF with one image per page",
+    "A4 or US Letter; portrait, landscape or automatic per-image orientation"
+  ],
+  "limits": [
+    "Application guardrails: 20 files, 15 MiB each, 50 MiB total, 16 megapixels each, 64 megapixels total and 16,384 pixels per side.",
+    "These are conservative application choices for reliability, not universal browser or device limits. A smaller batch may still be necessary."
+  ],
+  "limitations": [
+    "No HEIC, WebP, SVG, GIF or animated PNG input; convert to a still JPEG or PNG first.",
+    "No OCR, searchable text, PDF editing, encryption or guaranteed file-size reduction.",
+    "Images are re-encoded to apply orientation and omit original metadata; JPEG quality and color profiles may change."
+  ],
+  "how": "The tool reads local file bytes, checks signatures and dimensions, creates small local previews and processes images sequentially. Canvas applies image orientation and re-encodes pixels; pdf-lib places each image on a white PDF page. Fit scale = min(usable page width / image width, usable page height / image height), with the result centered. Blob URLs are released when images or results are removed, replaced or the component is closed.",
+  "example": {
+    "input": "1200 × 800 image on a portrait US Letter page (612 × 792 points), 12.7 mm margins (36 points)",
+    "output": "Image fits to 540 × 360 points at x=36 and y=216 without cropping or stretching."
+  },
+  "useCase": "Combine photographed assignment pages in a chosen order. Inspect previews and the final download; no image content or filename is sent by the conversion code.",
+  "alternative": "Use a trusted desktop scanner or PDF application for OCR, very large batches, archival color management or accessibility tagging."
+}, "");

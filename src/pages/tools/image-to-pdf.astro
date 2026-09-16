@@ -1,0 +1,10 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import ImageToPdf from "../../components/tools/ImageToPdf";
+import { getToolBySlug, getCategoryBySlug } from "../../data/tools";
+const tool = getToolBySlug("image-to-pdf")!;
+const category = getCategoryBySlug(tool.categorySlug)!;
+---
+<ToolLayout title={tool.name} description={tool.description} toolSlug={tool.slug} categorySlug={tool.categorySlug} categoryName={category.name} longDescription={tool.longDescription}>
+  <ImageToPdf client:load />
+</ToolLayout>

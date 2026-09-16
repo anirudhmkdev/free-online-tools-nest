@@ -4484,6 +4484,58 @@ TOOLS.push({
   "adEligible": false
 });
 
+TOOLS.push({
+  "slug": "image-to-pdf",
+  "name": "Image to PDF",
+  "description": "Combine JPEG and PNG images into a PDF locally in your browser.",
+  "longDescription": "Arrange image pages, choose A4 or US Letter, set margins and download one PDF. Your files are processed in this browser tab without uploading them.",
+  "categorySlug": "pdf-tools",
+  "icon": "📄",
+  "keywords": [
+    "image to pdf",
+    "jpg to pdf",
+    "png to pdf"
+  ],
+  "metaTitle": "Image to PDF — Private JPEG & PNG Converter",
+  "metaDescription": "Convert JPEG and PNG images to PDF in your browser. Reorder pages, choose A4 or Letter, adjust margins and download without uploading your files.",
+  "relatedToolSlugs": [
+    "pdf-merger",
+    "pdf-compressor",
+    "image-resizer",
+    "image-format-converter"
+  ],
+  "usageSteps": [
+    {
+      "title": "Choose local images",
+      "content": "Add still JPEG or PNG files. The tool checks file sizes and image dimensions before creating local previews."
+    },
+    {
+      "title": "Arrange and fit pages",
+      "content": "Use Up and Down to set page order. Choose A4 or US Letter, automatic or fixed orientation, and a margin in millimeters."
+    },
+    {
+      "title": "Create and check the PDF",
+      "content": "Create the PDF locally and download it. Check the page order and orientation before submitting; clear the images when finished."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Are my images uploaded?",
+      "answer": "No. File reading, image decoding, previews and PDF generation run in this browser tab. This tool does not send filenames or image contents or save them in browser storage; ordinary site analytics may still load."
+    },
+    {
+      "question": "What are the supported formats and limits?",
+      "answer": "Still JPEG and PNG are supported. The application's reliability guardrails are 20 files, 15 MiB per file, 50 MiB total, 16 megapixels per image, 64 megapixels total and 16,384 pixels per side. These are not universal browser limits, and smaller batches may be needed on some devices."
+    },
+    {
+      "question": "Does the PDF contain searchable text?",
+      "answer": "No. It contains one fitted image per page without OCR. Images are re-encoded and their original metadata is omitted, so JPEG quality and color appearance may differ from the original."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
 // ── Helper functions ────────────────────────────────────────
 
 for (const tool of TOOLS) {
