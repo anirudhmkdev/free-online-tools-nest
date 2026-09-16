@@ -1,5 +1,19 @@
 # Free Online Tools Nest — Project Knowledge Base
 
+## Current Phase 1 override — 2026-09-16
+
+This section supersedes the historical counts and publishing guidance below. Branch: `pivot/student-first-v1`, baseline `16427aa`. Repository: https://github.com/anirudhmkdev/free-online-tools-nest.
+
+- Phase 1 promotes **Study & Assignment Tools** and existing document/writing tools. No Attendance/SGPA/CGPA tools, new hubs, workflow pages or guide routes have been added.
+- Preserve all **176 generated routes** (108 English, 34 Spanish, 34 Hindi), all **74 sitemap URLs**, and existing robots directives (173 indexable; `/404.html`, `/500.html`, `/favorites/` noindex). Actual Google indexing requires Search Console evidence.
+- Publishing policy now lives in `src/data/page-policies.json` and `page-policy.ts`; `astro.config.mjs` consumes that metadata rather than slug whitelists. The frozen regression fixture is evidence, not runtime policy.
+- The build's offline validator checks generated output, including exact `dist/ads.txt`, canonical/indexing consistency, redirects, sitemap membership, internal links, hreflang and JSON-LD syntax. Live production ads.txt checks are a separate post-deployment operation.
+- Preserve GA4 and the existing AdSense loader on the same 117 pages until independent ownership verification is confirmed. Never invent an AdSense account verification meta tag.
+- Homepage navigation uses real homepage section anchors and the existing tool directory. The footer's fake newsletter submission is removed. ToolLayout retains the existing quality dossiers, removes visible keyword tags and uses recorded review dates.
+- Keep the legacy indexing set frozen during Phase 1. Content quality gaps do not automatically cause noindex changes. Human review must assess examples, limitations and intent; do not impose minimum word counts.
+- Stop after Phase 1. Do not merge, push, deploy or begin Phase 2 automatically. Another AdSense review requires substantive later-phase tools, workflows, supporting content and manual review.
+- See `docs/student-first-phase-1.md` for the complete review report, route table and validation results. The remaining sections are historical and may be stale.
+
 > This file is a comprehensive knowledge base designed to give any AI model full context about this project without needing to explore the codebase. It saves tokens by consolidating architecture, data models, patterns, completed work, and known issues in one place.
 > **Last audited**: 2026-07-07
 > **Commit**: `ec86444` (main; Phase 4 sitemap expansion to 65 URLs)
