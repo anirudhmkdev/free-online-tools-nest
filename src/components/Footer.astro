@@ -11,7 +11,9 @@ const currentYear = new Date().getFullYear();
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const categories = getLocalizedCategories(lang);
-const promotedSlugs = ["word-counter", "pdf-merger", "pdf-compressor", "image-compressor", "image-resizer", "qr-code-generator"];
+const promotedSlugs = lang === "en"
+  ? ["attendance-calculator", "sgpa-calculator", "cgpa-calculator", "image-to-pdf", "pdf-merger", "word-counter"]
+  : ["word-counter", "pdf-merger", "pdf-compressor", "image-compressor", "image-resizer", "qr-code-generator"];
 const availableTools = getLocalizedTools(lang);
 const tools = promotedSlugs.map(slug => availableTools.find(tool => tool.slug === slug)).filter(tool => tool !== undefined);
 const lh = (path: string) => localizePath(path, lang);
@@ -41,7 +43,7 @@ const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code
         <h2 class="footer-heading">{lang === 'en' ? 'Toolkits' : t('footer.categories')}</h2>
         <ul class="space-y-2">
           {lang === "en" ? <>
-            <li><a href="/#study-assignment-tools" class="footer-link">Study &amp; Assignment Tools</a></li>
+            <li><a href="/#study-assignment-tools" class="footer-link">Student Tools</a></li>
             <li><a href="/#document-tools" class="footer-link">Document Tools</a></li>
             <li><a href="/#writing-tools" class="footer-link">Writing Tools</a></li>
             <li><a href="/#practical-guides" class="footer-link">Practical guides</a></li>

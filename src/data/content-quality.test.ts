@@ -2,10 +2,42 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { AD_ELIGIBLE_TOOL_SLUGS, TOOL_QUALITY } from "./tool-quality";
-import { PUBLISHED_LOCALES, getLocalizedCategories, getLocalizedTool, getLocalizedToolsByCategory } from "./localized";
+import { PUBLISHED_LOCALES, getLocalizedCategories, getLocalizedTool, getLocalizedTools, getLocalizedToolsByCategory } from "./localized";
 import { CATEGORIES, TOOLS } from "./tools";
+import additions from "./__fixtures__/phase-2-additions.json";
+import { PAGE_POLICIES } from "./page-policy";
 
 const root = process.cwd();
+
+describe("Phase 2 student tool publication", () => {
+  it("requires all six reviewed dossiers and keeps advertising disabled", () => {
+    expect(additions).toHaveLength(6);
+    expect(TOOLS).toHaveLength(83);
+    for (const route of additions) {
+      const slug = route.split("/")[2];
+      const tool = TOOLS.find(tool => tool.slug === slug)!;
+      expect(tool, route).toBeDefined();
+      expect(tool.adEligible, route).toBe(false);
+      expect(AD_ELIGIBLE_TOOL_SLUGS).not.toContain(slug);
+      expect(tool.quality?.verifiedOn, route).toBe(PAGE_POLICIES[route].lastReviewed);
+      expect(tool.quality?.verifiedOn, route).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(tool.quality?.sections.some(section => section.example), route).toBe(true);
+      expect(tool.quality?.limitations.length, route).toBeGreaterThan(0);
+      expect(tool.quality?.sections.find(section => section.heading === "Verification")?.content, route).toContain("checked");
+      expect(tool.usageSteps?.length, route).toBeGreaterThanOrEqual(3);
+      expect(tool.faq?.length, route).toBeGreaterThanOrEqual(2);
+    }
+  });
+  it("keeps Spanish and Hindi at exactly their 20 published tools", () => {
+    for (const lang of PUBLISHED_LOCALES) {
+      expect(getLocalizedTools(lang)).toHaveLength(20);
+      for (const route of additions) {
+        expect(getLocalizedTool(lang, route.split("/")[2])).toBeUndefined();
+        expect(PAGE_POLICIES[`/${lang}${route}`]).toBeUndefined();
+      }
+    }
+  });
+});
 
 describe("AdSense content eligibility", () => {
   it("limits eligibility to the 30 reviewed tool dossiers", () => {

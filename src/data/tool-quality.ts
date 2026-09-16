@@ -7,16 +7,17 @@ type QualityInput = Omit<ToolQuality, "verifiedOn" | "sections"> & {
   example: { input: string; output: string };
   useCase: string;
   alternative: string;
+  reviewEvidence?: string;
 };
 
-function dossier(input: QualityInput): ToolQuality {
+function dossier(input: QualityInput, verifiedOn = VERIFIED_ON): ToolQuality {
   return {
     engine: input.engine,
     supportedInputs: input.supportedInputs,
     outputFormats: input.outputFormats,
     limits: input.limits,
     limitations: input.limitations,
-    verifiedOn: VERIFIED_ON,
+    verifiedOn,
     sections: [
       {
         heading: "How this tool works",
@@ -43,13 +44,13 @@ function dossier(input: QualityInput): ToolQuality {
       },
       {
         heading: "Verification",
-        content: `Reviewed by the Free Online Tools Nest Team on ${VERIFIED_ON}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.`,
+        content: verifiedOn ? input.reviewEvidence ? `Implementation checked on ${verifiedOn}. ${input.reviewEvidence}` : `Reviewed by the Free Online Tools Nest Team on ${verifiedOn}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.` : "Verification is pending. This tool is not yet included in the sitemap.",
       },
     ],
   };
 }
 
-export const TOOL_QUALITY: Record<string, ToolQuality> = {
+const LEGACY_TOOL_QUALITY: Record<string, ToolQuality> = {
   "word-counter": dossier({ engine: "JavaScript text segmentation and regular-expression analysis", supportedInputs: ["plain Unicode text pasted or typed into the editor"], outputFormats: ["word, character, sentence, paragraph, and reading-time statistics"], limits: ["Performance depends on the amount of text and available browser memory."], limitations: ["Word and sentence boundaries are estimates; languages without spaces and unusual punctuation can produce different counts than an editor."], how: "The component normalizes the entered text, counts tokens and structural separators, and recalculates statistics in the browser whenever the input changes.", example: { input: "A short sentence with five words.", output: "6 words, 33 characters (including spaces), 1 sentence" }, useCase: "Use it to check article length, form limits, captions, and drafts. If a count looks unexpected, remove unusual whitespace or compare the punctuation with your publishing platform.", alternative: "Use a word processor when you need language-specific proofing rules, tracked changes, or the exact count used by a submission system." }),
   "json-formatter": dossier({ engine: "Native JSON.parse and JSON.stringify", supportedInputs: ["valid JSON object, array, string, number, boolean, or null"], outputFormats: ["indented JSON text", "validation error"], limits: ["The full document must fit in browser memory."], limitations: ["Comments, trailing commas, NaN, Infinity, and JavaScript object literals are not valid JSON."], how: "The formatter parses input with the browser's JSON parser and serializes the resulting value with consistent indentation. Parsing errors are shown instead of guessing how malformed data should be repaired.", example: { input: "{\"user\":{\"id\":7},\"active\":true}", output: "A four-line, indented JSON object with user and active fields" }, useCase: "Use it for API responses, configuration snippets, and test fixtures. A syntax error near the end often comes from a missing quote, bracket, or comma earlier in the document.", alternative: "Use jq or an IDE for very large files, streaming data, schema validation, or repeatable transformations." }),
   "qr-code-generator": dossier({ engine: "qrcode JavaScript library rendered to HTML canvas", supportedInputs: ["text and URLs"], outputFormats: ["PNG image"], limits: ["Very long content creates denser codes that are harder for cameras to scan."], limitations: ["The current download is PNG only; it does not export SVG."], how: "The qrcode dependency encodes the supplied text into modules on a canvas. The download action serializes that canvas as a PNG without sending the value to a server.", example: { input: "https://freeonlinetoolsnest.com/tools/qr-code-generator/", output: "A scannable PNG QR code containing that exact URL" }, useCase: "Use short, final URLs and test the downloaded image with more than one camera before printing. Add physical quiet space around the code.", alternative: "Use a vector design workflow when you need SVG, branded artwork, print preflight, dynamic destination tracking, or bulk generation." }),
@@ -82,4 +83,173 @@ export const TOOL_QUALITY: Record<string, ToolQuality> = {
   "schema-markup-generator": dossier({ engine: "Client-side templates and JSON.stringify", supportedInputs: ["the structured fields shown for each supported schema type"], outputFormats: ["JSON-LD script markup"], limits: ["Only schema types and fields exposed by the form are generated."], limitations: ["Valid JSON does not guarantee Google eligibility or factual correctness; required properties vary by rich-result type."], how: "The component assembles a schema.org object from form values and serializes it as formatted JSON-LD for copying.", example: { input: "Organization name 'Example Studio' and URL 'https://example.com'", output: "An Organization JSON-LD object containing those properties" }, useCase: "Use it as a starting point, then validate the final deployed page and ensure every claim matches visible content.", alternative: "Write and test custom JSON-LD when entities are connected, fields are conditional, data comes from a CMS, or a rich-result guideline requires more properties." }),
 };
 
-export const AD_ELIGIBLE_TOOL_SLUGS = Object.freeze(Object.keys(TOOL_QUALITY));
+// Preserve the existing advertising set independently of new quality dossiers.
+export const AD_ELIGIBLE_TOOL_SLUGS = Object.freeze(Object.keys(LEGACY_TOOL_QUALITY));
+export const TOOL_QUALITY: Record<string, ToolQuality> = { ...LEGACY_TOOL_QUALITY };
+
+TOOL_QUALITY["attendance-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 30/50 at 75% (30 catch-up classes), zero conducted classes, 0% and 100% targets, invalid counts and a finite remaining schedule. Narrow layouts and a keyboard-only calculation were checked.",
+  "engine": "Integer class counts and exact basis-point threshold arithmetic",
+  "supportedInputs": [
+    "whole attended and conducted class counts",
+    "0–100% target with up to two decimals",
+    "optional whole remaining-class count"
+  ],
+  "outputFormats": [
+    "attendance percentage, class counts and formula breakdown"
+  ],
+  "limits": [
+    "Class-count inputs are limited to one billion to keep results within supported arithmetic bounds."
+  ],
+  "limitations": [
+    "No university rules, excused-absence policy or subject eligibility are inferred.",
+    "Catch-up assumes every additional class is attended; display rounding never determines eligibility."
+  ],
+  "how": "Current percentage is A/T × 100. For a target fraction q between 0 and 1, catch-up is max(0, ceil((qT − A)/(1 − q))). When already at target, missable classes are floor(A/q − T). Zero conducted classes and 0%/100% targets use explicit boundary rules.",
+  "example": {
+    "input": "30 attended, 50 conducted, target 75%",
+    "output": "60% current attendance; 30 consecutive attended classes reach 60/80 = 75%."
+  },
+  "useCase": "Use the remaining-class field to distinguish eventual mathematical catch-up from what is possible this term. With only 20 classes left in this example, the maximum is 50/70 = 71.4286%.",
+  "alternative": "Use the institution's official attendance portal when hours, excused sessions, practicals or separate subject requirements affect eligibility."
+}, "2026-09-16");
+
+TOOL_QUALITY["sgpa-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 74/9 = 8.222222…, custom scales, included and excluded courses, zero-point grades and invalid mappings including case-equivalent labels. Formula output and narrow layouts were checked.",
+  "engine": "Pure credit-weighted arithmetic with validated custom grade mappings",
+  "supportedInputs": [
+    "positive course credits",
+    "grade points from zero to the selected maximum",
+    "case-insensitive custom grade labels"
+  ],
+  "outputFormats": [
+    "SGPA, weighted point totals, included credits and formula breakdown"
+  ],
+  "limits": [
+    "The interface supports up to 100 courses and 30 custom grade labels.",
+    "Numeric totals must remain within supported finite arithmetic bounds."
+  ],
+  "limitations": [
+    "Repeated-attempt forgiveness, subject pass rules and GPA-to-percentage conversion are not inferred.",
+    "Only display rounding is applied; your institution may specify a different method."
+  ],
+  "how": "For included courses, SGPA = Σ(credits × points) / Σ(credits). Excluded rows contribute neither credits nor points. Mappings reject blank or case-equivalent duplicate labels and point values outside the selected scale.",
+  "example": {
+    "input": "Credits/points: (4,9), (3,8), (2,7), scale maximum 10",
+    "output": "(36 + 24 + 14) / (4 + 3 + 2) = 74/9 = 8.222222…; displayed SGPA 8.22."
+  },
+  "useCase": "Use numeric grade points from a transcript or build your own mapping. A grade label with no mapping is an error rather than an assumed zero. Zero-credit courses must be explicitly excluded.",
+  "alternative": "Use your institution's official calculator or transcript when special regulations, course replacement or non-credit-weighted formulas apply."
+}, "2026-09-16");
+
+TOOL_QUALITY["cgpa-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 376/44 = 8.545454…, explicit equal weighting (8.5), missing semester weights and calculation from individual courses. The selected weighting method appears beside the result; narrow layouts were checked.",
+  "engine": "Pure weighted-mean arithmetic with explicit weighting selection",
+  "supportedInputs": [
+    "course credits and grade points on one scale",
+    "semester SGPAs with credits or custom positive weights",
+    "explicit equal semester weighting"
+  ],
+  "outputFormats": [
+    "CGPA, selected weighting method, contributions and denominator"
+  ],
+  "limits": [
+    "The interface supports up to 100 semesters or 100 courses.",
+    "Numeric totals must remain within supported finite arithmetic bounds."
+  ],
+  "limitations": [
+    "Rounded semester SGPAs produce an approximate aggregate.",
+    "Different scales, nonlinear university formulas and repeated-course replacement are not converted automatically."
+  ],
+  "how": "Course mode uses Σ(credits × points)/Σ(credits). Semester mode uses Σ(SGPA × weight)/Σ(weight). Credits and custom modes require every weight; explicit equal weighting uses weight 1 for each semester.",
+  "example": {
+    "input": "SGPA 8 with 20 credits; SGPA 9 with 24 credits",
+    "output": "(8×20 + 9×24)/(20+24) = 376/44 = 8.545454…; displayed CGPA 8.55. Explicit equal weighting would give 8.50."
+  },
+  "useCase": "Use included GPA credits rather than blindly copying all enrolled credits. Confirm the selected weighting method in the result and prefer course-level data when semester rounding matters.",
+  "alternative": "Use official institutional records for special weighting schemes, transfer credits, scale conversion and course-repeat regulations."
+}, "2026-09-16");
+
+TOOL_QUALITY["marks-percentage-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 125/150 = 83.333333…%, different subject maxima and obtained marks above the maximum. Unit tests also covered custom grade thresholds and boundary scores; narrow layouts were checked.",
+  "engine": "Pure total-marks arithmetic with optional validated grade thresholds",
+  "supportedInputs": [
+    "non-negative obtained marks up to each subject maximum",
+    "positive maximum marks",
+    "optional percentage-to-grade thresholds"
+  ],
+  "outputFormats": [
+    "percentage, totals, optional custom grade and formula"
+  ],
+  "limits": [
+    "Up to 100 subjects and 30 custom thresholds.",
+    "Totals must remain within supported finite arithmetic bounds."
+  ],
+  "limitations": [
+    "Extra credit above a subject maximum is not supported.",
+    "Institutional pass conditions and GPA conversions are not inferred."
+  ],
+  "how": "Percentage = sum of obtained marks / sum of maximum marks × 100. Custom grades use the highest minimum threshold met; labels and cutoffs must be unique and one threshold must start at 0%.",
+  "example": {
+    "input": "80/100 and 45/50",
+    "output": "125 / 150 × 100 = 83.333333…%, displayed as 83.33%."
+  },
+  "useCase": "Combine exam or assignment marks with different maxima without giving a small quiz the same weight as a larger exam.",
+  "alternative": "Use a weighted-course calculator or official transcript when credits or institutional weights govern the final result."
+}, "2026-09-16");
+
+TOOL_QUALITY["required-marks-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 62/80 required marks, upward rounding from 59.25 to 60/75 (70.4% overall), zero and full remaining weight and impossible targets. Exact increment boundaries and narrow layouts were checked.",
+  "engine": "Weighted-average algebra with rational arithmetic for upward mark increments",
+  "supportedInputs": [
+    "completed-work average, remaining weight and target percentages from 0 to 100",
+    "optional positive assessment maximum and mark increment"
+  ],
+  "outputFormats": [
+    "required percentage or minimum marks, feasibility and formula"
+  ],
+  "limits": [
+    "An assessment is modeled as one remaining component.",
+    "Maximum marks and increments must be positive, finite and within supported arithmetic bounds."
+  ],
+  "limitations": [
+    "Separate assessment pass marks, moderation and extra credit are not modeled.",
+    "Allowed scores are multiples of the chosen increment from zero; choose the increment that matches your assessment."
+  ],
+  "how": "With remaining fraction w = weight / 100, required percentage = (target − completed average × (1 − w)) / w. Non-positive requirements become zero; results over 100% are impossible. Minimum marks = ceil(raw marks / increment) × increment. Zero remaining weight is handled separately.",
+  "example": {
+    "input": "Completed average 65%, remaining weight 40%, target 70%, exam out of 80, whole marks",
+    "output": "(70 − 65 × 0.6) / 0.4 = 77.5%; 77.5% of 80 = 62 marks, producing 70% overall."
+  },
+  "useCase": "Plan a remaining exam using the completed-work average rather than mistaking already-weighted contribution points for that average.",
+  "alternative": "Consult the official assessment scheme where final grades use non-linear rules, minimum component scores or moderation."
+}, "2026-09-16");
+
+TOOL_QUALITY["image-to-pdf"] = dossier({
+  "reviewEvidence": "Local browser checks covered JPEG photo orientation, transparent PNG, page ordering, removal, invalid images, oversized dimensions and impossible margins. Downloaded PDFs were parsed and visually inspected. Conversion also worked offline after app code was loaded; synthetic filename and metadata markers were absent from outgoing requests. Unit tests cover layout arithmetic and application guardrails.",
+  "engine": "Local image signature checks, createImageBitmap, Canvas and the bundled pdf-lib library",
+  "supportedInputs": [
+    "still JPEG images",
+    "still PNG images including transparency"
+  ],
+  "outputFormats": [
+    "one image-only PDF with one image per page",
+    "A4 or US Letter; portrait, landscape or automatic per-image orientation"
+  ],
+  "limits": [
+    "Application guardrails: 20 files, 15 MiB each, 50 MiB total, 16 megapixels each, 64 megapixels total and 16,384 pixels per side.",
+    "These are conservative application choices for reliability, not universal browser or device limits. A smaller batch may still be necessary."
+  ],
+  "limitations": [
+    "No HEIC, WebP, SVG, GIF or animated PNG input; convert to a still JPEG or PNG first.",
+    "No OCR, searchable text, PDF editing, encryption or guaranteed file-size reduction.",
+    "Images are re-encoded to apply orientation and omit original metadata; JPEG quality and color profiles may change."
+  ],
+  "how": "The tool reads local file bytes, checks signatures and dimensions, creates small local previews and processes images sequentially. Canvas applies image orientation and re-encodes pixels; pdf-lib places each image on a white PDF page. Fit scale = min(usable page width / image width, usable page height / image height), with the result centered. Blob URLs are released when images or results are removed, replaced or the component is closed.",
+  "example": {
+    "input": "1200 × 800 image on a portrait US Letter page (612 × 792 points), 12.7 mm margins (36 points)",
+    "output": "Image fits to 540 × 360 points at x=36 and y=216 without cropping or stretching."
+  },
+  "useCase": "Combine photographed assignment pages in a chosen order. Inspect previews and the final download; no image content or filename is sent by the conversion code.",
+  "alternative": "Use a trusted desktop scanner or PDF application for OCR, very large batches, archival color management or accessibility tagging."
+}, "2026-09-16");

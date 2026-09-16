@@ -1,4 +1,4 @@
-import { TOOL_QUALITY } from "./tool-quality";
+import { AD_ELIGIBLE_TOOL_SLUGS, TOOL_QUALITY } from "./tool-quality";
 
 /**
  * Tool Registry — single source of truth for all tools on the site.
@@ -61,6 +61,7 @@ export interface Tool {
   additionalContent?: ContentSection[];
   adEligible?: boolean;
   quality?: ToolQuality;
+  relatedToolSlugs?: string[];
 }
 
 // ── Categories ──────────────────────────────────────────────
@@ -4255,12 +4256,292 @@ export const TOOLS: Tool[] = [
   },
 ];
 
+TOOLS.push({
+  "slug": "attendance-calculator",
+  "name": "Attendance Calculator",
+  "description": "Check your attendance and the classes needed to reach your own target.",
+  "longDescription": "Calculate your current class attendance, how many consecutive classes you need to attend, and how many you can miss while meeting an entered target.",
+  "categorySlug": "calculators",
+  "icon": "📅",
+  "keywords": [
+    "attendance calculator",
+    "attendance percentage"
+  ],
+  "metaTitle": "Attendance Calculator — Classes Needed & Percentage",
+  "metaDescription": "Calculate attendance percentage, catch-up classes and remaining-class scenarios using your own target. See the formula and exact class counts.",
+  "relatedToolSlugs": [
+    "marks-percentage-calculator",
+    "required-marks-calculator",
+    "percentage-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Enter completed classes",
+      "content": "Enter attended and conducted class counts. Use one consistent unit: classes, not a mixture of classes and hours."
+    },
+    {
+      "title": "Set your target",
+      "content": "Enter the percentage that applies to you. Add remaining classes only if you know the schedule; no university threshold is assumed."
+    },
+    {
+      "title": "Read the scenario",
+      "content": "Calculate to see the current fraction, consecutive attendance needed and maximum extra absences. A target may be impossible within the remaining schedule."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is 75% a universal attendance requirement?",
+      "answer": "No. The example uses 75% only to demonstrate the arithmetic. Enter your own target and check subject-specific, excused-absence and eligibility rules with your institution."
+    },
+    {
+      "question": "Can I recover exact 100% after missing a class?",
+      "answer": "No finite number of additional attended classes removes an earlier absence from the conducted total. If every conducted class was attended, catch-up is zero. If no classes were conducted, one attended class establishes a percentage."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "sgpa-calculator",
+  "name": "SGPA Calculator",
+  "description": "Calculate semester GPA using your credits and grade-point scale.",
+  "longDescription": "Enter course credits and numeric points or your own grade-label mapping to calculate a credit-weighted semester GPA with a visible breakdown.",
+  "categorySlug": "calculators",
+  "icon": "🎓",
+  "keywords": [
+    "sgpa calculator",
+    "credit weighted semester GPA"
+  ],
+  "metaTitle": "SGPA Calculator — Your Credits & Grade Scale",
+  "metaDescription": "Calculate credit-weighted SGPA using numeric points or a custom grade mapping. See included credits, weighted points, exclusions and the formula.",
+  "relatedToolSlugs": [
+    "cgpa-calculator",
+    "marks-percentage-calculator",
+    "required-marks-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Choose your scale",
+      "content": "Enter your institution's grade-point maximum. Use numerical points or define each grade label and its point value yourself."
+    },
+    {
+      "title": "Enter included courses",
+      "content": "Enter positive credits and grade points for each counted course. Explicitly exclude pass/fail, audit or repeated attempts that your institution does not count."
+    },
+    {
+      "title": "Check the weighted result",
+      "content": "Calculate and inspect each credit × point contribution and total included credits. Display rounding does not alter intermediate calculations."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Does this use one university's SGPA rules?",
+      "answer": "No. It calculates a credit-weighted mean from your selected scale and included courses. Check your institution's course inclusion, repeated-attempt and rounding rules before using the result."
+    },
+    {
+      "question": "Are failed courses excluded automatically?",
+      "answer": "No. An included course with zero points contributes its credits and zero weighted points. Exclude a course only when your official rules exclude it."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "cgpa-calculator",
+  "name": "CGPA Calculator",
+  "description": "Combine semesters or courses using credits or explicitly selected weights.",
+  "longDescription": "Calculate cumulative GPA from individual courses or semester SGPAs, with explicit credit, custom or equal weighting and a visible calculation.",
+  "categorySlug": "calculators",
+  "icon": "📚",
+  "keywords": [
+    "cgpa calculator",
+    "credit weighted cumulative GPA"
+  ],
+  "metaTitle": "CGPA Calculator — Explicit Semester & Course Weights",
+  "metaDescription": "Calculate CGPA from courses or semester SGPAs with explicit credits, custom weights or chosen equal weighting. View the method and full breakdown.",
+  "relatedToolSlugs": [
+    "sgpa-calculator",
+    "marks-percentage-calculator",
+    "required-marks-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Choose your input method",
+      "content": "Use individual courses for underlying credit and grade-point data, or semester SGPAs for an aggregate. Keep every entry on the same grade-point scale."
+    },
+    {
+      "title": "Supply the weighting",
+      "content": "For semesters, select credits or custom institutional weights and enter every weight. Equal weighting is used only when explicitly selected."
+    },
+    {
+      "title": "Review the calculation",
+      "content": "Check the selected weighting method and each weighted contribution. An aggregate of rounded SGPAs is an estimate, not a recovery of unrounded course totals."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Can I simply average my semester SGPAs?",
+      "answer": "Only if you deliberately select equal weighting and that method fits your requirements. Credit-weighted results differ when semester credit totals differ; no weights are inferred."
+    },
+    {
+      "question": "Can I combine a 4-point SGPA with a 10-point SGPA?",
+      "answer": "Not directly. Supply entries on one consistent scale. This tool does not invent conversions between grading systems or a CGPA-to-percentage formula."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "marks-percentage-calculator",
+  "name": "Marks Percentage Calculator",
+  "description": "Calculate a total marks percentage across subjects with different maximum marks.",
+  "longDescription": "Calculate a total marks percentage across subjects with different maximum marks. Enter your own assessment details and inspect the calculation behind the result.",
+  "categorySlug": "calculators",
+  "icon": "📊",
+  "keywords": [
+    "marks percentage calculator"
+  ],
+  "metaTitle": "Marks Percentage Calculator — Formula & Breakdown",
+  "metaDescription": "Calculate a total marks percentage across subjects with different maximum marks. See the formula, worked totals and clear input checks.",
+  "relatedToolSlugs": [
+    "required-marks-calculator",
+    "sgpa-calculator",
+    "cgpa-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Enter subject marks",
+      "content": "Add obtained marks and a positive maximum for each subject. Subjects can have different maximum marks."
+    },
+    {
+      "title": "Choose optional grade thresholds",
+      "content": "A percentage needs no grading system. Enable your own thresholds only if you want a grade label, including a threshold starting at zero."
+    },
+    {
+      "title": "Inspect the calculation",
+      "content": "Check total obtained marks divided by total maximum marks, multiplied by 100. The result shows every subject and the totals."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is this an average of subject percentages?",
+      "answer": "No. It divides total obtained marks by total maximum marks. A subject out of 100 contributes twice the possible marks of a subject out of 50."
+    },
+    {
+      "question": "Does the grade match my university?",
+      "answer": "A grade appears only when you supply your own thresholds. Subject pass conditions, classifications and GPA conversion are not inferred."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "required-marks-calculator",
+  "name": "Required Marks Calculator",
+  "description": "Find the score needed on remaining work to reach a target overall percentage.",
+  "longDescription": "Find the score needed on remaining work to reach a target overall percentage. Enter your own assessment details and inspect the calculation behind the result.",
+  "categorySlug": "calculators",
+  "icon": "📊",
+  "keywords": [
+    "required marks calculator"
+  ],
+  "metaTitle": "Required Marks Calculator — Formula & Breakdown",
+  "metaDescription": "Find the score needed on remaining work to reach a target overall percentage. See the formula, worked totals and clear input checks.",
+  "relatedToolSlugs": [
+    "marks-percentage-calculator",
+    "sgpa-calculator",
+    "attendance-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Enter the completed average",
+      "content": "Use the percentage average on completed work, the remaining assessment weight and your desired overall percentage."
+    },
+    {
+      "title": "Optionally enter exam marks",
+      "content": "Supply the assessment maximum and allowed increment for a minimum attainable mark. For example, choose 1 for whole marks or 0.5 for half marks."
+    },
+    {
+      "title": "Review feasibility and formula",
+      "content": "Inspect the weighted formula and upward rounding. Requirements above 100% and increments beyond the maximum are flagged as impossible."
+    }
+  ],
+  "faq": [
+    {
+      "question": "What if the remaining assessment has no weight?",
+      "answer": "At 0% remaining weight the completed average is final: the target is either already secured or impossible. No division by zero is attempted."
+    },
+    {
+      "question": "Does this enforce my exam pass rules?",
+      "answer": "No. It calculates a weighted overall target from your inputs. Separate pass marks, extra credit, moderation and institutional requirements must be checked independently."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "image-to-pdf",
+  "name": "Image to PDF",
+  "description": "Combine JPEG and PNG images into a PDF locally in your browser.",
+  "longDescription": "Arrange image pages, choose A4 or US Letter, set margins and download one PDF. Your files are processed in this browser tab without uploading them.",
+  "categorySlug": "pdf-tools",
+  "icon": "📄",
+  "keywords": [
+    "image to pdf",
+    "jpg to pdf",
+    "png to pdf"
+  ],
+  "metaTitle": "Image to PDF — Private JPEG & PNG Converter",
+  "metaDescription": "Convert JPEG and PNG images to PDF in your browser. Reorder pages, choose A4 or Letter, adjust margins and download without uploading your files.",
+  "relatedToolSlugs": [
+    "pdf-merger",
+    "pdf-compressor",
+    "image-resizer",
+    "image-format-converter"
+  ],
+  "usageSteps": [
+    {
+      "title": "Choose local images",
+      "content": "Add still JPEG or PNG files. The tool checks file sizes and image dimensions before creating local previews."
+    },
+    {
+      "title": "Arrange and fit pages",
+      "content": "Use Up and Down to set page order. Choose A4 or US Letter, automatic or fixed orientation, and a margin in millimeters."
+    },
+    {
+      "title": "Create and check the PDF",
+      "content": "Create the PDF locally and download it. Check the page order and orientation before submitting; clear the images when finished."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Are my images uploaded?",
+      "answer": "No. File reading, image decoding, previews and PDF generation run in this browser tab. This tool does not send filenames or image contents or save them in browser storage; ordinary site analytics may still load."
+    },
+    {
+      "question": "What are the supported formats and limits?",
+      "answer": "Still JPEG and PNG are supported. The application's reliability guardrails are 20 files, 15 MiB per file, 50 MiB total, 16 megapixels per image, 64 megapixels total and 16,384 pixels per side. These are not universal browser limits, and smaller batches may be needed on some devices."
+    },
+    {
+      "question": "Does the PDF contain searchable text?",
+      "answer": "No. It contains one fitted image per page without OCR. Images are re-encoded and their original metadata is omitted, so JPEG quality and color appearance may differ from the original."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
 // ── Helper functions ────────────────────────────────────────
 
 for (const tool of TOOLS) {
   const quality = TOOL_QUALITY[tool.slug];
   if (!quality) continue;
-  tool.adEligible = true;
+  tool.adEligible = AD_ELIGIBLE_TOOL_SLUGS.includes(tool.slug);
   tool.quality = quality;
   tool.additionalContent = [...(tool.additionalContent ?? []), ...quality.sections];
 }
@@ -4284,6 +4565,7 @@ export function getCategoryBySlug(slug: string): Category | undefined {
 export function getRelatedTools(currentSlug: string, limit = 4): Tool[] {
   const current = getToolBySlug(currentSlug);
   if (!current) return TOOLS.slice(0, limit);
+  if (current.relatedToolSlugs) return current.relatedToolSlugs.map(slug => getToolBySlug(slug)).filter((tool): tool is Tool => Boolean(tool)).slice(0, limit);
   return TOOLS.filter(
     (t) => t.categorySlug === current.categorySlug && t.slug !== currentSlug,
   ).slice(0, limit);

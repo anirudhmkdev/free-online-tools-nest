@@ -72,7 +72,7 @@ export function validateAdsTxt(text) {
 }
 /** @typedef {{pages: Array<{route: string, robots?: string, adEligible?: boolean, title?: string, description?: string}>, sitemap: string[], redirects: string}} RouteBaseline */
 /** Local output only: no production requests or network-dependent checks. */
-export function validateBuiltSite(rootPath, { policies, baseline = /** @type {RouteBaseline | undefined} */ (undefined), site = SITE_URL }) {
+export function validateBuiltSite(rootPath, { policies, baseline = /** @type {RouteBaseline | undefined} */ (undefined), allowedAdditions = /** @type {string[]} */ ([]), site = SITE_URL }) {
   const failures = [];
   if (!existsSync(rootPath)) return { failures: ["Build output directory is missing"], pageCount: 0, sitemapCount: 0 };
   const pages = walk(rootPath).filter(f => extname(f) === ".html").map(file => {
@@ -96,8 +96,16 @@ export function validateBuiltSite(rootPath, { policies, baseline = /** @type {Ro
   if (JSON.stringify([...sitemapUrls].sort()) !== JSON.stringify(expectedUrls)) failures.push("Generated sitemap does not match publishing policy");
   // Frozen evidence is for regression checks only, never production eligibility.
   if (baseline) {
-    if (JSON.stringify(pages.map(p => p.route).sort()) !== JSON.stringify(baseline.pages.map(p => p.route).sort())) failures.push("Phase 1 route set changed");
-    if (JSON.stringify([...sitemapUrls].sort()) !== JSON.stringify(baseline.sitemap.map(r => site + r).sort())) failures.push("Phase 1 sitemap membership changed");
+    const legacyRoutes = baseline.pages.map(p => p.route);
+    const additions = Object.keys(policies).filter(route => !legacyRoutes.includes(route));
+    for (const route of additions) {
+      if (!allowedAdditions.includes(route)) failures.push(route + ": unapproved route addition");
+      if (policies[route].adEligible !== false) failures.push(route + ": new tools must remain ad-ineligible");
+      if (policies[route].indexable && (policies[route].reviewStatus !== "reviewed" || !/^\d{4}-\d{2}-\d{2}$/.test(policies[route].lastReviewed ?? ""))) failures.push(route + ": indexable addition requires dated review evidence");
+    }
+    if (JSON.stringify(pages.map(p => p.route).sort()) !== JSON.stringify([...legacyRoutes, ...additions].sort())) failures.push("Legacy route set changed or an approved addition was not generated");
+    const legacySitemap = sitemapUrls.filter(url => !additions.some(route => url === site + route));
+    if (JSON.stringify(legacySitemap.sort()) !== JSON.stringify(baseline.sitemap.map(r => site + r).sort())) failures.push("Legacy sitemap membership changed");
     if (redirects.replaceAll("\r\n", "\n") !== baseline.redirects.replaceAll("\r\n", "\n")) failures.push("Phase 1 redirect rules changed");
     for (const before of baseline.pages) {
       const after = generated.get(before.route);
@@ -148,7 +156,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const rootPath = fileURLToPath(new URL("../dist/", import.meta.url));
   const policies = JSON.parse(readFileSync(new URL("../src/data/page-policies.json", import.meta.url), "utf8"));
   const baseline = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/pre-pivot-routes.json", import.meta.url), "utf8"));
-  const result = validateBuiltSite(rootPath, { policies, baseline });
+  const allowedAdditions = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-2-additions.json", import.meta.url), "utf8"));
+  const result = validateBuiltSite(rootPath, { policies, baseline, allowedAdditions });
   if (result.failures.length) { console.error(result.failures.join("\n")); process.exitCode = 1; }
   else console.log("Validated " + result.pageCount + " pages and " + result.sitemapCount + " sitemap URLs offline: routes, indexing, canonicals, redirects, links, hreflang, JSON-LD, ads.txt and existing integrations.");
 }

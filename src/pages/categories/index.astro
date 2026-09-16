@@ -6,7 +6,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getDefaultAlternates } from "../../i18n/utils";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
-import { CATEGORIES, getToolsByCategory, SITE } from "../../data/tools";
+import { CATEGORIES, getToolsByCategory, SITE, TOOLS } from "../../data/tools";
 
 const categoriesJsonLd = {
   "@context": "https://schema.org",
@@ -46,7 +46,7 @@ const categoriesJsonLd = {
             Find the right browser-based utility for writing, coding, PDFs, images, SEO, math, and design work.
           </p>
         </div>
-        <a href="/tools/" class="pill-control">All 77 tools</a>
+        <a href="/tools/" class="pill-control">All {TOOLS.length} tools</a>
       </div>
     </header>
 
