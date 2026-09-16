@@ -57,6 +57,16 @@ describe("publishing gate", () => {
   it("rejects rendered noindex despite an indexable policy", () => {
     expect(validatePublishingPolicy({ "/": policy }, [{ ...page, robots: "noindex, follow" }], "").join(" ")).toContain("indexing disagrees");
   });
+  it("rejects case-insensitive noindex, none and meta-refresh redirects", () => {
+    for (const robots of ["NOINDEX FOLLOW", "none"]) {
+      expect(validatePublishingPolicy({ "/": policy }, [{ ...page, robots }], "").join(" ")).toContain("indexing disagrees");
+    }
+    const redirected = inspectPage(html.replace("</head>", '<meta http-equiv="refresh" content="0;url=/other/"></head>'), "/");
+    expect(validatePublishingPolicy({ "/": policy }, [redirected], "").join(" ")).toContain("meta refresh redirect");
+  });
+  it("reads apostrophes inside double-quoted descriptions without truncation", () => {
+    expect(inspectPage(html.replace("Prepare your assignment", "Check your assignment's length"), "/").description).toBe("Check your assignment's length");
+  });
   it.each(["/ /other/ 301", "/ /other/ 302", "/ /other/ 200"])("rejects a redirect or rewrite away from the sitemap URL", redirects => {
     expect(validatePublishingPolicy({ "/": policy }, [page], redirects).join(" ")).toContain("redirects or rewrites");
   });

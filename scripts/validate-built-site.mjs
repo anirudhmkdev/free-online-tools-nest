@@ -13,7 +13,7 @@ function walk(directory) {
   });
 }
 function attributes(tag) {
-  return Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*["']([^"']*)["']/g)].map(m => [m[1], m[2]]));
+  return Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)].map(m => [m[1].toLowerCase(), m[2] ?? m[3]]));
 }
 export function inspectPage(html, route) {
   const meta = [...html.matchAll(/<meta\b[^>]*>/g)].map(m => attributes(m[0]));
@@ -26,6 +26,7 @@ export function inspectPage(html, route) {
     title: html.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? "",
     description: meta.find(t => t.name === "description")?.content ?? "",
     adEligible: html.includes(AD_SCRIPT),
+    redirects: meta.some(t => t["http-equiv"]?.toLowerCase() === "refresh"),
   };
 }
 /** Respect first-match rules, including 200 passthroughs before wildcard redirects. */
@@ -54,7 +55,8 @@ export function validatePublishingPolicy(policies, pages, redirects, site = SITE
     if (!page) continue;
     if (page.canonicals.length !== 1 || page.canonicals[0] !== site + policy.canonicalPath) failures.push(route + ": generated canonical disagrees with policy");
     if (policy.sitemapEligible && page.canonicals[0] !== site + route) failures.push(route + ": generated sitemap page is not self-canonical");
-    const isNoindex = page.robots.split(/\s*,\s*/).includes("noindex");
+    if (policy.sitemapEligible && page.redirects) failures.push(route + ": sitemapEligible page has a meta refresh redirect");
+    const isNoindex = page.robots.toLowerCase().split(/[\s,]+/).some(value => value === "noindex" || value === "none");
     if (!page.robots || isNoindex === policy.indexable) failures.push(route + ": generated indexing disagrees with policy");
     if (page.adEligible !== policy.adEligible) failures.push(route + ": existing AdSense loading changed");
     for (const target of [...(policy.relatedGuides ?? []), ...(policy.relatedWorkflows ?? [])]) {
@@ -68,8 +70,9 @@ export function validateAdsTxt(text) {
   return typeof text === "string" && text.replace(/\r?\n$/, "") === EXPECTED_ADS_TXT
     ? [] : ["ads.txt must contain exactly the expected publisher line (with an optional final newline)"];
 }
+/** @typedef {{pages: Array<{route: string, robots?: string, adEligible?: boolean, title?: string, description?: string}>, sitemap: string[], redirects: string}} RouteBaseline */
 /** Local output only: no production requests or network-dependent checks. */
-export function validateBuiltSite(rootPath, { policies, baseline, site = SITE_URL }) {
+export function validateBuiltSite(rootPath, { policies, baseline = /** @type {RouteBaseline | undefined} */ (undefined), site = SITE_URL }) {
   const failures = [];
   if (!existsSync(rootPath)) return { failures: ["Build output directory is missing"], pageCount: 0, sitemapCount: 0 };
   const pages = walk(rootPath).filter(f => extname(f) === ".html").map(file => {

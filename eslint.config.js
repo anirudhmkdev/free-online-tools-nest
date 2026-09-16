@@ -9,7 +9,7 @@ const browserGlobals = {
 
 export default [
   {
-    ignores: ["dist/**", ".astro/**", "node_modules/**"],
+    ignores: ["dist/**", ".astro/**", "node_modules/**", "output/playwright/**", ".playwright-cli/**"],
   },
   ...eslintPluginAstro.configs.recommended,
   {
