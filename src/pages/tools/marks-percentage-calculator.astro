@@ -1,0 +1,10 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import MarksPercentageCalculator from "../../components/tools/MarksPercentageCalculator";
+import { getToolBySlug, getCategoryBySlug } from "../../data/tools";
+const tool = getToolBySlug("marks-percentage-calculator")!;
+const category = getCategoryBySlug(tool.categorySlug)!;
+---
+<ToolLayout title={tool.name} description={tool.description} toolSlug={tool.slug} categorySlug={tool.categorySlug} categoryName={category.name} longDescription={tool.longDescription}>
+  <MarksPercentageCalculator client:load />
+</ToolLayout>

@@ -165,3 +165,56 @@ TOOL_QUALITY["cgpa-calculator"] = dossier({
   "useCase": "Use included GPA credits rather than blindly copying all enrolled credits. Confirm the selected weighting method in the result and prefer course-level data when semester rounding matters.",
   "alternative": "Use official institutional records for special weighting schemes, transfer credits, scale conversion and course-repeat regulations."
 }, "");
+
+TOOL_QUALITY["marks-percentage-calculator"] = dossier({
+  "engine": "Pure total-marks arithmetic with optional validated grade thresholds",
+  "supportedInputs": [
+    "non-negative obtained marks up to each subject maximum",
+    "positive maximum marks",
+    "optional percentage-to-grade thresholds"
+  ],
+  "outputFormats": [
+    "percentage, totals, optional custom grade and formula"
+  ],
+  "limits": [
+    "Up to 100 subjects and 30 custom thresholds.",
+    "Totals must remain within supported finite arithmetic bounds."
+  ],
+  "limitations": [
+    "Extra credit above a subject maximum is not supported.",
+    "Institutional pass conditions and GPA conversions are not inferred."
+  ],
+  "how": "Percentage = sum of obtained marks / sum of maximum marks × 100. Custom grades use the highest minimum threshold met; labels and cutoffs must be unique and one threshold must start at 0%.",
+  "example": {
+    "input": "80/100 and 45/50",
+    "output": "125 / 150 × 100 = 83.333333…%, displayed as 83.33%."
+  },
+  "useCase": "Combine exam or assignment marks with different maxima without giving a small quiz the same weight as a larger exam.",
+  "alternative": "Use a weighted-course calculator or official transcript when credits or institutional weights govern the final result."
+}, "");
+
+TOOL_QUALITY["required-marks-calculator"] = dossier({
+  "engine": "Weighted-average algebra with rational arithmetic for upward mark increments",
+  "supportedInputs": [
+    "completed-work average, remaining weight and target percentages from 0 to 100",
+    "optional positive assessment maximum and mark increment"
+  ],
+  "outputFormats": [
+    "required percentage or minimum marks, feasibility and formula"
+  ],
+  "limits": [
+    "An assessment is modeled as one remaining component.",
+    "Maximum marks and increments must be positive, finite and within supported arithmetic bounds."
+  ],
+  "limitations": [
+    "Separate assessment pass marks, moderation and extra credit are not modeled.",
+    "Allowed scores are multiples of the chosen increment from zero; choose the increment that matches your assessment."
+  ],
+  "how": "With remaining fraction w = weight / 100, required percentage = (target − completed average × (1 − w)) / w. Non-positive requirements become zero; results over 100% are impossible. Minimum marks = ceil(raw marks / increment) × increment. Zero remaining weight is handled separately.",
+  "example": {
+    "input": "Completed average 65%, remaining weight 40%, target 70%, exam out of 80, whole marks",
+    "output": "(70 − 65 × 0.6) / 0.4 = 77.5%; 77.5% of 80 = 62 marks, producing 70% overall."
+  },
+  "useCase": "Plan a remaining exam using the completed-work average rather than mistaking already-weighted contribution points for that average.",
+  "alternative": "Consult the official assessment scheme where final grades use non-linear rules, minimum component scores or moderation."
+}, "");

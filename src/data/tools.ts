@@ -4394,6 +4394,96 @@ TOOLS.push({
   "adEligible": false
 });
 
+TOOLS.push({
+  "slug": "marks-percentage-calculator",
+  "name": "Marks Percentage Calculator",
+  "description": "Calculate a total marks percentage across subjects with different maximum marks.",
+  "longDescription": "Calculate a total marks percentage across subjects with different maximum marks. Enter your own assessment details and inspect the calculation behind the result.",
+  "categorySlug": "calculators",
+  "icon": "📊",
+  "keywords": [
+    "marks percentage calculator"
+  ],
+  "metaTitle": "Marks Percentage Calculator — Formula & Breakdown",
+  "metaDescription": "Calculate a total marks percentage across subjects with different maximum marks. See the formula, worked totals and clear input checks.",
+  "relatedToolSlugs": [
+    "required-marks-calculator",
+    "sgpa-calculator",
+    "cgpa-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Enter subject marks",
+      "content": "Add obtained marks and a positive maximum for each subject. Subjects can have different maximum marks."
+    },
+    {
+      "title": "Choose optional grade thresholds",
+      "content": "A percentage needs no grading system. Enable your own thresholds only if you want a grade label, including a threshold starting at zero."
+    },
+    {
+      "title": "Inspect the calculation",
+      "content": "Check total obtained marks divided by total maximum marks, multiplied by 100. The result shows every subject and the totals."
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is this an average of subject percentages?",
+      "answer": "No. It divides total obtained marks by total maximum marks. A subject out of 100 contributes twice the possible marks of a subject out of 50."
+    },
+    {
+      "question": "Does the grade match my university?",
+      "answer": "A grade appears only when you supply your own thresholds. Subject pass conditions, classifications and GPA conversion are not inferred."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
+TOOLS.push({
+  "slug": "required-marks-calculator",
+  "name": "Required Marks Calculator",
+  "description": "Find the score needed on remaining work to reach a target overall percentage.",
+  "longDescription": "Find the score needed on remaining work to reach a target overall percentage. Enter your own assessment details and inspect the calculation behind the result.",
+  "categorySlug": "calculators",
+  "icon": "📊",
+  "keywords": [
+    "required marks calculator"
+  ],
+  "metaTitle": "Required Marks Calculator — Formula & Breakdown",
+  "metaDescription": "Find the score needed on remaining work to reach a target overall percentage. See the formula, worked totals and clear input checks.",
+  "relatedToolSlugs": [
+    "marks-percentage-calculator",
+    "sgpa-calculator",
+    "attendance-calculator"
+  ],
+  "usageSteps": [
+    {
+      "title": "Enter the completed average",
+      "content": "Use the percentage average on completed work, the remaining assessment weight and your desired overall percentage."
+    },
+    {
+      "title": "Optionally enter exam marks",
+      "content": "Supply the assessment maximum and allowed increment for a minimum attainable mark. For example, choose 1 for whole marks or 0.5 for half marks."
+    },
+    {
+      "title": "Review feasibility and formula",
+      "content": "Inspect the weighted formula and upward rounding. Requirements above 100% and increments beyond the maximum are flagged as impossible."
+    }
+  ],
+  "faq": [
+    {
+      "question": "What if the remaining assessment has no weight?",
+      "answer": "At 0% remaining weight the completed average is final: the target is either already secured or impossible. No division by zero is attempted."
+    },
+    {
+      "question": "Does this enforce my exam pass rules?",
+      "answer": "No. It calculates a weighted overall target from your inputs. Separate pass marks, extra credit, moderation and institutional requirements must be checked independently."
+    }
+  ],
+  "featured": false,
+  "adEligible": false
+});
+
 // ── Helper functions ────────────────────────────────────────
 
 for (const tool of TOOLS) {

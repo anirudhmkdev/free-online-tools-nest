@@ -2539,5 +2539,33 @@
     "relatedGuides": [],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
+  },
+  "/tools/marks-percentage-calculator/": {
+    "indexable": false,
+    "sitemapEligible": false,
+    "canonicalPath": "/tools/marks-percentage-calculator/",
+    "primaryAudience": "students",
+    "primaryIntent": "Calculate a marks-weighted percentage with optional user-defined grades",
+    "hub": "study-assignment",
+    "tier": "core",
+    "lastReviewed": null,
+    "adEligible": false,
+    "relatedGuides": [],
+    "relatedWorkflows": [],
+    "reviewStatus": "pending-evidence"
+  },
+  "/tools/required-marks-calculator/": {
+    "indexable": false,
+    "sitemapEligible": false,
+    "canonicalPath": "/tools/required-marks-calculator/",
+    "primaryAudience": "students",
+    "primaryIntent": "Calculate a required weighted assessment score and attainable mark increment",
+    "hub": "study-assignment",
+    "tier": "core",
+    "lastReviewed": null,
+    "adEligible": false,
+    "relatedGuides": [],
+    "relatedWorkflows": [],
+    "reviewStatus": "pending-evidence"
   }
 }
