@@ -7,6 +7,7 @@ type QualityInput = Omit<ToolQuality, "verifiedOn" | "sections"> & {
   example: { input: string; output: string };
   useCase: string;
   alternative: string;
+  reviewEvidence?: string;
 };
 
 function dossier(input: QualityInput, verifiedOn = VERIFIED_ON): ToolQuality {
@@ -43,7 +44,7 @@ function dossier(input: QualityInput, verifiedOn = VERIFIED_ON): ToolQuality {
       },
       {
         heading: "Verification",
-        content: verifiedOn ? `Reviewed by the Free Online Tools Nest Team on ${verifiedOn}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.` : "Verification is pending. This tool is not yet included in the sitemap.",
+        content: verifiedOn ? input.reviewEvidence ? `Implementation checked on ${verifiedOn}. ${input.reviewEvidence}` : `Reviewed by the Free Online Tools Nest Team on ${verifiedOn}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.` : "Verification is pending. This tool is not yet included in the sitemap.",
       },
     ],
   };
@@ -87,6 +88,7 @@ export const AD_ELIGIBLE_TOOL_SLUGS = Object.freeze(Object.keys(LEGACY_TOOL_QUAL
 export const TOOL_QUALITY: Record<string, ToolQuality> = { ...LEGACY_TOOL_QUALITY };
 
 TOOL_QUALITY["attendance-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 30/50 at 75% (30 catch-up classes), zero conducted classes, 0% and 100% targets, invalid counts and a finite remaining schedule. Narrow layouts and a keyboard-only calculation were checked.",
   "engine": "Integer class counts and exact basis-point threshold arithmetic",
   "supportedInputs": [
     "whole attended and conducted class counts",
@@ -110,9 +112,10 @@ TOOL_QUALITY["attendance-calculator"] = dossier({
   },
   "useCase": "Use the remaining-class field to distinguish eventual mathematical catch-up from what is possible this term. With only 20 classes left in this example, the maximum is 50/70 = 71.4286%.",
   "alternative": "Use the institution's official attendance portal when hours, excused sessions, practicals or separate subject requirements affect eligibility."
-}, "");
+}, "2026-09-16");
 
 TOOL_QUALITY["sgpa-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 74/9 = 8.222222…, custom scales, included and excluded courses, zero-point grades and invalid mappings including case-equivalent labels. Formula output and narrow layouts were checked.",
   "engine": "Pure credit-weighted arithmetic with validated custom grade mappings",
   "supportedInputs": [
     "positive course credits",
@@ -137,9 +140,10 @@ TOOL_QUALITY["sgpa-calculator"] = dossier({
   },
   "useCase": "Use numeric grade points from a transcript or build your own mapping. A grade label with no mapping is an error rather than an assumed zero. Zero-credit courses must be explicitly excluded.",
   "alternative": "Use your institution's official calculator or transcript when special regulations, course replacement or non-credit-weighted formulas apply."
-}, "");
+}, "2026-09-16");
 
 TOOL_QUALITY["cgpa-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 376/44 = 8.545454…, explicit equal weighting (8.5), missing semester weights and calculation from individual courses. The selected weighting method appears beside the result; narrow layouts were checked.",
   "engine": "Pure weighted-mean arithmetic with explicit weighting selection",
   "supportedInputs": [
     "course credits and grade points on one scale",
@@ -164,9 +168,10 @@ TOOL_QUALITY["cgpa-calculator"] = dossier({
   },
   "useCase": "Use included GPA credits rather than blindly copying all enrolled credits. Confirm the selected weighting method in the result and prefer course-level data when semester rounding matters.",
   "alternative": "Use official institutional records for special weighting schemes, transfer credits, scale conversion and course-repeat regulations."
-}, "");
+}, "2026-09-16");
 
 TOOL_QUALITY["marks-percentage-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 125/150 = 83.333333…%, different subject maxima and obtained marks above the maximum. Unit tests also covered custom grade thresholds and boundary scores; narrow layouts were checked.",
   "engine": "Pure total-marks arithmetic with optional validated grade thresholds",
   "supportedInputs": [
     "non-negative obtained marks up to each subject maximum",
@@ -191,9 +196,10 @@ TOOL_QUALITY["marks-percentage-calculator"] = dossier({
   },
   "useCase": "Combine exam or assignment marks with different maxima without giving a small quiz the same weight as a larger exam.",
   "alternative": "Use a weighted-course calculator or official transcript when credits or institutional weights govern the final result."
-}, "");
+}, "2026-09-16");
 
 TOOL_QUALITY["required-marks-calculator"] = dossier({
+  "reviewEvidence": "Unit tests and local browser checks covered 62/80 required marks, upward rounding from 59.25 to 60/75 (70.4% overall), zero and full remaining weight and impossible targets. Exact increment boundaries and narrow layouts were checked.",
   "engine": "Weighted-average algebra with rational arithmetic for upward mark increments",
   "supportedInputs": [
     "completed-work average, remaining weight and target percentages from 0 to 100",
@@ -217,9 +223,10 @@ TOOL_QUALITY["required-marks-calculator"] = dossier({
   },
   "useCase": "Plan a remaining exam using the completed-work average rather than mistaking already-weighted contribution points for that average.",
   "alternative": "Consult the official assessment scheme where final grades use non-linear rules, minimum component scores or moderation."
-}, "");
+}, "2026-09-16");
 
 TOOL_QUALITY["image-to-pdf"] = dossier({
+  "reviewEvidence": "Local browser checks covered JPEG photo orientation, transparent PNG, page ordering, removal, invalid images, oversized dimensions and impossible margins. Downloaded PDFs were parsed and visually inspected. Conversion also worked offline after app code was loaded; synthetic filename and metadata markers were absent from outgoing requests. Unit tests cover layout arithmetic and application guardrails.",
   "engine": "Local image signature checks, createImageBitmap, Canvas and the bundled pdf-lib library",
   "supportedInputs": [
     "still JPEG images",
@@ -245,4 +252,4 @@ TOOL_QUALITY["image-to-pdf"] = dossier({
   },
   "useCase": "Combine photographed assignment pages in a chosen order. Inspect previews and the final download; no image content or filename is sent by the conversion code.",
   "alternative": "Use a trusted desktop scanner or PDF application for OCR, very large batches, archival color management or accessibility tagging."
-}, "");
+}, "2026-09-16");
