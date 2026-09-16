@@ -9,14 +9,14 @@ type QualityInput = Omit<ToolQuality, "verifiedOn" | "sections"> & {
   alternative: string;
 };
 
-function dossier(input: QualityInput): ToolQuality {
+function dossier(input: QualityInput, verifiedOn = VERIFIED_ON): ToolQuality {
   return {
     engine: input.engine,
     supportedInputs: input.supportedInputs,
     outputFormats: input.outputFormats,
     limits: input.limits,
     limitations: input.limitations,
-    verifiedOn: VERIFIED_ON,
+    verifiedOn,
     sections: [
       {
         heading: "How this tool works",
@@ -43,13 +43,13 @@ function dossier(input: QualityInput): ToolQuality {
       },
       {
         heading: "Verification",
-        content: `Reviewed by the Free Online Tools Nest Team on ${VERIFIED_ON}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.`,
+        content: verifiedOn ? `Reviewed by the Free Online Tools Nest Team on ${verifiedOn}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.` : "Verification is pending. This tool is not yet included in the sitemap.",
       },
     ],
   };
 }
 
-export const TOOL_QUALITY: Record<string, ToolQuality> = {
+const LEGACY_TOOL_QUALITY: Record<string, ToolQuality> = {
   "word-counter": dossier({ engine: "JavaScript text segmentation and regular-expression analysis", supportedInputs: ["plain Unicode text pasted or typed into the editor"], outputFormats: ["word, character, sentence, paragraph, and reading-time statistics"], limits: ["Performance depends on the amount of text and available browser memory."], limitations: ["Word and sentence boundaries are estimates; languages without spaces and unusual punctuation can produce different counts than an editor."], how: "The component normalizes the entered text, counts tokens and structural separators, and recalculates statistics in the browser whenever the input changes.", example: { input: "A short sentence with five words.", output: "6 words, 33 characters (including spaces), 1 sentence" }, useCase: "Use it to check article length, form limits, captions, and drafts. If a count looks unexpected, remove unusual whitespace or compare the punctuation with your publishing platform.", alternative: "Use a word processor when you need language-specific proofing rules, tracked changes, or the exact count used by a submission system." }),
   "json-formatter": dossier({ engine: "Native JSON.parse and JSON.stringify", supportedInputs: ["valid JSON object, array, string, number, boolean, or null"], outputFormats: ["indented JSON text", "validation error"], limits: ["The full document must fit in browser memory."], limitations: ["Comments, trailing commas, NaN, Infinity, and JavaScript object literals are not valid JSON."], how: "The formatter parses input with the browser's JSON parser and serializes the resulting value with consistent indentation. Parsing errors are shown instead of guessing how malformed data should be repaired.", example: { input: "{\"user\":{\"id\":7},\"active\":true}", output: "A four-line, indented JSON object with user and active fields" }, useCase: "Use it for API responses, configuration snippets, and test fixtures. A syntax error near the end often comes from a missing quote, bracket, or comma earlier in the document.", alternative: "Use jq or an IDE for very large files, streaming data, schema validation, or repeatable transformations." }),
   "qr-code-generator": dossier({ engine: "qrcode JavaScript library rendered to HTML canvas", supportedInputs: ["text and URLs"], outputFormats: ["PNG image"], limits: ["Very long content creates denser codes that are harder for cameras to scan."], limitations: ["The current download is PNG only; it does not export SVG."], how: "The qrcode dependency encodes the supplied text into modules on a canvas. The download action serializes that canvas as a PNG without sending the value to a server.", example: { input: "https://freeonlinetoolsnest.com/tools/qr-code-generator/", output: "A scannable PNG QR code containing that exact URL" }, useCase: "Use short, final URLs and test the downloaded image with more than one camera before printing. Add physical quiet space around the code.", alternative: "Use a vector design workflow when you need SVG, branded artwork, print preflight, dynamic destination tracking, or bulk generation." }),
@@ -82,4 +82,6 @@ export const TOOL_QUALITY: Record<string, ToolQuality> = {
   "schema-markup-generator": dossier({ engine: "Client-side templates and JSON.stringify", supportedInputs: ["the structured fields shown for each supported schema type"], outputFormats: ["JSON-LD script markup"], limits: ["Only schema types and fields exposed by the form are generated."], limitations: ["Valid JSON does not guarantee Google eligibility or factual correctness; required properties vary by rich-result type."], how: "The component assembles a schema.org object from form values and serializes it as formatted JSON-LD for copying.", example: { input: "Organization name 'Example Studio' and URL 'https://example.com'", output: "An Organization JSON-LD object containing those properties" }, useCase: "Use it as a starting point, then validate the final deployed page and ensure every claim matches visible content.", alternative: "Write and test custom JSON-LD when entities are connected, fields are conditional, data comes from a CMS, or a rich-result guideline requires more properties." }),
 };
 
-export const AD_ELIGIBLE_TOOL_SLUGS = Object.freeze(Object.keys(TOOL_QUALITY));
+// Preserve the existing advertising set independently of new quality dossiers.
+export const AD_ELIGIBLE_TOOL_SLUGS = Object.freeze(Object.keys(LEGACY_TOOL_QUALITY));
+export const TOOL_QUALITY: Record<string, ToolQuality> = { ...LEGACY_TOOL_QUALITY };

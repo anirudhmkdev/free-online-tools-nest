@@ -77,6 +77,22 @@ describe("publishing gate", () => {
 });
 
 describe("built-site regression validation", () => {
+  it("allows only approved additions with review evidence and no advertising", () => {
+    const root = buildFixture();
+    const baseline = { pages: [{ route: "/", robots: "index, follow", adEligible: false }], sitemap: ["/"], redirects: "" };
+    const next = { ...policy, canonicalPath: "/new.html", reviewStatus: "reviewed", lastReviewed: "2026-09-16" };
+    const policies = { "/": policy, "/new.html": next };
+    writeFileSync(join(root, "new.html"), html.replace("Study tools", "New calculator").replace("Prepare your assignment", "A distinct calculator description").replace('href="' + site + '/"', 'href="' + site + '/new.html"'));
+    writeFileSync(join(root, "sitemap-0.xml"), '<urlset><url><loc>' + site + '/</loc></url><url><loc>' + site + '/new.html</loc></url></urlset>');
+    const options = { policies, baseline, allowedAdditions: ["/new.html"] };
+    expect(validateBuiltSite(root, options).failures).toEqual([]);
+    expect(validateBuiltSite(root, { ...options, allowedAdditions: [] }).failures.join(" ")).toContain("unapproved route addition");
+    next.adEligible = true;
+    expect(validateBuiltSite(root, options).failures.join(" ")).toContain("must remain ad-ineligible");
+    next.adEligible = false;
+    next.lastReviewed = "";
+    expect(validateBuiltSite(root, options).failures.join(" ")).toContain("dated review evidence");
+  });
   it("passes without network access", () => {
     vi.stubGlobal("fetch", () => { throw new Error("Network forbidden"); });
     expect(validateBuiltSite(buildFixture(), { policies: { "/": policy } }).failures).toEqual([]);

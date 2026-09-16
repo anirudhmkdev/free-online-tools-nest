@@ -1,4 +1,4 @@
-import { TOOL_QUALITY } from "./tool-quality";
+import { AD_ELIGIBLE_TOOL_SLUGS, TOOL_QUALITY } from "./tool-quality";
 
 /**
  * Tool Registry — single source of truth for all tools on the site.
@@ -4260,7 +4260,7 @@ export const TOOLS: Tool[] = [
 for (const tool of TOOLS) {
   const quality = TOOL_QUALITY[tool.slug];
   if (!quality) continue;
-  tool.adEligible = true;
+  tool.adEligible = AD_ELIGIBLE_TOOL_SLUGS.includes(tool.slug);
   tool.quality = quality;
   tool.additionalContent = [...(tool.additionalContent ?? []), ...quality.sections];
 }
