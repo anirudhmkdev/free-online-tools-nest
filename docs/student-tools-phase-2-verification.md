@@ -163,4 +163,10 @@ Local test scripts, logs, screenshots and synthetic downloads are in the ignored
 
 Besides the six pages/components listed above, new files are `src/components/tools/shared/{CalculationResult,GradeScaleEditor}.tsx`, `src/helpers/{student-calculators,image-to-pdf}.{ts,test.ts}`, `src/data/__fixtures__/phase-2-additions.json`, and this report. Modified files are `scripts/validate-built-site.mjs`, `src/helpers/build-validation.test.ts`, `src/data/{tools.ts,tool-quality.ts,page-policies.json,page-policy.test.ts,content-quality.test.ts}`, `src/components/{Hero,Nav,Footer}.astro`, `src/pages/{index.astro,categories/index.astro}`, `src/i18n/ui.ts`, `README.md` and `AGENTS.md`.
 
-Implementation is complete locally. Publication and any subsequent phase require separate authorization.
+## Pre-merge diff review follow-up
+
+The user subsequently authorized pushing this branch, opening a PR, waiting for CI and merging. PR: https://github.com/anirudhmkdev/free-online-tools-nest/pull/2.
+
+Diff review found that a custom 58% grade threshold could incorrectly reject 29/50 because its floating-point percentage is slightly below 58. The failing regression was reproduced. Threshold decisions now compare exact rational totals from the entered decimal marks, independently of display rounding; an actually lower score is not promoted by an epsilon. Two regression tests cover integer threshold boundaries and decimal totals. The updated suite contains 118 tests.
+
+The repository's configured remote check is Cloudflare Pages; no GitHub Actions workflow exists. Existing Phase 2 implementation evidence above records the pre-push state. No subsequent phase or AdSense review is authorized by the merge request.

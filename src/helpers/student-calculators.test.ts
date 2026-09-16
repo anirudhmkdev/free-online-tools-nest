@@ -218,6 +218,32 @@ describe("configurable grade points", () => {
 });
 
 describe("subject marks", () => {
+  it("keeps exact integer grade thresholds separate from floating display rounding", () => {
+    const thresholds = [
+      { label: "Met", minimum: 58 },
+      { label: "Below", minimum: 0 },
+    ];
+    expect(marks([{ obtained: 29, maximum: 50 }], thresholds).grade).toBe(
+      "Met",
+    );
+    expect(
+      marks([{ obtained: 28.999999999999, maximum: 50 }], thresholds).grade,
+    ).toBe("Below");
+  });
+  it("uses the entered decimal marks exactly when applying thresholds", () => {
+    expect(
+      marks(
+        [
+          { obtained: 0.1, maximum: 0.2 },
+          { obtained: 0.7, maximum: 0.8 },
+        ],
+        [
+          { label: "Met", minimum: 80 },
+          { label: "Below", minimum: 0 },
+        ],
+      ).grade,
+    ).toBe("Met");
+  });
   it("divides totals, not the average of percentages", () => {
     expect(
       marks([

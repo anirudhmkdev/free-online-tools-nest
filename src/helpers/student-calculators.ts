@@ -231,7 +231,28 @@ export function calculateMarks(
       throw new Error(
         "Include a minimum threshold of 0% so every percentage has a grade.",
       );
-    grade = sorted.find((row) => percentage >= row.minimum)!.label.trim();
+    // Compare entered decimal marks exactly: 29/50 must meet 58%, while
+    // a genuinely lower score must not pass because of an epsilon tolerance.
+    const exactObtained = subjects.reduce<Fraction>(
+      (sum, row) => add(sum, fraction(row.obtained)),
+      [0n, 1n],
+    );
+    const exactMaximum = subjects.reduce<Fraction>(
+      (sum, row) => add(sum, fraction(row.maximum)),
+      [0n, 1n],
+    );
+    const exactPercentage = multiply(divide(exactObtained, exactMaximum), [
+      100n,
+      1n,
+    ]);
+    grade = sorted
+      .find((row) => {
+        const threshold = fraction(row.minimum);
+        return (
+          exactPercentage[0] * threshold[1] >= threshold[0] * exactPercentage[1]
+        );
+      })!
+      .label.trim();
   }
   return { obtained, maximum, percentage, grade };
 }
@@ -248,6 +269,9 @@ function fraction(value: number): Fraction {
 }
 function subtract([a, b]: Fraction, [c, d]: Fraction): Fraction {
   return [a * d - c * b, b * d];
+}
+function add([a, b]: Fraction, [c, d]: Fraction): Fraction {
+  return [a * d + c * b, b * d];
 }
 function multiply([a, b]: Fraction, [c, d]: Fraction): Fraction {
   return [a * c, b * d];
