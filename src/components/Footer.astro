@@ -1,6 +1,6 @@
 ---
 /**
- * Footer — compact footer with newsletter, links, social proof, and legal navigation.
+ * Footer — toolkits, useful tools, project information and legal navigation.
  */
 import { SITE } from "../data/tools";
 import { getLocalizedCategories, getLocalizedTools } from "../data/localized";
@@ -11,7 +11,9 @@ const currentYear = new Date().getFullYear();
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const categories = getLocalizedCategories(lang);
-const tools = getLocalizedTools(lang);
+const promotedSlugs = ["word-counter", "pdf-merger", "pdf-compressor", "image-compressor", "image-resizer", "qr-code-generator"];
+const availableTools = getLocalizedTools(lang);
+const tools = promotedSlugs.map(slug => availableTools.find(tool => tool.slug === slug)).filter(tool => tool !== undefined);
 const lh = (path: string) => localizePath(path, lang);
 const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code, label]) => ({
   code,
@@ -22,41 +24,7 @@ const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code
 
 <footer class="bg-canvas border-t border-hairline mt-16">
   <div class="container-page py-10 md:py-12">
-    <section class="mb-10 rounded-xl border border-hairline bg-canvas-soft p-5 sm:p-6 md:flex md:items-center md:justify-between md:gap-8">
-      <div class="max-w-md">
-        <p class="section-eyebrow mb-2">Updates</p>
-        <h2 class="text-lg font-semibold text-ink mb-2">
-          {t('newsletter.title')}
-        </h2>
-        <p class="text-sm text-body leading-relaxed">
-          {t('newsletter.desc')}
-        </p>
-      </div>
-      <div class="mt-5 w-full md:mt-0 md:w-auto">
-        <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
-          <label for="newsletter-email" class="sr-only">
-            {t('newsletter.placeholder')}
-          </label>
-          <input
-            type="email"
-            id="newsletter-email"
-            name="email"
-            autocomplete="email"
-            spellcheck="false"
-            placeholder={t('newsletter.placeholder')}
-            aria-describedby="newsletter-success"
-            required
-            class="h-10 rounded-lg border border-hairline bg-canvas px-4 text-sm text-ink placeholder:text-mute transition-colors duration-150 focus:border-link sm:w-80"
-          />
-          <button type="submit" class="btn-primary btn-sm flex items-center justify-center font-medium cursor-pointer">
-            {t('newsletter.button')}
-          </button>
-        </form>
-        <div id="newsletter-success" class="hidden text-sm text-success mt-2 font-medium" role="status" aria-live="polite">
-          {t('newsletter.success')}
-        </div>
-      </div>
-    </section>
+
 
     <div class="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 lg:gap-x-12">
       <div>
@@ -70,9 +38,15 @@ const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code
       </div>
 
       <div>
-        <h2 class="footer-heading">{t('footer.categories')}</h2>
+        <h2 class="footer-heading">{lang === 'en' ? 'Toolkits' : t('footer.categories')}</h2>
         <ul class="space-y-2">
-          {categories.map((cat) => (
+          {lang === "en" ? <>
+            <li><a href="/#study-assignment-tools" class="footer-link">Study &amp; Assignment Tools</a></li>
+            <li><a href="/#document-tools" class="footer-link">Document Tools</a></li>
+            <li><a href="/#writing-tools" class="footer-link">Writing Tools</a></li>
+            <li><a href="/#practical-guides" class="footer-link">Practical guides</a></li>
+            <li><a href="/categories/" class="footer-link">All categories</a></li>
+          </> : categories.map((cat) => (
             <li><a href={lh(`/categories/${cat.slug}/`)} class="footer-link">{cat.name}</a></li>
           ))}
         </ul>
@@ -112,14 +86,14 @@ const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code
           <p class="text-xs text-mute">
             &copy; {currentYear} {SITE.name}. All rights reserved.
           </p>
-          <p class="mt-1 text-xs text-mute">{t('footer.tagline')}</p>
+          <p class="mt-1 text-xs text-mute">{lang === 'en' ? 'Free tools for study, assignments and everyday documents.' : t('footer.tagline')}</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-3">
           <a href="https://x.com/openProj3ct" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label={t('footer.twitter')}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </a>
-          <a href="https://github.com/AnirudhMKumar/free-online-tools-nest" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="GitHub">
+          <a href="https://github.com/anirudhmkdev/free-online-tools-nest" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="GitHub">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           </a>
           <a href="https://launchbuff.com" target="_blank" rel="noopener noreferrer" title="Featured on LaunchBuff" class="launchbuff-link">
@@ -184,33 +158,3 @@ const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code
   :global(.dark) .badge-dark { display: inline-block; }
   :global(.dark) .badge-light { display: none; }
 </style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("newsletter-form") as HTMLFormElement | null;
-    const successMsg = document.getElementById("newsletter-success");
-    if (form && successMsg) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const emailInput = document.getElementById("newsletter-email") as HTMLInputElement | null;
-        if (!emailInput || !emailInput.value) return;
-
-        const email = emailInput.value;
-        const subscribers = JSON.parse(localStorage.getItem("newsletter_subscribers") || "[]");
-        if (!subscribers.includes(email)) {
-          subscribers.push(email);
-          localStorage.setItem("newsletter_subscribers", JSON.stringify(subscribers));
-        }
-
-        form.reset();
-        form.classList.add("hidden");
-        successMsg.classList.remove("hidden");
-
-        setTimeout(() => {
-          successMsg.classList.add("hidden");
-          form.classList.remove("hidden");
-        }, 5000);
-      });
-    }
-  });
-</script>

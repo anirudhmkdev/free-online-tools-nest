@@ -1,46 +1,35 @@
 ---
-/**
- * Homepage — hero, categories, featured tools, why choose us, FAQ, SEO content.
- */
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
-import CategoryCard from "../components/CategoryCard.astro";
-import ToolCard from "../components/ToolCard.astro";
-import FAQSection from "../components/FAQSection.astro";
-import { CATEGORIES, getFeaturedTools, getToolsByCategory, SITE } from "../data/tools";
-import { useTranslations, getDefaultAlternates } from "../i18n/utils";
+import { getToolBySlug, SITE } from "../data/tools";
+import { getDefaultAlternates } from "../i18n/utils";
+import { getCollection } from "astro:content";
 
-const t = useTranslations("en");
-
-const featuredPrioritySlugs = [
-  "image-compressor",
-  "json-formatter",
-  "pdf-compressor",
-  "pdf-merger",
-  "word-counter",
-  "qr-code-generator",
-  "jwt-decoder",
-  "epoch-converter",
-  "word-cloud-generator",
-  "grammar-checker",
-  "random-number-generator",
-  "color-palette-generator",
+const toolkits = [
+  { id: "study-assignment-tools", label: "Study & Assignment Tools", intro: "A few useful checks before you hand it in.", tasks: [
+    { slug: "percentage-calculator", purpose: "Check a proportion, percentage or change." },
+    { slug: "word-counter", purpose: "Check the length of an assignment draft." },
+    { slug: "qr-code-generator", purpose: "Make a QR code for a project or reference link." },
+  ] },
+  { id: "document-tools", label: "Assignment & Document Toolkit", intro: "Get the right pages, dimensions and file size for your submission.", tasks: [
+    { slug: "pdf-merger", purpose: "Combine PDFs into one document." },
+    { slug: "pdf-splitter", purpose: "Keep only the pages you need." },
+    { slug: "pdf-compressor", purpose: "Try reducing file size; savings depend on the PDF." },
+    { slug: "pdf-to-text", purpose: "Extract selectable text. Scanned pages need OCR elsewhere." },
+    { slug: "pdf-to-images", purpose: "Save PDF pages as images." },
+    { slug: "image-compressor", purpose: "Adjust image encoding for a smaller upload." },
+    { slug: "image-resizer", purpose: "Set the required pixel dimensions." },
+    { slug: "image-cropper", purpose: "Remove unwanted edges from an image." },
+  ] },
+  { id: "writing-tools", label: "Writing Toolkit", intro: "Check length and common mistakes while keeping your draft local.", tasks: [
+    { slug: "word-counter", purpose: "Count words and estimate reading time." },
+    { slug: "character-counter", purpose: "Check character limits for applications and forms." },
+    { slug: "grammar-checker", purpose: "Flag common English grammar patterns; review suggestions yourself." },
+  ] },
 ];
-const featuredBySlug = new Map(getFeaturedTools().map((tool) => [tool.slug, tool]));
-const featured = featuredPrioritySlugs
-  .map((slug) => featuredBySlug.get(slug))
-  .filter((tool) => tool !== undefined);
-
-
-const homeFaqs = Array.from({ length: 7 }, (_, i) => {
-  const n = i + 1;
-  const answer = t(`home.faq.a${n}`);
-  return {
-    question: t(`home.faq.q${n}`),
-    answer: answer.includes("{name}") ? answer.replace("{name}", SITE.name) : answer,
-  };
-});
-
+const posts = await getCollection("blog");
+const guideIds = ["why-pdfs-compress-differently", "image-compression-resizing-format-conversion", "verify-browser-tool-no-upload"];
+const guides = guideIds.map(id => posts.find(post => post.id === id)!).filter(Boolean);
 // JSON-LD structured data
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -74,298 +63,65 @@ const websiteJsonLd = {
 };
 ---
 
-<Layout
-  title={t("home.metaTitle")}
-  description={t("home.metaDesc")}
-  canonicalPath="/"
-  alternatePaths={getDefaultAlternates("/")}
-  jsonLd={[websiteJsonLd, organizationJsonLd]}
-  enableAds={true}
->
-  <!-- Hero -->
+<Layout title="Study, Assignment & Document Tools" description="Prepare assignments, check percentages and word counts, and work with PDFs and images. Free tools with local input processing and no signup." canonicalPath="/" alternatePaths={getDefaultAlternates("/")} jsonLd={[websiteJsonLd, organizationJsonLd]} enableAds={true}>
   <Hero />
+  <div class="container-page home-toolkit-sections">
+    {toolkits.map(kit => (
+      <section id={kit.id} class="toolkit-section" aria-labelledby={kit.id + "-heading"}>
+        <div class="toolkit-heading"><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p></div>
+        <ul class="task-list">
+          {kit.tasks.map(task => {
+            const tool = getToolBySlug(task.slug)!;
+            return <li><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{task.purpose}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>;
+          })}
+        </ul>
+      </section>
+    ))}
+    <div class="more-tools-note"><p>Looking for a developer utility, converter or another familiar tool?</p><a href="/tools/">Browse the full tool directory <span aria-hidden="true">→</span></a></div>
+  </div>
 
-
-  <!-- Popular Workflows -->
-  <section class="py-8 md:py-10 border-y border-hairline bg-canvas" aria-labelledby="popular-workflows-heading">
+  <section id="practical-guides" class="home-guides" aria-labelledby="guides-heading">
     <div class="container-page">
-      <div class="section-heading">
-        <div>
-          <p class="section-eyebrow">Start fast</p>
-          <h2 id="popular-workflows-heading" class="section-title">Popular workflows</h2>
-          <p class="section-description">Jump into the tool clusters people use most for everyday browser-based work.</p>
-        </div>
-        <a href="/tools/" class="pill-control">View all tools</a>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <a href="/tools/image-compressor/" class="workflow-card group">
-          <span class="workflow-card-label">Images</span>
-          <span class="workflow-card-desc">Compress, crop, resize, and convert image files.</span>
-          <span class="workflow-card-tools"><span>Image Compressor</span><span>Image Cropper</span><span>Image Resizer</span></span>
-        </a>
-        <a href="/tools/pdf-compressor/" class="workflow-card group">
-          <span class="workflow-card-label">PDF</span>
-          <span class="workflow-card-desc">Merge, split, compress, and extract PDF content.</span>
-          <span class="workflow-card-tools"><span>PDF Compressor</span><span>PDF Merger</span><span>PDF to Text</span></span>
-        </a>
-        <a href="/tools/json-formatter/" class="workflow-card group">
-          <span class="workflow-card-label">Code</span>
-          <span class="workflow-card-desc">Format JSON, decode JWTs, test regex, and convert data.</span>
-          <span class="workflow-card-tools"><span>JSON Formatter</span><span>JWT Decoder</span><span>Regex Tester</span></span>
-        </a>
-        <a href="/tools/word-counter/" class="workflow-card group">
-          <span class="workflow-card-label">Writing</span>
-          <span class="workflow-card-desc">Count, clean, compare, and polish text drafts.</span>
-          <span class="workflow-card-tools"><span>Word Counter</span><span>Grammar Checker</span><span>Text Similarity</span></span>
-        </a>
-      </div>
+      <div class="section-heading"><div><p class="section-eyebrow">Understand the result</p><h2 id="guides-heading" class="section-title">Practical guides for your next upload</h2></div><a href="/blog/" class="pill-control">All articles</a></div>
+      <div class="guide-list">{guides.map(post => <article><h3><a href={"/blog/" + post.id + "/"}>{post.data.title}</a></h3><p>{post.data.description}</p><a class="guide-read" href={"/blog/" + post.id + "/"} aria-label={"Read " + post.data.title}>Read guide <span aria-hidden="true">→</span></a></article>)}</div>
     </div>
   </section>
 
-  <!-- Categories -->
-  <section class="py-12 md:py-16" id="categories">
-    <div class="container-page">
-      <div class="section-heading">
-        <div>
-          <p class="section-eyebrow">7 categories</p>
-          <h2 class="section-title">{t("home.browseByCategory")}</h2>
-          <p class="section-description">
-            {t("home.browseByCategoryDesc").replace("{count}", String(CATEGORIES.length))}
-          </p>
-        </div>
-        <a href="/categories/" class="pill-control">Browse categories</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {CATEGORIES.map((cat) => (
-          <CategoryCard
-            slug={cat.slug}
-            name={cat.name}
-            description={cat.description}
-            icon={cat.icon}
-            color={cat.color}
-            toolCount={getToolsByCategory(cat.slug).length}
-          />
-        ))}
-      </div>
-    </div>
+  <section id="local-processing" class="container-page home-trust" aria-labelledby="privacy-heading">
+    <div><p class="section-eyebrow">Files stay in your workflow</p><h2 id="privacy-heading">Local processing, explained plainly.</h2></div>
+    <div><p>These tools process the text and files you provide inside your browser, rather than sending them to a Free Online Tools Nest processing server. Large files can still be limited by your device's memory.</p><p>The website can make separate requests for fonts, Google Analytics and advertising. Local tool processing does not mean the entire page is disconnected from the internet.</p><a href="/privacy-policy/">Read the privacy policy</a></div>
   </section>
-
-  <!-- Featured Tools -->
-  <section class="py-12 md:py-16 bg-canvas" id="featured-tools">
-    <div class="container-page">
-      <div class="section-heading">
-        <div>
-          <p class="section-eyebrow">High-traffic tools</p>
-          <h2 class="section-title">{t("home.popularTools")}</h2>
-          <p class="section-description">{t("home.popularToolsDesc")}</p>
-        </div>
-        <a href="/tools/" class="pill-control">All 77 tools</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featured.map((tool) => (
-          <ToolCard
-            slug={tool.slug}
-            name={tool.name}
-            description={tool.description}
-            icon={tool.icon}
-            categorySlug={tool.categorySlug}
-          />
-        ))}
-      </div>
-      <div class="text-center mt-8">
-        <a href="/tools/" class="btn-secondary">
-          {t("home.viewAllTools")}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="inline ml-1">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Why Choose Us -->
-  <section class="py-12 md:py-16" id="why-us">
-    <div class="container-page">
-      <div class="section-heading">
-        <div>
-          <p class="section-eyebrow">Built for focus</p>
-          <h2 class="section-title">{t("home.whyChoose")}</h2>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          {
-            icon: "⚡",
-            title: t("home.why1Title"),
-            desc: t("home.why1Desc"),
-          },
-          {
-            icon: "🔒",
-            title: t("home.why2Title"),
-            desc: t("home.why2Desc"),
-          },
-          {
-            icon: "📱",
-            title: t("home.why3Title"),
-            desc: t("home.why3Desc"),
-          },
-        ].map((item) => (
-          <div class="card p-6 text-center min-h-[180px]">
-            <span class="text-3xl mb-4 block" aria-hidden="true">{item.icon}</span>
-            <h3 class="text-lg font-semibold text-ink mb-2">{item.title}</h3>
-            <p class="text-sm text-body leading-relaxed">{item.desc}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <FAQSection items={homeFaqs} />
-
-  <!-- SEO Content -->
-  <section class="py-12 md:py-16 bg-canvas" id="about-section">
-    <div class="container-narrow">
-      <article class="prose-like">
-        <h2 class="text-2xl md:text-3xl font-semibold text-ink mb-6" style="letter-spacing: -0.96px;">
-          Free Online Tools Nest — Your Frontier Utilities Hub for Everyday Web Tasks
-        </h2>
-
-        <p class="text-body leading-relaxed mb-6">
-          In today's fast-paced digital world, efficiency and convenience are key to maintaining a productive workflow. Whether you are a content writer perfecting a blog post, a developer formatting a complex JSON payload, a designer converting color codes, or a student solving a math problem,           having the right <strong>free browser-based tools</strong> at your fingertips makes all the difference. <strong>Free Online Tools Nest</strong> is a comprehensive collection of <strong>no signup tools</strong> and frontier utilities that addresses these everyday challenges.
-        </p>
-
-        <p class="text-body leading-relaxed mb-6">
-          We provide a diverse suite of <strong>free online browser-based tools</strong> built around fast access, no signup, and local tool processing. Unlike platforms that require registrations, credit cards, or software installations, the utilities work directly inside your browser. Tool inputs are not sent to a Free Online Tools Nest processing server; analytics and advertising resources are described separately in our privacy policy.
-        </p>
-
-        <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">
-          Why Choose Browser-Based Free Web Tools?
-        </h3>
-
-        <p class="text-body leading-relaxed mb-6">
-          Traditional utility software can add friction through installers, updates, and license management. Many web-based alternatives also require files or text to be uploaded to remote servers, which may be unsuitable for private drafts or local documents.
-        </p>
-
-        <p class="text-body leading-relaxed mb-6">
-          <strong>Free Online Tools Nest</strong> solves this by providing genuinely free web tools that leverage modern browser-based technology. When you use our platform, all calculations, formatting, and file processing occur locally on your machine using client-side JavaScript. This offers three critical benefits:
-        </p>
-
-        <ul class="list-disc pl-6 mb-6 space-y-2 text-body">
-          <li><strong>Local tool processing</strong>: Tool input is not sent to our backend for processing, which reduces exposure compared with an upload-based workflow. Device security, browser extensions, clipboard history, and third-party page resources remain separate considerations.</li>
-          <li><strong>Instant Speed</strong>: Without the need to transmit data back and forth across a network, results are processed in real-time. As you type, the tool outputs update instantly.</li>
-          <li><strong>Local computation</strong>: Once the required code has loaded, many text and calculation workflows can continue without a processing-server round trip. Reloading pages and third-party resources still requires a network connection.</li>
-        </ul>
-
-        <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">
-          A Curated Directory of Essential Tool Categories
-        </h3>
-
-        <p class="text-body leading-relaxed mb-6">
-          Our platform organizes its <strong>web tools collection</strong> of frontier utilities into seven intuitive categories, making it easy to find the exact utility you need to optimize your daily productivity.
-        </p>
-
-        <h4 class="text-lg font-medium text-ink mt-6 mb-3">
-          1. Developer Tools for Modern Workflows
-        </h4>
-        <p class="text-body leading-relaxed mb-4">
-          Developers face daily formatting, encoding, and testing challenges. Our <strong>online developer tools</strong> category includes:
-        </p>
-        <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
-          <li><strong>JSON Formatter Online</strong>: A utility that beautifies minified JSON payloads, formats nested structures, and validates code by highlighting syntax errors and line numbers in real-time.</li>
-          <li><strong>HTML Formatter Online</strong>: A fast utility to clean up messy HTML markups, customize indentation levels, and minify code for production performance.</li>
-          <li><strong>URL Encoder Decoder Online</strong>: An instant tool to convert special characters in URLs to safe percent-encoded representations, or decode them back to human-readable strings.</li>
-          <li><strong>Base64 Encoder Decoder Online</strong>: A secure encoder and decoder to translate binary or text data to and from Base64 format, ideal for data URIs, API request bodies, and email attachments.</li>
-          <li><strong>Regex Tester Online</strong>: A sandbox to test and validate regular expressions against mock strings with real-time match highlighting and capture-group identification.</li>
-        </ul>
-
-        <h4 class="text-lg font-medium text-ink mt-6 mb-3">
-          2. Text Tools for Writers and Content Creators
-        </h4>
-        <p class="text-body leading-relaxed mb-4">
-          Creating well-formatted content requires precise tools. Our <strong>online text tools</strong> category provides:
-        </p>
-        <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
-          <li><strong>Word Counter Online</strong>: A robust analyzer that breaks down word count, sentences, paragraphs, and estimates reading times instantly.</li>
-          <li><strong>Character Counter Online</strong>: A real-time character tracker that displays counts with and without spaces, perfect for writing Twitter posts, SMS, or Google meta descriptions.</li>
-          <li><strong>Case Converter Online</strong>: A text transformer that converts input strings to UPPERCASE, lowercase, Title Case, Sentence case, or camelCase with one click.</li>
-          <li><strong>Lorem Ipsum Generator Online</strong>: A placeholder dummy text creator that outputs custom word, sentence, or paragraph counts for design layouts and UI mockups.</li>
-        </ul>
-
-        <h4 class="text-lg font-medium text-ink mt-6 mb-3">
-           3. Free Online Calculators for Instant Math
-         </h4>
-         <p class="text-body leading-relaxed mb-4">
-           Complex equations shouldn't require opening a heavy spreadsheet or desktop application. Our <strong>free online calculators</strong> provide:
-         </p>
-         <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
-           <li><strong>Percentage Calculator Online</strong>: A multi-mode calculator to solve three distinct percentage math operations: finding a percentage of a number, determining what percentage one number is of another, and calculating the percentage change (increase or decrease) between two values.</li>
-           <li><strong>Age Calculator Online</strong>: Calculate exact age from date of birth in years, months, weeks, days, hours, minutes, and seconds with support for any two-date comparison.</li>
-           <li><strong>BMI Calculator Online</strong>: Compute Body Mass Index from height and weight with an interactive BMI scale, color-coded categories, and weight classification.</li>
-           <li><strong>Tip Calculator Online</strong>: Calculate gratuity and split restaurant bills among any number of people with preset and custom tip percentages.</li>
-           <li><strong>Date Difference Calculator</strong>: Find the exact duration between any two dates in years, months, weeks, and days for project planning and countdowns.</li>
-           <li><strong>Number to Words Converter</strong>: Convert any number into its English word representation, perfect for writing checks and invoices.</li>
-         </ul>
-
-         <h4 class="text-lg font-medium text-ink mt-6 mb-3">
-           4. PDF Tools for Document Processing
-         </h4>
-         <p class="text-body leading-relaxed mb-4">
-           Work with PDF documents without installing desktop software. Our <strong>free online PDF tools</strong> run entirely in your browser:
-         </p>
-         <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
-           <li><strong>PDF Merger Online</strong>: Combine multiple PDF files into a single document with page reordering.</li>
-           <li><strong>PDF Splitter Online</strong>: Split large PDFs into individual pages or extract specific page ranges.</li>
-           <li><strong>PDF Compressor Online</strong>: Attempt to reduce PDF size by rewriting document structure locally, with savings depending on the source file.</li>
-           <li><strong>PDF to Text Converter</strong>: Extract and copy text content from PDF documents with preserved formatting.</li>
-           <li><strong>PDF to Image Converter</strong>: Convert PDF pages into high-quality PNG or JPEG images with custom quality settings.</li>
-         </ul>
-
-          <h4 class="text-lg font-medium text-ink mt-6 mb-3">
-            5. Free Online SEO Tools for Content Optimization
-          </h4>
-          <p class="text-body leading-relaxed mb-4">
-            Optimize your content for search engines without spending a dime. Our <strong>free online SEO tools</strong> help you audit, preview, and fine-tune every aspect of your on-page SEO:
-          </p>
-          <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
-            <li><strong>Meta Tag Generator Online</strong>: A complete wizard to generate title tags, meta descriptions, and Open Graph tags with character count validation and a real-time SERP preview.</li>
-            <li><strong>Keyword Density Checker Online</strong>: Paste your content and instantly analyze keyword frequency and density distribution to avoid over-optimizing or missing key terms.</li>
-            <li><strong>Robots.txt Generator Online</strong>: Create custom robots.txt files with a visual editor that supports allow and disallow rules, crawl delays, and sitemap references.</li>
-            <li><strong>Sitemap Generator Online</strong>: Generate XML sitemaps from a list of URLs with customizable priority, changefreq settings, and lastmod dates.</li>
-            <li><strong>SERP Preview Generator Online</strong>: Preview exactly how your page title and meta description will appear in Google search results before publishing.</li>
-          </ul>
-
-          <h4 class="text-lg font-medium text-ink mt-6 mb-3">
-            6. Online Converter Tools for Seamless Formats
-        </h4>
-        <p class="text-body leading-relaxed mb-4">
-          Convert files, strings, and values on the fly with our <strong>online converter tools</strong> suite:
-        </p>
-        <ul class="list-disc pl-6 mb-6 space-y-1 text-body">
-          <li><strong>Online QR Code Generator</strong>: A tool that converts URLs, phone numbers, or plain text into downloadable, high-quality QR codes in PNG format for marketing campaigns and business cards.</li>
-          <li><strong>Color Converter Online</strong>: A utility for designers and web developers to translate color codes seamlessly between HEX, RGB, and HSL formats with a live color preview box.</li>
-          <li><strong>Markdown to HTML Converter</strong>: A tool that renders markdown syntax into clean, standard HTML code with a real-time side-by-side preview.</li>
-          <li><strong>CSV to JSON Converter</strong>: A parser that transforms spreadsheet tables or raw CSV inputs into structured JSON arrays of objects, complete with delimiter configurations.</li>
-          <li><strong>Image Compressor Online</strong>: A client-side optimizer that reduces file sizes for JPEG, PNG, and WebP images without uploading them to any server.</li>
-        </ul>
-
-        <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">
-          How Our Frontier Utilities Streamline Your Work
-        </h3>
-
-        <p class="text-body leading-relaxed mb-6">
-          By bringing these tools under a single, cohesive interface, <strong>Free Online Tools Nest</strong> provides a consistent place for common utility tasks. Advertising supports the free service, but it does not affect tool results and is kept separate from inputs, outputs, and download actions.
-        </p>
-
-        <p class="text-body leading-relaxed mb-6">
-          Our <strong>free productivity tools</strong> and frontier utilities are designed with responsive layouts, ensuring that they work flawlessly on any screen size. Whether you are on a smartphone, a tablet, or a large desktop monitor, the layout adjusts to optimize screen space and usability. With keyboard navigation and accessible color contrasts, we ensure that every user can work comfortably and efficiently.
-        </p>
-
-        <h3 class="text-xl font-semibold text-ink mt-8 mb-4" style="letter-spacing: -0.6px;">How we maintain the collection</h3>
-        <p class="text-body leading-relaxed">The team reviews tool behavior, browser compatibility, privacy claims, and documentation as the collection evolves. Our <a href="/standards/" class="text-link underline">editorial and testing standards</a> explain the checks used for reviewed tools and how to report a correction.</p>
-      </article>
-    </div>
+  <section class="container-page home-about" aria-label="Testing and about the site">
+    <article><h2>How we test our tools</h2><p>Our review process covers example results, invalid inputs, file downloads and known limitations. Reviewed tools carry their recorded review date, and results still deserve a check before submission.</p><a href="/standards/">See our testing standards</a></article>
+    <article><h2>About Free Online Tools Nest</h2><p>Small tasks should not stand between you and a finished assignment. We maintain browser utilities for study, writing and document preparation, alongside the wider collection.</p><a href="/about/">About the project</a><a href="/contact/">Report a problem</a></article>
   </section>
 </Layout>
+
+<style>
+  .home-toolkit-sections { padding-top: 24px; }
+  .toolkit-section { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr); gap: 56px; padding: 40px 0; border-bottom: 1px solid var(--color-hairline); scroll-margin-top: 100px; }
+  .toolkit-heading h2, .home-trust h2 { font-size: clamp(23px, 2.5vw, 29px); font-weight: 600; line-height: 1.25; letter-spacing: -0.5px; }
+  .toolkit-heading p { margin-top: 14px; color: var(--color-body); font-size: 15px; line-height: 1.7; }
+  .task-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; list-style: none; }
+  .task-list a { display: flex; justify-content: space-between; gap: 12px; padding: 16px 12px; min-height: 100%; border-radius: 8px; text-decoration: none; color: var(--color-ink); }
+  .task-list a:hover { background: var(--color-canvas-soft-2); }
+  .task-list strong { font-size: 15px; font-weight: 500; }
+  .task-purpose { display: block; margin-top: 6px; font-size: 13px; color: var(--color-body); line-height: 1.6; }
+  .task-arrow { color: var(--color-link); }
+  .more-tools-note { padding: 30px 0 44px; font-size: 14px; color: var(--color-body); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .more-tools-note a, .home-trust a, .home-about a, .guide-read { color: var(--color-link); text-decoration: underline; text-underline-offset: 4px; }
+  .home-guides { padding: 48px 0; border-block: 1px solid var(--color-hairline); background: var(--color-canvas); scroll-margin-top: 100px; }
+  .guide-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .guide-list h3 { font-size: 18px; font-weight: 500; line-height: 1.5; }
+  .guide-list h3 a { color: var(--color-ink); text-decoration: none; }
+  .guide-list h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .guide-list p { margin: 12px 0 18px; color: var(--color-body); font-size: 14px; line-height: 1.7; }
+  .guide-read { font-size: 14px; }
+  .home-trust { display: grid; grid-template-columns: 1fr 2fr; gap: 56px; padding-top: 56px; padding-bottom: 40px; scroll-margin-top: 100px; }
+  .home-trust p:not(.section-eyebrow), .home-about p { color: var(--color-body); line-height: 1.8; font-size: 15px; margin-bottom: 16px; }
+  .home-trust a, .home-about a { display: inline-block; font-size: 14px; margin-right: 20px; min-height: 32px; }
+  .home-about { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-top: 24px; }
+  .home-about h2 { font-size: 20px; font-weight: 500; margin-bottom: 14px; }
+  @media (max-width: 800px) { .toolkit-section, .home-trust { grid-template-columns: 1fr; gap: 20px; } .guide-list { grid-template-columns: 1fr; gap: 28px; } .home-about { gap: 32px; } }
+  @media (max-width: 540px) { .task-list, .home-about { grid-template-columns: 1fr; } .toolkit-section { padding: 32px 0; } .task-list a { padding-inline: 0; } }
+</style>
