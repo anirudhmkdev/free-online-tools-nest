@@ -9,6 +9,9 @@ describe("content navigation", () => {
     const policy = { ...PAGE_POLICIES[page.path], indexable: true, reviewStatus: "reviewed" as const, lastReviewed: "2026-09-26" };
     expect(reviewErrors(page, policy, {reviewedOn:null,evidence:[]})).not.toEqual([]);
     const quality = {reviewedOn:"2026-09-26",evidence:["Verified example"]};
+    expect(reviewErrors(page, policy, quality).join(" ")).toContain("distinction");
+    const writing = contentPage("/writing-tools/");
+    expect(reviewErrors(writing, PAGE_POLICIES[writing.path], quality).join(" ")).toContain("distinction");
     expect(reviewErrors(page, policy, quality, {reviewedOn:null}).join(" ")).toContain("distinction");
     expect(reviewErrors(page, policy, quality, {reviewedOn:"2026-09-26"})).toEqual([]);
     expect(reviewErrors(page, {...policy,indexable:false}, {reviewedOn:null,evidence:[]}, {reviewedOn:null})).toEqual([]);
