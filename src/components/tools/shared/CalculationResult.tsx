@@ -1,6 +1,26 @@
-import type { ComponentProps, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ReactNode,
+} from "react";
+type FieldError = { label: string; message: string };
+const FieldErrors = createContext<Record<string, FieldError>>({});
+/** Keep programmatic focus visible below the site's fixed navigation. */
+export function focusToolElement(
+  element: HTMLElement | null,
+  block: ScrollLogicalPosition = "center",
+) {
+  if (!element) return;
+  element.focus({ preventScroll: true });
+  element.scrollIntoView({ block, behavior: "instant" });
+}
 export const inputClass =
-  "w-full min-w-0 rounded-lg border border-hairline bg-canvas px-3 py-3 text-base text-ink";
+  "w-full min-w-0 rounded-lg border border-hairline bg-canvas px-3 py-3 text-base text-ink disabled:cursor-not-allowed disabled:opacity-50";
 export function NumberField({
   id,
   label,
@@ -8,6 +28,10 @@ export function NumberField({
   onChange,
   hint,
   disabled = false,
+  required = true,
+  min = 0,
+  max,
+  step = "any",
 }: {
   id: string;
   label: string;
@@ -15,7 +39,15 @@ export function NumberField({
   onChange: (value: string) => void;
   hint?: string;
   disabled?: boolean;
+  required?: boolean;
+  min?: number;
+  max?: number;
+  step?: number | "any";
 }) {
+  const error = useContext(FieldErrors)[id];
+  const descriptions = [hint && id + "-hint", error && id + "-error"]
+    .filter(Boolean)
+    .join(" ");
   return (
     <div className="min-w-0">
       <label htmlFor={id} className="mb-2 block text-sm font-medium text-ink">
@@ -24,17 +56,29 @@ export function NumberField({
       <input
         id={id}
         type="number"
-        inputMode="decimal"
-        step="any"
+        inputMode={step === 1 ? "numeric" : "decimal"}
+        step={step}
+        min={min}
+        max={max}
+        required={required}
+        data-number-field={label}
         value={value}
         disabled={disabled}
         onChange={(e) => onChange(e.target.value)}
         className={inputClass}
-        aria-describedby={hint ? id + "-hint" : undefined}
+        aria-describedby={descriptions || undefined}
+        aria-invalid={error ? true : undefined}
       />
-      <p id={id + "-hint"} className="mt-1 text-xs leading-relaxed text-body">
-        {hint}
-      </p>
+      {hint && (
+        <p id={id + "-hint"} className="mt-2 text-sm leading-relaxed text-body">
+          {hint}
+        </p>
+      )}
+      {error && (
+        <p id={id + "-error"} className="mt-2 text-sm font-medium text-ink">
+          {error.message}
+        </p>
+      )}
     </div>
   );
 }
@@ -49,23 +93,106 @@ export function CalculatorForm({
   onEdit: () => void;
   error: string;
 }) {
+  const [fieldErrors, setFieldErrors] = useState<Record<string, FieldError>>(
+    {},
+  );
+  const [submission, setSubmission] = useState(0);
+  const form = useRef<HTMLFormElement>(null);
+  const summary = useRef<HTMLDivElement>(null);
+  const summaryId = useId();
+  useEffect(() => {
+    const first = Object.keys(fieldErrors)[0];
+    if (first)
+      focusToolElement(
+        form.current?.querySelector<HTMLInputElement>(`[id="${first}"]`) ??
+          null,
+      );
+    else if (error) focusToolElement(summary.current, "start");
+  }, [fieldErrors, error, submission]);
   return (
-    <form
-      noValidate
-      onSubmit={onSubmit}
-      onChangeCapture={onEdit}
-      className="space-y-5"
-    >
-      {children}
-      {error && (
-        <div
-          role="alert"
-          className="rounded-lg border border-hairline bg-canvas-soft-2 p-4 text-sm text-ink"
-        >
-          <strong>Check your entries.</strong> {error}
-        </div>
-      )}
-    </form>
+    <FieldErrors.Provider value={fieldErrors}>
+      <form
+        ref={form}
+        noValidate
+        onSubmit={(event) => {
+          event.preventDefault();
+          const errors: Record<string, FieldError> = {};
+          for (const field of event.currentTarget.querySelectorAll<HTMLInputElement>(
+            "input[data-number-field]",
+          )) {
+            if (field.matches(":disabled") || field.validity.valid) continue;
+            const label = field.dataset.numberField!;
+            const validity = field.validity;
+            const message = validity.badInput
+              ? "Enter a valid number."
+              : validity.valueMissing
+                ? `Enter ${label.toLowerCase()}.`
+                : validity.rangeUnderflow
+                  ? `Use ${field.min} or more.`
+                  : validity.rangeOverflow
+                    ? `Use ${field.max} or less.`
+                    : validity.stepMismatch
+                      ? field.step === "1"
+                        ? "Use a whole number."
+                        : `Use increments of ${field.step}.`
+                      : "Check this number and try again.";
+            errors[field.id] = { label, message };
+          }
+          setFieldErrors(errors);
+          setSubmission((count) => count + 1);
+          if (Object.keys(errors).length) onEdit();
+          else onSubmit(event);
+        }}
+        onChangeCapture={() => {
+          setFieldErrors({});
+          onEdit();
+        }}
+        onClickCapture={(event) => {
+          if ((event.target as HTMLElement).closest('button[type="button"]'))
+            setFieldErrors({});
+        }}
+        className="space-y-5"
+      >
+        {children}
+        {(error || Object.keys(fieldErrors).length > 0) && (
+          <div
+            ref={summary}
+            tabIndex={-1}
+            aria-labelledby={summaryId}
+            role="alert"
+            className="scroll-mt-24 rounded-lg border border-hairline bg-canvas-soft-2 p-4 text-sm text-ink"
+          >
+            <p id={summaryId} className="font-semibold">
+              Check your entries.
+            </p>
+            {Object.keys(fieldErrors).length > 0 ? (
+              <ul className="mt-2">
+                {Object.entries(fieldErrors).map(([id, issue]) => (
+                  <li key={id}>
+                    <a
+                      href={`#${id}`}
+                      className="inline-flex min-h-11 items-center text-link underline"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        focusToolElement(
+                          form.current?.querySelector<HTMLInputElement>(
+                            `[id="${id}"]`,
+                          ) ?? null,
+                        );
+                      }}
+                    >
+                      {issue.label}: {issue.message}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-2 leading-relaxed">{error}</p>
+            )}
+          </div>
+        )}
+      </form>
+    </FieldErrors.Provider>
   );
 }
 export default function CalculationResult({
@@ -81,14 +208,24 @@ export default function CalculationResult({
   notes?: string[];
   impossible?: boolean;
 }) {
+  const result = useRef<HTMLElement>(null);
+  const resultId = useId();
+  useEffect(() => {
+    focusToolElement(result.current, "start");
+  }, [value, label, lines]);
   return (
     <section
-      aria-label="Calculation result"
-      aria-live="polite"
-      className="mt-6 rounded-xl border border-hairline bg-canvas-soft-2 p-5 sm:p-6"
+      ref={result}
+      tabIndex={-1}
+      aria-labelledby={`${resultId}-label ${resultId}-value`}
+      data-calculation-result
+      className="mt-6 scroll-mt-24 rounded-xl border border-hairline bg-canvas-soft-2 p-5 sm:p-6"
     >
-      <p className="text-sm font-medium text-body">{label}</p>
+      <p id={`${resultId}-label`} className="text-sm font-medium text-body">
+        {label}
+      </p>
       <p
+        id={`${resultId}-value`}
         className="mt-2 break-words text-3xl font-semibold tracking-tight text-ink"
         style={{ fontVariantNumeric: "tabular-nums" }}
       >
@@ -117,7 +254,7 @@ export default function CalculationResult({
         ))}
       </ol>
       {notes.length > 0 && (
-        <ul className="mt-5 list-disc space-y-2 pl-5 text-xs leading-relaxed text-body">
+        <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-relaxed text-body">
           {notes.map((note) => (
             <li key={note}>{note}</li>
           ))}

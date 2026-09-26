@@ -88,6 +88,7 @@ export default function RequiredMarksCalculator() {
           />
           <NumberField
             id="required-maximum"
+            required={false}
             label="Assessment maximum marks (optional)"
             value={maximum}
             onChange={setMaximum}
