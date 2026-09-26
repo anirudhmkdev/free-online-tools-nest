@@ -1,6 +1,23 @@
 # Free Online Tools Nest — Project Knowledge Base
 
-## Current Phase 2 override — 2026-09-16
+## Current Phase 3 override — 2026-09-26
+
+Phase 3 is implemented and locally verified on `codex/hubs-workflows-phase-3`, based on `d1ac0edf58dbd2ca9e7e19b2680620a0001650a5`. This section supersedes the historical sections below.
+
+- Exactly four hubs and five workflows were added, all English-only. There are still 83 tools, now 191 generated pages (123 English, 34 Spanish, 34 Hindi), 188 indexable directives, three existing noindex pages and 89 sitemap URLs.
+- All nine new pages and the six Phase 2 tools remain `adEligible: false`; preserve the exact 117 existing AdSense-loader members and all advertising configuration.
+- Preserve both original Phase 1/2 fixtures. The separate post-Phase-2 fixture freezes all 182 existing routes; Phase 3 additions are independently scoped. Do not rewrite baseline evidence to hide regressions.
+- Hubs are task-selection guides; PDF/Text categories remain inventories with unchanged indexing and copy. Indexing the Document/Writing hubs requires dated overlap-review evidence and distinct H1/title/description/content.
+- Content registries live in `src/data/hubs.ts` and `workflows.ts`, with quality evidence in `content-page-quality.ts`. Individual Astro pages share `ContentPageLayout.astro`; all decision content works without new client JavaScript.
+- `relatedWorkflows` drives relevant English tool links. Existing homepage anchors, tool/category URLs, protected copy and localized availability remain unchanged. Never generate false translated destinations.
+- Visible/internal review dates are not emitted as `lastReviewed` in JSON-LD. Do not invent publication/modification dates.
+- Stable-content protection excludes shared chrome, bundle attributes, permitted workflow additions and only the existing Epoch live-clock number. Never hash full generated HTML.
+- Keep detailed Search Console exports, queries, traffic/ranking numbers and private history under ignored `.private/`. Tracked documentation contains only generic measurement procedure and implementation evidence. Do not confuse local review dates with production release timestamps.
+- The build is offline and checks `dist/ads.txt`. Live production verification is a separate post-deployment operation.
+- Stop after local verification. No push, merge, deployment, Phase 4, AdSense configuration change or review request without explicit later authorization.
+- See `docs/hubs-workflows-phase-3-verification.md` for checks and limitations, and `docs/search-console-measurement.md` for the generic future measurement procedure.
+
+## Historical Phase 2 override — 2026-09-16
 
 This section supersedes the Phase 1 notes and historical counts below. Phase 1 was merged and verified; Phase 2 is implemented locally on `codex/student-tools-phase-2`, based on main `23148941ce4b9fdbd405b66b831e75ee3fd13cf7`.
 

@@ -1,0 +1,1062 @@
+{
+  "baseCommit": "d1ac0edf58dbd2ca9e7e19b2680620a0001650a5",
+  "pages": {
+    "/blog/10-free-online-tools-2026/": {
+      "title": "10 Free Online Tools for Developers &amp; Creators in 2026 |…",
+      "description": "A curated list of free online tools for developers, writers, and creators — all running entirely in your browser with zero server uploads.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/10-free-online-tools-2026/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "10 Free Online Tools for Developers &amp; Creators in 2026"
+      ],
+      "ownedTextHash": "4aa6d6a62067593665d244d52025993ef84c81ab102eb74451bffa419af3a454"
+    },
+    "/blog/csv-to-json-delimiters-quotes-headers/": {
+      "title": "CSV to JSON: Delimiters, Quotes, Headers, and Type Pitfal…",
+      "description": "Convert CSV to JSON reliably by handling delimiters, quoted fields, headers, missing values, and data types.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/csv-to-json-delimiters-quotes-headers/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "CSV to JSON: Delimiters, Quotes, Headers, and Type Pitfalls"
+      ],
+      "ownedTextHash": "43159cb5bbfb6ff5bdd37615d5dc59e3903560f076e959df21eb1999601c6e9f"
+    },
+    "/blog/decode-jwt-vs-verify-signature/": {
+      "title": "Decoding JWTs Safely: Decoding Is Not Signature Verificat…",
+      "description": "Learn what a JWT decoder can reveal, what it cannot prove, and how to validate tokens safely in an application.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/decode-jwt-vs-verify-signature/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Decoding JWTs Safely: Decoding Is Not Signature Verification"
+      ],
+      "ownedTextHash": "a64a83c2f891594dbe61ab8f6e71a59408be537f227d7b842eb3752f5507f86e"
+    },
+    "/blog/free-online-tools-guide-2026/": {
+      "title": "The 2026 Guide to Free Online Tools — No Uploads, No Sign…",
+      "description": "Why browser-based tools are taking over in 2026 and how Free Online Tools Nest gives you 77 free tools that run entirely in your browser.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/free-online-tools-guide-2026/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "The 2026 Guide to Free Online Tools — No Uploads, No Signups"
+      ],
+      "ownedTextHash": "aca5e89f5057db53caf9b2fb3cce65269af8a6d5125df911c1f575cca3952faf"
+    },
+    "/blog/image-compression-resizing-format-conversion/": {
+      "title": "Image Compression vs Resizing vs Format Conversion | Free…",
+      "description": "Choose the right image workflow by separating quality compression, pixel resizing, cropping, and format conversion.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/image-compression-resizing-format-conversion/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Image Compression vs Resizing vs Format Conversion"
+      ],
+      "ownedTextHash": "f0f3fd1e25cb3b06f3404bff82767d7fabc2573de6d225de4abde341729cdb8d"
+    },
+    "/blog/image-compressor-browser-only/": {
+      "title": "How Our Browser Image Compressor Works — No Server Upload…",
+      "description": "Most image compressors upload your photos to a server. Here's how we built a browser-only image compressor that keeps your files private.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/image-compressor-browser-only/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "How Our Browser Image Compressor Works — No Server Upload"
+      ],
+      "ownedTextHash": "3c7efc6e06afc56f796108215a348b52b691c0c45b1598a94b3297393ed6fd53"
+    },
+    "/blog/javascript-regex-flags-groups-mistakes/": {
+      "title": "JavaScript Regular Expressions: Flags, Groups, and Common…",
+      "description": "Test JavaScript regex patterns safely and understand flags, capture groups, escaping, and backtracking pitfalls.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/javascript-regex-flags-groups-mistakes/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "JavaScript Regular Expressions: Flags, Groups, and Common Mistakes"
+      ],
+      "ownedTextHash": "a8f7c1618a8b25af948f33631d8de7958c153c9f19496647715009cc5f45f412"
+    },
+    "/blog/json-formatting-validation-edge-cases/": {
+      "title": "JSON Formatting and Validation: Edge Cases That Break Rea…",
+      "description": "A practical guide to JSON parsing errors, numbers, Unicode, duplicate keys, and validation with reproducible examples.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/json-formatting-validation-edge-cases/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "JSON Formatting and Validation: Edge Cases That Break Real Payloads"
+      ],
+      "ownedTextHash": "54c1b8288d6c0a3afb20664d3c5ef2592791896c76796e8d7cab95dd401c6ee7"
+    },
+    "/blog/verify-browser-tool-no-upload/": {
+      "title": "How to Verify That a Browser Tool Is Not Uploading Your F…",
+      "description": "Use browser DevTools and implementation checks to verify whether a local web tool sends your input over the network.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/verify-browser-tool-no-upload/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "How to Verify That a Browser Tool Is Not Uploading Your Files"
+      ],
+      "ownedTextHash": "ac77b7131956491af6a21fecab19fe6a6c0f21513aabeb712f2745b2605b5dbc"
+    },
+    "/blog/wcag-contrast-ratios-examples/": {
+      "title": "WCAG Contrast Ratios With Practical Color Examples | Free…",
+      "description": "Understand relative luminance, AA and AAA contrast thresholds, and practical checks for text and interface colors.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/wcag-contrast-ratios-examples/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "WCAG Contrast Ratios With Practical Color Examples"
+      ],
+      "ownedTextHash": "cf0e51fcd0b5e992898dece761f18b7e381b39bf6d5bad00b9a8c59fdabc7898"
+    },
+    "/blog/why-pdfs-compress-differently/": {
+      "title": "Why Some PDFs Compress Better Than Others | Free Online T…",
+      "description": "Understand PDF size, embedded images, fonts, object streams, and why browser compression results vary by document.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/blog/why-pdfs-compress-differently/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Why Some PDFs Compress Better Than Others"
+      ],
+      "ownedTextHash": "c025467e663ce4ddd364b592a92f75c2359569fcf59cfb31e9e795b75e118ed0"
+    },
+    "/categories/pdf-tools/": {
+      "title": "Free PDF Tools Online - Merge, Split, Compress, Convert |…",
+      "description": "Use free PDF tools online to merge, split, compress, extract text, and convert PDF pages to images privately in your browser.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/categories/pdf-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Free Online PDF Tools"
+      ],
+      "ownedTextHash": "b88caae1d5528577aace24ada29059579a5b3d36a197b885106301a301ca3281"
+    },
+    "/categories/text-tools/": {
+      "title": "Free Text Tools Online - Word Counter, Case Converter | F…",
+      "description": "Use free text tools online for word count, character count, case conversion, readability, similarity checks, and writing cleanup in your browser.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/categories/text-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Online Text Tools"
+      ],
+      "ownedTextHash": "5abf5b9b02619230c7270f10bd68c2312431b2adcda9f39103b2f59c3cdd077b"
+    },
+    "/es/about/": {
+      "title": "Acerca de Free Online Tools Nest",
+      "description": "Conoce Free Online Tools Nest, una colección de herramientas online gratis, rápidas y privadas.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/about/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Acerca de Free Online Tools Nest"
+      ],
+      "ownedTextHash": "f6708c77d6d8d0a804dbfa3bad7403b6a74e5695dbc9c0593471983a6d181b82"
+    },
+    "/es/categories/converters/": {
+      "title": "Convertidores online gratis | Free Online Tools Nest",
+      "description": "Usa convertidores online gratis para CSV, JSON, markdown, unidades e imágenes con procesamiento en tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/categories/converters/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Convertidores"
+      ],
+      "ownedTextHash": "b90477c304136868f686a7317775eaddb773fdff612c43c2f25849a404df97f4"
+    },
+    "/es/categories/design-tools/": {
+      "title": "Herramientas de diseño gratis online | Free Online Tools…",
+      "description": "Usa herramientas de diseño gratis para contraste WCAG, color y CSS desde el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/categories/design-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Herramientas de diseño"
+      ],
+      "ownedTextHash": "69503b28ada2edea42858736716bd5858be371c9baf4efb92b16c6f8abde86de"
+    },
+    "/es/categories/developer-tools/": {
+      "title": "Herramientas para desarrolladores gratis | Free Online To…",
+      "description": "Formatea JSON, prueba regex, decodifica JWT y convierte datos con herramientas para desarrolladores que funcionan en el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/categories/developer-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Herramientas para desarrolladores"
+      ],
+      "ownedTextHash": "6b314e373a9cec95074f506db9eb6bb92fa7bef096ae4e6ccf20649d382a0bf1"
+    },
+    "/es/categories/": {
+      "title": "Explorar por categoría | Free Online Tools Nest",
+      "description": "Encuentra la herramienta correcta en 5 categorías útiles.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/categories/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Explorar por categoría"
+      ],
+      "ownedTextHash": "4e667d5b8693d0dd256f5069c153eb2dacec55e620d8504651bcaeadc75ba5f7"
+    },
+    "/es/categories/pdf-tools/": {
+      "title": "Herramientas PDF gratis online | Free Online Tools Nest",
+      "description": "Comprime y une PDF online gratis con herramientas privadas que funcionan en el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/categories/pdf-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Herramientas PDF"
+      ],
+      "ownedTextHash": "feb9ed910ac6777816f8bd202467a6bf1b4db6dd4ccdaae0caa5e3b72a6dbb99"
+    },
+    "/es/categories/text-tools/": {
+      "title": "Herramientas de texto gratis online | Free Online Tools Nest",
+      "description": "Usa herramientas de texto gratis para contar palabras, revisar gramática, crear nubes de palabras y limpiar contenido en tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/categories/text-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Herramientas de texto"
+      ],
+      "ownedTextHash": "3687522d88c71ea01562ca1384f3648524435c0fd2e7bfe00f276dff62efe8e6"
+    },
+    "/es/contact/": {
+      "title": "Contacto — Free Online Tools Nest",
+      "description": "Envía feedback, sugerencias de herramientas o reportes de errores.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/contact/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Contacto"
+      ],
+      "ownedTextHash": "00332e093ef19de58d55ccee3e9f311a04f98dc45297f4ae543162118b5df2ee"
+    },
+    "/es/faq/": {
+      "title": "Preguntas frecuentes — herramientas privadas online | Fre…",
+      "description": "Respuestas sobre privacidad, uso gratuito y herramientas online en el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/faq/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Preguntas frecuentes"
+      ],
+      "ownedTextHash": "a422f564b0d3b804e4939c1a0f4ffbebc0e2cba4f9e3766777c2c93f2da488cc"
+    },
+    "/es/": {
+      "title": "Herramientas online gratis — privadas y rápidas | Free On…",
+      "description": "Usa herramientas online gratis para texto, código, PDF, imágenes, SEO y cálculos. Funcionan en tu navegador, sin subidas ni registro.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Herramientas online gratis — privadas y rápidas"
+      ],
+      "ownedTextHash": "de993d21055046ff6108949a839fbf29bd48307bf8b8f48f7e28a97b30afd78c"
+    },
+    "/es/privacy-policy/": {
+      "title": "Política de privacidad — Free Online Tools Nest",
+      "description": "Resumen de privacidad para las herramientas localizadas de Free Online Tools Nest.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/privacy-policy/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Política de privacidad"
+      ],
+      "ownedTextHash": "3906a75aadb202fa13ba0676f74e1b1b1b3c68ca2a481c1a5997bfe29c4b733c"
+    },
+    "/es/standards/": {
+      "title": "Normas editoriales y de pruebas — Free Online Tools Nest",
+      "description": "Cómo el equipo revisa herramientas, privacidad, limitaciones, fuentes y correcciones.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/standards/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Normas editoriales y de pruebas"
+      ],
+      "ownedTextHash": "a6857e066e19dce5a824d3daff07f758b6edc5684dcf5350fed38e8594d8f3d4"
+    },
+    "/es/terms-and-conditions/": {
+      "title": "Términos y condiciones — Free Online Tools Nest",
+      "description": "Resumen de términos para usar las herramientas localizadas de Free Online Tools Nest.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/terms-and-conditions/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Términos y condiciones"
+      ],
+      "ownedTextHash": "895972534252d1b026f46b0b37fe0c60a17ee7bf4034624e4c342d0110bfc976"
+    },
+    "/es/tools/character-counter/": {
+      "title": "Contador de caracteres online gratis | Free Online Tools…",
+      "description": "Cuenta caracteres online gratis. Revisa longitud de texto en tiempo real desde tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/character-counter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Contador de caracteres"
+      ],
+      "ownedTextHash": "d6000d0173a24876d3151630270d0c39959eaa197f6583705d148086775c40c7"
+    },
+    "/es/tools/color-contrast-checker/": {
+      "title": "Comprobador de contraste WCAG gratis | Free Online Tools…",
+      "description": "Revisa contraste WCAG online gratis. Comprueba colores AA y AAA para accesibilidad web.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/color-contrast-checker/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Comprobador de contraste WCAG"
+      ],
+      "ownedTextHash": "19b67d6b5327b5f373a6bf027f6108289f709d562f3b97c233eaa34267351011"
+    },
+    "/es/tools/csv-to-json/": {
+      "title": "Convertidor CSV a JSON online | Free Online Tools Nest",
+      "description": "Convierte CSV a JSON online gratis. Transforma tablas en datos estructurados desde tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/csv-to-json/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Convertidor CSV a JSON"
+      ],
+      "ownedTextHash": "3a4f78052ac99e521cf653544acf0d57e5e87b03751b31156d4e4ec39ae4f9d5"
+    },
+    "/es/tools/epoch-converter/": {
+      "title": "Conversor Epoch online gratis | Free Online Tools Nest",
+      "description": "Convierte timestamps Unix y fechas online gratis. Trabaja con segundos y milisegundos desde el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/epoch-converter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Conversor Epoch"
+      ],
+      "ownedTextHash": "5690616f60e9b7e7504512b007c4d3f3c3920c49038fab9075a0ab4283354d30"
+    },
+    "/es/tools/grammar-checker/": {
+      "title": "Corrector gramatical online gratis | Free Online Tools Nest",
+      "description": "Revisa gramática y estilo online gratis. Mejora borradores en tu navegador sin subir texto.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/grammar-checker/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Corrector gramatical"
+      ],
+      "ownedTextHash": "44cdee69ef24abf06bcccad00dd62ed1212ed7edde8096a47eb19ce434f9b72c"
+    },
+    "/es/tools/image-compressor/": {
+      "title": "Comprimir imagen online gratis | Free Online Tools Nest",
+      "description": "Comprime imágenes online gratis en tu navegador. Reduce JPG, PNG y WebP sin subir archivos ni crear una cuenta.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/image-compressor/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Compresor de imágenes"
+      ],
+      "ownedTextHash": "562df1b4e4f4cee2d735f6fff19be09473a2663b825495451fbd94d7ab3d22fa"
+    },
+    "/es/tools/image-cropper/": {
+      "title": "Recortar imagen online gratis | Free Online Tools Nest",
+      "description": "Recorta imágenes online gratis. Ajusta el área y descarga el resultado desde tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/image-cropper/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Recortar imagen"
+      ],
+      "ownedTextHash": "1ba7095fcea5d6d936c39aa4d865e136cc7b6603819922efeedc0a9d6b51bae5"
+    },
+    "/es/tools/image-resizer/": {
+      "title": "Redimensionar imagen online gratis | Free Online Tools Nest",
+      "description": "Redimensiona imágenes online gratis en tu navegador. Cambia tamaño sin subir archivos.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/image-resizer/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Redimensionar imagen"
+      ],
+      "ownedTextHash": "4b0c4ce5d1609ae062daf1f62e6105f6feb65e4d4f8e80a9d48508e9facc2a21"
+    },
+    "/es/tools/": {
+      "title": "Ver herramientas localizadas | Free Online Tools Nest",
+      "description": "Usa herramientas online gratis para texto, código, PDF, imágenes, SEO y cálculos. Funcionan en tu navegador, sin subidas ni registro.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Ver herramientas localizadas"
+      ],
+      "ownedTextHash": "4fa51a4c43870b0bc7822fce2e49384ef3b88e76d984f5d52a02907b4537c4ce"
+    },
+    "/es/tools/json-formatter/": {
+      "title": "Formateador JSON online gratis | Free Online Tools Nest",
+      "description": "Formatea y valida JSON online gratis. Limpia respuestas de API y datos técnicos directamente en tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/json-formatter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Formateador JSON"
+      ],
+      "ownedTextHash": "ee615d98244895307402fa421d934bbb7a6b0f8f858c14d1f58a881b7b0a63e3"
+    },
+    "/es/tools/json-to-csv/": {
+      "title": "Convertidor JSON a CSV online | Free Online Tools Nest",
+      "description": "Convierte JSON a CSV online gratis. Exporta datos estructurados a tabla desde tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/json-to-csv/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Convertidor JSON a CSV"
+      ],
+      "ownedTextHash": "4e7bf797c6dc2b0c6905a51d8be749324bd6bf28e3df2b32c4f3a2d4aba099fb"
+    },
+    "/es/tools/jwt-decoder/": {
+      "title": "Decodificador JWT online gratis | Free Online Tools Nest",
+      "description": "Decodifica JWT online gratis en tu navegador. Inspecciona claims y payload sin subir tokens.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/jwt-decoder/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Decodificador JWT"
+      ],
+      "ownedTextHash": "f881c6400a9784b95e449f60eee5395b0d9953e60826085d05e8e1d457448fa2"
+    },
+    "/es/tools/markdown-to-html/": {
+      "title": "Markdown a HTML online gratis | Free Online Tools Nest",
+      "description": "Convierte Markdown a HTML online gratis. Previsualiza y copia HTML desde tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/markdown-to-html/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Markdown a HTML"
+      ],
+      "ownedTextHash": "ff151df4492ad2cd620fc5534cbb691329228ea0c90d679588a32c9793944287"
+    },
+    "/es/tools/password-generator/": {
+      "title": "Generador de contraseñas online gratis | Free Online Tool…",
+      "description": "Genera contraseñas seguras online gratis. Ajusta longitud y tipos de caracteres en el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/password-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Generador de contraseñas"
+      ],
+      "ownedTextHash": "75a12f80babd7df543109a82c7a685ce8f32738b3b0a366f93f9e4a4f9a776f1"
+    },
+    "/es/tools/pdf-compressor/": {
+      "title": "Comprimir PDF online gratis | Free Online Tools Nest",
+      "description": "Comprime PDF online gratis desde el navegador. Reduce el tamaño de documentos sin subirlos a un servidor.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/pdf-compressor/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Compresor PDF"
+      ],
+      "ownedTextHash": "428a6ae520ae46eec53d7fba5a1eef3e7e097a124563a78307b2444e445d8478"
+    },
+    "/es/tools/pdf-merger/": {
+      "title": "Unir PDF online gratis | Free Online Tools Nest",
+      "description": "Une PDFs online gratis en tu navegador. Combina documentos sin subir archivos ni registrarte.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/pdf-merger/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Unir PDF"
+      ],
+      "ownedTextHash": "b49413a30355d13153d2df24660b442e09e9150525223d540b2f466edc5aba74"
+    },
+    "/es/tools/qr-code-generator/": {
+      "title": "Generador de QR online gratis | Free Online Tools Nest",
+      "description": "Crea códigos QR online gratis para URLs y texto. Descarga el resultado desde tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/qr-code-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Generador de códigos QR"
+      ],
+      "ownedTextHash": "815f644964fbb6da05c6f1c61d7a6391df45d4e2edb2938d16ff1df26f5bce58"
+    },
+    "/es/tools/regex-tester/": {
+      "title": "Probador Regex online gratis | Free Online Tools Nest",
+      "description": "Prueba expresiones regulares online gratis. Depura patrones y coincidencias en tu navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/regex-tester/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Probador Regex"
+      ],
+      "ownedTextHash": "fd6534d5e27e825acc92c11eced5f48ef75792a4119a91f3e1e1c90122c72674"
+    },
+    "/es/tools/unit-converter/": {
+      "title": "Conversor de unidades online gratis | Free Online Tools Nest",
+      "description": "Convierte unidades online gratis para medidas comunes. Obtén resultados rápidos en el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/unit-converter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Conversor de unidades"
+      ],
+      "ownedTextHash": "7263f137b1db2db26302f802aef85f77c04cf97822435686ed3cf9e0f7f4be4f"
+    },
+    "/es/tools/word-cloud-generator/": {
+      "title": "Generador de nube de palabras gratis | Free Online Tools…",
+      "description": "Crea una nube de palabras online gratis desde tu texto. Visualiza términos frecuentes en el navegador.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/word-cloud-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Generador de nube de palabras"
+      ],
+      "ownedTextHash": "b6e37b298ad771a54451a46c7a6d520224ec4446ba1445f82362f4fd18e2cb8b"
+    },
+    "/es/tools/word-counter/": {
+      "title": "Contador de palabras online gratis | Free Online Tools Nest",
+      "description": "Cuenta palabras y caracteres online gratis. Revisa texto en tiempo real sin subir contenido.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/es/tools/word-counter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Contador de palabras"
+      ],
+      "ownedTextHash": "cedece02e92379027a6a2c36e2d745aa5c0af811bd18a951ad2dcfe6fb5c3673"
+    },
+    "/hi/about/": {
+      "title": "Free Online Tools Nest के बारे में",
+      "description": "Free Online Tools Nest के बारे में जानें: मुफ्त, तेज और निजी online tools.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/about/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Free Online Tools Nest के बारे में"
+      ],
+      "ownedTextHash": "a94cec7c0c2a2fa53b06a5ba2e134aee17b208f3de5d96d833d1d1dd653ce582"
+    },
+    "/hi/categories/converters/": {
+      "title": "मुफ्त ऑनलाइन कन्वर्टर | Free Online Tools Nest",
+      "description": "CSV, JSON, markdown, units और images के लिए browser-based converters इस्तेमाल करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/categories/converters/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "कन्वर्टर"
+      ],
+      "ownedTextHash": "1a3fe46bb9281a2d829746c2de17fa8a599c59aca6f248bd9fcc4c27ccb617eb"
+    },
+    "/hi/categories/design-tools/": {
+      "title": "मुफ्त डिजाइन टूल्स ऑनलाइन | Free Online Tools Nest",
+      "description": "WCAG contrast, color और CSS checks के लिए मुफ्त design tools इस्तेमाल करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/categories/design-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "डिजाइन टूल्स"
+      ],
+      "ownedTextHash": "aefcbac8f2737b5b1841b8582d198702b19683544d1fe413d6e52402840d621b"
+    },
+    "/hi/categories/developer-tools/": {
+      "title": "मुफ्त डेवलपर टूल्स ऑनलाइन | Free Online Tools Nest",
+      "description": "JSON format करें, regex test करें, JWT decode करें और browser-based developer tools से data convert करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/categories/developer-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "डेवलपर टूल्स"
+      ],
+      "ownedTextHash": "5794c7302358a028bcc7c91266a6add55d2a46a70139c47efe3df83e3244d1d1"
+    },
+    "/hi/categories/": {
+      "title": "श्रेणी के अनुसार देखें | Free Online Tools Nest",
+      "description": "5 उपयोगी श्रेणियों में सही टूल खोजें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/categories/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "श्रेणी के अनुसार देखें"
+      ],
+      "ownedTextHash": "b05b297e610dd6c42d19ce9c04de3008af1b86e2e8deaf9c02f1932472287136"
+    },
+    "/hi/categories/pdf-tools/": {
+      "title": "मुफ्त PDF टूल्स ऑनलाइन | Free Online Tools Nest",
+      "description": "PDF compress और merge करने के लिए मुफ्त browser-based PDF tools इस्तेमाल करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/categories/pdf-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "PDF टूल्स"
+      ],
+      "ownedTextHash": "5699f66a8485f7edb5870d597b33db2b12e0cb295cc5739b586ddbb8cdf55122"
+    },
+    "/hi/categories/text-tools/": {
+      "title": "मुफ्त ऑनलाइन टेक्स्ट टूल्स | Free Online Tools Nest",
+      "description": "Word count, grammar, word cloud और text cleanup के लिए मुफ्त online text tools इस्तेमाल करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/categories/text-tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "टेक्स्ट टूल्स"
+      ],
+      "ownedTextHash": "6bcb3f4be26931d00a8ee378bda52a8704d35cd84588f0ac350c31fd9ac4564d"
+    },
+    "/hi/contact/": {
+      "title": "संपर्क — Free Online Tools Nest",
+      "description": "Feedback, tool suggestions या bug reports भेजें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/contact/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "संपर्क"
+      ],
+      "ownedTextHash": "67f68a013a0caa8533e597eaf882b996761785c7952f3b976fb8041119dce6b1"
+    },
+    "/hi/faq/": {
+      "title": "FAQ — निजी ऑनलाइन टूल्स | Free Online Tools Nest",
+      "description": "Privacy, free usage और browser-based tools के बारे में जवाब.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/faq/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "सामान्य प्रश्न"
+      ],
+      "ownedTextHash": "78b36f2de426ce97ecd8020981ecd711ae60b1a495221fd8468cae633aa41e49"
+    },
+    "/hi/": {
+      "title": "मुफ्त ऑनलाइन टूल्स — निजी और तेज | Free Online Tools Nest",
+      "description": "टेक्स्ट, कोड, PDF, इमेज, SEO और गणना के लिए मुफ्त ऑनलाइन टूल्स. सब आपके ब्राउज़र में चलते हैं, बिना अपलोड और साइनअप.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "मुफ्त ऑनलाइन टूल्स — निजी और तेज"
+      ],
+      "ownedTextHash": "db1048013bcddf5d76f8eb97172586751492faa91b535ff5d9b336e8af61695c"
+    },
+    "/hi/privacy-policy/": {
+      "title": "गोपनीयता नीति — Free Online Tools Nest",
+      "description": "Free Online Tools Nest localized pages के लिए privacy summary.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/privacy-policy/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "गोपनीयता नीति"
+      ],
+      "ownedTextHash": "fe84f071199a015a9edfb9b779109c52df8f92c86f5c1768e1e84070f9e48433"
+    },
+    "/hi/standards/": {
+      "title": "संपादकीय और टूल परीक्षण मानक — Free Online Tools Nest",
+      "description": "टीम टूल, गोपनीयता, सीमाओं, स्रोतों और सुधारों की समीक्षा कैसे करती है।",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/standards/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "संपादकीय और टूल परीक्षण मानक"
+      ],
+      "ownedTextHash": "8b3263b8c21727f3d283ab6638b9c402146a51e4559bb371319998d1521611e1"
+    },
+    "/hi/terms-and-conditions/": {
+      "title": "नियम और शर्तें — Free Online Tools Nest",
+      "description": "Free Online Tools Nest localized tools use करने के terms का summary.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/terms-and-conditions/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "नियम और शर्तें"
+      ],
+      "ownedTextHash": "7a8a039e7208d00058b86f0626edb52e7a90272de5f21c0a24d19acdd1955987"
+    },
+    "/hi/tools/character-counter/": {
+      "title": "Character Counter Online Free | Free Online Tools Nest",
+      "description": "Characters online free count करें. Text length browser में real-time देखें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/character-counter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Character Counter"
+      ],
+      "ownedTextHash": "ccb28c91524c0708aa81d37cab92eae73840bb3aef3471ed776bdb2d89b28bb5"
+    },
+    "/hi/tools/color-contrast-checker/": {
+      "title": "WCAG Contrast Checker Free | Free Online Tools Nest",
+      "description": "WCAG contrast online free check करें. AA और AAA accessibility colors verify करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/color-contrast-checker/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "WCAG Contrast Checker"
+      ],
+      "ownedTextHash": "caabda66d651d17ef5c00c10dd892bf50658b907b4d21207aea669dada0be571"
+    },
+    "/hi/tools/csv-to-json/": {
+      "title": "CSV to JSON Converter Online | Free Online Tools Nest",
+      "description": "CSV को JSON online free convert करें. Tables को structured data में बदलें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/csv-to-json/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "CSV to JSON Converter"
+      ],
+      "ownedTextHash": "4f4db0a8d7f2a731e6a99b8852eebe27a41cda1b167107c5980e160d7643de4d"
+    },
+    "/hi/tools/epoch-converter/": {
+      "title": "Epoch Converter Online Free | Free Online Tools Nest",
+      "description": "Unix timestamps और dates online free convert करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/epoch-converter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Epoch Converter"
+      ],
+      "ownedTextHash": "4beccf1598dd0977a3f493dbfffcca15b5d53cd8ecb88246bfd7a1ced606560a"
+    },
+    "/hi/tools/grammar-checker/": {
+      "title": "Grammar Checker Online Free | Free Online Tools Nest",
+      "description": "Grammar और style online free check करें. Drafts browser में improve करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/grammar-checker/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Grammar Checker"
+      ],
+      "ownedTextHash": "9d10c814cd9b1f4b0a8863f0e75be9cae60536550c5d973b0228d5b00f7ae772"
+    },
+    "/hi/tools/image-compressor/": {
+      "title": "Image Compress Online Free | Free Online Tools Nest",
+      "description": "Images online free compress करें. JPG, PNG और WebP को browser में reduce करें, बिना upload.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/image-compressor/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "इमेज कम्प्रेसर"
+      ],
+      "ownedTextHash": "a0af6728605af516f7580c10010f3333d4c562aa51ba5700dbde47fe0716ca9c"
+    },
+    "/hi/tools/image-cropper/": {
+      "title": "Crop Image Online Free | Free Online Tools Nest",
+      "description": "Images online free crop करें. Area select करके result download करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/image-cropper/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Image Cropper"
+      ],
+      "ownedTextHash": "1c2be6e5ae9599b609cbeda4f0f622d52ac6d451e33e7a3c203d550636c65caf"
+    },
+    "/hi/tools/image-resizer/": {
+      "title": "Resize Image Online Free | Free Online Tools Nest",
+      "description": "Images online free resize करें. Size browser में बदलें, बिना upload.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/image-resizer/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Image Resizer"
+      ],
+      "ownedTextHash": "5d4dec2056e12a2d9ab7bf84578a03cddf27666e195330190356976fd0bdde14"
+    },
+    "/hi/tools/": {
+      "title": "Localized tools देखें | Free Online Tools Nest",
+      "description": "टेक्स्ट, कोड, PDF, इमेज, SEO और गणना के लिए मुफ्त ऑनलाइन टूल्स. सब आपके ब्राउज़र में चलते हैं, बिना अपलोड और साइनअप.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Localized tools देखें"
+      ],
+      "ownedTextHash": "a05951876c027c6aa65be7d2a48e17deb06c146935a903bec91e11d1b5144f0d"
+    },
+    "/hi/tools/json-formatter/": {
+      "title": "JSON Formatter Online Free | Free Online Tools Nest",
+      "description": "JSON online free format और validate करें. API responses और data browser में clean करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/json-formatter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "JSON Formatter"
+      ],
+      "ownedTextHash": "94e54fb6f7fb07aa7eac3de3b3a043a4d1b0ec326d6986e4f411769ea98e6626"
+    },
+    "/hi/tools/json-to-csv/": {
+      "title": "JSON to CSV Converter Online | Free Online Tools Nest",
+      "description": "JSON को CSV online free convert करें और table export करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/json-to-csv/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "JSON to CSV Converter"
+      ],
+      "ownedTextHash": "9cc7b5693b1783af317d1590709ae1a523e8cee71e45374b6a54ca204b2326c1"
+    },
+    "/hi/tools/jwt-decoder/": {
+      "title": "JWT Decoder Online Free | Free Online Tools Nest",
+      "description": "JWT online free decode करें. Claims और payload browser में inspect करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/jwt-decoder/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "JWT Decoder"
+      ],
+      "ownedTextHash": "90479d5958a245398891c25aa650e355095d297cf70202395fdae0812eafd46d"
+    },
+    "/hi/tools/markdown-to-html/": {
+      "title": "Markdown to HTML Online Free | Free Online Tools Nest",
+      "description": "Markdown को HTML online free convert करें और browser में preview करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/markdown-to-html/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Markdown to HTML"
+      ],
+      "ownedTextHash": "7df6912aa5f5f08885c1a0eaedf577d5bcc940456c80539ad1b17f52d7abcfc6"
+    },
+    "/hi/tools/password-generator/": {
+      "title": "Password Generator Online Free | Free Online Tools Nest",
+      "description": "Strong passwords online free generate करें. Length और character types चुनें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/password-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Password Generator"
+      ],
+      "ownedTextHash": "4c5297011408b5911d89f4a662a835ffd8fe24c92f652d3c2a5c9f2881be7789"
+    },
+    "/hi/tools/pdf-compressor/": {
+      "title": "Compress PDF Online Free | Free Online Tools Nest",
+      "description": "PDF online free compress करें. Documents का size browser में reduce करें, बिना upload.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/pdf-compressor/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "PDF Compressor"
+      ],
+      "ownedTextHash": "60b320724cf60fa37572ca99fc065f554051ea8a3a274bb1db9f9f4e4ff42805"
+    },
+    "/hi/tools/pdf-merger/": {
+      "title": "Merge PDF Online Free | Free Online Tools Nest",
+      "description": "PDFs online free merge करें. Documents combine करें, बिना upload या signup.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/pdf-merger/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "PDF Merger"
+      ],
+      "ownedTextHash": "4c8558f53c618eb7a007d28b9518c5408eae0c77ac0a53d096814889d6456139"
+    },
+    "/hi/tools/qr-code-generator/": {
+      "title": "QR Code Generator Online Free | Free Online Tools Nest",
+      "description": "URLs और text के लिए QR codes online free बनाएं और download करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/qr-code-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "QR Code Generator"
+      ],
+      "ownedTextHash": "f6cccfbd05b1d5d2884859f1b4b38019c149d3d4a511af9c9806a87674cd6026"
+    },
+    "/hi/tools/regex-tester/": {
+      "title": "Regex Tester Online Free | Free Online Tools Nest",
+      "description": "Regular expressions online free test करें. Matches browser में debug करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/regex-tester/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Regex Tester"
+      ],
+      "ownedTextHash": "8eceb22123e4d7fe1e51db6912d82c23d9ab93925896f02471cee7ec9bb6515e"
+    },
+    "/hi/tools/unit-converter/": {
+      "title": "Unit Converter Online Free | Free Online Tools Nest",
+      "description": "Common units online free convert करें. Browser में fast results पाएं.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/unit-converter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Unit Converter"
+      ],
+      "ownedTextHash": "4e3f9ef6e12e9d87f31c3d3a4765afa2dacaf7bdf1678bba16acb6610ea7d2e3"
+    },
+    "/hi/tools/word-cloud-generator/": {
+      "title": "Word Cloud Generator Free | Free Online Tools Nest",
+      "description": "Text से word cloud online free बनाएं और frequent terms देखें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/word-cloud-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Word Cloud Generator"
+      ],
+      "ownedTextHash": "8c48344e7239db1662e1b5a36f4a571a06f8fbf6a08a8f6c41301cbcb87b9c58"
+    },
+    "/hi/tools/word-counter/": {
+      "title": "Word Counter Online Free | Free Online Tools Nest",
+      "description": "Words और characters online free count करें. Text browser में real-time check करें.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/hi/tools/word-counter/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Word Counter"
+      ],
+      "ownedTextHash": "bf8eca9ab5b2d9d6b69c121bb6e02fe97eb4dc76fe1a6648850477ad3cc9fe8e"
+    },
+    "/tools/image-compressor/": {
+      "title": "Image Compressor — JPEG, PNG, WebP | Free Online Tools Nest",
+      "description": "Compress images online for free. Reduce JPEG, PNG, and WebP file sizes without quality loss — all in your browser with private client-side processing.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/tools/image-compressor/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Image Compressor"
+      ],
+      "ownedTextHash": "e6d48925613ab455700d8f750dc403ff17a9b0e57e38a3611213cad0625de932"
+    },
+    "/tools/random-number-generator/": {
+      "title": "Random Number Generator — Dice Roll &amp; Lottery Picker | Fr…",
+      "description": "Generate random numbers with our free random number generator. Use it as a dice roller, lottery number picker, or randomizer for giveaways and contests.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/tools/random-number-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Random Number Generator"
+      ],
+      "ownedTextHash": "3b8314c21b9f7b9a7e46c9ebde3a7a2abaebb197f4498e9b453802e663cdeccb"
+    },
+    "/tools/seo-length-checker/": {
+      "title": "SEO Title &amp; Meta Length Checker | Free Online Tools Nest",
+      "description": "Use this SEO length checker to test title tags and meta descriptions against recommended limits. See pixel width, character count, and search preview.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/tools/seo-length-checker/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "SEO Length Checker"
+      ],
+      "ownedTextHash": "a18feac1f2dc308165ec537f8a6c04af7ce99c8ee18d885a77fe43f040724cc5"
+    },
+    "/tools/serp-preview-generator/": {
+      "title": "SERP Preview Generator — Google Snippet Preview | Free On…",
+      "description": "Preview your Google search result snippet with our free SERP preview generator. See exactly how your title and meta description appear in search results.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/tools/serp-preview-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "SERP Preview Generator"
+      ],
+      "ownedTextHash": "6d2a29c93f5b6999840c09d7c36bb62c2499ee072ad6dc7801e146656b599a8b"
+    },
+    "/tools/word-cloud-generator/": {
+      "title": "Word Cloud Generator — Create Free Online | Free Online T…",
+      "description": "Create a word cloud online with our free word cloud generator. Paste any text and generate a visual tag cloud with customizable colors. Download as PNG.",
+      "canonicals": [
+        "https://freeonlinetoolsnest.com/tools/word-cloud-generator/"
+      ],
+      "robots": "index, follow",
+      "h1": [
+        "Word Cloud Generator"
+      ],
+      "ownedTextHash": "aa2572d843b8371ad28fa5134c4bc4c33f31f07800064cfb1b96a8a582e74653"
+    }
+  },
+  "sources": {
+    "src/data/tools.ts": "7f0704b8ecb28c2e77e86f1809a3dc8d829e352cc47d2a433ad7935b62cd228b",
+    "src/data/tool-quality.ts": "b62edb26420544eac67e380f9163d5c25e058afaa41edf6cd84bb44071e9c8f6",
+    "src/data/localized.ts": "6869fc5b8e78dc6c58e5942c1d04cdbf7d0b52bc80f2b1b09da86ba6f253951f",
+    "src/i18n/ui.ts": "bb056fe3d7ee6b6452ab81e5c9331a4c918c06f6147db3de14c778710f48b0ca",
+    "src/i18n/overrides.ts": "326f1afa0c1c900d319b3980082ff7a1d0d6546a5ec9bfa5618922a34e56c763",
+    "public/_headers": "a52724316f31147131d4dfa79710e61445b62be2a4265d026ec0b3960a5f8d9b",
+    "public/_redirects": "e76644979ea52be73ab96d8d117e37347003957e4def422721ab158b6da19c00",
+    "public/ads.txt": "986a5e505b37d342b5fb130fc59ca5c3d4e7d4b8dffd4fa2048a4c8ebf4c9357",
+    "public/robots.txt": "06fa55e7610580b12b0385aba63935d95db543dec75aea448d0f39916ff25266",
+    "src/layouts/Layout.astro": "8d533ee1b72019ec4fdd62d99c23385244440599f1ef5984e5b0ac008479f8db",
+    "src/components/SEOHead.astro": "e529d51efd764fff469acab05b129e627f7c15f54bbb4616b2a188b32ee3241f",
+    "src/content/blog/10-free-online-tools-2026.md": "87f6f3b3977b91e369c4641131520595e49dc7a35fe8a3c6ad02897f09d13293",
+    "src/content/blog/csv-to-json-delimiters-quotes-headers.md": "a96bfac2a75648a8229f5651ff470409e735c4931eccee31aeb381257d2356a6",
+    "src/content/blog/decode-jwt-vs-verify-signature.md": "da7435d46ab1844ca97318fbddd336971ee2688509fa3ea794f4eb04d4413950",
+    "src/content/blog/free-online-tools-guide-2026.md": "8c3d0f077a1c595f1014c9984aa5a8e95ee68fbc9d850f32bb1c5c61da72befc",
+    "src/content/blog/image-compression-resizing-format-conversion.md": "c9f98a0ac9a6a3a8cfc075925478d666f5e44cf9e1c35fe4574e4839c0036a8b",
+    "src/content/blog/image-compressor-browser-only.md": "367b9fa6dcb9e824cdbcae16cbf77a3ee95a08bf21d6fdd6dd3bb618abca02e7",
+    "src/content/blog/javascript-regex-flags-groups-mistakes.md": "4ba53dbcf320f9918e5cbe8b8eaf1c7e937cb56541eafc4c24b3394d07becd3a",
+    "src/content/blog/json-formatting-validation-edge-cases.md": "8ae7108b9cfd4deda9361302e3090d22733a45b1e986a05f01b814beb3796dbf",
+    "src/content/blog/verify-browser-tool-no-upload.md": "c15ef61a5e5a3fba52298c748bdf71b60919dff3e4adca4227fa77af0e5510ee",
+    "src/content/blog/wcag-contrast-ratios-examples.md": "337d5bea4bf527d69d6793a2cd963a8b2504ac17cba07bdcb4584c78057b91d4",
+    "src/content/blog/why-pdfs-compress-differently.md": "6880a9b3dced2d72cab83266831dcd38df5944d5a363b8611a322bceeb3c84e4",
+    "src/components/tools/EpochConverter.tsx": "dcdd3832867dd16cb45e36a83047efeb349d00304dab2a2ba0f6f2e350acc7cd"
+  }
+}

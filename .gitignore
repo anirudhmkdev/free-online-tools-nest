@@ -36,3 +36,6 @@ output/playwright/
 
 # Dev server logs
 dev-server.log
+
+# Private analytics and release evidence (never publish)
+.private/

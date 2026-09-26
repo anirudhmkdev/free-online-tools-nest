@@ -32,6 +32,7 @@ const toolkits = [
     { slug: "grammar-checker", purpose: "Flag common English grammar patterns; review suggestions yourself." },
   ] },
 ];
+const hubPaths: Record<string, string> = { "study-assignment-tools": "/student-tools/", "document-tools": "/document-tools/", "writing-tools": "/writing-tools/" };
 const posts = await getCollection("blog");
 const guideIds = ["why-pdfs-compress-differently", "image-compression-resizing-format-conversion", "verify-browser-tool-no-upload"];
 const guides = guideIds.map(id => posts.find(post => post.id === id)!).filter(Boolean);
@@ -73,7 +74,7 @@ const websiteJsonLd = {
   <div class="container-page home-toolkit-sections">
     {toolkits.map(kit => (
       <section id={kit.id} class="toolkit-section" aria-labelledby={kit.id + "-heading"}>
-        <div class="toolkit-heading"><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p></div>
+        <div class="toolkit-heading"><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p><a class="inline-flex min-h-11 items-center py-2 text-link underline" href={hubPaths[kit.id]}>Choose the right tool →</a></div>
         <ul class="task-list">
           {kit.tasks.map(task => {
             const tool = getToolBySlug(task.slug)!;
@@ -82,6 +83,7 @@ const websiteJsonLd = {
         </ul>
       </section>
     ))}
+    <div class="more-tools-note"><p>Preparing a submission, checking a draft or working out a result?</p><a href="/workflows/">Follow a practical workflow →</a></div>
     <div class="more-tools-note"><p>Looking for a developer utility, converter or another familiar tool?</p><a href="/tools/">Browse the full tool directory <span aria-hidden="true">→</span></a></div>
   </div>
 

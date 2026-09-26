@@ -1,0 +1,28 @@
+---
+import type { Decision } from "../../data/content-types";
+interface Props { decisions: Decision[]; ordered?: boolean }
+const { decisions, ordered = false } = Astro.props;
+const List = ordered ? "ol" : "ul";
+---
+<List class:list={["decision-paths", { sequential: ordered }]}>
+  {decisions.map((decision, i) => <li>
+    {ordered && <span class="step-number" aria-hidden="true">{i + 1}</span>}
+    <div class="decision-body">
+      <h3>{decision.question}</h3>
+      <p>{decision.answer}</p>
+      {decision.links.length > 0 && <ul class="decision-actions">{decision.links.map(link => <li><a href={link.path}>{link.label}<span aria-hidden="true"> →</span></a></li>)}</ul>}
+    </div>
+  </li>)}
+</List>
+<style>
+  .decision-paths { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--color-hairline); }
+  .decision-paths > li { display: flex; gap: 1rem; padding: 1.5rem 0; border-bottom: 1px solid var(--color-hairline); }
+  .decision-body { min-width: 0; flex: 1; }
+  h3 { margin: 0; font-size: 1.125rem; font-weight: 600; line-height: 1.5; color: var(--color-ink); }
+  p { margin: .5rem 0; line-height: 1.75; color: var(--color-body); }
+  .step-number { flex-shrink: 0; width: 1.75rem; height: 1.75rem; display: grid; place-items: center; margin-top: .125rem; background: var(--color-canvas-soft-2); border-radius: 50%; color: var(--color-ink); font-size: .8rem; }
+  .decision-actions { display: flex; flex-wrap: wrap; column-gap: 1.25rem; list-style: none; margin: .5rem 0 0; padding: 0; }
+  a { display: inline-flex; align-items: center; gap: .25rem; min-height: 44px; color: var(--color-link); text-decoration: underline; text-underline-offset: 4px; font-weight: 500; overflow-wrap: anywhere; }
+  a:focus-visible { outline: 2px solid var(--color-link); outline-offset: 4px; border-radius: 2px; }
+  @media (max-width: 374px) { .decision-paths > li { gap: .625rem; } }
+</style>

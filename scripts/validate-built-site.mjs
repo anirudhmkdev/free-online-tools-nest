@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { checkProtection, checkHubMetadata, ownedSignals } from "./phase-3-protection.mjs";
 
 export const SITE_URL = "https://freeonlinetoolsnest.com";
 export const EXPECTED_ADS_TXT = "google.com, pub-7189536685341014, DIRECT, f08c47fec0942fa0";
@@ -70,7 +71,7 @@ export function validateAdsTxt(text) {
   return typeof text === "string" && text.replace(/\r?\n$/, "") === EXPECTED_ADS_TXT
     ? [] : ["ads.txt must contain exactly the expected publisher line (with an optional final newline)"];
 }
-/** @typedef {{pages: Array<{route: string, robots?: string, adEligible?: boolean, title?: string, description?: string}>, sitemap: string[], redirects: string}} RouteBaseline */
+/** @typedef {{pages: Array<{route: string, robots?: string, adEligible?: boolean, title?: string, description?: string, canonical?: string}>, sitemap: string[], redirects: string}} RouteBaseline */
 /** Local output only: no production requests or network-dependent checks. */
 export function validateBuiltSite(rootPath, { policies, baseline = /** @type {RouteBaseline | undefined} */ (undefined), allowedAdditions = /** @type {string[]} */ ([]), site = SITE_URL }) {
   const failures = [];
@@ -111,6 +112,7 @@ export function validateBuiltSite(rootPath, { policies, baseline = /** @type {Ro
       const after = generated.get(before.route);
       if (after && after.robots !== before.robots) failures.push(before.route + ": Phase 1 robots directive changed");
       if (after && after.adEligible !== before.adEligible) failures.push(before.route + ": Phase 1 AdSense loader changed");
+      if (after && before.canonical && after.canonicals[0] !== before.canonical) failures.push(before.route + ": baseline canonical changed");
     }
   }
   if (!read("robots.txt").includes("Sitemap: " + site + "/sitemap-index.xml")) failures.push("robots.txt is missing the sitemap declaration");
@@ -155,9 +157,17 @@ export function validateBuiltSite(rootPath, { policies, baseline = /** @type {Ro
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const rootPath = fileURLToPath(new URL("../dist/", import.meta.url));
   const policies = JSON.parse(readFileSync(new URL("../src/data/page-policies.json", import.meta.url), "utf8"));
-  const baseline = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/pre-pivot-routes.json", import.meta.url), "utf8"));
-  const allowedAdditions = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-2-additions.json", import.meta.url), "utf8"));
+  const baseline = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/post-phase-2-routes.json", import.meta.url), "utf8"));
+  const allowedAdditions = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-additions.json", import.meta.url), "utf8"));
   const result = validateBuiltSite(rootPath, { policies, baseline, allowedAdditions });
+  const protection = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-organic-protection.json", import.meta.url), "utf8"));
+  result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), protection));
+  for (const [hub, category] of [["/document-tools/", "/categories/pdf-tools/"], ["/writing-tools/", "/categories/text-tools/"]]) {
+    if (policies[hub]?.indexable) {
+      const signals = route => ownedSignals(readFileSync(join(rootPath, route.slice(1), "index.html"), "utf8"), route);
+      result.failures.push(...checkHubMetadata(signals(hub), signals(category)).map(error => hub + ": " + error));
+    }
+  }
   if (result.failures.length) { console.error(result.failures.join("\n")); process.exitCode = 1; }
   else console.log("Validated " + result.pageCount + " pages and " + result.sitemapCount + " sitemap URLs offline: routes, indexing, canonicals, redirects, links, hreflang, JSON-LD, ads.txt and existing integrations.");
 }
