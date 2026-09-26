@@ -43,11 +43,11 @@ export default function ImageToPdf() {
   const errorPanel = useRef<HTMLDivElement>(null);
   const downloadLink = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
-    if (pendingFocus.current) {
+    if (!busy && pendingFocus.current) {
       focusToolElement(document.getElementById(pendingFocus.current));
       pendingFocus.current = null;
     }
-  }, [files]);
+  }, [files, busy]);
   useEffect(() => {
     if (error) focusToolElement(errorPanel.current);
   }, [error, attempt]);
@@ -74,7 +74,7 @@ export default function ImageToPdf() {
     previews.current.delete(entry.preview);
   }
   async function addFiles(selected: File[]) {
-    if (!selected.length) return;
+    if (!selected.length || controller.current) return;
     setAttempt((value) => value + 1);
     resetResult();
     setBusy(true);
@@ -120,6 +120,7 @@ export default function ImageToPdf() {
     }
   }
   async function generate() {
+    if (controller.current) return;
     setAttempt((value) => value + 1);
     resetResult();
     setBusy(true);
@@ -352,6 +353,7 @@ export default function ImageToPdf() {
       </p>
       <div className="flex flex-wrap gap-3">
         <button
+          id="image-pdf-create"
           type="button"
           className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
           disabled={busy || !files.length}
@@ -377,7 +379,12 @@ export default function ImageToPdf() {
           <button
             type="button"
             className="btn-secondary"
-            onClick={() => controller.current?.abort()}
+            onClick={() => {
+              pendingFocus.current = files.length
+                ? "image-pdf-create"
+                : "image-pdf-files";
+              controller.current?.abort();
+            }}
           >
             Cancel
           </button>

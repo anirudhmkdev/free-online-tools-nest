@@ -37,7 +37,7 @@ const shareLinks = [
 
 ---
 
-<div class="flex items-center gap-2">
+<div class="flex min-w-0 flex-wrap items-center gap-2">
   <span class="text-xs font-mono uppercase tracking-wider mr-1" style="color: var(--color-mute);">
     Share
   </span>
@@ -89,8 +89,9 @@ const shareLinks = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
     border-radius: 50%;
     color: var(--color-mute);
     border: 1px solid var(--color-hairline);

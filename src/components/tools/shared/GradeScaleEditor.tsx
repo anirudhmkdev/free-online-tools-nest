@@ -67,7 +67,7 @@ export default function GradeScaleEditor({
   onChange: (config: GradeConfig) => void;
 }) {
   return (
-    <fieldset className="space-y-4 rounded-lg border border-hairline p-4">
+    <fieldset className="min-w-0 space-y-4 rounded-lg border border-hairline p-4">
       <legend className="px-2 text-sm font-semibold text-ink">
         Your grading system
       </legend>
@@ -113,7 +113,7 @@ export default function GradeScaleEditor({
             grade mappings are supplied automatically.
           </p>
           {config.mapping.map((row, i) => (
-            <div key={i} className="grid grid-cols-2 gap-3">
+            <div key={i} className="grid gap-3 sm:grid-cols-2">
               <div>
                 <label
                   htmlFor={`grade-label-${i}`}
@@ -150,7 +150,7 @@ export default function GradeScaleEditor({
               />
               <button
                 type="button"
-                className="text-left text-sm text-link underline disabled:opacity-40"
+                className="min-h-11 min-w-11 py-2 text-left text-sm text-link underline disabled:opacity-40"
                 disabled={config.mapping.length === 1}
                 onClick={() =>
                   onChange({
@@ -206,7 +206,7 @@ export function CourseEditor({
           className="min-w-0 rounded-lg border border-hairline p-4"
         >
           <legend className="px-2 text-sm font-semibold">Course {i + 1}</legend>
-          <label className="mb-4 flex items-center gap-2 text-sm">
+          <label className="mb-4 flex min-h-11 cursor-pointer items-center gap-2 py-2 text-sm">
             <input
               type="checkbox"
               checked={row.included}
@@ -251,7 +251,7 @@ export function CourseEditor({
           </div>
           <button
             type="button"
-            className="mt-3 text-sm text-link underline disabled:opacity-40"
+            className="mt-3 min-h-11 min-w-11 py-2 text-sm text-link underline disabled:opacity-40"
             disabled={rows.length === 1}
             onClick={() => onChange(rows.filter((_, j) => j !== i))}
           >

@@ -40,6 +40,7 @@ export default function PdfMerger() {
         setError(`Combined PDFs are ${formatBytes(projectedTotal)}; keep the batch under ${formatBytes(MAX_PDF_FILE_SIZE_BYTES)} for safe in-browser merging.`);
         return prev;
       }
+      setMergedSize(null);
       return [...prev, ...items];
     });
   }, []);
@@ -129,12 +130,11 @@ export default function PdfMerger() {
         <div
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-          className="border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("pdf-merger-input")?.click()}
         >
           <span className="text-4xl mb-4">📄</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -145,10 +145,11 @@ export default function PdfMerger() {
           </p>
           <input
             id="pdf-merger-input"
+            aria-label="Choose PDF files"
             type="file"
             accept=".pdf"
             multiple
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileInput}
           />
         </div>
@@ -160,7 +161,7 @@ export default function PdfMerger() {
           className="border rounded-xl p-5 space-y-3"
           style={{ borderColor: "var(--color-hairline)", backgroundColor: "var(--color-canvas)" }}
         >
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
             <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: "var(--color-mute)" }}>
               PDF Files ({files.length})
             </span>
@@ -172,16 +173,24 @@ export default function PdfMerger() {
           {files.map((item, index) => (
             <div
               key={item.id}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm"
+              className="flex flex-wrap items-center gap-3 px-4 py-3 rounded-lg text-sm"
               style={{ backgroundColor: "var(--color-canvas-soft-2)" }}
             >
-              {/* Reorder buttons */}
-              <div className="flex flex-col gap-0.5">
+              <div className="w-full min-w-0">
+                <p className="break-all font-medium" style={{ color: "var(--color-ink)" }}>
+                  {item.file.name}
+                </p>
+                <p className="mt-1 text-xs" style={{ color: "var(--color-mute)" }}>
+                  {formatBytes(item.size)}
+                </p>
+              </div>
+              {/* Reorder buttons stay together below the filename on touch screens. */}
+              <div className="flex gap-2">
                 <button
                   type="button"
-                  disabled={index === 0}
+                  disabled={loading || index === 0}
                   onClick={() => moveFile(index, -1)}
-                  className="leading-none p-0.5 disabled:opacity-30 transition-opacity"
+                  className="flex h-11 w-11 items-center justify-center rounded border border-hairline enabled:hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-30 transition-colors"
                   style={{ color: "var(--color-mute)" }}
                   aria-label="Move up"
                 >
@@ -189,9 +198,9 @@ export default function PdfMerger() {
                 </button>
                 <button
                   type="button"
-                  disabled={index === files.length - 1}
+                  disabled={loading || index === files.length - 1}
                   onClick={() => moveFile(index, 1)}
-                  className="leading-none p-0.5 disabled:opacity-30 transition-opacity"
+                  className="flex h-11 w-11 items-center justify-center rounded border border-hairline enabled:hover:bg-canvas disabled:cursor-not-allowed disabled:opacity-30 transition-colors"
                   style={{ color: "var(--color-mute)" }}
                   aria-label="Move down"
                 >
@@ -199,20 +208,12 @@ export default function PdfMerger() {
                 </button>
               </div>
 
-              {/* File info */}
-              <span className="flex-1 truncate font-medium" style={{ color: "var(--color-ink)" }}>
-                {item.file.name}
-              </span>
-              <span className="text-xs whitespace-nowrap" style={{ color: "var(--color-mute)" }}>
-                {formatBytes(item.size)}
-              </span>
-
               {/* Remove */}
               <button
                 type="button"
+                disabled={loading}
                 onClick={() => removeFile(item.id)}
-                className="text-xs font-medium px-2 py-1 rounded transition-colors"
-                style={{ color: "var(--color-error)" }}
+                className="min-h-11 min-w-11 text-sm font-medium px-2 py-2 rounded text-link underline disabled:cursor-not-allowed disabled:opacity-40"
                 aria-label={`Remove ${item.file.name}`}
               >
                 Remove
@@ -222,10 +223,12 @@ export default function PdfMerger() {
 
           {/* Add more + Merge buttons */}
           <div className="flex flex-wrap items-center gap-3 pt-3">
+            <input id="pdf-merger-input" type="file" accept=".pdf" multiple hidden disabled={loading} onChange={handleFileInput} />
             <button
               type="button"
+              disabled={loading}
               onClick={() => document.getElementById("pdf-merger-input")?.click()}
-              className="btn-secondary btn-sm"
+              className="btn-secondary disabled:cursor-not-allowed disabled:opacity-40"
             >
               + Add More
             </button>
@@ -233,7 +236,7 @@ export default function PdfMerger() {
               type="button"
               onClick={mergePdfs}
               disabled={loading || files.length < 2}
-              className="btn-primary btn-sm"
+              className="btn-primary disabled:cursor-not-allowed"
               style={{
                 backgroundColor: "var(--color-primary)",
                 color: "var(--color-on-primary)",
@@ -242,7 +245,7 @@ export default function PdfMerger() {
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <svg className="motion-safe:animate-spin h-4 w-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
@@ -253,7 +256,7 @@ export default function PdfMerger() {
               )}
             </button>
             {mergedSize !== null && (
-              <span className="text-xs" style={{ color: "var(--color-success)" }}>
+              <span role="status" className="text-sm text-body">
                 Merged PDF: {formatBytes(mergedSize)} — Download started
               </span>
             )}

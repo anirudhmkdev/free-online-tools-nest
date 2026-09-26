@@ -162,7 +162,7 @@ export default function CgpaCalculator() {
                 <button
                   type="button"
                   disabled={rows.length === 1}
-                  className="mt-3 text-sm text-link underline disabled:opacity-40"
+                  className="mt-3 min-h-11 min-w-11 py-2 text-sm text-link underline disabled:opacity-40"
                   onClick={() => {
                     setRows(rows.filter((_, j) => i !== j));
                     clear();

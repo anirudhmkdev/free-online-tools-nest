@@ -173,12 +173,11 @@ export default function ImageFilter() {
     <div className="space-y-6">
       {!imageSrc && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("filter-file-input")?.click()}
         >
           <span className="text-4xl mb-4">🎨</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -189,9 +188,10 @@ export default function ImageFilter() {
           </p>
           <input
             id="filter-file-input"
+            aria-label="Choose an image"
             type="file"
             accept="image/*"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

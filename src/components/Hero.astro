@@ -77,7 +77,7 @@ const quickTasks = [
 </style>
 
 <script>
-  import { TOOLS } from "../data/tools";
+  import { findSearchEntries, readSearchEntries } from "../helpers/search";
   import { createSearchResultStatusText } from "../helpers/utils";
 
   const input = document.getElementById("hero-search") as HTMLInputElement;
@@ -117,12 +117,9 @@ const quickTasks = [
       return;
     }
 
-    const matches = TOOLS.filter(
-      (tool) =>
-        tool.name.toLowerCase().includes(q) ||
-        tool.description.toLowerCase().includes(q) ||
-        tool.keywords.some((keyword) => keyword.includes(q))
-    ).slice(0, 5);
+    const matches = findSearchEntries(readSearchEntries(), q, {
+      limit: 5, toolsOnly: true, includeKeywords: true,
+    });
 
     results.replaceChildren();
 
@@ -135,7 +132,7 @@ const quickTasks = [
     } else {
       activeLinks = matches.map((tool, index) => {
         const link = document.createElement("a");
-        link.href = `/tools/${tool.slug}/`;
+        link.href = tool.url;
         link.id = `hero-search-option-${index}`;
         link.role = "option";
         link.setAttribute("aria-selected", "false");

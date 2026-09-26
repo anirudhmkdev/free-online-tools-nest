@@ -101,12 +101,11 @@ export default function PdfToText() {
       {/* Upload */}
       {!file && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("pdf-text-input")?.click()}
         >
           <span className="text-4xl mb-4">📝</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -117,9 +116,10 @@ export default function PdfToText() {
           </p>
           <input
             id="pdf-text-input"
+            aria-label="Choose a PDF file"
             type="file"
             accept=".pdf"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

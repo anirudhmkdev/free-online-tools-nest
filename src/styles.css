@@ -7,13 +7,13 @@
   --color-on-primary: #ffffff;
   --color-ink: #171717;
   --color-body: #4d4d4d;
-  --color-mute: #888888;
+  --color-mute: #707070;
   --color-hairline: #ebebeb;
   --color-hairline-strong: #a1a1a1;
   --color-canvas: #ffffff;
   --color-canvas-soft: #fafafa;
   --color-canvas-soft-2: #f5f5f5;
-  --color-link: #0070f3;
+  --color-link: #0066dd;
   --color-link-deep: #0761d1;
   --color-success: #0070f3;
   --color-error: #ee0000;
@@ -63,7 +63,7 @@
   --color-on-primary: #0a0a0a;
   --color-ink: #ededed;
   --color-body: #a1a1a1;
-  --color-mute: #666666;
+  --color-mute: #999999;
   --color-hairline: #2e2e2e;
   --color-hairline-strong: #555555;
   --color-canvas: #0a0a0a;
@@ -248,6 +248,21 @@
 
 /* ─── Premium UI Polish Utilities ─────────────────────────── */
 @layer components {
+  /* Keep the native file picker operable across the whole upload surface. */
+  .file-upload-zone { position: relative; }
+  .file-upload-zone:focus-within {
+    outline: 2px solid var(--color-link);
+    outline-offset: 3px;
+  }
+  .file-upload-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
   .section-heading {
     display: flex;
     align-items: end;
@@ -561,6 +576,18 @@
   .category-card {
     min-height: 132px;
     padding: 16px;
+  }
+}
+
+/* Press feedback stays inside the icon; the touch target and label never move. */
+@media (prefers-reduced-motion: no-preference) {
+  .favorite-button svg {
+    transform-origin: center;
+    transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .favorite-button:active svg {
+    transform: scale(0.88);
   }
 }
 
