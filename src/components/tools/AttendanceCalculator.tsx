@@ -53,6 +53,8 @@ export default function AttendanceCalculator() {
         <div className="grid gap-5 sm:grid-cols-2">
           <NumberField
             id="attendance-attended"
+            step={1}
+            max={1_000_000_000}
             label="Attended classes"
             value={attended}
             onChange={setAttended}
@@ -60,6 +62,8 @@ export default function AttendanceCalculator() {
           />
           <NumberField
             id="attendance-total"
+            step={1}
+            max={1_000_000_000}
             label="Conducted classes"
             value={total}
             onChange={setTotal}
@@ -67,6 +71,8 @@ export default function AttendanceCalculator() {
           />
           <NumberField
             id="attendance-target"
+            step={0.01}
+            max={100}
             label="Target attendance (%)"
             value={target}
             onChange={setTarget}
@@ -74,6 +80,9 @@ export default function AttendanceCalculator() {
           />
           <NumberField
             id="attendance-remaining"
+            required={false}
+            step={1}
+            max={1_000_000_000}
             label="Remaining classes (optional)"
             value={remaining}
             onChange={setRemaining}
