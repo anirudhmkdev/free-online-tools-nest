@@ -3,12 +3,20 @@ import Layout from "./Layout.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import DecisionPaths from "../components/content/DecisionPaths.astro";
 import { getPagePolicy } from "../data/page-policy";
-import { contentPage, contentSchema } from "../helpers/content-navigation";
+import { contentPage, contentSchema, validateContentReferences } from "../helpers/content-navigation";
+import { CONTENT_PAGES, CONTENT_QUALITY, HUB_DISTINCTIONS } from "../data/content-page-quality";
+import { PAGE_POLICIES } from "../data/page-policy";
 interface Props { path: string }
 const page = contentPage(Astro.props.path);
 const policy = getPagePolicy(page.path);
+const referenceErrors = validateContentReferences(CONTENT_PAGES, PAGE_POLICIES);
+if (referenceErrors.length) throw new Error(referenceErrors.join("\n"));
+const quality = CONTENT_QUALITY[page.path];
+const distinction = HUB_DISTINCTIONS[page.path as keyof typeof HUB_DISTINCTIONS];
+if (policy.indexable && (!quality.reviewedOn || quality.reviewedOn !== policy.lastReviewed || quality.evidence.length === 0)) throw new Error(`Missing reviewed content evidence: ${page.path}`);
+if (policy.indexable && distinction && !distinction.reviewedOn) throw new Error(`Hub/category distinction has not been reviewed: ${page.path}`);
 const primaryHub = page.primaryHub ? contentPage(page.primaryHub) : undefined;
-const breadcrumbs = [{ label: "Home", href: "/" }, ...(page.kind === "workflow" ? [{ label: "Workflows", href: "/workflows/" }] : []), { label: page.title }];
+const breadcrumbs = [...(page.kind === "workflow" ? [{ label: "Workflows", href: "/workflows/" }] : []), { label: page.title }];
 ---
 <Layout title={page.title} description={page.description} canonicalPath={page.path} lang="en" jsonLd={contentSchema(page)}>
   <article class="container-page content-guide" data-content-page={page.path}>

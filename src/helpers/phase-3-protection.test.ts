@@ -21,4 +21,10 @@ describe("stable Phase 2 protection", () => {
   it.each([['Owned text', 'Changed copy'], ['Owned heading', 'Changed heading'], ['Original', 'New title'], ['Description', 'New description']])("detects changed owned content: %s", (before, after) => {
     expect(ownedSignals(html.replace(before, after), "/")).not.toEqual(ownedSignals(html, "/"));
   });
+  it("ignores only the existing Epoch live clock, preserving its surrounding content", () => {
+    const clock = '<main><h1>Epoch</h1><p>Current Timestamp (ms) 12345 Refresh</p></main>';
+    const route = "/es/tools/epoch-converter/";
+    expect(ownedSignals(clock.replace('12345', '67890'), route)).toEqual(ownedSignals(clock, route));
+    expect(ownedSignals(clock.replace('Refresh', 'Different copy'), route)).not.toEqual(ownedSignals(clock, route));
+  });
 });

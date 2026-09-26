@@ -21,7 +21,7 @@ export function validateContentReferences(pages: ContentPage[], policies: Record
     for (const link of contentReferences(page)) {
       if (!policies[link.path]) errors.push(`${page.path}: missing ${link.path}`);
       if (link.path === page.path) errors.push(`${page.path}: self-link`);
-      if (link.path.startsWith("/tools/") && !getToolBySlug(link.path.split("/")[2])) errors.push(`${page.path}: unknown tool ${link.path}`);
+      if (link.path !== "/tools/" && link.path.startsWith("/tools/") && !getToolBySlug(link.path.split("/")[2])) errors.push(`${page.path}: unknown tool ${link.path}`);
     }
     if (page.primaryHub && !pages.some(p => p.kind === "hub" && p.path === page.primaryHub)) errors.push(`${page.path}: missing primary hub`);
   }

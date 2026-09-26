@@ -10,11 +10,14 @@ export function ownedSignals(html, route) {
   const page = inspectPage(html, route);
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] ?? "";
   const owned = main.replace(/<section\b[^>]*data-workflow-links[^>]*>[\s\S]*?<\/section>/gi, "");
+  const visible = textOnly(owned);
+  // This existing tool renders Date.now() during prerender; keep its label and all other copy.
+  const stable = route.endsWith("/tools/epoch-converter/") ? visible.replace(/(Current Timestamp \(ms\)) \d+/, "$1 [live clock]") : visible;
   return {
     title: page.title, description: page.description, canonicals: page.canonicals,
     robots: page.robots,
     h1: [...owned.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)].map(m => textOnly(m[1])),
-    ownedTextHash: hashText(textOnly(owned)),
+    ownedTextHash: hashText(stable),
   };
 }
 export function checkProtection(root, fixture) {

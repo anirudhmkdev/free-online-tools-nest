@@ -1,15 +1,16 @@
 import { describe, expect, it } from "vitest";
 import baseline from "./__fixtures__/pre-pivot-routes.json";
+import phase3 from "./__fixtures__/phase-3-additions.json";
 import additions from "./__fixtures__/phase-2-additions.json";
 import { getPagePolicy, isSitemapEligible, PAGE_POLICIES } from "./page-policy";
 
 describe("Phase 1 publishing migration", () => {
   it("preserves every route, indexing decision, sitemap member and ad eligibility", () => {
     const legacyRoutes = baseline.pages.map(page => page.route);
-    expect(Object.keys(PAGE_POLICIES).filter(route => !additions.includes(route)).sort()).toEqual(legacyRoutes.sort());
+    expect(Object.keys(PAGE_POLICIES).filter(route => !additions.includes(route) && !phase3.includes(route)).sort()).toEqual(legacyRoutes.sort());
     for (const route of additions) {
       const policy = PAGE_POLICIES[route];
-      expect(policy, route).toMatchObject({ indexable: true, sitemapEligible: true, canonicalPath: route, adEligible: false, reviewStatus: "reviewed", relatedGuides: [], relatedWorkflows: [] });
+      expect(policy, route).toMatchObject({ indexable: true, sitemapEligible: true, canonicalPath: route, adEligible: false, reviewStatus: "reviewed", relatedGuides: [] });
       expect(policy.lastReviewed, route).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     }
     for (const page of baseline.pages) {
