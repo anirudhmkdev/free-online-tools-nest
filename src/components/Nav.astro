@@ -5,9 +5,10 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const lh = (path: string) => localizePath(path, lang);
 const links = lang === "en" ? [
-  { label: "Student Tools", href: "/#study-assignment-tools" },
-  { label: "Document Tools", href: "/#document-tools" },
-  { label: "Writing Tools", href: "/#writing-tools" },
+  { label: "Student Tools", href: "/student-tools/" },
+  { label: "Document Tools", href: "/document-tools/" },
+  { label: "Writing Tools", href: "/writing-tools/" },
+  { label: "Workflows", href: "/workflows/" },
   { label: "Guides", href: "/#practical-guides" },
   { label: "More Tools", href: "/tools/" },
 ] : [

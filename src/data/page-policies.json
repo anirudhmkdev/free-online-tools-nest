@@ -1482,7 +1482,9 @@
     "relatedGuides": [
       "/blog/verify-browser-tool-no-upload/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/color-contrast-checker/": {
@@ -1638,7 +1640,9 @@
     "relatedGuides": [
       "/blog/verify-browser-tool-no-upload/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/hash-generator/": {
@@ -1725,7 +1729,10 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/scan-notes-to-pdf/",
+      "/workflows/submit-an-assignment/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/image-cropper/": {
@@ -1742,7 +1749,10 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/scan-notes-to-pdf/",
+      "/workflows/submit-an-assignment/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/image-filter/": {
@@ -1787,7 +1797,10 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/scan-notes-to-pdf/",
+      "/workflows/submit-an-assignment/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/image-to-base64/": {
@@ -2056,7 +2069,10 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/prepare-pdf-for-upload/",
+      "/workflows/submit-an-assignment/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/pdf-merger/": {
@@ -2073,7 +2089,11 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/submit-an-assignment/",
+      "/workflows/prepare-pdf-for-upload/",
+      "/workflows/scan-notes-to-pdf/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/pdf-splitter/": {
@@ -2090,7 +2110,9 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/prepare-pdf-for-upload/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/pdf-to-images/": {
@@ -2124,7 +2146,9 @@
       "/blog/why-pdfs-compress-differently/",
       "/blog/image-compression-resizing-format-conversion/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/percentage-calculator/": {
@@ -2140,7 +2164,9 @@
     "relatedGuides": [
       "/blog/verify-browser-tool-no-upload/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/plagiarism-checker/": {
@@ -2199,7 +2225,9 @@
     "lastReviewed": "2026-08-26",
     "adEligible": true,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/regex-tester/": {
@@ -2353,7 +2381,9 @@
     "lastReviewed": "2026-08-26",
     "adEligible": true,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/text-diff/": {
@@ -2465,7 +2495,9 @@
     "lastReviewed": "2026-08-26",
     "adEligible": true,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/word-counter/": {
@@ -2481,7 +2513,10 @@
     "relatedGuides": [
       "/blog/verify-browser-tool-no-upload/"
     ],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/",
+      "/workflows/submit-an-assignment/"
+    ],
     "reviewStatus": "pending-evidence"
   },
   "/tools/yaml-to-json/": {
@@ -2509,7 +2544,9 @@
     "lastReviewed": "2026-09-16",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/"
+    ],
     "reviewStatus": "reviewed"
   },
   "/tools/sgpa-calculator/": {
@@ -2523,7 +2560,9 @@
     "lastReviewed": "2026-09-16",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/"
+    ],
     "reviewStatus": "reviewed"
   },
   "/tools/cgpa-calculator/": {
@@ -2537,7 +2576,9 @@
     "lastReviewed": "2026-09-16",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/"
+    ],
     "reviewStatus": "reviewed"
   },
   "/tools/marks-percentage-calculator/": {
@@ -2551,7 +2592,9 @@
     "lastReviewed": "2026-09-16",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/"
+    ],
     "reviewStatus": "reviewed"
   },
   "/tools/required-marks-calculator/": {
@@ -2565,7 +2608,9 @@
     "lastReviewed": "2026-09-16",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/"
+    ],
     "reviewStatus": "reviewed"
   },
   "/tools/image-to-pdf/": {
@@ -2579,7 +2624,10 @@
     "lastReviewed": "2026-09-16",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
+    "relatedWorkflows": [
+      "/workflows/scan-notes-to-pdf/",
+      "/workflows/submit-an-assignment/"
+    ],
     "reviewStatus": "reviewed"
   },
   "/student-tools/": {

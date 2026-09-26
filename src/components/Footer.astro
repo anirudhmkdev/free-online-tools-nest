@@ -43,9 +43,10 @@ const languageLinks = (Object.entries(languages) as [Lang, string][]).map(([code
         <h2 class="footer-heading">{lang === 'en' ? 'Toolkits' : t('footer.categories')}</h2>
         <ul class="space-y-2">
           {lang === "en" ? <>
-            <li><a href="/#study-assignment-tools" class="footer-link">Student Tools</a></li>
-            <li><a href="/#document-tools" class="footer-link">Document Tools</a></li>
-            <li><a href="/#writing-tools" class="footer-link">Writing Tools</a></li>
+            <li><a href="/student-tools/" class="footer-link">Student Tools</a></li>
+            <li><a href="/document-tools/" class="footer-link">Document Tools</a></li>
+            <li><a href="/writing-tools/" class="footer-link">Writing Tools</a></li>
+            <li><a href="/workflows/" class="footer-link">Workflows</a></li>
             <li><a href="/#practical-guides" class="footer-link">Practical guides</a></li>
             <li><a href="/categories/" class="footer-link">All categories</a></li>
           </> : categories.map((cat) => (
