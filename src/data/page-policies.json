@@ -2583,129 +2583,169 @@
     "reviewStatus": "reviewed"
   },
   "/student-tools/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/student-tools/",
-    "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryAudience": "students",
+    "primaryIntent": "Choose an academic calculator from the available records and intended result",
     "hub": "study-assignment",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedWorkflows": [
+      "/workflows/calculate-semester-results/",
+      "/workflows/check-assignment-length/",
+      "/workflows/submit-an-assignment/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/document-tools/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/document-tools/",
     "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryIntent": "Choose a document operation from source format and task constraints",
     "hub": "documents",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
-    "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedGuides": [
+      "/blog/image-compression-resizing-format-conversion/",
+      "/blog/image-compressor-browser-only/",
+      "/blog/why-pdfs-compress-differently/"
+    ],
+    "relatedWorkflows": [
+      "/workflows/submit-an-assignment/",
+      "/workflows/prepare-pdf-for-upload/",
+      "/workflows/scan-notes-to-pdf/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/writing-tools/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/writing-tools/",
-    "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryAudience": "students-and-writers",
+    "primaryIntent": "Choose the appropriate draft-review method and interpret its limitations",
     "hub": "writing",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/workflows/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/workflows/",
     "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryIntent": "Choose a complete task by starting material and required outcome",
     "hub": "reference",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedWorkflows": [
+      "/workflows/submit-an-assignment/",
+      "/workflows/prepare-pdf-for-upload/",
+      "/workflows/scan-notes-to-pdf/",
+      "/workflows/check-assignment-length/",
+      "/workflows/calculate-semester-results/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/workflows/submit-an-assignment/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/workflows/submit-an-assignment/",
-    "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryAudience": "students",
+    "primaryIntent": "Prepare mixed assignment sources through only the necessary operations",
     "hub": "documents",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
-    "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedGuides": [
+      "/blog/image-compression-resizing-format-conversion/"
+    ],
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/",
+      "/workflows/prepare-pdf-for-upload/",
+      "/workflows/scan-notes-to-pdf/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/workflows/prepare-pdf-for-upload/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/workflows/prepare-pdf-for-upload/",
     "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryIntent": "Prepare existing PDF pages, assembly and size for a specified upload destination",
     "hub": "documents",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
-    "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedGuides": [
+      "/blog/why-pdfs-compress-differently/"
+    ],
+    "relatedWorkflows": [
+      "/workflows/scan-notes-to-pdf/",
+      "/workflows/submit-an-assignment/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/workflows/scan-notes-to-pdf/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/workflows/scan-notes-to-pdf/",
-    "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryAudience": "students-and-note-takers",
+    "primaryIntent": "Prepare and order photographed notes as a legible image-based PDF",
     "hub": "documents",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
-    "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedGuides": [
+      "/blog/image-compression-resizing-format-conversion/"
+    ],
+    "relatedWorkflows": [
+      "/workflows/prepare-pdf-for-upload/",
+      "/workflows/submit-an-assignment/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/workflows/check-assignment-length/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/workflows/check-assignment-length/",
-    "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryAudience": "students-and-writers",
+    "primaryIntent": "Apply supplied counting rules and review a draft without claiming institutional equivalence",
     "hub": "writing",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedWorkflows": [
+      "/workflows/submit-an-assignment/"
+    ],
+    "reviewStatus": "reviewed"
   },
   "/workflows/calculate-semester-results/": {
-    "indexable": false,
-    "sitemapEligible": false,
+    "indexable": true,
+    "sitemapEligible": true,
     "canonicalPath": "/workflows/calculate-semester-results/",
-    "primaryAudience": "students-and-document-users",
-    "primaryIntent": "Choose and complete a task using conditional decisions and existing tools",
+    "primaryAudience": "students",
+    "primaryIntent": "Route academic records to the appropriate calculation with explicit weights and scales",
     "hub": "study-assignment",
     "tier": "core",
-    "lastReviewed": null,
+    "lastReviewed": "2026-09-26",
     "adEligible": false,
     "relatedGuides": [],
-    "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "relatedWorkflows": [
+      "/workflows/check-assignment-length/"
+    ],
+    "reviewStatus": "reviewed"
   }
 }

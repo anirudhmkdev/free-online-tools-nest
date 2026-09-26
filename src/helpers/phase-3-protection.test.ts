@@ -1,9 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { ownedSignals } from "../../scripts/phase-3-protection.mjs";
+import { ownedSignals, checkHubMetadata } from "../../scripts/phase-3-protection.mjs";
 import baseline from "../data/__fixtures__/post-phase-2-routes.json";
 import { PAGE_POLICIES } from "../data/page-policy";
 
 describe("stable Phase 2 protection", () => {
+  it("rejects matching hub/category titles, descriptions or H1s", () => {
+    const category = {title:"Inventory",description:"Browse every tool",h1:["Tools"]};
+    expect(checkHubMetadata(category, category)).toHaveLength(3);
+    expect(checkHubMetadata({title:"Choose an operation",description:"Match your task",h1:["What needs changing?"]}, category)).toEqual([]);
+  });
   it("preserves all 182 existing policy decisions independently of approved additions", () => {
     expect(baseline.pages).toHaveLength(182);
     for (const page of baseline.pages) {

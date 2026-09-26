@@ -3,6 +3,15 @@ import { PAGE_POLICIES, type PagePolicy } from "../data/page-policy";
 import { getToolBySlug } from "../data/tools";
 import type { ContentPage } from "../data/content-types";
 
+export function reviewErrors(page: ContentPage, policy: PagePolicy, quality: { reviewedOn: string | null; evidence: string[] }, overlap?: { reviewedOn: string | null }) {
+  if (!policy.indexable) return [];
+  const errors: string[] = [];
+  if (policy.reviewStatus !== "reviewed" || !quality.reviewedOn || quality.reviewedOn !== policy.lastReviewed || !quality.evidence.length) errors.push(`${page.path}: missing dated content evidence`);
+  if (overlap && overlap.reviewedOn !== quality.reviewedOn) errors.push(`${page.path}: hub/category distinction has not been reviewed`);
+  if (!page.uniqueValue.trim() || !page.example.input.trim() || !page.example.output.trim() || !page.limitations.length) errors.push(`${page.path}: incomplete quality dossier`);
+  return errors;
+}
+
 export function contentPage(path: string): ContentPage {
   const page = CONTENT_PAGES.find(page => page.path === path);
   if (!page) throw new Error(`Missing content destination: ${path}`);

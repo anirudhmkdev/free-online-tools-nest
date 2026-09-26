@@ -34,3 +34,12 @@ export function checkProtection(root, fixture) {
   }
   return failures;
 }
+
+/** Structural overlap check supports (and does not replace) the recorded editorial review. */
+export function checkHubMetadata(hub, category) {
+  const failures = [];
+  for (const key of ["title", "description", "h1"]) {
+    if (JSON.stringify(hub[key]) === JSON.stringify(category[key])) failures.push(`Hub and category must have distinct ${key}`);
+  }
+  return failures;
+}

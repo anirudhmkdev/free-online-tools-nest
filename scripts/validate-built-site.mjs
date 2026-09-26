@@ -2,7 +2,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { checkProtection } from "./phase-3-protection.mjs";
+import { checkProtection, checkHubMetadata, ownedSignals } from "./phase-3-protection.mjs";
 
 export const SITE_URL = "https://freeonlinetoolsnest.com";
 export const EXPECTED_ADS_TXT = "google.com, pub-7189536685341014, DIRECT, f08c47fec0942fa0";
@@ -162,6 +162,12 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const result = validateBuiltSite(rootPath, { policies, baseline, allowedAdditions });
   const protection = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-organic-protection.json", import.meta.url), "utf8"));
   result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), protection));
+  for (const [hub, category] of [["/document-tools/", "/categories/pdf-tools/"], ["/writing-tools/", "/categories/text-tools/"]]) {
+    if (policies[hub]?.indexable) {
+      const signals = route => ownedSignals(readFileSync(join(rootPath, route.slice(1), "index.html"), "utf8"), route);
+      result.failures.push(...checkHubMetadata(signals(hub), signals(category)).map(error => hub + ": " + error));
+    }
+  }
   if (result.failures.length) { console.error(result.failures.join("\n")); process.exitCode = 1; }
   else console.log("Validated " + result.pageCount + " pages and " + result.sitemapCount + " sitemap URLs offline: routes, indexing, canonicals, redirects, links, hreflang, JSON-LD, ads.txt and existing integrations.");
 }

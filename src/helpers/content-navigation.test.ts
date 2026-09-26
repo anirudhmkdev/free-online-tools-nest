@@ -1,9 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { CONTENT_PAGES } from "../data/content-page-quality";
-import { contentPage, contentSchema, isReviewedDestination, validateContentReferences } from "./content-navigation";
+import { contentPage, contentSchema, isReviewedDestination, validateContentReferences, reviewErrors } from "./content-navigation";
 import { PAGE_POLICIES } from "../data/page-policy";
 
 describe("content navigation", () => {
+  it("blocks indexing without dated evidence or a reviewed category distinction", () => {
+    const page = contentPage("/document-tools/");
+    const policy = { ...PAGE_POLICIES[page.path], indexable: true, reviewStatus: "reviewed" as const, lastReviewed: "2026-09-26" };
+    expect(reviewErrors(page, policy, {reviewedOn:null,evidence:[]})).not.toEqual([]);
+    const quality = {reviewedOn:"2026-09-26",evidence:["Verified example"]};
+    expect(reviewErrors(page, policy, quality, {reviewedOn:null}).join(" ")).toContain("distinction");
+    expect(reviewErrors(page, policy, quality, {reviewedOn:"2026-09-26"})).toEqual([]);
+    expect(reviewErrors(page, {...policy,indexable:false}, {reviewedOn:null,evidence:[]}, {reviewedOn:null})).toEqual([]);
+  });
   it("rejects missing destinations instead of silently hiding them", () => {
     expect(() => contentPage("/missing/")).toThrow("Missing content destination");
     const page = { ...contentPage("/student-tools/"), related: [{ path: "/missing/", label: "Missing" }] };
