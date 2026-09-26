@@ -1,0 +1,11 @@
+---
+import { getToolContext } from "../../helpers/content-navigation";
+interface Props { route: string }
+const context = getToolContext(Astro.props.route);
+---
+{context && <section data-workflow-links class="mt-8 border-t border-hairline pt-6" aria-labelledby="tool-workflow-heading">
+  <h2 id="tool-workflow-heading" class="text-xl font-semibold text-ink">Use this in a task</h2>
+  <p class="mt-2 text-body">Choose a task to see when this tool helps and which steps you can skip.</p>
+  <ul class="mt-3">{context.workflows.map(workflow => <li><a class="inline-flex min-h-11 items-center py-2 text-link underline" href={workflow.path}>{workflow.title}</a></li>)}</ul>
+  <a class="inline-flex min-h-11 items-center py-2 text-link underline" href={context.hub.path}>{context.hub.title} →</a>
+</section>}

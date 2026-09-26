@@ -1,0 +1,79 @@
+---
+import Layout from "./Layout.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import DecisionPaths from "../components/content/DecisionPaths.astro";
+import { getPagePolicy } from "../data/page-policy";
+import { contentPage, contentSchema } from "../helpers/content-navigation";
+interface Props { path: string }
+const page = contentPage(Astro.props.path);
+const policy = getPagePolicy(page.path);
+const primaryHub = page.primaryHub ? contentPage(page.primaryHub) : undefined;
+const breadcrumbs = [{ label: "Home", href: "/" }, ...(page.kind === "workflow" ? [{ label: "Workflows", href: "/workflows/" }] : []), { label: page.title }];
+---
+<Layout title={page.title} description={page.description} canonicalPath={page.path} lang="en" jsonLd={contentSchema(page)}>
+  <article class="container-page content-guide" data-content-page={page.path}>
+    <Breadcrumbs items={breadcrumbs} />
+    <header class="guide-header">
+      <p class="eyebrow">{page.kind === "workflow" ? "A practical workflow" : "Choose the right tool"}</p>
+      <h1>{page.heading}</h1>
+      <p class="intro">{page.intro}</p>
+      {primaryHub && <a class="hub-return" href={primaryHub.path}>Explore: {primaryHub.title} <span aria-hidden="true">→</span></a>}
+    </header>
+    <div class="guide-columns">
+      <div class="guide-main">
+        <section aria-labelledby="decisions">
+          <h2 id="decisions">{page.decisionHeading}</h2>
+          <DecisionPaths decisions={page.decisions} ordered={page.kind === "workflow"} />
+        </section>
+        {page.sections.map((section, i) => <section class="guide-section" aria-labelledby={`explanation-${i}`}>
+          <h2 id={`explanation-${i}`}>{section.heading}</h2>
+          {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}
+          {section.links && <ul class="plain-links">{section.links.map(link => <li><a href={link.path}>{link.label}</a></li>)}</ul>}
+        </section>)}
+        <section class="worked-example guide-section" aria-labelledby="worked-example">
+          <p class="eyebrow">Put the choice into practice</p>
+          <h2 id="worked-example">Worked example</h2>
+          <dl><dt>Starting point</dt><dd>{page.example.input}</dd><dt>Decision and expected result</dt><dd>{page.example.output}</dd></dl>
+        </section>
+        <section class="guide-section" aria-labelledby="limitations">
+          <h2 id="limitations">What this does not guarantee</h2>
+          <ul class="limits">{page.limitations.map(limit => <li>{limit}</li>)}</ul>
+        </section>
+      </div>
+      <aside aria-labelledby="related-tasks">
+        <h2 id="related-tasks">{page.kind === "workflow" ? "Related tasks and explanations" : "Continue with a task"}</h2>
+        <ul class="plain-links">{page.related.map(link => <li><a href={link.path}>{link.label}</a></li>)}</ul>
+        {page.kind === "workflow" && <a class="hub-return" href="/workflows/">Choose another workflow →</a>}
+        <p class="handoff">Tools open as separate pages. Download your output and select it in the next tool when needed. Files are not passed automatically.</p>
+      </aside>
+    </div>
+    {policy.lastReviewed && <p class="review-note">Last reviewed: <time datetime={policy.lastReviewed}>{policy.lastReviewed}</time> · <a href="/standards/">How we check tools and content</a></p>}
+  </article>
+</Layout>
+<style>
+  .content-guide { padding-top: 2rem; overflow-wrap: anywhere; }
+  .guide-header { max-width: 850px; padding: 2rem 0 3rem; }
+  .eyebrow { font-size: .75rem; color: var(--color-mute); font-family: var(--font-mono); margin-bottom: .8rem; }
+  h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.12; font-weight: 600; letter-spacing: -.035em; color: var(--color-ink); text-wrap: balance; }
+  .intro { font-size: 1.125rem; line-height: 1.8; margin: 1.25rem 0; color: var(--color-body); max-width: 70ch; }
+  .guide-columns { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .guide-main { min-width: 0; max-width: 78ch; }
+  h2 { font-size: 1.35rem; font-weight: 600; line-height: 1.4; color: var(--color-ink); margin: 0 0 1rem; scroll-margin-top: 95px; }
+  .guide-section { margin-top: 2.75rem; }
+  .guide-section p, dd, .limits { color: var(--color-body); line-height: 1.8; }
+  .guide-section p + p { margin-top: 1rem; }
+  .worked-example { padding: 1.25rem; border-left: 3px solid var(--color-link); background: var(--color-canvas-soft); border-radius: 0 8px 8px 0; }
+  dt { margin: 1rem 0 .4rem; color: var(--color-ink); font-weight: 600; font-size: .875rem; }
+  dd { margin: 0; }
+  .limits { padding-left: 1.3rem; list-style: disc; }
+  .limits li + li { margin-top: .6rem; }
+  aside { border-top: 1px solid var(--color-hairline); padding-top: 1.5rem; align-self: start; min-width: 0; }
+  aside h2 { font-size: 1rem; }
+  .plain-links { list-style: none; margin: 0; padding: 0; }
+  .plain-links a, .hub-return { display: inline-flex; align-items: center; min-height: 44px; padding: .55rem 0; line-height: 1.5; }
+  a { color: var(--color-link); text-decoration: underline; text-underline-offset: 4px; }
+  a:focus-visible { outline: 2px solid var(--color-link); outline-offset: 4px; }
+  .handoff { color: var(--color-mute); font-size: .875rem; line-height: 1.75; margin-top: 1.5rem; }
+  .review-note { border-top: 1px solid var(--color-hairline); padding-top: 1.5rem; margin-top: 3rem; color: var(--color-body); font-size: .875rem; }
+  @media (min-width: 1024px) { .guide-columns { grid-template-columns: minmax(0, 1fr) 260px; gap: 3.5rem; } aside { border-top: 0; padding-top: 0; } }
+</style>
