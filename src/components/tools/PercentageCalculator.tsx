@@ -6,6 +6,9 @@ import { useState, useCallback } from "react";
  * 2. X is what % of Y?
  * 3. Percentage change from X to Y
  */
+import { calculatePercentage } from "../../helpers/percentage";
+import ErrorBanner from "../ErrorBanner";
+
 type CalcMode = "of" | "is" | "change";
 
 const MODES: { key: CalcMode; label: string; desc: string }[] = [
@@ -15,36 +18,20 @@ const MODES: { key: CalcMode; label: string; desc: string }[] = [
 ];
 
 export default function PercentageCalculator() {
+  const [error, setError] = useState("");
+  const [formula, setFormula] = useState("");
   const [mode, setMode] = useState<CalcMode>("of");
   const [a, setA] = useState("");
   const [b, setB] = useState("");
   const [result, setResult] = useState<string | null>(null);
 
   const calculate = useCallback(() => {
-    const numA = parseFloat(a);
-    const numB = parseFloat(b);
-    if (isNaN(numA) || isNaN(numB)) {
-      setResult(null);
-      return;
-    }
-
-    let res: number;
-    switch (mode) {
-      case "of":
-        res = (numA / 100) * numB;
-        break;
-      case "is":
-        if (numB === 0) { setResult("Cannot divide by zero"); return; }
-        res = (numA / numB) * 100;
-        break;
-      case "change":
-        if (numA === 0) { setResult("Cannot divide by zero"); return; }
-        res = ((numB - numA) / Math.abs(numA)) * 100;
-        break;
-      default:
-        return;
-    }
-    setResult(Number.isInteger(res) ? res.toString() : res.toFixed(4));
+    setResult(null); setFormula(""); setError("");
+    try {
+      const { value, formula } = calculatePercentage(mode, a, b);
+      setResult(Number.isInteger(value) ? value.toString() : value.toFixed(4));
+      setFormula(formula);
+    } catch (error) { setError(error instanceof Error ? error.message : "Unable to calculate."); }
   }, [mode, a, b]);
 
   const getLabels = () => {
@@ -65,7 +52,7 @@ export default function PercentageCalculator() {
           <button
             key={m.key}
             type="button"
-            onClick={() => { setMode(m.key); setResult(null); }}
+            onClick={() => { setMode(m.key); setResult(null); setFormula(""); setError(""); }}
             className="px-4 py-2 text-sm rounded-full border transition-all duration-150"
             style={{
               backgroundColor: mode === m.key ? "var(--color-primary)" : "var(--color-canvas)",
@@ -92,7 +79,7 @@ export default function PercentageCalculator() {
             id="pct-a"
             type="number"
             value={a}
-            onChange={(e) => setA(e.target.value)}
+            onChange={(e) => { setA(e.target.value); setResult(null); setError(""); }}
             placeholder="0"
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
@@ -111,7 +98,7 @@ export default function PercentageCalculator() {
             id="pct-b"
             type="number"
             value={b}
-            onChange={(e) => setB(e.target.value)}
+            onChange={(e) => { setB(e.target.value); setResult(null); setError(""); }}
             placeholder="0"
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
@@ -133,6 +120,7 @@ export default function PercentageCalculator() {
         Calculate
       </button>
 
+      <ErrorBanner message={error} />
       {/* Result */}
       {result !== null && (
         <div
@@ -145,6 +133,7 @@ export default function PercentageCalculator() {
           <div className="text-4xl font-semibold" style={{ color: "var(--color-ink)", letterSpacing: "-1.28px" }}>
             {result}{mode !== "of" ? "%" : ""}
           </div>
+          <p className="text-sm mt-3">Formula: {formula}. Display rounds to at most four decimal places. Percentage change uses the absolute starting value as its denominator.</p>
         </div>
       )}
     </div>

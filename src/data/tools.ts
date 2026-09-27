@@ -191,12 +191,12 @@ export const TOOLS: Tool[] = [
       {
         title: "Review the detailed breakdown",
         content:
-          "The word counter shows a complete analysis including estimated reading time, average word length, and keyword density. This detailed breakdown helps writers, students, and content creators meet specific word limits and improve their writing efficiency.",
+          "Review words, characters, characters without whitespace, sentences, paragraphs and estimated reading time. It does not show average word length or keyword density. Reading time assumes 200 words per minute, rounded up.",
       },
       {
         title: "Copy and use your stats",
         content:
-          "Use the copy buttons to grab specific metrics or clear the text to start a new analysis. Our word counter tool is perfect for blog posts, essays, academic papers, and any content where precise word and character counts matter.",
+          "Read the displayed totals or select them manually to copy. Clear resets the input. Compare with your submission system because counting rules can differ.",
       },
     ],
     faq: [
@@ -235,7 +235,7 @@ export const TOOLS: Tool[] = [
     description:
       "Count characters with and without spaces for social media limits.",
     longDescription:
-      "Use this character counter online to count characters with spaces, characters without spaces, words, sentences, and lines in real time. It is built for social posts, SMS copy, meta descriptions, titles, and any writing task with a strict length limit.",
+      "Use this character counter online to count characters with spaces, characters without whitespace, and words in real time. It is built for social posts, SMS copy, meta descriptions, titles, and any writing task with a strict length limit.",
     categorySlug: "text-tools",
     icon: "🔤",
     featured: true,
@@ -253,7 +253,7 @@ export const TOOLS: Tool[] = [
       {
         title: "Paste or Type Your Text",
         content:
-          "Paste any text into the character counter online and the totals update instantly. The tool counts characters with spaces, characters without spaces, words, and lines.",
+          "Paste any text into the character counter online and the totals update instantly. The tool counts characters with spaces, characters without whitespace, and words.",
       },
       {
         title: "Check Platform Limits",
@@ -270,12 +270,12 @@ export const TOOLS: Tool[] = [
       {
         question: "What does this character counter online measure?",
         answer:
-          "The character counter online measures total characters, characters without spaces, words, sentences, paragraphs, and line breaks. It is useful for social posts, SEO snippets, and writing limits.",
+          "The character counter online measures JavaScript UTF-16 code units with and without whitespace, and whitespace-separated words. It is useful for social posts, SEO snippets, and writing limits.",
       },
       {
         question: "Can I use this as a Twitter character counter?",
         answer:
-          "Yes. Twitter/X character counting is a common use case, and the tool helps you keep posts within common social media limits while still showing broader character and word totals.",
+          "Use it only as an approximate editing aid. Emoji, combined characters, links, platform rules and SMS encoding can use different counting methods. The platform composer is authoritative.",
       },
     ],
   },
@@ -308,7 +308,7 @@ export const TOOLS: Tool[] = [
       {
         title: "Choose a case style",
         content:
-          "Click the uppercase option to instantly transform your entire text to uppercase. The upper case converter also supports lowercase, title case, sentence case, and toggle case — giving you complete control over text formatting.",
+          "Click the uppercase option to instantly transform your entire text to uppercase. The upper case converter also supports lowercase, title case, sentence case, and camelCase — giving you complete control over text formatting.",
       },
       {
         title: "Copy the converted result",
@@ -327,7 +327,7 @@ export const TOOLS: Tool[] = [
         question:
           "Can the upper case converter also change text to lowercase and title case?",
         answer:
-          "Yes, the tool includes options for lowercase, title case, sentence case, and toggle case in addition to uppercase. This makes it a versatile upper case converter that handles all common text formatting needs in one place.",
+          "Yes, the tool includes options for lowercase, title case, sentence case, and camelCase in addition to uppercase. This makes it a versatile upper case converter that handles all common text formatting needs in one place.",
       },
     ],
   },
@@ -399,7 +399,7 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "JSON Formatter Online — Validate & Beautify JSON",
     metaDescription:
-      "Validate, format, and beautify JSON online free. Detect errors with line numbers and syntax highlighting — right in your browser.",
+      "Validate, format, and beautify JSON online free. Detect errors with line numbers and plain-text indentation — right in your browser.",
     usageSteps: [
       {
         title: "Paste Your Raw JSON Data",
@@ -421,7 +421,7 @@ export const TOOLS: Tool[] = [
       {
         question: "How does this JSON formatter work directly in my browser?",
         answer:
-          "This JSON formatter works entirely in your browser using JavaScript to parse, validate, and re-indent your JSON data with proper spacing and syntax highlighting. You get clean, validated output without needing to launch your editor or install any extensions.",
+          "This JSON formatter works entirely in your browser using JavaScript to parse, validate, and re-indent your JSON data with proper spacing and plain-text indentation. You get clean, validated output without needing to launch your editor or install any extensions.",
       },
       {
         question: "Can I use this JSON formatter to debug API responses?",
@@ -504,7 +504,7 @@ export const TOOLS: Tool[] = [
     name: "Base64 Encoder/Decoder",
     description: "Encode text to Base64 or decode Base64 strings back to text.",
     longDescription:
-      "Convert any text to a Base64-encoded string or decode a Base64 string back to its original text. Useful for encoding data for APIs, email attachments, and data URIs.",
+      "Encode UTF-8 text as Base64 or decode Base64 back to UTF-8 text locally. Choose a direction and press Convert. This interface does not upload files or decode arbitrary binary data into downloadable files.",
     categorySlug: "developer-tools",
     icon: "\ud83d\udd10",
     featured: false,
@@ -519,36 +519,29 @@ export const TOOLS: Tool[] = [
     metaDescription:
       "Free Base64 encoder/decoder tool — encode text to Base64 format or decode strings back to plain text instantly. All client-side, no server uploads.",
     usageSteps: [
-      {
-        title: "Input Your Text or Base64 Data",
-        content:
-          "Type your plain text directly into the input area or paste Base64-encoded strings that you want to decode. This Base64 encoder/decoder tool accepts standard text input as well as binary data representations, making it easy to encode data for use in data URIs or API payloads.",
-      },
-      {
-        title: "Select Encode or Decode",
-        content:
-          "Choose the encode option to convert your plain text into a Base64 string, or select decode if you have a Base64 string that needs to be turned back into readable text. The Base64 encoder/decoder performs the conversion in real time so you can see the result instantly.",
-      },
-      {
-        title: "Use the Output in Your Project",
-        content:
-          "Copy the generated Base64 string or decoded text with a single click. Developers commonly use a Base64 encoder/decoder to embed small images directly in HTML and CSS and to transmit binary data safely through text-based protocols like JSON and XML.",
-      },
-    ],
+  {
+    "title": "Enter text or Base64",
+    "content": "Paste UTF-8 text to encode, or standard Base64 representing UTF-8 text to decode. For example, hello encodes to aGVsbG8=."
+  },
+  {
+    "title": "Choose a direction and convert",
+    "content": "Select Encode or Decode, then press Convert. Invalid Base64 or bytes that are not valid UTF-8 produce an error."
+  },
+  {
+    "title": "Inspect and copy",
+    "content": "Check the output before using Copy. Base64 is reversible encoding, not encryption. Do not use it to protect credentials."
+  }
+],
     faq: [
-      {
-        question:
-          "Why do developers rely on a Base64 encoder/decoder for web development?",
-        answer:
-          "A Base64 encoder/decoder allows binary data such as images, audio files, or document blobs to be represented as plain ASCII text that can travel through systems designed for textual data. When you encode with this Base64 encoder/decoder tool, you produce a string that can be safely embedded in JSON responses, HTML attributes, or CSS background-image properties without corruption.",
-      },
-      {
-        question:
-          "Does using a Base64 encoder/decoder make the data larger than the original?",
-        answer:
-          "Yes — Base64 encoding increases the data size by approximately 33 percent because every three bytes of binary data are represented as four ASCII characters. This overhead is a worthwhile trade-off when you use a Base64 encoder/decoder for secure text-based transport, but you should avoid it for very large files if bandwidth is a concern.",
-      },
-    ],
+  {
+    "question": "Can this convert image or audio files?",
+    "answer": "No. This workspace handles text only. Use Image to Base64 for supported image files; arbitrary binary output needs a different tool."
+  },
+  {
+    "question": "Why does Base64 grow the input?",
+    "answer": "Every three bytes become four Base64 characters, with padding when needed. This is about one-third overhead for longer inputs and can be higher for very short strings."
+  }
+],
   },
   {
     slug: "percentage-calculator",
@@ -556,7 +549,7 @@ export const TOOLS: Tool[] = [
     description:
       "Calculate percentages, percentage change, and what percent X is of Y.",
     longDescription:
-      "Use this percentage calculator online to solve common percent math: find a percentage of a number, calculate percentage increase or decrease, compare two values, and work out percentage difference for shopping, reports, grades, and everyday planning.",
+      "Use this percentage calculator online to solve common percent math: find a percentage of a number, calculate percentage increase or decrease, compare two values, and work out what percent one value is of another for shopping, reports, grades, and everyday planning.",
     categorySlug: "calculators",
     icon: "%",
     featured: true,
@@ -564,22 +557,22 @@ export const TOOLS: Tool[] = [
       "percentage calculator online",
       "percent of number",
       "percentage change calculator",
-      "percentage difference calculator",
+      "what percent one value is of another calculator",
       "find percentage online",
     ],
     metaTitle: "Percentage Calculator Online - Free Percent Tool",
     metaDescription:
-      "Use this percentage calculator online for percent of a number, percentage change, and percentage difference. Get fast formulas and results.",
+      "Use this percentage calculator online for percent of a number, percentage change, and what percent one value is of another. Get fast formulas and results.",
     usageSteps: [
       {
         title: "Choose a Percentage Calculation",
         content:
-          "Select whether you need percent of a number, percentage change, or percentage difference. The percentage calculator online supports the most common percent math tasks.",
+          "Select whether you need percent of a number, percentage change, or what percent one value is of another. The percentage calculator online supports the most common percent math tasks.",
       },
       {
         title: "Enter Your Numbers",
         content:
-          "Fill in the values for your calculation and the result appears instantly. The percentage calculator online also shows the formula so the answer is easy to understand.",
+          "Fill in the values for your calculation then press Calculate to show the result. The percentage calculator online also shows the formula so the answer is easy to understand.",
       },
       {
         title: "Use the Result",
@@ -1379,9 +1372,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "pdf-compressor",
     name: "PDF Compressor",
-    description: "Reduce PDF file size by compressing images and content.",
+    description: "Try a local PDF rewrite and compare the actual before-and-after file sizes.",
     longDescription:
-      "Use this compress PDF online tool to reduce PDF file size directly in your browser. Choose compression settings, process everyday documents locally, and download a smaller PDF without uploading private files to a remote server.",
+      "Rewrite an unencrypted PDF with or without object streams. The output may be smaller, unchanged or larger. This tool does not downsample images, offer image-quality percentages or guarantee a target file size. Keep the original and inspect the output.",
     categorySlug: "pdf-tools",
     icon: "🗜️",
     featured: true,
@@ -1393,55 +1386,34 @@ export const TOOLS: Tool[] = [
       "pdf compression tool",
       "optimize pdf documents",
     ],
-    metaTitle: "Compress PDF Online - Free Browser-Based Tool",
+    metaTitle: "PDF Compressor — Local Rewrite & Size Comparison",
     metaDescription:
-      "Compress PDF online with a free browser-based PDF compressor. Reduce file size privately with no upload, no signup, and instant download.",
+      "Try a browser-side PDF rewrite and compare actual sizes. No image downsampling or guaranteed savings; password-protected PDFs are rejected.",
     usageSteps: [
-      {
-        title: "Choose a PDF File",
-        content:
-          "Select the document you want to compress PDF online. The file is loaded in your browser and checked against size guardrails before processing begins.",
-      },
-      {
-        title: "Pick Compression Settings",
-        content:
-          "Choose the compression level that balances smaller file size with readable quality. Image-heavy PDFs usually offer the largest savings.",
-      },
-      {
-        title: "Download the Smaller PDF",
-        content:
-          "Download the compressed PDF when processing finishes. The compress PDF online workflow stays local, so your document is not uploaded to a server.",
-      },
-    ],
+  {
+    "title": "Choose an unencrypted PDF",
+    "content": "Select a local PDF within the displayed application guardrail. Password-protected or malformed files are rejected."
+  },
+  {
+    "title": "Choose a save mode",
+    "content": "Object streams may reduce structural overhead; Plain rewrite saves without them. Neither mode changes image resolution or guarantees savings."
+  },
+  {
+    "title": "Compare and inspect",
+    "content": "Run the rewrite, compare original and output sizes, then download if useful. If the output is larger, retain your original. Check page order, appearance and any advanced features before using the file."
+  }
+],
     faq: [
-      {
-        question: "Can I compress PDF online without uploading it?",
-        answer:
-          "Yes. This tool compresses PDFs in your browser, which means the document is processed locally instead of being uploaded to a remote server.",
-      },
-      {
-        question: "Why did my compressed PDF not get much smaller?",
-        answer:
-          "Some PDFs are already optimized or mostly text-based, so there may be little redundant data to remove. Scanned PDFs and image-heavy files usually have more room for compression.",
-      },
-    ],
-    additionalContent: [
-      {
-        heading: "Compress PDFs Without Uploading Files",
-        content:
-          "This PDF compressor works in your browser, so documents do not need to be sent to a remote server. That makes it a better fit for contracts, invoices, forms, and internal files that should stay on your device.",
-      },
-      {
-        heading: "Best Use Cases for PDF Compression",
-        content:
-          "Use the tool when a PDF is too large for email, web forms, document portals, or storage limits. Results vary by file because PDFs with many images usually compress more than text-only documents.",
-      },
-      {
-        heading: "Supported PDF Limits",
-        content:
-          "The compressor is designed for everyday PDFs and includes file size guardrails to keep the browser responsive. Very large or heavily scanned documents may need desktop software or a dedicated PDF workflow.",
-      },
-    ],
+  {
+    "question": "Do the modes control image quality?",
+    "answer": "No. The modes change PDF serialization, not JPEG quality or image dimensions. Image-heavy scans may barely shrink or may become larger."
+  },
+  {
+    "question": "Are all PDF features preserved?",
+    "answer": "Do not assume that digital signatures, complex forms, bookmarks or accessibility tags will survive a rewrite as intended. Keep the original and use a trusted desktop editor when these features matter."
+  }
+],
+    additionalContent: [],
   },
   {
     slug: "pdf-to-text",
@@ -2060,9 +2032,9 @@ export const TOOLS: Tool[] = [
     slug: "text-summarizer",
     name: "Text Summarizer",
     description:
-      "Summarize long articles and paragraphs into concise key points.",
+      "Select existing English sentences using a word-frequency heuristic.",
     longDescription:
-      "Paste long text and get a concise summary of the most important sentences. The summarizer uses extractive techniques — analyzing word frequency and sentence scoring — to identify and present the most meaningful content. Choose summary length (short, medium, long) to control detail level.",
+      "Choose a short extract from English text. The tool ranks sentences by repeated non-stop words, selects up to the requested count and restores source order. It does not understand meaning, verify facts or write a new summary. Review the extract against the original.",
     categorySlug: "text-tools",
     icon: "📋",
     featured: true,
@@ -2073,40 +2045,35 @@ export const TOOLS: Tool[] = [
       "article summarizer free",
       "text summary generator free",
     ],
-    metaTitle: "Text Summarizer - Free AI Text Shortener Tool",
+    metaTitle: "Text Summarizer — Extractive English Sentence Selector",
     metaDescription:
-      "Use our free text summarizer to condense long articles into concise key points. Adjustable summary length with instant results — no signup required.",
+      "Select original English sentences by word frequency, preserving their order. Review context, sentence-boundary limitations and the selected length.",
     usageSteps: [
-      {
-        title: "Paste your text",
-        content:
-          "Paste the article or document you want to condense into the text summarizer free tool. The tool works with long-form content such as news articles, research papers, blog posts, and business reports.",
-      },
-      {
-        title: "Set summary length",
-        content:
-          "Choose your preferred summary length — short for a few key sentences or long for detailed coverage. This text summarizer free tool automatically selects the most important sentences from your original text.",
-      },
-      {
-        title: "Copy your summary",
-        content:
-          "Review the generated summary and copy it for use in notes, reports, or study materials. Use this text summarizer free whenever you need to quickly grasp the main points of long documents without reading every word.",
-      },
-    ],
-    faq: [
-      {
-        question: "How do I summarize text online free using this tool?",
-        answer:
-          "Paste your article into the text summarizer free tool and select your preferred summary length. The tool extracts the most important sentences and key ideas so you can understand the main points in seconds without reading the entire piece.",
-      },
-      {
-        question:
-          "Can this text summarizer free tool handle different summary lengths?",
-        answer:
-          "Yes, you can choose between short summaries that capture the single most important point or longer summaries covering multiple key arguments. This flexibility makes the text summarizer free useful for both quick overviews and detailed research.",
-      },
-    ],
+  {
+    "title": "Paste English source text",
+    "content": "Use text you can compare with the result. The application accepts up to 100,000 characters. Abbreviations and unusual punctuation can cause imperfect sentence boundaries."
   },
+  {
+    "title": "Choose an extract length",
+    "content": "Select 3, 6 or 10 sentences, then press Summarize. If the source has fewer sentences, the result contains fewer. Repeated sentences are treated as separate occurrences within the selected limit."
+  },
+  {
+    "title": "Review before using",
+    "content": "Compare the selected sentences with the source. Restore missing context or attribution yourself. Editing the source or changing the length clears the previous result."
+  }
+],
+    faq: [
+  {
+    "question": "Does this rewrite or understand the source?",
+    "answer": "No. It selects existing sentences using English-oriented word-frequency rules. Important qualifications and context may be omitted. It cannot assess whether an extract accurately represents the author’s meaning."
+  },
+  {
+    "question": "Can I use other languages or abbreviations?",
+    "answer": "The scoring rules are intended for English, not multilingual summarization. Non-Latin scripts are rejected. Periods, question marks, exclamation marks and line breaks are treated as boundaries, so abbreviations can split incorrectly."
+  }
+],
+additionalContent: []
+},
 
   // ── Combo Tools (2) ─────────────────────────────────────────
   {
@@ -2165,9 +2132,9 @@ export const TOOLS: Tool[] = [
     slug: "text-analyzer",
     name: "Text Analyzer",
     description:
-      "Analyze text with word count, character count, case conversion, and reading stats.",
+      "Count words and characters, estimate reading time and convert text case.",
     longDescription:
-      "All-in-one text analysis tool. Count words, characters (with and without spaces), sentences, paragraphs, and estimate reading time. Instantly convert between uppercase, lowercase, title case, sentence case, and camelCase. Perfect for writers and content creators who need formatting and stats in one place.",
+      "Combine basic text counts with case conversion in one workspace. Counts use whitespace and punctuation heuristics; reading and speaking times are estimates. This tool does not compute word frequency, vocabulary complexity or readability scores.",
     categorySlug: "text-tools",
     icon: "📊",
     featured: true,
@@ -2178,40 +2145,35 @@ export const TOOLS: Tool[] = [
       "text complexity analyzer",
       "reading level checker",
     ],
-    metaTitle: "Text Analyzer Online — Word Count & Readability",
+    metaTitle: "Text Analyzer — Counts, Timing & Case Conversion",
     metaDescription:
-      "Analyze text online free with word count, character count, readability scores, and reading level metrics for your content instantly.",
+      "Count words, characters, sentences and paragraphs; estimate reading time and convert case locally. See the counting assumptions and limits.",
     usageSteps: [
-      {
-        title: "Paste your content",
-        content:
-          "Paste your text into the text analyzer input area. The tool works with any length of text from short sentences to full documents, beginning analysis immediately to provide comprehensive text statistics.",
-      },
-      {
-        title: "Explore the statistics",
-        content:
-          "Review detailed analysis including word frequency, character count, sentence count, readability scores, and reading level estimates. The text analyzer calculates metrics that help you understand your writing's complexity and target audience suitability.",
-      },
-      {
-        title: "Use insights to improve your writing",
-        content:
-          "Use the insights from the text analyzer to identify overused words, unusually long sentences, or complex vocabulary that might confuse readers. Adjust your content to match the appropriate reading level for your audience.",
-      },
-    ],
-    faq: [
-      {
-        question: "How does a text analyzer measure text readability?",
-        answer:
-          "The text analyzer evaluates word frequency, sentence length, and vocabulary complexity to calculate readability scores including Flesch-Kincaid and other measures. These metrics help you determine if your content matches the reading level of your target audience.",
-      },
-      {
-        question:
-          "What statistics does this text analyzer provide beyond readability?",
-        answer:
-          "In addition to readability scores, the text analyzer provides word count, character count, sentence count, paragraph count, average word length, and word frequency analysis — giving you a complete picture of your text's structure and complexity.",
-      },
-    ],
+  {
+    "title": "Enter text",
+    "content": "Type or paste a draft. Counts update as you edit. For “Cats run. Cats sleep.” the tool reports 4 words and 2 sentences."
   },
+  {
+    "title": "Read the counts and estimates",
+    "content": "Review characters, characters without whitespace, sentences and paragraphs. Reading time assumes 200 words per minute and speaking time 130, rounded up to whole minutes."
+  },
+  {
+    "title": "Convert case if needed",
+    "content": "Choose a case option to create a separate result, then copy it. Review names, acronyms and formatting before replacing your original text."
+  }
+],
+    faq: [
+  {
+    "question": "Does this calculate readability or word frequency?",
+    "answer": "No. This workspace provides counts, timing estimates and case conversion. Use the separate Readability Score or Keyword Density Checker tool for those different tasks."
+  },
+  {
+    "question": "Why might counts differ from my editor?",
+    "answer": "Words are split on whitespace, sentences on punctuation and paragraphs on blank lines. Abbreviations and languages without spaces may differ from editorial or submission-system rules."
+  }
+],
+additionalContent: []
+},
 
   // ── SEO Tools (8) ──────────────────────────────────────────
   {
@@ -2468,9 +2430,9 @@ export const TOOLS: Tool[] = [
     slug: "seo-length-checker",
     name: "SEO Length Checker",
     description:
-      "Check if your title tags and meta descriptions meet recommended length limits.",
+      "Count title and description characters with approximate width and snippet previews.",
     longDescription:
-      "Paste your title and meta description to instantly check if they meet SEO best practice length limits. See the character count, pixel width estimate, and whether your snippet will be truncated in search results. Get recommendations for optimal lengths.",
+      "Compare title and description lengths with editable-copy guidelines. Width and snippet previews are rough estimates based on character classes, not measured search-result rendering. Search engines can rewrite or truncate text differently by query and device.",
     categorySlug: "seo-tools",
     icon: "📏",
     featured: false,
@@ -2481,39 +2443,35 @@ export const TOOLS: Tool[] = [
       "title tag analyzer",
       "search preview tool",
     ],
-    metaTitle: "SEO Title & Meta Length Checker",
+    metaTitle: "SEO Length Checker — Approximate Snippet Preview",
     metaDescription:
-      "Use this SEO length checker to test title tags and meta descriptions against recommended limits. See pixel width, character count, and search preview.",
+      "Check title and description character counts and approximate width. Understand why guideline ranges cannot guarantee search-result display or rankings.",
     usageSteps: [
-      {
-        title: "Enter Your Title and Description",
-        content:
-          "Paste your meta title and meta description into this SEO length checker. The tool provides real-time character count and pixel width measurements as you type or edit your content.",
-      },
-      {
-        title: "Review Length Analysis",
-        content:
-          "Check your content against recommended SEO length limits with clear visual indicators. This SEO tool highlights titles and descriptions that need adjustment for optimal search engine display.",
-      },
-      {
-        title: "Optimize Your Meta Content",
-        content:
-          "Adjust your title and description until the length indicators show green across all metrics. Properly optimized meta content ensures your search result snippets display fully without being truncated.",
-      },
-    ],
-    faq: [
-      {
-        question: "How accurate is this SEO length checker?",
-        answer:
-          "This SEO length checker measures both character count and approximate pixel width for accurate length analysis. It follows current search engine display guidelines to give you reliable recommendations for your meta content.",
-      },
-      {
-        question: "What are the ideal SEO title and description lengths?",
-        answer:
-          "According to SEO best practices, titles should be 50 to 60 characters and descriptions should be 150 to 160 characters for optimal search result display without truncation.",
-      },
-    ],
+  {
+    "title": "Enter your title and description",
+    "content": "Paste the text into the two fields. Character counts and approximate widths update as you type."
   },
+  {
+    "title": "Compare the guide ranges",
+    "content": "Treat the indicators as editing prompts. Width is estimated from character classes and does not measure the exact font or distinguish every wide and narrow glyph."
+  },
+  {
+    "title": "Review clarity and actual results",
+    "content": "Prefer useful, accurate wording over filling a character quota. The preview is illustrative; a green indicator cannot ensure an untruncated snippet or a ranking improvement."
+  }
+],
+    faq: [
+  {
+    "question": "Does a green indicator guarantee full display?",
+    "answer": "No. Display varies by device and query, and search engines can choose different title or snippet text. The tool cannot predict the final result."
+  },
+  {
+    "question": "Is the pixel width measured from a font?",
+    "answer": "No. It is an approximation using fixed character-class widths. For example, narrow and wide lowercase letters share an estimated width here, even though real fonts render them differently."
+  }
+],
+additionalContent: []
+},
   {
     slug: "canonical-tag-generator",
     name: "Canonical Tag Generator",
@@ -2772,9 +2730,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "yaml-to-json",
     name: "YAML to JSON",
-    description: "Convert YAML configuration files to JSON format instantly.",
+    description: "Convert a documented subset of YAML mappings and scalar lists to JSON locally.",
     longDescription:
-      "Paste YAML content and convert it to clean JSON format. Supports complex nested YAML structures, arrays, and multi-line strings. Perfect for developers migrating configuration files between formats. Copy the result with one click.",
+      "Convert simple YAML mappings and scalar lists using two-space indentation. Supported values are strings, finite decimal numbers, booleans and null. Unsupported syntax produces an error rather than a guessed conversion. This is not a full YAML 1.2 parser.",
     categorySlug: "converters",
     icon: "⬅️",
     featured: false,
@@ -2785,41 +2743,35 @@ export const TOOLS: Tool[] = [
       "yaml parser online",
       "yaml converter tool",
     ],
-    metaTitle: "YAML to JSON Converter - Free Online Tool",
+    metaTitle: "YAML to JSON — Simple Mappings & Lists",
     metaDescription:
-      "Convert YAML to JSON instantly with our free online converter. Parse configuration files, resolve anchors, and export clean JSON — all in your browser.",
+      "Convert simple YAML mappings and scalar lists in your browser. See supported syntax, size guardrails and explicit errors for unsupported YAML features.",
     usageSteps: [
-      {
-        title: "Paste Your YAML Content",
-        content:
-          "Copy your YAML data and paste it into the left editor panel or upload a .yaml or .yml file from your device. The editor highlights YAML syntax so you can convert YAML to JSON online with full visibility of your data structure.",
-      },
-      {
-        title: "Review the JSON Output",
-        content:
-          "The right panel displays the converted JSON output instantly with proper indentation and syntax highlighting. As you edit the YAML, the JSON updates in real time to convert YAML to JSON online without any manual steps.",
-      },
-      {
-        title: "Copy or Download the Result",
-        content:
-          "Click the copy button to grab the formatted JSON or switch to minified mode for compact output. When you convert YAML to JSON online, the result is valid JSON ready for APIs, databases, and JavaScript applications.",
-      },
-    ],
-    faq: [
-      {
-        question:
-          "What YAML features are supported when you convert YAML to JSON?",
-        answer:
-          "When you convert YAML to JSON, the tool supports all standard YAML 1.2 features including mappings, sequences, nested structures, anchors, aliases, multi-line strings, tags, and comments. Complex YAML documents convert cleanly every time.",
-      },
-      {
-        question:
-          "Does this YAML to JSON converter handle anchors and aliases?",
-        answer:
-          "Yes, YAML anchors (&) and aliases (*) are fully supported. When you convert YAML to JSON with this tool, aliases are resolved by expanding them into their referenced values so duplicated data structures are properly represented in the output.",
-      },
-    ],
+  {
+    "title": "Paste a supported YAML document",
+    "content": "Enter a mapping or scalar list. Use two spaces per nesting level. Quote values when you need to preserve numeric-looking text such as an identifier with leading zeros."
   },
+  {
+    "title": "Select Convert to JSON",
+    "content": "Conversion runs when you press the button. Inspect errors for unsupported syntax. File uploads, automatic conversion, syntax highlighting and minified mode are not provided."
+  },
+  {
+    "title": "Inspect and copy the JSON",
+    "content": "Confirm that keys, list values and types match your input, then select Copy. Editing the input clears the old output so stale JSON is not mistaken for a new conversion."
+  }
+],
+    faq: [
+  {
+    "question": "Are anchors, aliases and all YAML features supported?",
+    "answer": "No. Anchors, aliases, tags, flow collections, block strings, merge keys, multiple documents and object items in lists are rejected. Use a full YAML parser when these features are required."
+  },
+  {
+    "question": "What are the supported limits and types?",
+    "answer": "This application allows 100,000 characters, 1,000 lines and 32 nesting levels as conservative guardrails. Numbers must be finite and integer values must fit JavaScript’s safe integer range. Quote identifiers and large integers to preserve their exact text."
+  }
+],
+additionalContent: []
+},
   {
     slug: "temperature-converter",
     name: "Temperature Converter",
@@ -3288,9 +3240,9 @@ export const TOOLS: Tool[] = [
     slug: "grammar-checker",
     name: "Grammar Checker",
     description:
-      "Check text for common grammar issues, punctuation, and spelling errors.",
+      "Check English text for repeated words, selected misspellings and simple formatting issues.",
     longDescription:
-      "Paste your text and check for common grammar mistakes, punctuation errors, capitalization issues, and repeated words. The checker highlights potential issues and suggests corrections. Perfect for writers, students, and professionals who want clean, error-free content.",
+      "Run a limited set of English spelling and style rules in your browser. Review suggestions for repetition, selected misspellings, line capitalization, spacing and frequently repeated filler words. Edit your original text manually; this tool does not check all grammar or certify a draft as correct.",
     categorySlug: "text-tools",
     icon: "\u2713",
     featured: true,
@@ -3301,56 +3253,34 @@ export const TOOLS: Tool[] = [
       "free writing checker",
       "english grammar checker free",
     ],
-    metaTitle: "Grammar Checker - Free Online Writing Assistant",
+    metaTitle: "Grammar Checker — Limited English Writing Checks",
     metaDescription:
-      "Use our free grammar checker online to find grammar mistakes, punctuation errors, and spelling issues. Clean, error-free writing in seconds.",
+      "Review repeated words, selected English misspellings and simple formatting suggestions locally. Understand what these rules can and cannot detect.",
     usageSteps: [
-      {
-        title: "Enter Your Text",
-        content:
-          "Paste the text you want to proofread into this free grammar checker online. The tool scans for common grammar mistakes, punctuation errors, capitalization issues, and repeated words across your entire document.",
-      },
-      {
-        title: "Review Grammar Suggestions",
-        content:
-          "Review each detected issue with explanations and suggested corrections. This free grammar checker online identifies problems like subject-verb agreement, comma splices, run-on sentences, and misused words.",
-      },
-      {
-        title: "Apply Corrections",
-        content:
-          "Click on suggestions to accept corrections or dismiss them if the original is intentional. Using a free grammar checker online before publishing helps produce professional, error-free content.",
-      },
-    ],
+  {
+    "title": "Enter English text",
+    "content": "Paste a short English draft. The checks use fixed rules, not a contextual language model or a complete dictionary."
+  },
+  {
+    "title": "Run the checks",
+    "content": "Select Check Grammar. Review the suggestion, line number and surrounding text. A suggestion may be inappropriate for quotations, headings or deliberate repetition."
+  },
+  {
+    "title": "Edit and check again",
+    "content": "Make changes yourself in the input, then run the check again. There are no automatic accept, dismiss or rewrite controls. No suggestions means only that these rules found nothing."
+  }
+],
     faq: [
-      {
-        question: "What errors can a free grammar checker online detect?",
-        answer:
-          "A free grammar checker online detects subject-verb agreement issues, punctuation errors including missing commas and incorrect apostrophes, capitalization mistakes, run-on sentences, sentence fragments, commonly confused words, and duplicate words.",
-      },
-      {
-        question:
-          "Is a free grammar checker online as accurate as premium grammar tools?",
-        answer:
-          "While premium tools like Grammarly offer more advanced style suggestions, a free grammar checker online catches the most common and critical errors that affect readability and professionalism — making it perfect for everyday writing needs.",
-      },
-    ],
-    additionalContent: [
-      {
-        heading: "Browser-Based Grammar Review",
-        content:
-          "The grammar checker helps catch common writing issues, punctuation problems, and awkward phrasing. It is designed for quick cleanup before publishing, submitting, or sharing text.",
-      },
-      {
-        heading: "Use It as a Writing Assistant",
-        content:
-          "Grammar suggestions should support your judgment rather than replace it. Review each suggestion, keep your intended meaning, and add human context where needed.",
-      },
-      {
-        heading: "Privacy for Draft Writing",
-        content:
-          "The tool analyzes text in your browser, making it useful for drafts, emails, notes, and content that should not be uploaded to a third-party writing platform.",
-      },
-    ],
+  {
+    "question": "Does this check every grammar error?",
+    "answer": "No. It does not reliably detect subject-verb agreement, fragments, run-on sentences or meaning errors. For example, “She go to school every day.” can produce no suggestions. Proofread the text yourself."
+  },
+  {
+    "question": "Which language and corrections are supported?",
+    "answer": "The rules target English. They flag repeated words, a fixed list of misspellings, line-start capitalization, spaces, ending punctuation and repeated filler words. Suggestions are informational; edit the input manually."
+  }
+],
+    additionalContent: [],
   },
   {
     slug: "palindrome-checker",
@@ -3588,7 +3518,7 @@ export const TOOLS: Tool[] = [
       {
         title: "Download or share",
         content:
-          "Once satisfied with the layout, download your word cloud as a PNG image. The word cloud generator creates print-ready visuals perfect for presentations, educational materials, blog posts, and content analysis reports.",
+          "Once satisfied with the layout, download your word cloud as a PNG image. The word cloud generator creates 600 × 600 pixel PNG images perfect for presentations, educational materials, blog posts, and content analysis reports.",
       },
     ],
     faq: [
@@ -3600,7 +3530,7 @@ export const TOOLS: Tool[] = [
       {
         question: "Can I customize colors in the word cloud generator?",
         answer:
-          "Yes, the word cloud generator offers customizable color schemes and palettes. You can choose from preset color themes or customize individual colors to match your brand or presentation style before downloading the final image.",
+          "Yes, the word cloud generator offers customizable color schemes and palettes. You can choose from preset color themes to change the displayed palette before downloading the final image.",
       },
     ],
     additionalContent: [
@@ -3710,7 +3640,7 @@ export const TOOLS: Tool[] = [
       {
         title: "Paste your SQL query",
         content:
-          "Paste any unformatted SQL query into the SQL formatter input. The tool supports SELECT, INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, JOINs, subqueries, and other standard SQL statements for comprehensive formatting.",
+          "Paste any unformatted SQL query into the SQL formatter input. The tool recognizes common keywords such as SELECT, FROM and WHERE. It does not validate a query or guarantee that a dialect-specific statement is formatted correctly.",
       },
       {
         title: "Choose formatting options",
@@ -3727,7 +3657,7 @@ export const TOOLS: Tool[] = [
       {
         question: "What SQL dialects does the SQL formatter support?",
         answer:
-          "The SQL formatter supports standard SQL syntax including MySQL, PostgreSQL, SQLite, and most common SQL dialects. It handles SELECT statements, JOINs, subqueries, aggregation functions, and DDL statements like CREATE and ALTER.",
+          "The formatter applies heuristic keyword and whitespace rules; it is not a SQL parser or validator. Quoted values and comments are preserved, while dollar quoting, nested comments and backslash-escaped strings are rejected. Use a dialect-aware tool for database-specific syntax.",
       },
       {
         question:
@@ -3842,7 +3772,7 @@ export const TOOLS: Tool[] = [
     name: "SERP Preview Generator",
     description: "Preview how your page looks in Google search results.",
     longDescription:
-      "Preview exactly how your web page will appear in Google search results before you publish. Enter a title, meta description, and URL to see a realistic SERP snippet preview. Adjust and optimize your title and description length for maximum click-through rates. Essential for SEO professionals and content creators.",
+      "Create an illustrative search-result preview from a title, description and URL. Use it to review wording and approximate length. Google can rewrite titles and snippets and render them differently by query and device; this is not an exact prediction or a promise of clicks.",
     categorySlug: "seo-tools",
     icon: "🔍",
     featured: true,
@@ -3855,17 +3785,17 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "SERP Preview Generator — Google Snippet Preview",
     metaDescription:
-      "Preview your Google search result snippet with our free SERP preview generator. See exactly how your title and meta description appear in search results.",
+      "Preview your Google search result snippet with our free SERP preview generator. Review an approximate title and description layout; actual search results can differ.",
     usageSteps: [
       {
         title: "Enter your title tag",
         content:
-          "Type or paste your page title into the SERP preview generator. The tool shows a live, realistic preview of how Google will display your title in search results, including character count and truncation warnings.",
+          "Type or paste your page title into the SERP preview generator. The tool shows an illustrative preview with character counts. Its truncation rules are local approximations, not search-engine display guarantees.",
       },
       {
         title: "Add your meta description",
         content:
-          "Enter your meta description and watch the SERP preview generator update the snippet in real time. Pixel-perfect rendering shows exactly how your description appears below the title in Google search results.",
+          "Enter your meta description and watch the SERP preview generator update the snippet in real time. The preview illustrates a possible layout; it does not measure the actual search engine font or predict the final snippet.",
       },
       {
         title: "Preview and optimize",
@@ -3878,7 +3808,7 @@ export const TOOLS: Tool[] = [
         question:
           "How accurate is the SERP preview generator compared to real Google results?",
         answer:
-          "The SERP preview generator creates a realistic simulation of Google's search result display, including title formatting, description length limits, and URL breadcrumb display. Actual Google results may vary slightly based on user search history and device type.",
+          "The preview uses a simplified local layout. Actual search results can differ substantially, including rewritten titles, different snippets and device-dependent widths. Use it for drafting, not as a certification of display.",
       },
       {
         question: "What is the ideal title length for Google search results?",
@@ -3964,7 +3894,7 @@ export const TOOLS: Tool[] = [
       {
         title: "Fill in the fields",
         content:
-          "Complete the required and recommended fields for your selected schema type. The schema markup generator validates your input in real time and provides guidance for each field based on Google's structured data guidelines.",
+          "Complete the required and recommended fields for your selected schema type. The generator assembles the fields you enter into JSON-LD. It does not certify factual accuracy, required-property completeness or eligibility for a rich result. Validate the final page with the relevant official tools.",
       },
       {
         title: "Copy the JSON-LD code",

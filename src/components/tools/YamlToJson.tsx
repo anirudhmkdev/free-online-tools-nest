@@ -2,102 +2,7 @@ import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
-type YamlValue = string | number | boolean | null | YamlValue[] | { [key: string]: YamlValue };
-
-function parseYamlLine(line: string): { indent: number; key: string; value: string | null } {
-  const trimmed = line.trimEnd();
-  const indent = trimmed.length - trimmed.trimStart().length;
-  const stripped = trimmed.trimStart();
-  const colonIdx = stripped.indexOf(":");
-  if (colonIdx === -1) {
-    throw new Error(`Invalid YAML: no colon in "${stripped}"`);
-  }
-  const key = stripped.slice(0, colonIdx).trim();
-  const valuePart = stripped.slice(colonIdx + 1).trim();
-  const value = valuePart === "" ? null : valuePart;
-  return { indent, key, value };
-}
-
-function parseYaml(input: string): Record<string, YamlValue> {
-  const lines = input.split("\n").filter((l) => l.trim() !== "" && !l.trim().startsWith("#"));
-  if (lines.length === 0) return {};
-
-  const root: Record<string, YamlValue> = {};
-  const stack: { indent: number; obj: Record<string, YamlValue> }[] = [];
-  let currentArray: YamlValue[] | null = null;
-  let currentArrayIndent = -1;
-
-  for (const rawLine of lines) {
-    const trimmed = rawLine.trimStart();
-
-    if (trimmed.startsWith("- ")) {
-      const itemIndent = rawLine.length - rawLine.trimStart().length;
-      const value = trimmed.slice(2).trim();
-
-      while (stack.length > 0 && stack[stack.length - 1].indent >= itemIndent) {
-        stack.pop();
-      }
-
-      if (currentArray === null || itemIndent <= currentArrayIndent) {
-        currentArray = [];
-        currentArrayIndent = itemIndent;
-        if (stack.length === 0) {
-          throw new Error("Top-level arrays not supported at root");
-        }
-        const parent = stack[stack.length - 1].obj;
-        const lastKey = Object.keys(parent).length > 0
-          ? Object.keys(parent).filter((k) => parent[k] === null).pop()
-          : null;
-        if (lastKey) {
-          parent[lastKey] = currentArray;
-        }
-      }
-
-      if (value === "") {
-        currentArray.push({} as Record<string, YamlValue>);
-      } else {
-        currentArray.push(parseScalar(value));
-      }
-      continue;
-    }
-
-    const { indent, key, value } = parseYamlLine(rawLine);
-
-    while (stack.length > 0 && stack[stack.length - 1].indent >= indent) {
-      stack.pop();
-    }
-
-    const target = stack.length === 0 ? root : stack[stack.length - 1].obj;
-
-    if (value === null) {
-      target[key] = null;
-      const newObj: Record<string, YamlValue> = {};
-      target[key] = newObj;
-      stack.push({ indent, obj: newObj });
-    } else {
-      target[key] = parseScalar(value);
-    }
-
-    currentArray = null;
-  }
-
-  return root;
-}
-
-function parseScalar(value: string): string | number | boolean | null {
-  if (value === "null" || value === "~") return null;
-  if (value === "true") return true;
-  if (value === "false") return false;
-  const num = Number(value);
-  if (!isNaN(num) && value.trim() !== "") return num;
-  if (
-    (value.startsWith('"') && value.endsWith('"')) ||
-    (value.startsWith("'") && value.endsWith("'"))
-  ) {
-    return value.slice(1, -1);
-  }
-  return value;
-}
+import { parseSimpleYaml as parseYaml } from "../../helpers/simple-yaml";
 
 export default function YamlToJson() {
   const [input, setInput] = useState("");
@@ -124,6 +29,7 @@ export default function YamlToJson() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">A limited YAML subset: mappings, scalar lists, strings, finite numbers, booleans and null. Use two spaces per nesting level. Anchors, aliases, tags, flow collections, block strings and object items in lists are rejected. Maximum 100,000 characters, 1,000 lines and 32 nesting levels are application guardrails.</p>
       <div>
         <label htmlFor="yaml-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           YAML Input
@@ -131,7 +37,7 @@ export default function YamlToJson() {
         <textarea
           id="yaml-input"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { setInput(e.target.value); setOutput(""); setError(""); }}
           placeholder={"key: value\nnested:\n  inner: hello\nitems:\n  - one\n  - two"}
           rows={8}
           className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150"

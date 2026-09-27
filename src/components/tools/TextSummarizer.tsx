@@ -1,83 +1,24 @@
 import { useState, useCallback } from "react";
 
-const STOP_WORDS: Set<string> = new Set([
-  "the","a","an","and","or","but","in","on","at","to","for","of","by","with","from",
-  "is","are","was","were","be","been","being","have","has","had","do","does","did",
-  "will","would","shall","should","may","might","must","i","you","he","she","it",
-  "we","they","this","that","these","those","am","its","my","your","his","her",
-  "our","their","me","him","us","them","not","no","nor","so","if","as","than",
-  "then","up","down","out","off","over","under","again","further","once","here",
-  "there","when","where","why","how","all","each","every","both","few","more",
-  "most","other","some","such","only","own","same","too","very","just","about",
-  "above","after","before","between","through","during","without","within","along",
-  "around","among","because","into","onto","upon","also","any","into","now",
-]);
-
-function splitSentences(text: string): string[] {
-  const raw = text.match(/[^.!?\n]+[.!?\n]*/g);
-  return (raw || []).map((s) => s.trim()).filter((s) => s.length > 0);
-}
-
-function tokenize(text: string): string[] {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .split(/\s+/)
-    .filter((w) => w.length > 0 && !STOP_WORDS.has(w));
-}
-
-interface ScoredSentence {
-  text: string;
-  score: number;
-}
-
-function summarize(text: string, sentenceCount: number): ScoredSentence[] {
-  const sentences = splitSentences(text);
-  if (sentences.length === 0) return [];
-
-  // Count word frequencies across the entire text
-  const wordFreq: Record<string, number> = {};
-  sentences.forEach((s) => {
-    tokenize(s).forEach((w) => {
-      wordFreq[w] = (wordFreq[w] || 0) + 1;
-    });
-  });
-
-  // Score each sentence by sum of word frequencies
-  const maxFreq = Math.max(...Object.values(wordFreq), 1);
-  const scored: ScoredSentence[] = sentences.map((s) => {
-    const words = tokenize(s);
-    if (words.length === 0) return { text: s, score: 0 };
-    const rawScore = words.reduce((sum, w) => sum + (wordFreq[w] || 0), 0);
-    const score = rawScore / words.length; // normalize by sentence length
-    return { text: s, score };
-  });
-
-  // Sort by score descending, take top N, then restore original order
-  const topN = [...scored]
-    .sort((a, b) => b.score - a.score)
-    .slice(0, sentenceCount);
-  const topSet = new Set(topN.map((s) => s.text));
-
-  return scored
-    .filter((s) => topSet.has(s.text))
-    .sort((a, b) => {
-      const ai = scored.indexOf(a);
-      const bi = scored.indexOf(b);
-      return ai - bi;
-    });
-}
+import { summarize, type ScoredSentence } from "../../helpers/text-summarizer";
+import ErrorBanner from "../ErrorBanner";
 
 export default function TextSummarizer() {
+  const [error, setError] = useState("");
   const [input, setInput] = useState("");
   const [summary, setSummary] = useState<ScoredSentence[]>([]);
   const [sentenceCount, setSentenceCount] = useState(6);
   const [copied, setCopied] = useState(false);
 
   const handleSummarize = useCallback(() => {
-    if (!input.trim()) return;
-    const result = summarize(input, sentenceCount);
-    setSummary(result);
+    setSummary([]);
+    setError("");
+    try {
+      if (!input.trim()) throw new Error("Enter English text to select sentences.");
+      const result = summarize(input, sentenceCount);
+      if (!result.length) throw new Error("Enter at least one sentence containing words.");
+      setSummary(result);
+    } catch (error) { setError(error instanceof Error ? error.message : "Unable to select sentences."); }
   }, [input, sentenceCount]);
 
   const handleCopy = useCallback(() => {
@@ -85,7 +26,7 @@ export default function TextSummarizer() {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    });
+    }).catch(() => setError("Copy failed. Select the summary text and copy it manually."));
   }, [summary]);
 
   const inputWords = input.trim() ? input.trim().split(/\s+/).length : 0;
@@ -95,6 +36,8 @@ export default function TextSummarizer() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Selects existing English sentences by word frequency and preserves their order. It does not understand meaning or rewrite text. Check omitted context, quotations and facts against your source. Abbreviations can split sentences incorrectly.</p>
+      <ErrorBanner message={error} />
       {/* Input */}
       <div>
         <label
@@ -108,7 +51,7 @@ export default function TextSummarizer() {
           id="summarize-input"
           rows={8}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { setInput(e.target.value); setSummary([]); setError(""); }}
           placeholder="Paste or type a long article, document, or paragraph here..."
           className="w-full p-4 border rounded-lg text-base outline-none resize-y transition-colors duration-150 font-sans"
           style={{
@@ -138,7 +81,7 @@ export default function TextSummarizer() {
           <select
             id="summary-length"
             value={sentenceCount}
-            onChange={(e) => setSentenceCount(Number(e.target.value))}
+            onChange={(e) => { setSentenceCount(Number(e.target.value)); setSummary([]); }}
             className="h-10 px-3 border rounded-lg text-sm outline-none"
             style={{
               backgroundColor: "var(--color-canvas-soft)",

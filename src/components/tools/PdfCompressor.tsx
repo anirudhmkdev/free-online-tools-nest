@@ -1,23 +1,23 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_PDF_FILE_SIZE_BYTES } from "../../helpers/utils";
 
-type CompressionLevel = "low" | "medium" | "high";
+type CompressionLevel = "plain" | "compact";
 
 const LEVEL_CONFIG: Record<CompressionLevel, { label: string; description: string }> = {
-  low: { label: "Low (90%)", description: "Minimal size reduction, best quality" },
-  medium: { label: "Medium (70%)", description: "Balanced compression" },
-  high: { label: "High (40%)", description: "Maximum size reduction, may affect quality" },
+  plain: { label: "Plain rewrite", description: "Save without PDF object streams" },
+  compact: { label: "Object streams", description: "Save with compact object streams; size may increase" },
 };
 
 export default function PdfCompressor() {
   const [file, setFile] = useState<File | null>(null);
-  const [level, setLevel] = useState<CompressionLevel>("medium");
+  const [level, setLevel] = useState<CompressionLevel>("compact");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [originalSize, setOriginalSize] = useState<number | null>(null);
   const [compressedSize, setCompressedSize] = useState<number | null>(null);
   const [compressedUrl, setCompressedUrl] = useState<string>("");
+  useEffect(() => () => { if (compressedUrl) URL.revokeObjectURL(compressedUrl); }, [compressedUrl]);
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
@@ -60,38 +60,8 @@ export default function PdfCompressor() {
       const arrayBuf = await file.arrayBuffer();
       setOriginalSize(arrayBuf.byteLength);
 
-      const { PDFDocument } = await import("pdf-lib");
-      const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
-
-      /*
-       * pdf-lib has limited compression support. The effective strategy is:
-       * 1. Load the PDF (parses and re-serializes, stripping unused objects)
-       * 2. Use the 'objectsPerTick' and 'useObjectStreams' options on save()
-       * 3. This removes orphaned data and recompresses object streams
-       * 4. For "high" level, we also decompress and recompress page content streams
-       *
-       * True image downsampling (jpg/png re-encoding) is NOT supported by pdf-lib.
-       * For real compression, use a server-side tool like Ghostscript or qpdf.
-       */
-      const useObjectStreams = level === "high";
-      const objectsPerTick = level === "low" ? 100 : level === "medium" ? 50 : 20;
-
-      // For high compression, iterate pages and add extra handling
-      if (level === "high") {
-        const pages = pdf.getPages();
-        for (const page of pages) {
-          // Decompress and recompress each page's content stream
-          // This can help strip some overhead
-          const { width, height } = page.getSize();
-          page.setSize(width, height);
-        }
-      }
-
-      const pdfBytes = await pdf.save({
-        useObjectStreams,
-        objectsPerTick,
-        addDefaultPage: false,
-      });
+      const { rewritePdf } = await import("../../helpers/pdf-rewrite");
+      const pdfBytes = await rewritePdf(arrayBuf, level === "compact");
 
       setCompressedSize(pdfBytes.length);
 
@@ -110,16 +80,17 @@ export default function PdfCompressor() {
     const baseName = file.name.replace(/\.pdf$/i, "");
     const link = document.createElement("a");
     link.href = compressedUrl;
-    link.download = `${baseName}-compressed.pdf`;
+    link.download = `${baseName}-rewritten.pdf`;
     link.click();
   }, [compressedUrl, file]);
 
   const savings = (originalSize !== null && compressedSize !== null)
-    ? Math.max(0, Math.round(((originalSize - compressedSize) / originalSize) * 100))
+    ? Math.round(((originalSize - compressedSize) / originalSize) * 100)
     : 0;
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">A local PDF rewrite, not image downsampling. Savings are not guaranteed. Password-protected PDFs are rejected. Keep your original and inspect all pages before using the output.</p>
       {/* Upload */}
       {!file && (
         <div
@@ -135,7 +106,7 @@ export default function PdfCompressor() {
             Upload a PDF to compress
           </p>
           <p className="text-xs" style={{ color: "var(--color-mute)" }}>
-            Reduces file size by stripping unused data and recompressing
+            Rewrites a PDF locally; it may become smaller or larger
           </p>
           <input
             id="pdf-compressor-input"
@@ -161,19 +132,20 @@ export default function PdfCompressor() {
             <button
               type="button"
               onClick={handleReset}
+              disabled={loading}
               className="btn-secondary btn-sm"
             >
               Choose Different
             </button>
           </div>
 
-          {/* Compression Level */}
+          {/* PDF save mode */}
           <fieldset className="space-y-3">
             <legend className="text-sm font-medium" style={{ color: "var(--color-ink)" }}>
               Compression Level
             </legend>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {(Object.entries(LEVEL_CONFIG) as [CompressionLevel, typeof LEVEL_CONFIG['low']][]).map(([key, config]) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {(Object.entries(LEVEL_CONFIG) as [CompressionLevel, typeof LEVEL_CONFIG['plain']][]).map(([key, config]) => (
                 <label
                   key={key}
                   className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-colors ${
@@ -189,7 +161,8 @@ export default function PdfCompressor() {
                     name="compressionLevel"
                     value={key}
                     checked={level === key}
-                    onChange={() => setLevel(key)}
+                    disabled={loading}
+                    onChange={() => { setLevel(key); if (compressedUrl) URL.revokeObjectURL(compressedUrl); setCompressedUrl(""); setCompressedSize(null); }}
                     className="accent-current"
                   />
                   <div>
@@ -247,7 +220,7 @@ export default function PdfCompressor() {
                 </div>
                 <div>
                   <span className="block text-[10px] uppercase tracking-wider font-medium" style={{ color: "var(--color-mute)" }}>
-                    Compressed Size
+                    Output Size
                   </span>
                   <span className="text-base font-semibold" style={{ color: "var(--color-ink)" }}>
                     {compressedSize !== null ? formatBytes(compressedSize) : "—"}
@@ -258,7 +231,7 @@ export default function PdfCompressor() {
                     Savings
                   </span>
                   <span className="text-base font-semibold" style={{ color: "var(--color-success)" }}>
-                    {savings > 0 ? `${savings}%` : "0%"}
+                    {savings < 0 ? `${Math.abs(savings)}% larger` : savings > 0 ? `${savings}% smaller` : "No reduction"}
                   </span>
                 </div>
               </div>
@@ -272,13 +245,11 @@ export default function PdfCompressor() {
                   color: "var(--color-on-primary)",
                 }}
               >
-                Download Compressed PDF
+                Download Rewritten PDF
               </button>
 
               <p className="text-xs leading-relaxed" style={{ color: "var(--color-mute)" }}>
-                <strong>Note:</strong> pdf-lib compresses by stripping unused objects and recompressing streams.
-                For significant size reduction, particularly with images, a server-side tool (Ghostscript, qpdf)
-                is recommended. This tool works best on PDFs with embedded fonts, metadata, or redundant objects.
+                <strong>Note:</strong> This rewrites the document and optionally uses PDF object streams. It does not downsample images, promise a target size, or guarantee preservation of advanced forms, signatures or accessibility tags. Keep the original and inspect the output. Use a trusted desktop PDF tool when you need image resampling.
               </p>
             </div>
           )}

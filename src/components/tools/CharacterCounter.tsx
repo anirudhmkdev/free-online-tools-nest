@@ -19,6 +19,7 @@ export default function CharacterCounter() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Counts use UTF-16 code units, not visible symbols: an emoji may count as two or more. Reference budgets are approximate; platform rules, URLs and SMS encoding can differ. A meta description has no guaranteed display length.</p>
       <div>
         <label htmlFor="cc-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Enter your text
@@ -64,7 +65,7 @@ export default function CharacterCounter() {
       {/* Social media limits */}
       <div>
         <h3 className="text-xs font-medium uppercase tracking-wider mb-3" style={{ color: "var(--color-mute)", fontFamily: "var(--font-mono)" }}>
-          Character limits
+          Reference character budgets
         </h3>
         <div className="space-y-2">
           {limits.map((limit) => {

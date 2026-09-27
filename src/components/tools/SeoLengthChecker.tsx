@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 
-const FONT_WEIGHT = 700;
 const FONT_SIZE_PX = 20;
-const AVERAGE_CHAR_WIDTH_PX = 10;
 
 function estimatePixelWidth(text: string): number {
   let width = 0;
@@ -22,18 +20,18 @@ function estimatePixelWidth(text: string): number {
 
 function getTitleStatus(chars: number): { label: string; color: string } {
   if (chars === 0) return { label: "Empty", color: "var(--color-mute)" };
-  if (chars < 30) return { label: "Too Short", color: "var(--color-warning, #d97706)" };
-  if (chars <= 60) return { label: "Good", color: "var(--color-success, #22c55e)" };
+  if (chars < 30) return { label: "Below guide", color: "var(--color-warning, #d97706)" };
+  if (chars <= 60) return { label: "Within guide", color: "var(--color-success, #22c55e)" };
   if (chars <= 70) return { label: "Warning", color: "var(--color-warning, #d97706)" };
-  return { label: "Too Long", color: "var(--color-error)" };
+  return { label: "Above guide", color: "var(--color-error)" };
 }
 
 function getDescStatus(chars: number): { label: string; color: string } {
   if (chars === 0) return { label: "Empty", color: "var(--color-mute)" };
-  if (chars < 120) return { label: "Too Short", color: "var(--color-warning, #d97706)" };
-  if (chars <= 160) return { label: "Good", color: "var(--color-success, #22c55e)" };
+  if (chars < 120) return { label: "Below guide", color: "var(--color-warning, #d97706)" };
+  if (chars <= 160) return { label: "Within guide", color: "var(--color-success, #22c55e)" };
   if (chars <= 180) return { label: "Warning", color: "var(--color-warning, #d97706)" };
-  return { label: "Too Long", color: "var(--color-error)" };
+  return { label: "Above guide", color: "var(--color-error)" };
 }
 
 export default function SeoLengthChecker() {
@@ -53,12 +51,13 @@ export default function SeoLengthChecker() {
   }, [title]);
 
   const googleSnippetDesc = useMemo(() => {
-    if (!description) return "Your meta description appears here in search results…";
+    if (!description) return "Approximate description preview…";
     return description.length > 160 ? description.slice(0, 157) + "..." : description;
   }, [description]);
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Character ranges are editing guides, not search-engine limits. Width is a rough character-based estimate, not a font measurement. Google may rewrite or truncate titles and snippets differently by query and device. A green indicator does not guarantee display or ranking.</p>
       {/* Title */}
       <div>
         <label htmlFor="slc-title" className="block text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -80,7 +79,7 @@ export default function SeoLengthChecker() {
             <span className="text-xs" style={{ color: "var(--color-mute)" }}>/ 50-60</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium" style={{ color: "var(--color-mute)" }}>Pixel width:</span>
+            <span className="text-xs font-medium" style={{ color: "var(--color-mute)" }}>Estimated width:</span>
             <span className="text-sm font-semibold" style={{ color: "var(--color-ink)" }}>{titlePx}px</span>
           </div>
           <span
@@ -130,7 +129,7 @@ export default function SeoLengthChecker() {
             <span className="text-xs" style={{ color: "var(--color-mute)" }}>/ 150-160</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium" style={{ color: "var(--color-mute)" }}>Pixel width:</span>
+            <span className="text-xs font-medium" style={{ color: "var(--color-mute)" }}>Estimated width:</span>
             <span className="text-sm font-semibold" style={{ color: "var(--color-ink)" }}>{descPx}px</span>
           </div>
           <span

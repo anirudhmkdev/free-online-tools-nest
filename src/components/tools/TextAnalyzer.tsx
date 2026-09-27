@@ -77,6 +77,7 @@ export default function TextAnalyzer() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Counts use whitespace and punctuation heuristics. Reading time assumes 200 words/minute; speaking time assumes 130, rounded up to whole minutes. For a separate readability estimate, use the <a className="underline" href="/tools/readability-score/">Readability Score tool</a>.</p>
       {/* Input */}
       <div>
         <label htmlFor="ta-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
