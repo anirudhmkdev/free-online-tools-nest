@@ -1,0 +1,477 @@
+{
+  "reviewedOn": "2026-09-27",
+  "scope": "Approved content-claim corrections; no route, indexing, canonical or advertising changes",
+  "pages": {
+    "/blog/10-free-online-tools-2026/": {
+      "title": {
+        "before": "10 Free Online Tools for Developers &amp; Creators in 2026 |…",
+        "after": "10 Browser Tool Tasks with Checkable Results | Free Onlin…",
+        "reason": "Approved article rewrite and related article links."
+      },
+      "description": {
+        "before": "A curated list of free online tools for developers, writers, and creators — all running entirely in your browser with zero server uploads.",
+        "after": "Ten small text and data tasks with expected results, practical checks and limitations to help you choose and verify a browser tool.",
+        "reason": "Approved article rewrite and related article links."
+      },
+      "h1": {
+        "before": [
+          "10 Free Online Tools for Developers &amp; Creators in 2026"
+        ],
+        "after": [
+          "10 Browser Tool Tasks with Checkable Results"
+        ],
+        "reason": "Approved article rewrite and related article links."
+      },
+      "ownedTextHash": {
+        "before": "4aa6d6a62067593665d244d52025993ef84c81ab102eb74451bffa419af3a454",
+        "after": "84bfab496d24daafcbbe3eaf9ae227cb827c6f2fdd18bdd2c7f7a4800ca4f794",
+        "reason": "Approved article rewrite and related article links."
+      }
+    },
+    "/blog/free-online-tools-guide-2026/": {
+      "title": {
+        "before": "The 2026 Guide to Free Online Tools — No Uploads, No Sign…",
+        "after": "Choosing a Browser Tool: Inputs, Limits and Privacy | Fre…",
+        "reason": "Approved article rewrite and related article links."
+      },
+      "description": {
+        "before": "Why browser-based tools are taking over in 2026 and how Free Online Tools Nest gives you 77 free tools that run entirely in your browser.",
+        "after": "A practical checklist for choosing a browser tool, checking its output and distinguishing local processing from website network activity.",
+        "reason": "Approved article rewrite and related article links."
+      },
+      "h1": {
+        "before": [
+          "The 2026 Guide to Free Online Tools — No Uploads, No Signups"
+        ],
+        "after": [
+          "Choosing a Browser Tool: Inputs, Limits and Privacy"
+        ],
+        "reason": "Approved article rewrite and related article links."
+      },
+      "ownedTextHash": {
+        "before": "aca5e89f5057db53caf9b2fb3cce65269af8a6d5125df911c1f575cca3952faf",
+        "after": "8c0f01054d3ff72469ed4e8a582ed58955406a1b96260969aae740a29881c380",
+        "reason": "Approved article rewrite and related article links."
+      }
+    },
+    "/categories/pdf-tools/": {
+      "ownedTextHash": {
+        "before": "b88caae1d5528577aace24ada29059579a5b3d36a197b885106301a301ca3281",
+        "after": "e16c2c657a1c48461185febc44e487dc5472e60ed5e9d96fa20e27f3606fb5b2",
+        "reason": "Derived tool-card descriptions reflect corrected claims; category-owned introduction and indexing unchanged."
+      }
+    },
+    "/categories/text-tools/": {
+      "ownedTextHash": {
+        "before": "5abf5b9b02619230c7270f10bd68c2312431b2adcda9f39103b2f59c3cdd077b",
+        "after": "bb761e06d858e7285187602cec63d4506ba37e1dcf5e0a307e52c488eb0607e1",
+        "reason": "Derived tool-card descriptions reflect corrected claims; category-owned introduction and indexing unchanged."
+      }
+    },
+    "/es/categories/text-tools/": {
+      "ownedTextHash": {
+        "before": "3687522d88c71ea01562ca1384f3648524435c0fd2e7bfe00f276dff62efe8e6",
+        "after": "9f2eec273324885d13faffea079f4d500083783d0ce1cb48509ccfdf04d024d3",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/": {
+      "ownedTextHash": {
+        "before": "de993d21055046ff6108949a839fbf29bd48307bf8b8f48f7e28a97b30afd78c",
+        "after": "7144707afc9fed8ea16ce3b780742f8031ade54db9104ed02cf99fc7ae9c60d3",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/character-counter/": {
+      "ownedTextHash": {
+        "before": "d6000d0173a24876d3151630270d0c39959eaa197f6583705d148086775c40c7",
+        "after": "e2a15001af640b60f2045715b9cc5f2666f344e00edd5512b996d730f8132a26",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/color-contrast-checker/": {
+      "ownedTextHash": {
+        "before": "19b67d6b5327b5f373a6bf027f6108289f709d562f3b97c233eaa34267351011",
+        "after": "aa974b83694aff589521627414b329cbed82efd552c792a4589c8525338d02c7",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/csv-to-json/": {
+      "ownedTextHash": {
+        "before": "3a4f78052ac99e521cf653544acf0d57e5e87b03751b31156d4e4ec39ae4f9d5",
+        "after": "cc1ac0ef4d7d5a8a4784a0fce5e866677b6c9ff6ad3feab7fdf49270253f647a",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/epoch-converter/": {
+      "ownedTextHash": {
+        "before": "5690616f60e9b7e7504512b007c4d3f3c3920c49038fab9075a0ab4283354d30",
+        "after": "d3d023f2af76f2c421cda298b5a9bfc6c86cf841c6efcc6c7856feece4a302dd",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/grammar-checker/": {
+      "title": {
+        "before": "Corrector gramatical online gratis | Free Online Tools Nest",
+        "after": "Corrector gramatical — reglas limitadas de inglés | Free…",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      },
+      "description": {
+        "before": "Revisa gramática y estilo online gratis. Mejora borradores en tu navegador sin subir texto.",
+        "after": "Comprueba repeticiones y algunas erratas en inglés, localmente. Conoce las limitaciones y revisa cada sugerencia.",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      },
+      "ownedTextHash": {
+        "before": "44cdee69ef24abf06bcccad00dd62ed1212ed7edde8096a47eb19ce434f9b72c",
+        "after": "f852d4a2eea2c6de8f5791237679a8e17027ea87fda40274d416f794e930cae4",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/image-compressor/": {
+      "ownedTextHash": {
+        "before": "562df1b4e4f4cee2d735f6fff19be09473a2663b825495451fbd94d7ab3d22fa",
+        "after": "5e83dfa9bd235b8760aa38ee12666d383875944f681a7b2f8a9fd949ed110f61",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/image-cropper/": {
+      "ownedTextHash": {
+        "before": "1ba7095fcea5d6d936c39aa4d865e136cc7b6603819922efeedc0a9d6b51bae5",
+        "after": "9e9518401dcd8386f72294656463be82c7bd0115591fb366385a6fa548a0d60f",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/image-resizer/": {
+      "ownedTextHash": {
+        "before": "4b0c4ce5d1609ae062daf1f62e6105f6feb65e4d4f8e80a9d48508e9facc2a21",
+        "after": "c980a329c6c70e683240194645a87a92232329fc84260547128366a36cf63bfd",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/": {
+      "ownedTextHash": {
+        "before": "4fa51a4c43870b0bc7822fce2e49384ef3b88e76d984f5d52a02907b4537c4ce",
+        "after": "9e36ff172ecbc76bf64ea772c2ad15efb84a9b9b27e289aff5d375c47d3c9bef",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/json-formatter/": {
+      "ownedTextHash": {
+        "before": "ee615d98244895307402fa421d934bbb7a6b0f8f858c14d1f58a881b7b0a63e3",
+        "after": "02832729b2b86fdf541845693b25b852c60b4c91464c10d767923ea498893b4e",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/json-to-csv/": {
+      "ownedTextHash": {
+        "before": "4e7bf797c6dc2b0c6905a51d8be749324bd6bf28e3df2b32c4f3a2d4aba099fb",
+        "after": "996e79cfcf82ae48b0108017f9d68440784e1446b427d1adbeba9007b1cdf8b5",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/jwt-decoder/": {
+      "ownedTextHash": {
+        "before": "f881c6400a9784b95e449f60eee5395b0d9953e60826085d05e8e1d457448fa2",
+        "after": "3e0274c131d389c053b9e9affb2d3921989dc202a50bbcd992c0434a5c7f9ee4",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/markdown-to-html/": {
+      "ownedTextHash": {
+        "before": "ff151df4492ad2cd620fc5534cbb691329228ea0c90d679588a32c9793944287",
+        "after": "c9dd3c8baf96b5bb85839be4a487996bd94325ea66265c952e9e577515592e48",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/password-generator/": {
+      "ownedTextHash": {
+        "before": "75a12f80babd7df543109a82c7a685ce8f32738b3b0a366f93f9e4a4f9a776f1",
+        "after": "7dd3a336c0bef88792c8e4b899ab6080b2f26d7aa3840c682d1aef31ded0816d",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/pdf-compressor/": {
+      "ownedTextHash": {
+        "before": "428a6ae520ae46eec53d7fba5a1eef3e7e097a124563a78307b2444e445d8478",
+        "after": "7900301d07e92c8b232e9652c50efffa7ab450d0d8e859f4ac5006899df4f29b",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/pdf-merger/": {
+      "ownedTextHash": {
+        "before": "b49413a30355d13153d2df24660b442e09e9150525223d540b2f466edc5aba74",
+        "after": "7358b9cb9c6cdc1701ec81ded569538d7403dd12a34d0d740382ee4b6dc29c61",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/qr-code-generator/": {
+      "ownedTextHash": {
+        "before": "815f644964fbb6da05c6f1c61d7a6391df45d4e2edb2938d16ff1df26f5bce58",
+        "after": "e4e8222ace156861e3e253f7d0f0b602831aefe47df34af802559a537b271302",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/regex-tester/": {
+      "ownedTextHash": {
+        "before": "fd6534d5e27e825acc92c11eced5f48ef75792a4119a91f3e1e1c90122c72674",
+        "after": "ae2982f5d91c695ac8fb7e81b59597d493dc409dd7ddf6f648906af57708d4d9",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/unit-converter/": {
+      "ownedTextHash": {
+        "before": "7263f137b1db2db26302f802aef85f77c04cf97822435686ed3cf9e0f7f4be4f",
+        "after": "a0eb6be9c3065487955a8d4633094a949b6eb51707152238d0a0ebe19ed302d8",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/word-cloud-generator/": {
+      "ownedTextHash": {
+        "before": "b6e37b298ad771a54451a46c7a6d520224ec4446ba1445f82362f4fd18e2cb8b",
+        "after": "738c11dd6c84085d69f63e33afafcae6c8c0ecc0082dcf45fa6e71446d542046",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/es/tools/word-counter/": {
+      "ownedTextHash": {
+        "before": "cedece02e92379027a6a2c36e2d745aa5c0af811bd18a951ad2dcfe6fb5c3673",
+        "after": "e8e2dc1ceee223a139696a23577ea45fb934e8c00b1948dd52a841026919aca5",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/categories/text-tools/": {
+      "ownedTextHash": {
+        "before": "6bcb3f4be26931d00a8ee378bda52a8704d35cd84588f0ac350c31fd9ac4564d",
+        "after": "c68f332bafc62d5b9f7bf523792ed0f7d6160ce33a1245e41d74015236ee6b80",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/": {
+      "ownedTextHash": {
+        "before": "db1048013bcddf5d76f8eb97172586751492faa91b535ff5d9b336e8af61695c",
+        "after": "6af5c0282713a41d68831fa20ed70f387673d186d6445e408ef85efa9e19e665",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/character-counter/": {
+      "ownedTextHash": {
+        "before": "ccb28c91524c0708aa81d37cab92eae73840bb3aef3471ed776bdb2d89b28bb5",
+        "after": "c98220e029be285e4fb9e0c3451d62223c86c55b89eebbb9ba514a0b1995569b",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/color-contrast-checker/": {
+      "ownedTextHash": {
+        "before": "caabda66d651d17ef5c00c10dd892bf50658b907b4d21207aea669dada0be571",
+        "after": "32b7cbd03c16438b9d5b7ee5c0b0d6574146e23abc3bea37e53075dbc3193a2d",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/csv-to-json/": {
+      "ownedTextHash": {
+        "before": "4f4db0a8d7f2a731e6a99b8852eebe27a41cda1b167107c5980e160d7643de4d",
+        "after": "491847f38c8e85810550b1c76628f5330ae06de726d6cdbc48e7bb32d01562bd",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/epoch-converter/": {
+      "ownedTextHash": {
+        "before": "4beccf1598dd0977a3f493dbfffcca15b5d53cd8ecb88246bfd7a1ced606560a",
+        "after": "71c36503605e7f707625a92791abdb84288cd2b7d0dccc5e395754bcfd7a63db",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/grammar-checker/": {
+      "title": {
+        "before": "Grammar Checker Online Free | Free Online Tools Nest",
+        "after": "Grammar Checker — अंग्रेज़ी के सीमित नियम | Free Online T…",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      },
+      "description": {
+        "before": "Grammar और style online free check करें. Drafts browser में improve करें.",
+        "after": "अंग्रेज़ी पाठ के दोहराव और कुछ वर्तनी त्रुटियाँ ब्राउज़र में जाँचें। सुझाव गलत हो सकते हैं; पूरी जाँच का दावा नहीं।",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      },
+      "ownedTextHash": {
+        "before": "9d10c814cd9b1f4b0a8863f0e75be9cae60536550c5d973b0228d5b00f7ae772",
+        "after": "8dc0662d4417e98f040c996aae5bb420d5e499116217b5aa856de5b9b691ae34",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/image-compressor/": {
+      "ownedTextHash": {
+        "before": "a0af6728605af516f7580c10010f3333d4c562aa51ba5700dbde47fe0716ca9c",
+        "after": "7b8343e8f94b8ef4f67839a39301db12366cbad4a4b3ea6bbdabd8186c52b438",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/image-cropper/": {
+      "ownedTextHash": {
+        "before": "1c2be6e5ae9599b609cbeda4f0f622d52ac6d451e33e7a3c203d550636c65caf",
+        "after": "9303e6d40b1f4858a4b3571a1c57cdc2f19579808b26bf7b54d093d749637ba7",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/image-resizer/": {
+      "ownedTextHash": {
+        "before": "5d4dec2056e12a2d9ab7bf84578a03cddf27666e195330190356976fd0bdde14",
+        "after": "ef9cbc44fbc4da38edb1f5c4b3bb448f36a9b594253ed7ae5f9310bb67de6a30",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/": {
+      "ownedTextHash": {
+        "before": "a05951876c027c6aa65be7d2a48e17deb06c146935a903bec91e11d1b5144f0d",
+        "after": "7f40cb464c6a0b0fede4a9581d6a243ce27c68478c3f4222d31173a25b79a03c",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/json-formatter/": {
+      "ownedTextHash": {
+        "before": "94e54fb6f7fb07aa7eac3de3b3a043a4d1b0ec326d6986e4f411769ea98e6626",
+        "after": "b1219f955f1f9a59d026b9a9b333560e1c968978b28d1e0a58294925320729a0",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/json-to-csv/": {
+      "ownedTextHash": {
+        "before": "9cc7b5693b1783af317d1590709ae1a523e8cee71e45374b6a54ca204b2326c1",
+        "after": "d9ac3c54bf6ed829636204f4c9a866a70c7d99e12e5e0b0dec9c7b89964261cc",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/jwt-decoder/": {
+      "ownedTextHash": {
+        "before": "90479d5958a245398891c25aa650e355095d297cf70202395fdae0812eafd46d",
+        "after": "63d6a791286e8dc3ab7b31ab6b27d7e76814cc2dad84fc2ef12738fa459f4889",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/markdown-to-html/": {
+      "ownedTextHash": {
+        "before": "7df6912aa5f5f08885c1a0eaedf577d5bcc940456c80539ad1b17f52d7abcfc6",
+        "after": "f7d137394b7d55759b77f7e998372c8065fa0c27ca7d56413f293c3d3ccf37f8",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/password-generator/": {
+      "ownedTextHash": {
+        "before": "4c5297011408b5911d89f4a662a835ffd8fe24c92f652d3c2a5c9f2881be7789",
+        "after": "1feecbb42c7f48787ef0b6a39d35f0357b6218836b479c71f2cd33caee348d34",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/pdf-compressor/": {
+      "ownedTextHash": {
+        "before": "60b320724cf60fa37572ca99fc065f554051ea8a3a274bb1db9f9f4e4ff42805",
+        "after": "33115bc643c411277441b021f92c2b6b64acc0b737d02b279c2b3f5153f88259",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/pdf-merger/": {
+      "ownedTextHash": {
+        "before": "4c8558f53c618eb7a007d28b9518c5408eae0c77ac0a53d096814889d6456139",
+        "after": "158e95fafb40c7a94fe73cdff9cfb6c978477a7c9c6b4889963511f0694a498e",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/qr-code-generator/": {
+      "ownedTextHash": {
+        "before": "f6cccfbd05b1d5d2884859f1b4b38019c149d3d4a511af9c9806a87674cd6026",
+        "after": "f1aef2f7cdc847665a44dc74d3c71529d10189d28217e3becd343fece14d7b96",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/regex-tester/": {
+      "ownedTextHash": {
+        "before": "8eceb22123e4d7fe1e51db6912d82c23d9ab93925896f02471cee7ec9bb6515e",
+        "after": "6f68c41b47c35120bf183889a241c6624d4435423c3d32020c3ceae5fc584438",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/unit-converter/": {
+      "ownedTextHash": {
+        "before": "4e3f9ef6e12e9d87f31c3d3a4765afa2dacaf7bdf1678bba16acb6610ea7d2e3",
+        "after": "3251ff8e3cfd0ca436e5d132aea676fb65b981150a7986b02a74c3367daa7eb1",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/word-cloud-generator/": {
+      "ownedTextHash": {
+        "before": "8c48344e7239db1662e1b5a36f4a571a06f8fbf6a08a8f6c41301cbcb87b9c58",
+        "after": "168bf34f50540c7b5e3726b5773af846febaa6e31c771264d274eed0e49b49f4",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/hi/tools/word-counter/": {
+      "ownedTextHash": {
+        "before": "bf8eca9ab5b2d9d6b69c121bb6e02fe97eb4dc76fe1a6648850477ad3cc9fe8e",
+        "after": "7b1a5620565b9dd691dac7cf1ab4000cbd6ab0fa33624cbd76e1309edf1079e9",
+        "reason": "Localized instructions now match available controls; grammar copy and related cards state limited English scope."
+      }
+    },
+    "/tools/seo-length-checker/": {
+      "title": {
+        "before": "SEO Title &amp; Meta Length Checker | Free Online Tools Nest",
+        "after": "SEO Length Checker — Approximate Snippet Preview | Free O…",
+        "reason": "Corrected tool claims, documented limits or derived related-tool card copy."
+      },
+      "description": {
+        "before": "Use this SEO length checker to test title tags and meta descriptions against recommended limits. See pixel width, character count, and search preview.",
+        "after": "Check title and description character counts and approximate width. Understand why guideline ranges cannot guarantee search-result display or rankings.",
+        "reason": "Corrected tool claims, documented limits or derived related-tool card copy."
+      },
+      "ownedTextHash": {
+        "before": "a18feac1f2dc308165ec537f8a6c04af7ce99c8ee18d885a77fe43f040724cc5",
+        "after": "32bb07cdc0b2b819013efd10a27ae0c4491660e2a862462a4e24ac326edde3f4",
+        "reason": "Corrected tool claims, documented limits or derived related-tool card copy."
+      }
+    },
+    "/tools/serp-preview-generator/": {
+      "description": {
+        "before": "Preview your Google search result snippet with our free SERP preview generator. See exactly how your title and meta description appear in search results.",
+        "after": "Preview your Google search result snippet with our free SERP preview generator. Review an approximate title and description layout; actual search results can…",
+        "reason": "Corrected tool claims, documented limits or derived related-tool card copy."
+      },
+      "ownedTextHash": {
+        "before": "6d2a29c93f5b6999840c09d7c36bb62c2499ee072ad6dc7801e146656b599a8b",
+        "after": "e7caf7e5af7a98b58310330e7becef935342ccc9dd31362618a2ce288a684832",
+        "reason": "Corrected tool claims, documented limits or derived related-tool card copy."
+      }
+    },
+    "/tools/word-cloud-generator/": {
+      "ownedTextHash": {
+        "before": "aa2572d843b8371ad28fa5134c4bc4c33f31f07800064cfb1b96a8a582e74653",
+        "after": "308b4c5c157b462d3ecd969ca9182c7545c58c22e859d2ee93aa557582dee9a7",
+        "reason": "Corrected tool claims, documented limits or derived related-tool card copy."
+      }
+    }
+  },
+  "sources": {
+    "src/data/tools.ts": {
+      "before": "7f0704b8ecb28c2e77e86f1809a3dc8d829e352cc47d2a433ad7935b62cd228b",
+      "after": "d4236c49a2d0c9ec3d84410982a097ffb5a1fba3cca84c19fa1931bf0a3308d1",
+      "reason": "Correct tested feature claims for writing, conversion, PDF and percentage tools; preserve the catalogue."
+    },
+    "src/data/tool-quality.ts": {
+      "before": "b62edb26420544eac67e380f9163d5c25e058afaa41edf6cd84bb44071e9c8f6",
+      "after": "c8682b7c4114682606972c02d5548ad5347c283e181c13b045196e458355e7cb",
+      "reason": "Correct unsupported example/features and add scoped parser/writing review evidence without changing legacy advertising membership."
+    },
+    "src/data/localized.ts": {
+      "before": "6869fc5b8e78dc6c58e5942c1d04cdbf7d0b52bc80f2b1b09da86ba6f253951f",
+      "after": "31294e756946464f44c7c53462c5ccfb66d129b20b8e80e67e0b4c1dc0626127",
+      "reason": "Correct English-only grammar claims and make copy/download instructions conditional on actual controls."
+    },
+    "src/content/blog/10-free-online-tools-2026.md": {
+      "before": "87f6f3b3977b91e369c4641131520595e49dc7a35fe8a3c6ad02897f09d13293",
+      "after": "ac65013aead2cbd436284a7a2a5d8227a9f064793081367d4d1c4fb2a911e3ec",
+      "reason": "Replace unsupported promotion with ten checkable tasks and limitations."
+    },
+    "src/content/blog/free-online-tools-guide-2026.md": {
+      "before": "8c3d0f077a1c595f1014c9984aa5a8e95ee68fbc9d850f32bb1c5c61da72befc",
+      "after": "1ae8de508278f340fae2858c4d047c3be248b200d1217a6856d390661f823fce",
+      "reason": "Replace absolute privacy/security/offline claims with practical selection guidance."
+    }
+  }
+}

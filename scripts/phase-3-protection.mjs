@@ -20,8 +20,30 @@ export function ownedSignals(html, route) {
     ownedTextHash: hashText(stable),
   };
 }
-export function checkProtection(root, fixture) {
+/** Explicit before/after expectations preserve the original fixture as historical evidence. */
+export function applyContentChanges(fixture, changes = { pages: {}, sources: {} }) {
+  const result = structuredClone(fixture);
   const failures = [];
+  const allowed = new Set(["title", "description", "h1", "ownedTextHash"]);
+  for (const [route, fields] of Object.entries(changes.pages ?? {})) {
+    for (const [key, change] of Object.entries(fields)) {
+      if (!allowed.has(key) || !fixture.pages[route] || !change.reason?.trim() || JSON.stringify(fixture.pages[route][key]) !== JSON.stringify(change.before) || change.after === undefined) {
+        failures.push(`${route}: invalid content-change approval for ${key}`);
+      } else result.pages[route][key] = change.after;
+    }
+  }
+  for (const [path, change] of Object.entries(changes.sources ?? {})) {
+    if (!fixture.sources[path] || !change.reason?.trim() || fixture.sources[path] !== change.before || !/^[a-f0-9]{64}$/.test(change.after ?? "") || !path.startsWith("src/") || path.includes("__fixtures__")) {
+      failures.push(`${path}: invalid source-change approval`);
+    } else result.sources[path] = change.after;
+  }
+  return { fixture: result, failures };
+}
+
+export function checkProtection(root, fixture, changes) {
+  const approved = applyContentChanges(fixture, changes);
+  fixture = approved.fixture;
+  const failures = [...approved.failures];
   for (const [route, expected] of Object.entries(fixture.pages)) {
     const path = join(root, "dist", route.replace(/^\//, ""), "index.html");
     const actual = ownedSignals(readFileSync(path, "utf8"), route);

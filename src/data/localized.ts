@@ -155,7 +155,7 @@ const toolTranslations: Record<Exclude<Lang, "en">, Record<LocalizedToolSlug, Lo
     "jwt-decoder": copy("Decodificador JWT", "Decodifica encabezado y payload de tokens JWT sin enviarlos a un servidor.", "Pega un JWT para inspeccionar claims, fechas y estructura. Es útil para depurar autenticación sin exponer tokens privados.", "decodificador JWT online", "Decodificador JWT online gratis", "Decodifica JWT online gratis en tu navegador. Inspecciona claims y payload sin subir tokens."),
     "epoch-converter": copy("Conversor Epoch", "Convierte timestamps Unix a fechas legibles y viceversa.", "Transforma segundos o milisegundos epoch en fechas claras para logs, APIs y eventos. También convierte fechas humanas a timestamp.", "conversor epoch online", "Conversor Epoch online gratis", "Convierte timestamps Unix y fechas online gratis. Trabaja con segundos y milisegundos desde el navegador."),
     "word-cloud-generator": copy("Generador de nube de palabras", "Crea una nube visual con las palabras más frecuentes de tu texto.", "Analiza texto y genera una nube de palabras para detectar temas, términos repetidos y patrones de contenido sin subir el documento.", "generador de nube de palabras", "Generador de nube de palabras gratis", "Crea una nube de palabras online gratis desde tu texto. Visualiza términos frecuentes en el navegador."),
-    "grammar-checker": copy("Corrector gramatical", "Detecta problemas comunes de gramática, estilo y claridad en texto.", "Revisa texto para encontrar frases largas, repeticiones y mejoras básicas. Es una ayuda rápida para borradores privados antes de publicar.", "corrector gramatical online", "Corrector gramatical online gratis", "Revisa gramática y estilo online gratis. Mejora borradores en tu navegador sin subir texto."),
+    "grammar-checker": copy("Corrector gramatical", "Revisa repeticiones y algunas erratas en texto en inglés.", "Reglas limitadas para inglés: repeticiones, algunas erratas, espacios y mayúsculas. No analiza toda la gramática. Edita el texto manualmente; las sugerencias pueden fallar.", "corrector gramatical online", "Corrector gramatical — reglas limitadas de inglés", "Comprueba repeticiones y algunas erratas en inglés, localmente. Conoce las limitaciones y revisa cada sugerencia."),
     "csv-to-json": copy("Convertidor CSV a JSON", "Convierte datos CSV en JSON limpio para APIs y desarrollo.", "Pega una tabla CSV y genera JSON estructurado para pruebas, integraciones o prototipos. El procesamiento ocurre localmente.", "convertidor CSV a JSON", "Convertidor CSV a JSON online", "Convierte CSV a JSON online gratis. Transforma tablas en datos estructurados desde tu navegador."),
     "json-to-csv": copy("Convertidor JSON a CSV", "Convierte arrays JSON en CSV descargable y fácil de abrir.", "Transforma datos JSON en una tabla CSV para hojas de cálculo, reportes o análisis rápido sin depender de un servidor.", "convertidor JSON a CSV", "Convertidor JSON a CSV online", "Convierte JSON a CSV online gratis. Exporta datos estructurados a tabla desde tu navegador."),
     "unit-converter": copy("Conversor de unidades", "Convierte unidades de longitud, peso, volumen y más al instante.", "Elige una unidad de origen y destino para obtener conversiones rápidas para trabajo, estudio o tareas cotidianas.", "conversor de unidades online", "Conversor de unidades online gratis", "Convierte unidades online gratis para medidas comunes. Obtén resultados rápidos en el navegador."),
@@ -177,7 +177,7 @@ const toolTranslations: Record<Exclude<Lang, "en">, Record<LocalizedToolSlug, Lo
     "jwt-decoder": copy("JWT Decoder", "JWT token का header और payload browser में decode करें.", "JWT paste करके claims, dates और structure inspect करें. Auth debugging के लिए useful, token upload किए बिना.", "JWT decoder online", "JWT Decoder Online Free", "JWT online free decode करें. Claims और payload browser में inspect करें."),
     "epoch-converter": copy("Epoch Converter", "Unix timestamps को readable dates में और वापस convert करें.", "Seconds या milliseconds epoch को clear dates में बदलें. Logs, APIs और events के लिए useful.", "epoch converter online", "Epoch Converter Online Free", "Unix timestamps और dates online free convert करें."),
     "word-cloud-generator": copy("Word Cloud Generator", "Text की frequent words से visual word cloud बनाएं.", "Text analyze करके common words और themes देखें. Drafts upload किए बिना patterns पहचानें.", "word cloud generator", "Word Cloud Generator Free", "Text से word cloud online free बनाएं और frequent terms देखें."),
-    "grammar-checker": copy("Grammar Checker", "Text में common grammar, style और clarity issues खोजें.", "Draft text check करें, long sentences और repeated phrases पहचानें. Publishing से पहले quick cleanup के लिए useful.", "grammar checker online", "Grammar Checker Online Free", "Grammar और style online free check करें. Drafts browser में improve करें."),
+    "grammar-checker": copy("Grammar Checker", "अंग्रेज़ी पाठ में दोहराए शब्द और कुछ वर्तनी त्रुटियाँ जाँचें।", "अंग्रेज़ी के लिए सीमित नियम: दोहराव, कुछ गलत वर्तनियाँ, स्पेस और बड़े अक्षर। यह पूरी व्याकरण जाँच नहीं है। मूल पाठ स्वयं बदलें और सुझावों की समीक्षा करें।", "grammar checker online", "Grammar Checker — अंग्रेज़ी के सीमित नियम", "अंग्रेज़ी पाठ के दोहराव और कुछ वर्तनी त्रुटियाँ ब्राउज़र में जाँचें। सुझाव गलत हो सकते हैं; पूरी जाँच का दावा नहीं।"),
     "csv-to-json": copy("CSV to JSON Converter", "CSV data को clean JSON में convert करें.", "CSV table paste करें और APIs, tests या prototypes के लिए structured JSON generate करें. Processing local होता है.", "csv to json converter", "CSV to JSON Converter Online", "CSV को JSON online free convert करें. Tables को structured data में बदलें."),
     "json-to-csv": copy("JSON to CSV Converter", "JSON arrays को downloadable CSV table में convert करें.", "JSON data को spreadsheet-friendly CSV में बदलें. Reports, analysis और exports के लिए useful.", "json to csv converter", "JSON to CSV Converter Online", "JSON को CSV online free convert करें और table export करें."),
     "unit-converter": copy("Unit Converter", "Length, weight, volume और common units instantly convert करें.", "Source और target unit चुनें और quick conversion पाएं. Study, work और daily tasks के लिए useful.", "unit converter online", "Unit Converter Online Free", "Common units online free convert करें. Browser में fast results पाएं."),
@@ -206,7 +206,7 @@ const localizedDetails: Record<Exclude<Lang, "en">, Record<LocalizedToolSlug, { 
     "jwt-decoder": { example: "Ejemplo: un payload con {\"sub\":\"123\"} muestra el claim sub, pero no prueba su autenticidad.", limitation: "Decodificar no verifica firma, emisor, audiencia ni revocación.", engine: "Decodificación Base64URL y análisis JSON." },
     "epoch-converter": { example: "Ejemplo: 0 segundos corresponde a 1970-01-01T00:00:00.000Z.", limitation: "Confundir segundos y milisegundos produce fechas muy alejadas; la hora local depende de la zona del navegador.", engine: "JavaScript Date y aritmética de timestamps." },
     "word-cloud-generator": { example: "Ejemplo: si «privacidad» aparece tres veces, se dibuja más grande que una palabra que aparece una vez.", limitation: "Frecuencia no equivale a sentimiento o tema; stop words y tokenización cambian el resultado.", engine: "Conteo de tokens y renderizado visual en JavaScript." },
-    "grammar-checker": { example: "Ejemplo: «Esto esto tiene  doble espacio» detecta repetición y espacio duplicado.", limitation: "Es un corrector heurístico de inglés, no una revisión humana ni un sistema de IA contextual.", engine: "Reglas deterministas de gramática y estilo." },
+    "grammar-checker": { example: "Ejemplo en inglés: «This is is a draft.» señala la repetición de «is».", limitation: "Es un corrector heurístico de inglés, no una revisión humana ni un sistema de IA contextual.", engine: "Reglas deterministas de gramática y estilo." },
     "csv-to-json": { example: "Ejemplo: name,age seguido de Ada,36 produce un array con un objeto.", limitation: "Comillas mal cerradas, encabezados duplicados y saltos de línea incrustados requieren revisión.", engine: "Parser local de delimitadores y campos entrecomillados." },
     "json-to-csv": { example: "Ejemplo: [{\"name\":\"Ada\"}] produce una cabecera name y una fila Ada.", limitation: "Objetos anidados necesitan aplanado y claves inconsistentes generan celdas vacías.", engine: "JSON.parse y escape de campos CSV." },
     "unit-converter": { example: "Ejemplo: 1 kilómetro se convierte en 1000 metros.", limitation: "Los valores redondeados no sustituyen cálculos científicos o de calibración regulada.", engine: "Factores de conversión JavaScript por categoría." },
@@ -228,7 +228,7 @@ const localizedDetails: Record<Exclude<Lang, "en">, Record<LocalizedToolSlug, { 
     "jwt-decoder": { example: "उदाहरण: {\"sub\":\"123\"} वाला payload sub दिखाता है, पर उसकी सत्यता सिद्ध नहीं करता।", limitation: "डिकोड करना हस्ताक्षर, जारीकर्ता, दर्शक या निरस्तीकरण सत्यापित नहीं करता।", engine: "Base64URL डिकोड और JSON पार्सिंग।" },
     "epoch-converter": { example: "उदाहरण: 0 सेकंड 1970-01-01T00:00:00.000Z है।", limitation: "सेकंड और मिलीसेकंड की गड़बड़ी गलत तारीख देती है; स्थानीय समय ब्राउज़र क्षेत्र पर निर्भर है।", engine: "JavaScript Date और टाइमस्टैम्प गणना।" },
     "word-cloud-generator": { example: "उदाहरण: तीन बार आया शब्द एक बार आए शब्द से बड़ा दिखता है।", limitation: "आवृत्ति भावना या विषय विश्लेषण नहीं है; stop words परिणाम बदलते हैं।", engine: "JavaScript शब्द आवृत्ति और दृश्य रेंडरिंग।" },
-    "grammar-checker": { example: "उदाहरण: दोहराया शब्द और दोहरा स्पेस नियमों से पहचाना जाता है।", limitation: "यह अंग्रेजी के लिए नियम-आधारित सहायता है, मानव संपादन या संदर्भ समझने वाली AI नहीं।", engine: "निश्चित व्याकरण और शैली नियम।" },
+    "grammar-checker": { example: "अंग्रेज़ी उदाहरण: “This is is a draft.” में “is” का दोहराव पहचाना जाता है।", limitation: "यह अंग्रेजी के लिए नियम-आधारित सहायता है, मानव संपादन या संदर्भ समझने वाली AI नहीं।", engine: "निश्चित व्याकरण और शैली नियम।" },
     "csv-to-json": { example: "उदाहरण: name,age और Ada,36 से एक वस्तु वाला JSON array बनता है।", limitation: "टूटा उद्धरण, दोहरे header और embedded newline को समीक्षा चाहिए।", engine: "स्थानीय delimiter और quoted-field parser।" },
     "json-to-csv": { example: "उदाहरण: [{\"name\":\"Ada\"}] से name header और Ada row बनती है।", limitation: "Nested object को flatten करना पड़ता है और अलग keys खाली cells बनाती हैं।", engine: "JSON.parse और CSV field escaping।" },
     "unit-converter": { example: "उदाहरण: 1 किलोमीटर 1000 मीटर बनता है।", limitation: "Rounded परिणाम वैज्ञानिक या विनियमित calibration का विकल्प नहीं है।", engine: "श्रेणीवार JavaScript conversion factors।" },
@@ -242,19 +242,28 @@ const localizedDetails: Record<Exclude<Lang, "en">, Record<LocalizedToolSlug, { 
   },
 };
 
-function localizedSteps(lang: Exclude<Lang, "en">, slug: LocalizedToolSlug, toolName: string, keyword: string): UsageStep[] {
+function localizedSteps(lang: Exclude<Lang, "en">, slug: LocalizedToolSlug, toolName: string, _keyword: string): UsageStep[] {
   const detail = localizedDetails[lang][slug];
+  if (slug === "grammar-checker") return lang === "es" ? [
+    {title:"Introduce texto en inglés", content:"Pega un borrador corto en inglés. No hay carga de archivos ni análisis completo de gramática."},
+    {title:"Ejecuta las reglas", content:"Pulsa Check Grammar y revisa cada sugerencia con su contexto. Las reglas pueden omitir errores."},
+    {title:"Edita el original", content:"Cambia el texto manualmente y vuelve a comprobarlo. No hay botones para aceptar, descartar o descargar correcciones."}
+  ] : [
+    {title:"अंग्रेज़ी पाठ डालें", content:"छोटा अंग्रेज़ी मसौदा पेस्ट करें। फ़ाइल अपलोड या पूरी व्याकरण जाँच उपलब्ध नहीं है।"},
+    {title:"नियम चलाएँ", content:"Check Grammar दबाएँ और संदर्भ सहित सुझाव देखें। कई गलतियाँ छूट सकती हैं।"},
+    {title:"मूल पाठ स्वयं बदलें", content:"पाठ बदलकर फिर जाँचें। सुझाव स्वीकार, खारिज या डाउनलोड करने के बटन नहीं हैं।"}
+  ];
   if (lang === "es") {
     return [
-      { title: "Pega o carga tus datos", content: `Abre ${toolName} y añade el texto, archivo o valor que quieres procesar. La herramienta está pensada para ${keyword} con un flujo rápido.` },
+      { title: "Pega o carga tus datos", content: `Abre ${toolName} y utiliza únicamente los campos o controles de archivo que muestra la herramienta. Comprueba primero un ejemplo pequeño.` },
       { title: "Ajusta y comprueba", content: `${detail.engine} ${detail.example}` },
-      { title: "Copia o descarga el resultado", content: "Cuando el resultado esté listo, cópialo o descárgalo desde el navegador. No necesitas crear una cuenta." },
+      { title: "Copia o descarga el resultado", content: "Revisa el resultado y sus límites. Usa copiar o descargar solo si ese control está disponible; en algunas herramientas el resultado se consulta en pantalla." },
     ];
   }
   return [
-    { title: "डेटा जोड़ें", content: `${toolName} खोलें और text, file या value जोड़ें. यह ${keyword} workflow के लिए fast browser-based tool है.` },
+    { title: "डेटा जोड़ें", content: `${toolName} खोलें और केवल दिखाए गए text, value या file controls इस्तेमाल करें। पहले छोटा उदाहरण जाँचें।` },
     { title: "विकल्प चुनें और जांचें", content: `${detail.engine} ${detail.example}` },
-    { title: "Result copy या download करें", content: "Result ready होने पर उसे browser से copy या download करें. Account की जरूरत नहीं है." },
+    { title: "Result copy या download करें", content: "Result और उसकी सीमाएँ जाँचें। Copy या download केवल उपलब्ध होने पर इस्तेमाल करें; कुछ tools में result स्क्रीन पर पढ़ा जाता है।" },
   ];
 }
 

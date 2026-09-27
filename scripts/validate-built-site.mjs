@@ -161,7 +161,8 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const allowedAdditions = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-additions.json", import.meta.url), "utf8"));
   const result = validateBuiltSite(rootPath, { policies, baseline, allowedAdditions });
   const protection = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-organic-protection.json", import.meta.url), "utf8"));
-  result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), protection));
+  const contentChanges = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/content-remediation-changes.json", import.meta.url), "utf8"));
+  result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), protection, contentChanges));
   for (const [hub, category] of [["/document-tools/", "/categories/pdf-tools/"], ["/writing-tools/", "/categories/text-tools/"]]) {
     if (policies[hub]?.indexable) {
       const signals = route => ownedSignals(readFileSync(join(rootPath, route.slice(1), "index.html"), "utf8"), route);

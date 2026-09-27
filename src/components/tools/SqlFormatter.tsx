@@ -2,71 +2,7 @@ import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
-const KEYWORDS_MAJOR = [
-  "SELECT", "FROM", "WHERE", "SET", "VALUES", "INTO",
-  "ORDER BY", "GROUP BY", "HAVING", "LIMIT", "OFFSET",
-];
-
-const KEYWORDS_MINOR = [
-  "JOIN", "INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN",
-  "LEFT OUTER JOIN", "RIGHT OUTER JOIN", "FULL OUTER JOIN",
-  "CROSS JOIN", "ON", "AND", "OR", "UNION", "UNION ALL",
-  "INSERT INTO", "UPDATE", "DELETE FROM", "CREATE TABLE",
-  "ALTER TABLE", "DROP TABLE", "CREATE INDEX", "DROP INDEX",
-];
-
-const ALL_KEYWORDS = [...KEYWORDS_MAJOR, ...KEYWORDS_MINOR].sort(
-  (a, b) => b.length - a.length
-);
-
-function formatSql(sql: string, indentSpaces: number): string {
-  const indent = " ".repeat(indentSpaces);
-  let upper = sql.toUpperCase();
-  let result = sql;
-
-  for (const kw of ALL_KEYWORDS) {
-    const escaped = kw.replace(/ /g, "\\s+");
-    const re = new RegExp(`\\b${escaped}\\b`, "gi");
-    result = result.replace(re, `\n${kw}\n`);
-  }
-
-  const lines = result
-    .split("\n")
-    .map((l) => l.trim())
-    .filter(Boolean);
-
-  let depth = 0;
-  const out: string[] = [];
-
-  for (let line of lines) {
-    const upperLine = line.toUpperCase();
-
-    const isClosingParen = line.startsWith(")");
-    const isMajor = KEYWORDS_MAJOR.some(
-      (k) => upperLine === k || upperLine.startsWith(k + " ")
-    );
-    const isMinor = KEYWORDS_MINOR.some(
-      (k) => upperLine === k || upperLine.startsWith(k + " ")
-    );
-
-    if (isClosingParen) depth = Math.max(0, depth - 1);
-
-    if (isMajor) {
-      out.push(line);
-    } else if (isMinor) {
-      out.push(indent.repeat(depth) + line);
-    } else {
-      out.push(indent.repeat(depth) + line);
-    }
-
-    const openCount = (line.match(/\(/g) || []).length;
-    const closeCount = (line.match(/\)/g) || []).length;
-    depth += openCount - closeCount;
-    depth = Math.max(0, depth);
-  }
-
-  return out.join("\n");
-}
+import { formatSql } from "../../helpers/sql-formatter";
 
 export default function SqlFormatter() {
   const [input, setInput] = useState("");
@@ -85,8 +21,8 @@ export default function SqlFormatter() {
       const formatted = formatSql(input.trim(), indentSize);
       setOutput(formatted);
       setError("");
-    } catch {
-      setError("Failed to format SQL. Please check your query syntax.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to format SQL.");
       setOutput("");
     }
   }, [input, indentSize]);
@@ -99,6 +35,7 @@ export default function SqlFormatter() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Heuristic SQL formatting, not syntax validation or execution. Quoted values and comments are preserved. Dollar quotes, nested comments and backslash-escaped strings are rejected; use your database’s dialect-aware formatter for those features.</p>
       <div>
         <label htmlFor="sql-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Paste your SQL query
