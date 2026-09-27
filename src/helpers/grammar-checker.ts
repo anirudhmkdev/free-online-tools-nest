@@ -179,4 +179,3 @@ export function checkGrammar(text: string): { issues: GrammarIssue[]; categories
 
   return { issues, categories };
 }
-

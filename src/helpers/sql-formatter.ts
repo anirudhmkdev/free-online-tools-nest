@@ -65,4 +65,3 @@ export function formatSql(sql: string, indentSpaces: number): string {
 
   return protectedSql.restore(out.join("\n"));
 }
-
