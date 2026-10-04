@@ -1,6 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
+import Icon from "../components/CampusIcon.astro";
+const collectionIcons = ["text", "code", "search", "file", "calculator", "swap"] as const;
 import { getToolBySlug, TOOLS, SITE } from "../data/tools";
 import ToolDisclosure from "../components/ToolDisclosure.astro";
 import { partitionToolsByDiscovery } from "../data/tool-discovery";
@@ -57,26 +59,26 @@ const websiteJsonLd = {
 
 <Layout title="Free Tools for Text, Code, Images & Everyday Tasks" description="Find browser tools for writing, code, SEO, images, PDFs and calculations. Start with a focused collection, or browse more tools. No signup required." canonicalPath="/" alternatePaths={getDefaultAlternates("/")} jsonLd={[websiteJsonLd, organizationJsonLd]} enableAds={true}>
   <Hero />
-  <div class="container-page home-toolkit-sections">
-    {toolkits.map(kit => (
+  <div class="container-page home-toolkit-sections"><div class="campus-collection-heading"><h2>Find your next tool</h2><a href="/tools/">Browse all tools <Icon name="arrow" /></a></div><div class="campus-collections">
+    {toolkits.map((kit, index) => (
       <section id={kit.id} class="toolkit-section" aria-labelledby={kit.id + "-heading"}>
-        <div class="toolkit-heading"><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p><a class="inline-flex min-h-11 items-center py-2 text-link underline" href={kit.guide}>Choose the right tool →</a></div>
+        <div class="toolkit-heading"><span class="campus-collection-icon"><Icon name={collectionIcons[index]} /></span><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p><a class="inline-flex min-h-11 items-center py-2 text-link underline" href={kit.guide}>Choose the right tool →</a></div>
         <ul class="task-list">
           {kit.slugs.map(slug => {
             const tool = getToolBySlug(slug)!;
-            return <li data-discovery-tier="primary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>;
+            return <li data-discovery-tier="primary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><Icon name="arrow" /></a></li>;
           })}
         </ul>
       </section>
     ))}
-    <ToolDisclosure count={secondary.length}>
+    </div><ToolDisclosure count={secondary.length}>
       <section id="study-assignment-tools" class="secondary-student-tools" aria-labelledby="study-assignment-tools-heading">
         <h2 id="study-assignment-tools-heading">Student Tools</h2>
         <p class="text-sm text-body mt-2">Plan attendance and grades using the rules and targets you enter.</p>
         <a class="inline-flex min-h-11 items-center py-2 text-link underline" href="/student-tools/">Choose the right student tool →</a>
-        <ul class="task-list">{studentTools.map(tool => <li data-discovery-tier="secondary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>)}</ul>
+        <ul class="task-list">{studentTools.map(tool => <li data-discovery-tier="secondary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><Icon name="arrow" /></a></li>)}</ul>
       </section>
-      <ul class="task-list secondary-list">{otherTools.map(tool => <li data-discovery-tier="secondary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>)}</ul>
+      <ul class="task-list secondary-list">{otherTools.map(tool => <li data-discovery-tier="secondary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><Icon name="arrow" /></a></li>)}</ul>
     </ToolDisclosure>
     <div class="more-tools-note"><p>Preparing a submission, checking a draft or working out a result?</p><a href="/workflows/">Follow a practical workflow →</a></div>
     <div class="more-tools-note"><p>Looking for a developer utility, converter or another familiar tool?</p><a href="/tools/">Browse the full tool directory <span aria-hidden="true">→</span></a></div>
@@ -84,13 +86,13 @@ const websiteJsonLd = {
 
   <section id="practical-guides" class="home-guides" aria-labelledby="guides-heading">
     <div class="container-page">
-      <div class="section-heading"><div><p class="section-eyebrow">Understand the result</p><h2 id="guides-heading" class="section-title">Practical guides for your next upload</h2></div><a href="/blog/" class="pill-control">All articles</a></div>
+      <div class="section-heading"><div><h2 id="guides-heading" class="section-title">Practical guides for your next upload</h2></div><a href="/blog/" class="pill-control">All articles</a></div>
       <div class="guide-list">{guides.map(post => <article><h3><a href={"/blog/" + post.id + "/"}>{post.data.title}</a></h3><p>{post.data.description}</p><a class="guide-read" href={"/blog/" + post.id + "/"} aria-label={"Read " + post.data.title}>Read guide <span aria-hidden="true">→</span></a></article>)}</div>
     </div>
   </section>
 
   <section id="local-processing" class="container-page home-trust" aria-labelledby="privacy-heading">
-    <div><p class="section-eyebrow">Files stay in your workflow</p><h2 id="privacy-heading">Local processing, explained plainly.</h2></div>
+    <div><h2 id="privacy-heading">Local processing, explained plainly.</h2></div>
     <div><p>These tools process the text and files you provide inside your browser, rather than sending them to a Free Online Tools Nest processing server. Large files can still be limited by your device's memory.</p><p>The website can make separate requests for fonts, Google Analytics and advertising. Local tool processing does not mean the entire page is disconnected from the internet.</p><a href="/privacy-policy/">Read the privacy policy</a></div>
   </section>
   <section class="container-page home-about" aria-label="Testing and about the site">

@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T12:29:26.398Z",
+  "title": "Design System: Free Online Tools Nest",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Desk Cobalt"
+      },
+      "dark-primary": {
+        "role": "primary",
+        "displayName": "Night Periwinkle"
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Blue Paper"
+      },
+      "canvas-soft": {
+        "role": "neutral",
+        "displayName": "Desk Surface"
+      },
+      "canvas-soft-2": {
+        "role": "neutral",
+        "displayName": "Blue Grouping Surface"
+      },
+      "dark-canvas": {
+        "role": "neutral",
+        "displayName": "Night Canvas"
+      },
+      "dark-canvas-soft": {
+        "role": "neutral",
+        "displayName": "Night Desk Surface"
+      },
+      "dark-canvas-soft-2": {
+        "role": "neutral",
+        "displayName": "Night Grouping Surface"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Navy Ink"
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Night Paper Ink"
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Strong Control Edge"
+      },
+      "success": {
+        "role": "secondary",
+        "displayName": "Result Green"
+      },
+      "warning": {
+        "role": "secondary",
+        "displayName": "Caution Ochre"
+      },
+      "error": {
+        "role": "secondary",
+        "displayName": "Error Rose"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Search Desk Display",
+        "purpose": "Responsive homepage hero with the approved broad composition."
+      },
+      "headline": {
+        "displayName": "Page Headline",
+        "purpose": "General headings; mobile and tool/guide overrides are described in DESIGN.md."
+      },
+      "section": {
+        "displayName": "Section Heading",
+        "purpose": "Shared section hierarchy without an eyebrow convention."
+      },
+      "title": {
+        "displayName": "Tool Card Title",
+        "purpose": "Complete wrapping names in tool discovery and related-tool cards."
+      },
+      "body": {
+        "displayName": "Operating Body",
+        "purpose": "Compact operating interfaces, navigation and supporting explanation."
+      },
+      "reading": {
+        "displayName": "Reading Body",
+        "purpose": "Article prose, prose-like information and desktop guides within 65ch."
+      },
+      "label": {
+        "displayName": "Control Label",
+        "purpose": "Medium-weight pill button and navigation labels."
+      },
+      "metadata": {
+        "displayName": "Supporting Metadata",
+        "purpose": "Readable secondary facts; not an eyebrow above a heading."
+      },
+      "hindi-body": {
+        "displayName": "Hindi Body",
+        "purpose": "Devanagari-first local font stack and zero tracking."
+      },
+      "code": {
+        "displayName": "Code and Numeric Output",
+        "purpose": "Existing JetBrains Mono treatment; its remote font request is retained."
+      },
+      "related-heading": {
+        "displayName": "Related Tool Heading",
+        "purpose": "Supporting prose hierarchy in Outfit, 18px and weight 550."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "none",
+        "purpose": "Campus cards and workspaces use tone instead of ambient shadow."
+      },
+      {
+        "name": "card-hover",
+        "value": "none",
+        "purpose": "Tool-card hover changes tone without lifting its container."
+      },
+      {
+        "name": "elevated",
+        "value": "0 8px 24px -12px rgb(20 46 91 / .22)",
+        "purpose": "Floating navigation; the implemented role is shared by both themes."
+      },
+      {
+        "name": "modal",
+        "value": "0 16px 48px -16px rgb(20 46 91 / .3)",
+        "purpose": "Light-theme Browse and search transient surfaces."
+      },
+      {
+        "name": "modal-dark",
+        "value": "0 16px 48px -16px rgb(0 8 29 / .6)",
+        "purpose": "Dark-theme transient surface separation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "card-state",
+        "value": "background-color .18s, color .18s",
+        "purpose": "Existing CSS tool-card state transition."
+      },
+      {
+        "name": "button-state",
+        "value": "opacity .15s ease, transform .15s ease",
+        "purpose": "Retained primary-button transition; GSAP does not displace controls."
+      },
+      {
+        "name": "photo-reveal",
+        "value": "scale 1.025 to 1; 1.1s; expo.out; ScrollTrigger top 95%; once",
+        "purpose": "Finite decorative reveal only when reduced motion is not requested."
+      },
+      {
+        "name": "browse-expand",
+        "value": "scale .985 to 1; .22s; power3.out",
+        "purpose": "Decorative enhancement after the native popover opens."
+      },
+      {
+        "name": "arrow-feedback",
+        "value": "x 0 to 2px; y 0 to -2px; .16s; power2.out; yoyo; repeat 1",
+        "purpose": "One outward-and-back icon response on the implemented collection/navigation/task links."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce; animation none; transition none; scroll-behavior auto; photo transform none",
+        "purpose": "CSS fallback and GSAP matchMedia exclusion; essential content is visible by default."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "single-column",
+        "value": "640px"
+      },
+      {
+        "name": "medium-gutter",
+        "value": "768px"
+      },
+      {
+        "name": "guide-sidebar",
+        "value": "1024px"
+      },
+      {
+        "name": "wide-navigation",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary task button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The shared compact pill action, bound to the active semantic colors.",
+      "html": "<button class=\"ds-btn\" type=\"button\">Generate</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;min-width:44px;padding:0 20px;border:0;border-radius:999px;background:var(--color-primary,#2853b5);color:var(--color-on-primary,#fff);font-family:var(--font-sans,'Outfit Variable','Noto Sans Devanagari Variable',sans-serif);font-size:16px;font-weight:500;line-height:24px;white-space:normal;cursor:pointer;transition:opacity .15s ease,transform .15s ease;touch-action:manipulation}.ds-btn:hover,.ds-btn:active{background:var(--color-link-deep,#193e91)}.ds-btn:focus-visible{outline:3px solid var(--color-link,#2853b5);outline-offset:3px}.ds-btn:disabled{opacity:.65;cursor:not-allowed}@media(prefers-reduced-motion:reduce){.ds-btn{transition:none}}"
+    },
+    {
+      "name": "Search desk field",
+      "kind": "input",
+      "refersTo": "search",
+      "description": "A labelled search field; the enclosing edge carries focus. The sample illustrates the field rather than search matching.",
+      "html": "<label class=\"ds-search-label\" for=\"ds-search\">What do you need to do?</label><div class=\"ds-search-field\"><svg aria-hidden=\"true\" viewBox=\"0 0 256 256\"><path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/></svg><input id=\"ds-search\" type=\"search\" placeholder=\"Try word count, JSON or PDF…\" /></div>",
+      "css": ".ds-search-label{display:block;margin-bottom:8px;color:var(--color-ink,#142e5b);font-family:var(--font-sans,'Outfit Variable','Noto Sans Devanagari Variable',sans-serif);font-size:16px;font-weight:500}.ds-search-field{display:flex;align-items:center;gap:16px;border:1px solid var(--color-hairline-strong,#6d82aa);padding:8px 12px 8px 24px;border-radius:999px;background:var(--color-canvas-soft,#f7f9ff);color:var(--color-ink,#142e5b)}.ds-search-field svg{width:22px;height:22px;flex:none;fill:currentColor}.ds-search-field input{width:100%;min-width:0;height:48px;padding:0;border:0;background:transparent;color:inherit;font-family:var(--font-sans,'Outfit Variable','Noto Sans Devanagari Variable',sans-serif);font-size:18px;caret-color:var(--color-link,#2853b5)}.ds-search-field input::placeholder{color:var(--color-body,#485d7b);opacity:1}.ds-search-field input:focus-visible{outline:0}.ds-search-field:focus-within{outline:3px solid var(--color-link,#2853b5);outline-offset:3px}@media(max-width:639px){.ds-search-field input{font-size:16px}.ds-search-field{padding-left:16px;gap:12px}}"
+    },
+    {
+      "name": "Tool card",
+      "kind": "card",
+      "refersTo": "tool-card",
+      "description": "The source card's drawn category icon, complete wrapping name and quiet surface.",
+      "html": "<a class=\"ds-tool-card\" href=\"/tools/word-counter/\"><span class=\"ds-tool-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 256 256\"><path d=\"M87.24,52.59a8,8,0,0,0-14.48,0l-64,136a8,8,0,1,0,14.48,6.81L39.9,160h80.2l16.66,35.4a8,8,0,1,0,14.48-6.81ZM47.43,144,80,74.79,112.57,144ZM200,96c-12.76,0-22.73,3.47-29.63,10.32a8,8,0,0,0,11.26,11.36c3.8-3.77,10-5.68,18.37-5.68,13.23,0,24,9,24,20v3.22A42.76,42.76,0,0,0,200,128c-22.06,0-40,16.15-40,36s17.94,36,40,36a42.73,42.73,0,0,0,24-7.25,8,8,0,0,0,16-.75V132C240,112.15,222.06,96,200,96Zm0,88c-13.23,0-24-9-24-20s10.77-20,24-20,24,9,24,20S213.23,184,200,184Z\"/></svg></span><span class=\"ds-tool-body\"><span class=\"ds-tool-row\"><strong>Word Counter</strong><svg class=\"ds-tool-arrow\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></span><span class=\"ds-tool-description\">Check your draft length</span></span></a>",
+      "css": ".ds-tool-card{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;min-height:152px;padding:24px;border:0;border-radius:20px;background:var(--color-canvas-soft,#f7f9ff);box-shadow:none;color:var(--color-ink,#142e5b);text-decoration:none;font-family:var(--font-sans,'Outfit Variable','Noto Sans Devanagari Variable',sans-serif);touch-action:manipulation;transition:background-color .18s,color .18s}.ds-tool-icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--color-hairline,#b4c5e3);border-radius:12px;background:var(--color-canvas-soft-2,#d4dff5);color:var(--color-ink,#142e5b)}.ds-tool-icon svg{width:22px;height:22px;fill:currentColor}.ds-tool-body{display:flex;min-width:0;flex-direction:column;gap:8px}.ds-tool-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.ds-tool-row strong{min-width:0;font-size:18px;font-weight:600;line-height:1.35;white-space:normal;overflow:visible;text-overflow:clip}.ds-tool-description{display:block;color:var(--color-body,#485d7b);font-size:16px;line-height:1.6;overflow-wrap:anywhere}.ds-tool-arrow{flex:none;margin-top:4px;color:var(--color-mute,#485d7b);opacity:.55;transition:color .15s ease,opacity .15s ease,transform .15s ease}.ds-tool-card:hover{background:var(--color-canvas-soft-2,#d4dff5)}.ds-tool-card:hover .ds-tool-arrow{color:var(--color-link,#2853b5);opacity:1;transform:translateX(2px)}.ds-tool-card:focus-visible{outline:3px solid var(--color-link,#2853b5);outline-offset:3px}@media(prefers-reduced-motion:reduce){.ds-tool-card,.ds-tool-arrow{transition:none}}"
+    },
+    {
+      "name": "Workspace guidance disclosure",
+      "kind": "custom",
+      "refersTo": "workspace",
+      "description": "Native guidance stays compact before the operating controls.",
+      "html": "<section class=\"ds-workspace\" aria-label=\"Tool workspace\"><div class=\"ds-workspace-top\"><details class=\"ds-guidance\"><summary>Workspace</summary><p>Use the tool below. Your inputs stay local when the tool supports browser-only processing.</p></details></div><div class=\"ds-workspace-slot\">Operating controls appear here.</div></section>",
+      "css": ".ds-workspace{border:0;border-radius:24px;background:var(--color-canvas-soft,#f7f9ff);color:var(--color-ink,#142e5b);box-shadow:none;font-family:var(--font-sans,'Outfit Variable','Noto Sans Devanagari Variable',sans-serif)}.ds-workspace-top{display:flex;flex-wrap:wrap;gap:12px;padding:12px 24px;border-bottom:1px solid var(--color-hairline,#b4c5e3)}.ds-guidance{flex:1;min-width:0}.ds-guidance summary{display:flex;align-items:center;gap:8px;min-height:44px;width:fit-content;cursor:pointer;font-size:16px;font-weight:500;line-height:1.6}.ds-guidance summary::after{content:'';width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin:0 4px 4px}.ds-guidance[open] summary::after{transform:rotate(225deg);margin-bottom:0}.ds-guidance p{max-width:65ch;margin:8px 0 0;padding-bottom:8px;font-size:14px;line-height:1.5;color:var(--color-mute,#485d7b)}.ds-guidance summary:focus-visible{outline:3px solid var(--color-link,#2853b5);outline-offset:3px}.ds-workspace-slot{padding:24px;font-size:16px;line-height:1.6}@media(max-width:767px){.ds-workspace-slot{padding:16px}}"
+    },
+    {
+      "name": "Floating navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "A desktop pill specimen of the actual wordmark, core links and search action. Production native popover/drawer behavior remains in Nav.astro.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Main navigation\"><a class=\"ds-brand\" href=\"/\">Free Online<br/><span>Tools Nest</span></a><div class=\"ds-links\"><a href=\"/student-tools/\">Student Tools</a><a href=\"/document-tools/\">Document Tools</a><a href=\"/writing-tools/\">Writing Tools</a></div><button class=\"ds-nav-action\" type=\"button\" aria-label=\"Search\"><svg aria-hidden=\"true\" viewBox=\"0 0 256 256\"><path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/></svg></button></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:8px 12px 8px 24px;min-height:76px;border-radius:999px;background:var(--color-canvas-soft,#f7f9ff);color:var(--color-ink,#142e5b);box-shadow:var(--shadow-elevated,0 8px 24px -12px rgb(20 46 91 / .22));font-family:var(--font-sans,'Outfit Variable','Noto Sans Devanagari Variable',sans-serif)}.ds-brand{display:block;flex:none;min-height:44px;font-size:12px;line-height:1.2;color:var(--color-body,#485d7b);font-weight:500;text-decoration:none}.ds-brand span{display:block;color:var(--color-ink,#142e5b);font-size:24px;font-weight:650;letter-spacing:-.03em}.ds-links{display:flex;align-items:center;gap:4px}.ds-links a{display:flex;align-items:center;min-height:44px;padding:10px 16px;border-radius:999px;color:inherit;text-decoration:none;white-space:nowrap;font-size:16px}.ds-links a:hover,.ds-nav-action:hover,.ds-nav-action:active{background:var(--color-canvas-soft-2,#d4dff5)}.ds-nav-action{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:999px;background:transparent;color:inherit;cursor:pointer}.ds-nav-action svg{width:22px;height:22px;fill:currentColor}.ds-nav :focus-visible{outline:3px solid var(--color-link,#2853b5);outline-offset:3px}@media(max-width:1279px){.ds-links{display:none}}@media(max-width:639px){.ds-nav{padding:8px 8px 8px 16px;gap:8px}.ds-brand{font-size:11px}.ds-brand span{font-size:21px}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Campus Playground — Search Desk",
+    "overview": "An approachable desk for finding a useful tool, doing a small task and understanding its result. Cool paper surfaces, cobalt controls, Outfit headings and a slim stationery photograph give the homepage character. Operating pages bring the workspace forward; guides and articles use a calmer reading rhythm. This record describes the approved local production implementation and carries no deployment, native review or AdSense approval claim.",
+    "keyCharacteristics": [
+      "Paired cobalt and pale-blue semantic palettes.",
+      "Floating pill navigation and genuine search.",
+      "Stable workspaces with metadata and engagement after the tool.",
+      "Drawn category icons and measured reading columns.",
+      "Finite decorative motion with essential content visible by default."
+    ],
+    "rules": [
+      {
+        "name": "The Paired Palette Rule",
+        "body": "Use active semantic roles; dark tokens map to the same roles under html.dark.",
+        "section": "colors"
+      },
+      {
+        "name": "The Reading Measure Rule",
+        "body": "Keep article prose, prose-like copy and guide explanation within 65ch, with deliberate paragraph, heading and list rhythm.",
+        "section": "typography"
+      },
+      {
+        "name": "The Workspace First Rule",
+        "body": "Keep controls and results stable and early; engagement and supporting destinations follow the workspace.",
+        "section": "layout"
+      },
+      {
+        "name": "The Quiet Surface Rule",
+        "body": "Use tone, spacing and borders for tool and reading groups; reserve diffuse shadow for floating and transient UI.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the current semantic palette in both themes and strong control edges.",
+      "Do use Outfit, Devanagari-first Hindi text and JetBrains Mono for code.",
+      "Do keep workspaces stable, focus visible and targets at least 44×44px.",
+      "Do retain 83 tools, 191 routes, 25-primary/58-secondary discovery and existing localized availability.",
+      "Do preserve processing, content truth, SEO/publishing, GA4, exact AdSense membership and Cloudflare configuration."
+    ],
+    "donts": [
+      "Don't restore the superseded Vercel visual authority.",
+      "Don't pin or displace working controls/results or hide essential content behind motion.",
+      "Don't replace drawn icons with glyphs/emoji or add kickers/eyebrows above headings.",
+      "Don't invent translations, dates, guarantees, traffic, endorsements or approval claims.",
+      "Don't treat sampled screenshots or source checks as full browser verification."
+    ]
+  }
+}

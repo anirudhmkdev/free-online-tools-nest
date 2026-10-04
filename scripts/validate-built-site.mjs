@@ -168,7 +168,11 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const demandApproved = applyApprovedDeltas(contentApproved.fixture, demandChanges);
   result.failures.push(...demandApproved.failures);
   const integrationChanges = JSON.parse(readFileSync(new URL("../src/data/demand-main-integration-content-delta.json", import.meta.url), "utf8"));
-  result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), demandApproved.fixture, integrationChanges));
+  const integrationApproved = applyApprovedDeltas(demandApproved.fixture, integrationChanges);
+  result.failures.push(...integrationApproved.failures);
+  // Campus is a separate presentation layer over main's reviewed content and exact approvals.
+  const frontendChanges = JSON.parse(readFileSync(new URL("../src/data/campus-frontend-delta.json", import.meta.url), "utf8"));
+  result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), integrationApproved.fixture, frontendChanges));
   const actualAdMembers = Object.keys(policies).filter(route => inspectPage(readFileSync(join(rootPath, route === "/" ? "index.html" : route.endsWith(".html") ? route.slice(1) : route.slice(1) + "index.html"), "utf8"), route).adEligible).sort();
   const frozenAdMembers = baseline.pages.filter(page => page.adEligible).map(page => page.route).sort();
   if (JSON.stringify(actualAdMembers) !== JSON.stringify(frozenAdMembers)) result.failures.push("Exact historical AdSense loader membership changed");

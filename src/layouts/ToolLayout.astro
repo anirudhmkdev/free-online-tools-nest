@@ -28,6 +28,8 @@ import Layout from "./Layout.astro";
 import RelatedWorkflowLinks from "../components/content/RelatedWorkflowLinks.astro";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import ToolCard from "../components/ToolCard.astro";
+import Icon from "../components/CampusIcon.astro";
+const categoryIcons = {"text-tools":"text", "developer-tools":"code", "calculators":"calculator", "converters":"swap", "pdf-tools":"file", "seo-tools":"search", "design-tools":"palette"} as const;
 import FAQSection from "../components/FAQSection.astro";
 import FavoriteButton from "../components/FavoriteButton";
 import ShareBar from "../components/ShareBar.astro";
@@ -127,22 +129,14 @@ const ogImage = `/og/${categorySlug}.png`;
   alternatePaths={finalAlternatePaths}
   enableAds={Boolean(tool?.adEligible)}
 >
-  <div class="container-page py-8 md:py-10">
+  <div class:list={["container-page campus-tool-page", ["attendance-calculator", "age-calculator", "percentage-calculator", "marks-percentage-calculator", "required-marks-calculator", "random-number-generator"].includes(toolSlug) && "campus-compact"]}>
     <Breadcrumbs items={breadcrumbs} />
 
-    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8 lg:gap-10">
+    <div class="campus-tool-layout">
       <div class="min-w-0">
-        <header class="app-panel overflow-hidden p-5 sm:p-7 md:p-8 mb-6">
-          <div class="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+        <header class="campus-tool-heading">
             <div class="max-w-3xl">
-              <div class="mb-4 flex flex-wrap gap-2">
-                <a href={categoryPath} class="metadata-badge no-underline">
-                  {category?.icon && <span aria-hidden="true">{category.icon}</span>} {categoryName}
-                </a>
-                <span class="metadata-badge">No uploads</span>
-                <span class="metadata-badge">Runs in your browser</span>
-              </div>
-              <h1 class="text-3xl md:text-4xl font-semibold text-ink text-balance" style="letter-spacing: 0; line-height: 1.08;">
+              <h1 class="text-3xl md:text-4xl font-semibold text-ink text-balance">
                 {title}
               </h1>
               <p class="mt-3 text-body text-base md:text-lg leading-relaxed max-w-3xl text-pretty">
@@ -150,26 +144,35 @@ const ogImage = `/og/${categorySlug}.png`;
               </p>
             </div>
 
-            <div class="flex items-center gap-3 flex-wrap xl:justify-end">
-              <FavoriteButton client:load toolSlug={toolSlug} />
-              <ShareBar title={title} url={`${SITE.url}${canonicalPath}`} />
-            </div>
-          </div>
         </header>
 
-        <section class="app-panel overflow-hidden" aria-label={`${title} tool`}
+        <section class="app-panel campus-workspace" aria-label={`${title} tool`}
           data-tool-slug={toolSlug} data-tool-locale={locale} data-tool-tier={getToolDiscoveryTier(toolSlug)}>
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-hairline px-4 py-3 sm:px-6">
-            <div>
-              <p class="text-sm font-medium text-ink">Workspace</p>
+            <details class="campus-workspace-guidance">
+              <summary class="text-sm font-medium text-ink">Workspace</summary>
               <p class="text-xs text-mute">Use the tool below. Your inputs stay local when the tool supports browser-only processing.</p>
-            </div>
+            </details>
             <a href={toolsPath} class="pill-control">All tools</a>
           </div>
           <div class="p-4 sm:p-6 md:p-8">
             <slot />
           </div>
         </section>
+
+        <div class="campus-tool-meta">
+          <div class="campus-tool-facts">
+            <a href={categoryPath} class="metadata-badge no-underline">
+              <Icon name={categoryIcons[categorySlug as keyof typeof categoryIcons] || "file"} /> {categoryName}
+            </a>
+            <span class="metadata-badge">No uploads</span>
+            <span class="metadata-badge">Runs in your browser</span>
+          </div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <FavoriteButton client:load toolSlug={toolSlug} />
+            <ShareBar title={title} url={`${SITE.url}${canonicalPath}`} />
+          </div>
+        </div>
 
         {pagePolicy.lastReviewed && <p class="mt-5 text-sm text-body">Last reviewed: <time datetime={pagePolicy.lastReviewed}>{pagePolicy.lastReviewed}</time> · <a href="/standards/" class="text-link underline">Testing methodology</a></p>}
 
@@ -179,7 +182,7 @@ const ogImage = `/og/${categorySlug}.png`;
           <section class="mt-10 border-t border-hairline pt-8">
             <div class="section-heading">
               <div>
-                <p class="section-eyebrow">Workflow</p>
+
                 <h2 class="section-title">How to use the {title}</h2>
               </div>
             </div>
@@ -236,7 +239,7 @@ const ogImage = `/og/${categorySlug}.png`;
       </div>
 
       <aside class="mt-4 lg:mt-0 lg:block">
-        <div class="sticky top-24 space-y-5">
+        <div class="space-y-5 campus-related-content">
           <section class="app-panel p-4">
             <div class="mb-4 flex items-center justify-between gap-3">
               <h2 class="text-xs font-mono font-normal text-mute">
@@ -248,7 +251,7 @@ const ogImage = `/og/${categorySlug}.png`;
                 </a>
               )}
             </div>
-            <div class="space-y-3">
+            <div class="campus-related-tools">
               {relatedTools.map((tool) => (
                 <ToolCard
                   slug={tool.slug}

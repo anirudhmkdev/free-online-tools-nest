@@ -22,12 +22,13 @@ const breadcrumbs = [...(page.kind === "workflow" ? [{ label: "Workflows", href:
   <article class="container-page content-guide" data-content-page={page.path}>
     <Breadcrumbs items={breadcrumbs} />
     <header class="guide-header">
-      <p class="eyebrow">{page.kind === "workflow" ? "A practical workflow" : "Choose the right tool"}</p>
+
       <h1>{page.heading}</h1>
       <p class="intro">{page.intro}</p>
       {primaryHub && <a class="hub-return" href={primaryHub.path}>Explore: {primaryHub.title} <span aria-hidden="true">→</span></a>}
     </header>
-    <div class="guide-columns">
+    <p class="campus-handoff">Tools open as separate pages. Download your output and select it in the next tool when needed. Files are not passed automatically.</p><div class="guide-columns">
+      <nav class="campus-contents" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#decisions">{page.decisionHeading}</a></li>{page.sections.map((section,i)=><li><a href={`#explanation-${i}`}>{section.heading}</a></li>)}<li><a href="#worked-example">Worked example</a></li><li><a href="#limitations">What this does not guarantee</a></li></ul></details></nav>
       <div class="guide-main">
         <section aria-labelledby="decisions">
           <h2 id="decisions">{page.decisionHeading}</h2>
@@ -39,7 +40,7 @@ const breadcrumbs = [...(page.kind === "workflow" ? [{ label: "Workflows", href:
           {section.links && <ul class="plain-links">{section.links.map(link => <li><a href={link.path}>{link.label}</a></li>)}</ul>}
         </section>)}
         <section class="worked-example guide-section" aria-labelledby="worked-example">
-          <p class="eyebrow">Put the choice into practice</p>
+
           <h2 id="worked-example">Worked example</h2>
           <dl><dt>Starting point</dt><dd>{page.example.input}</dd><dt>Decision and expected result</dt><dd>{page.example.output}</dd></dl>
         </section>
@@ -70,7 +71,7 @@ const breadcrumbs = [...(page.kind === "workflow" ? [{ label: "Workflows", href:
   .guide-section { margin-top: 2.75rem; }
   .guide-section p, dd, .limits { color: var(--color-body); line-height: 1.8; }
   .guide-section p + p { margin-top: 1rem; }
-  .worked-example { padding: 1.25rem; border-left: 3px solid var(--color-link); background: var(--color-canvas-soft); border-radius: 0 8px 8px 0; }
+  .worked-example { padding: 1.25rem; background: var(--color-canvas-soft); border-radius: 24px; }
   dt { margin: 1rem 0 .4rem; color: var(--color-ink); font-weight: 600; font-size: .875rem; }
   dd { margin: 0; }
   .limits { padding-left: 1.3rem; list-style: disc; }

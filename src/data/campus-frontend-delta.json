@@ -1,0 +1,380 @@
+{
+  "baseCommit": "5bd51f6489208eb0b940955c379e472ce9f5a446",
+  "previewBaseCommit": "21e7f0f512a8a229039bfcffc3e1355e520e43f3",
+  "reviewDate": "2026-10-04",
+  "scope": "Approved Campus B frontend integrated over latest reviewed main; historical content approvals, publishing membership and tool logic retained",
+  "pages": {
+    "/categories/pdf-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "980fb267ca7fcee5f89aec0264b9312e6114c8aa0ee06527702939f449d0dfd5"
+      }
+    },
+    "/categories/text-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "a2bb7579f1b63195591f0eebaf95c684dc8411c2d994deb148be4f32b8d40216"
+      }
+    },
+    "/es/categories/converters/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "ce075545137f030ae431c9f65bdc221804a5ca9083ec67ea54ac6e1697b7a8e0"
+      }
+    },
+    "/es/categories/design-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "d0cab17b898874d1a46a6bfd791118dddff2ad7d7e47e0efed1cf50b129f20a5"
+      }
+    },
+    "/es/categories/developer-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "f5125d4a7a52967d9a99c0a57826f9f6aca43ed2709733d4b08599f698fe4b81"
+      }
+    },
+    "/es/categories/pdf-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "7863df49d4c4b5beb3925d21731d693021f33bab9993c49e2dc117e0b6ae1ad3"
+      }
+    },
+    "/es/categories/text-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "7238451a331761507877410699e233ae441cf1820ef931add25c340e8e04b149"
+      }
+    },
+    "/es/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "18969637a84941cade0fd0ec7d852cb4b38af63a99e8011b59195b5e494d917f"
+      }
+    },
+    "/es/tools/character-counter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "366061d860adf66cc6c8473f689404121fa033d40f33f020d5fa13e8c22217d6"
+      }
+    },
+    "/es/tools/color-contrast-checker/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "840948cef2f0da043c866e2b059c1a60cf6c47debe7937ac30e91a55eeede335"
+      }
+    },
+    "/es/tools/csv-to-json/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "191dd5abf90ac097a23db8a6e6f66cadde63a154ede456adb4166c2629b39c3a"
+      }
+    },
+    "/es/tools/epoch-converter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "00157aa9fc344af51c889094454c8c30e9cd04a20092296c3bf18047a83e54e5"
+      }
+    },
+    "/es/tools/grammar-checker/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "6676077403ba9c0679b6d586cc255d1a731fcd61eaa9ec04c54c88921236a934"
+      }
+    },
+    "/es/tools/image-compressor/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "ec66cb985b9f4d7ec6c3da6bcffd48111abc069e689cdcaecb7b6086336e5d1c"
+      }
+    },
+    "/es/tools/image-cropper/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "af54894765c6e65cafcfadb702a56a001c060448d1ca7bde0bcfe76995019481"
+      }
+    },
+    "/es/tools/image-resizer/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "0b944389f4dba8c689d044c36944978d9b3c091adb456b18cc7dd88a0d9a5cf7"
+      }
+    },
+    "/es/tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "7c19b9ec33f6e133e76a54cc121704650de98d7a9c14e46d97a5e8617ca0da96"
+      }
+    },
+    "/es/tools/json-formatter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "6ecb5b34e940d38f971463c3f7ec31b177aaf63005a4e9110cac4209c644e145"
+      }
+    },
+    "/es/tools/json-to-csv/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "62e8124fe8b6e7eb2b68adf7d43b8c655f1ae9197135732b4954544d62bac286"
+      }
+    },
+    "/es/tools/jwt-decoder/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "72a7fd6971cda81addf73a33d3ce74a5d8586f0521e28010457526c992e199e3"
+      }
+    },
+    "/es/tools/markdown-to-html/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "4b92079a6885f06cd90f157e5528c84c5af6c34541ed6c37b2d77f55642692d2"
+      }
+    },
+    "/es/tools/password-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "f24847d0458a99a28b5c70de06558c1de770ad0ec2adea2d968c0995f80f3460"
+      }
+    },
+    "/es/tools/pdf-compressor/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "664690d59863c1c1c0a3ea9e14cc92e854c44100d5157c32e77c284db8688999"
+      }
+    },
+    "/es/tools/pdf-merger/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "cd77366fac5393c92619cdee0401aef7904ad815cf63bf2a49bdf0d0eb0a9827"
+      }
+    },
+    "/es/tools/qr-code-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "0fefcdd57430e4617802a4599efb92a667e2b330ea9b3a7dda8d9cb0af7a8f73"
+      }
+    },
+    "/es/tools/regex-tester/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "a3c8dd3bae910a2c4ccaf9bd34ea6de40593a9164da7279dd5b0cca18915eac3"
+      }
+    },
+    "/es/tools/unit-converter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "750982b62fad5f667813ef0d0625906b908188c3de007c7e3f23196098ff7829"
+      }
+    },
+    "/es/tools/word-cloud-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "626351ff03520c1bc874c80998c30de2449c9fa35c8d1f32f76fef89186d30ae"
+      }
+    },
+    "/es/tools/word-counter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "aefd3747555b2a73569a7e7ce854ebd1ead4a1436badb9f7a00d8c30636b4100"
+      }
+    },
+    "/hi/categories/converters/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "bc4b03c196e2de43bad275ffd806a8ad4bfe604d9948e7510fcefe3f8e982583"
+      }
+    },
+    "/hi/categories/design-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "69f72375ab13315e640f9e892fa9c9b6e3970a76d709c2a9057004ba1fb639d2"
+      }
+    },
+    "/hi/categories/developer-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "4a512f9683ae5e3c246402cb5b1fd05a85e8597d3c1b8be4a61677a8f55db1e8"
+      }
+    },
+    "/hi/categories/pdf-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "80dcbe5dfdbf46ae64070199b75d296a96812c8883bfa23f486b2ea833c504d1"
+      }
+    },
+    "/hi/categories/text-tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "e67e51f9598af6b5c5c0877685849dd029ef469b4f28e85bf39d605b843f79d2"
+      }
+    },
+    "/hi/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "4791a7043a93a2e498283a3b4560f9f25726b308276b05c14a67de2aa2405b03"
+      }
+    },
+    "/hi/tools/character-counter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "416a3b8c2ebf84b0b8c031e52484622685e5cd434343212bb80f669103ef14c7"
+      }
+    },
+    "/hi/tools/color-contrast-checker/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "0c269039e1dc6b0279eef5beaf3f7416e4fe37d023866a9d68d1080bb5ed3bb4"
+      }
+    },
+    "/hi/tools/csv-to-json/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "ddff4e6b8915e73c18d6143ac9e8349714b99bdfdd9b435482466cffd2200163"
+      }
+    },
+    "/hi/tools/epoch-converter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "cb2790dbe03a7ad27232da1ae736c40084d7c830cf719f4a500ca9aad61f2dde"
+      }
+    },
+    "/hi/tools/grammar-checker/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "f1b30aa3fee8085b7fb256d7ff81b653d762fd8d66a1264a2d805f1b45c35ead"
+      }
+    },
+    "/hi/tools/image-compressor/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "c421d6cedb28803287e4dfef07bcb580e3c70601b48b57d0be75c4dc0ad69a57"
+      }
+    },
+    "/hi/tools/image-cropper/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "2b9a82a1ac95076b875ed3b6127a0d760e420694a0422a033e06db7d35dca150"
+      }
+    },
+    "/hi/tools/image-resizer/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "eccd794adf738fa184f199e272413778be54f93948d04cee375414fced5727f2"
+      }
+    },
+    "/hi/tools/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "553369656e933555ec228327bbc65bca630d7710fc0f40fa81cb1c03d5b33288"
+      }
+    },
+    "/hi/tools/json-formatter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "eba27c3cb89db4f361c6070f0f14b5a93dd8e533722183cd9b99c233e435144a"
+      }
+    },
+    "/hi/tools/json-to-csv/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "e71290a312b02839899dc3c4ca04ec3c0f9d5b45135a939a76387bb88a69c0fa"
+      }
+    },
+    "/hi/tools/jwt-decoder/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "27cb30d881a562aedcc48c900634f9da89f6e36a9d2fa6b27d2ea8db02189f51"
+      }
+    },
+    "/hi/tools/markdown-to-html/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "09851ac19887b6b7e0365d3694c8940192939b4ed088892906ab10a7b5797ccc"
+      }
+    },
+    "/hi/tools/password-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "41365861aa7d8789f2d3c1c295618afa09454e89e228b8d8e460d89dad24b523"
+      }
+    },
+    "/hi/tools/pdf-compressor/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "78bb76824d708172677c810d63fd454dd68b94fe8a687e6373664604119c7bb5"
+      }
+    },
+    "/hi/tools/pdf-merger/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "b340b101a7894fe3f00136c2507ea1f83a7c6b4906cece83f5f21e0656ab8e70"
+      }
+    },
+    "/hi/tools/qr-code-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "55c5ab514e1eafcc22e29aa6bcc1a9fe48bf981e530a7d2fa64cc126d35d5d75"
+      }
+    },
+    "/hi/tools/regex-tester/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "81af403879a85a9e1601ae3b7e81492fa39573301857d4126ffa28c7b4ce5ea0"
+      }
+    },
+    "/hi/tools/unit-converter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "70b64752dc2bb588c74395638e55d24978909c750ab3c6ad6489dc66f5c6077e"
+      }
+    },
+    "/hi/tools/word-cloud-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "59a5abb099cc5a82bfb897213ca7641592d2721ca40a2b725328c47e6ea113e1"
+      }
+    },
+    "/hi/tools/word-counter/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "0e8e008463c01f8beb60015097f8ae7e28fa426a2b82fa60445094bfdeda2788"
+      }
+    },
+    "/tools/image-compressor/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "3f894809fa179d832e778d6ded65ed2a55a2b0f51a6120e465f8da010ebe243d"
+      }
+    },
+    "/tools/random-number-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "ad1c83470bc2a6ea333e7f8a6a390660fbe641f75d6faf4eeee7666453224073"
+      }
+    },
+    "/tools/seo-length-checker/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "5640624f6c87657662854e2060b5a7a077d52abf12b793258486826358d0e17c"
+      }
+    },
+    "/tools/serp-preview-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "0c8cca4b80ac2ee34cf7d67829a234ecced33e15c8bcaa1df3a97d3efb0b53b4"
+      }
+    },
+    "/tools/word-cloud-generator/": {
+      "reason": "Campus presentation over reviewed main: drawn icons replace decorative emoji; redundant Workflow eyebrow removed; intact category/privacy facts and Save/Share move below the workspace. Remaining page-owned copy and order match current main.",
+      "signals": {
+        "ownedTextHash": "e1c92d27c22db9c972b90a6534a2dbbafe9cb5027740eb7a9fd6ad43ccb805cd"
+      }
+    }
+  },
+  "sources": {
+    "src/layouts/Layout.astro": {
+      "reason": "Campus fonts, styles, motion and page-family attributes; exact GA4, AdSense, SEO and publishing metadata compared independently against current main.",
+      "hash": "63165503e5fec072c18276fc6c5496976e09d763b3197e3935e3b65f0cd9a3ac"
+    }
+  }
+}

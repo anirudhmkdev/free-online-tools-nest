@@ -1,118 +1,76 @@
 ---
-import { SITE } from "../data/tools";
-import { useTranslations, getLangFromUrl, localizePath } from "../i18n/utils";
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const lh = (path: string) => localizePath(path, lang);
-const links = lang === "en" ? [
-  { label: "Student Tools", href: "/student-tools/" },
-  { label: "Document Tools", href: "/document-tools/" },
-  { label: "Writing Tools", href: "/writing-tools/" },
-  { label: "Workflows", href: "/workflows/" },
-  { label: "Guides", href: "/#practical-guides" },
-  { label: "More Tools", href: "/tools/" },
-] : [
-  { label: t("nav.tools"), href: lh("/tools/") },
-  { label: t("nav.categories"), href: lh("/categories/") },
-  { label: t("nav.blog"), href: "/blog/" },
-];
+import { SITE } from '../data/tools';
+import { useTranslations,getLangFromUrl,localizePath } from '../i18n/utils';
+import Icon from './CampusIcon.astro';
+const lang=getLangFromUrl(Astro.url), t=useTranslations(lang);
+const lh=(p:string)=>localizePath(p,lang);
+const links=lang==='en' ? [
+  {label:'Student Tools',href:'/student-tools/'}, {label:'Document Tools',href:'/document-tools/'},
+  {label:'Writing Tools',href:'/writing-tools/'}, {label:'Workflows',href:'/workflows/'},
+  {label:'Guides',href:'/#practical-guides'}, {label:'More Tools',href:'/tools/'}
+] : [{label:t('nav.tools'),href:lh('/tools/')},{label:t('nav.categories'),href:lh('/categories/')},{label:t('nav.blog'),href:'/blog/'}];
+const primary=links.slice(0,3), browse=lang==='en'?links.slice(3):[];
 ---
-<header class="site-header">
-  <nav class="container-page nav-row" aria-label={t("nav.mainNav")}>
-    <a href={lh("/")} class="site-brand" aria-label={SITE.name + " " + t("nav.homeLabel")}>Free Online<br /><span>Tools Nest</span></a>
-    <div class="desktop-links">
-      {links.map(link => <a href={link.href} aria-current={Astro.url.pathname === link.href ? "page" : undefined}>{link.label}</a>)}
+<header class="campus-header" id="campus-header">
+  <nav class="campus-nav" aria-label={t('nav.mainNav')}>
+    <a href={lh('/')} class="site-brand" aria-label={SITE.name+' '+t('nav.homeLabel')}>Free Online<br /><span>Tools Nest</span></a>
+    <div class="campus-wide-nav">
+      {primary.map(link=><a href={link.href} aria-current={Astro.url.pathname===link.href?'page':undefined}>{link.label}</a>)}
+      {browse.length>0 && <>
+        <button id="browse-trigger" popovertarget="campus-browse" type="button" aria-expanded="false">Browse <Icon name="chevron" /></button>
+        <div popover="auto" id="campus-browse" class="campus-browse" aria-label="Browse more tools and content">
+          {browse.map(link=><a href={link.href}>{link.label}<Icon name="arrow" /></a>)}
+        </div>
+      </>}
     </div>
-    <div class="nav-actions">
-      <button id="cmd-k-trigger" class="nav-button" type="button" aria-label={t("nav.search")}>
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </button>
-      <button id="theme-toggle" class="nav-button" type="button" aria-label={t("nav.theme")}>
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg>
-      </button>
-      <button id="mobile-menu-btn" class="nav-button menu-trigger" type="button" aria-label={t("nav.menu")} aria-controls="mobile-menu" aria-expanded="false">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+    <div class="campus-nav-actions">
+      <button type="button" id="cmd-k-trigger" class="nav-button" aria-label={t('nav.search')}><Icon name="search" /></button>
+      <button type="button" id="theme-toggle" class="nav-button" aria-label={t('nav.theme')} aria-pressed="false"><Icon name="theme" /></button>
+      <button type="button" id="mobile-menu-btn" class="nav-button campus-menu-trigger" aria-label={t('nav.menu')} aria-controls="mobile-menu" aria-expanded="false"><Icon name="menu" /></button>
     </div>
   </nav>
 </header>
-<dialog id="mobile-menu" aria-label={t("nav.mobileNav")}>
-  <div class="menu-heading"><p>{t("nav.navigation")}</p><button id="mobile-menu-close" class="nav-button" type="button" aria-label={t("nav.closeMenu")} autofocus><span aria-hidden="true">✕</span></button></div>
-  <nav class="mobile-links" aria-label={t("nav.mobileNav")}>
-    {links.map(link => <a href={link.href}>{link.label}</a>)}
+<dialog id="mobile-menu" class="campus-drawer" aria-label={t('nav.mobileNav')}>
+  <div class="campus-menu-heading"><h2>{t('nav.navigation')}</h2><button id="mobile-menu-close" type="button" class="nav-button" aria-label={t('nav.closeMenu')} autofocus><Icon name="close" /></button></div>
+  <nav class="campus-mobile-links" aria-label={t('nav.mobileNav')}>
+    {links.map(link=><a href={link.href} aria-current={Astro.url.pathname===link.href?'page':undefined}>{link.label}<Icon name="arrow" /></a>)}
     <hr />
-    <a href={lh("/about/")}>{t("nav.about")}</a>
-    <a href={lh("/standards/")}>{t("footer.standards")}</a>
-    <a href={lh("/contact/")}>{t("nav.contact")}</a>
-    <button type="button" data-open-cmdk>{t("nav.search")}</button>
+    <a href={lh('/about/')}>{t('nav.about')}</a>
+    <a href={lh('/standards/')}>{t('footer.standards')}</a>
+    <a href={lh('/contact/')}>{t('nav.contact')}</a>
+    <button type="button" data-open-cmdk>{t('nav.search')}<Icon name="search" /></button>
   </nav>
 </dialog>
-<div class="header-spacer" aria-hidden="true"></div>
-<style>
-  .site-header { position: fixed; inset: 0 0 auto; height: 72px; z-index: 50; border-bottom: 1px solid var(--color-hairline); background: var(--color-canvas); }
-  .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 100%; }
-  .site-brand { color: var(--color-body); line-height: 1.15; font-size: 11px; font-weight: 500; text-decoration: none; flex-shrink: 0; }
-  .site-brand span { color: var(--color-ink); font-size: 22px; font-weight: 600; letter-spacing: -0.6px; }
-  .desktop-links { display: none; align-items: center; gap: 4px; }
-  .desktop-links a { padding: 10px 12px; font-size: 13px; font-weight: 500; border-radius: 6px; text-decoration: none; color: var(--color-body); white-space: nowrap; }
-  .desktop-links a:hover, .desktop-links a[aria-current] { color: var(--color-ink); background: var(--color-canvas-soft-2); }
-  .nav-actions { display: flex; align-items: center; gap: 4px; }
-  .nav-button { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--color-ink); cursor: pointer; }
-  .nav-button:hover { background: var(--color-canvas-soft-2); }
-  .header-spacer { height: 72px; }
-  dialog { width: min(100%, 380px); height: 100dvh; max-height: 100dvh; max-width: 100vw; margin: 0 0 0 auto; padding: 24px; border: 0; border-left: 1px solid var(--color-hairline); background: var(--color-canvas); color: var(--color-ink); }
-  dialog::backdrop { background: rgb(0 0 0 / 45%); }
-  .menu-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; font-size: 18px; font-weight: 500; }
-  .mobile-links { display: flex; flex-direction: column; gap: 8px; }
-  .mobile-links a, .mobile-links button { display: block; padding: 14px 12px; text-align: left; border-radius: 8px; color: var(--color-ink); font-size: 15px; text-decoration: none; border: 0; background: transparent; }
-  .mobile-links a:hover, .mobile-links button:hover { background: var(--color-canvas-soft-2); }
-  .mobile-links hr { border-color: var(--color-hairline); margin-block: 8px; }
-  @media (min-width: 1280px) { .desktop-links { display: flex; } .menu-trigger { display: none; } }
-</style>
+<noscript><nav class="campus-static-nav container-page" aria-label={t('nav.mainNav')}>{links.map(link=><a href={link.href}>{link.label}</a>)}</nav></noscript>
 <script>
-  const menu = document.getElementById("mobile-menu") as HTMLDialogElement;
-  const trigger = document.getElementById("mobile-menu-btn");
-  function closeMenu() { menu?.close(); }
-  trigger?.addEventListener("click", () => {
-    menu.showModal();
-    trigger.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
-  });
-  menu?.addEventListener("close", () => {
-    trigger?.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-  });
-  menu?.addEventListener("keydown", (event) => {
-    if (event.key !== "Tab") return;
-    const controls = [...menu.querySelectorAll<HTMLElement>("a[href], button:not([disabled])")];
-    const first = controls[0];
-    const last = controls[controls.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last?.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first?.focus();
-    }
-  });
-  menu?.addEventListener("click", (event) => {
-    if (event.target === menu) {
-      const bounds = menu.getBoundingClientRect();
-      if (event.clientX < bounds.left || event.clientX > bounds.right) closeMenu();
-    }
-  });
-  document.getElementById("mobile-menu-close")?.addEventListener("click", closeMenu);
-  menu?.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
-  document.getElementById("cmd-k-trigger")?.addEventListener("click", () => document.dispatchEvent(new CustomEvent("open-cmdk")));
-  document.querySelector("[data-open-cmdk]")?.addEventListener("click", () => {
-    closeMenu();
-    document.dispatchEvent(new CustomEvent("open-cmdk"));
-  });
-  document.getElementById("theme-toggle")?.addEventListener("click", () => {
-    const dark = document.documentElement.classList.toggle("dark");
-    try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch { /* Theme works even when storage is unavailable. */ }
-  });
-  window.matchMedia("(min-width: 1280px)").addEventListener("change", event => {
-    if (event.matches && menu?.open) closeMenu();
-  });
+  const header=document.getElementById('campus-header')!;
+  const drawer=document.getElementById('mobile-menu') as HTMLDialogElement;
+  const trigger=document.getElementById('mobile-menu-btn') as HTMLButtonElement;
+  const browse=document.getElementById('campus-browse');
+  const browseTrigger=document.getElementById('browse-trigger');
+  let oldOverflow='';
+  const measure=()=>{
+    const rect=header.getBoundingClientRect();
+    document.documentElement.style.setProperty('--header-offset',`${rect.height+32}px`);
+    if(browse&&browseTrigger){ const r=browseTrigger.getBoundingClientRect(); browse.style.top=`${Math.max(rect.bottom,r.bottom)+8}px`; browse.style.left=`${Math.max(16,Math.min(r.right-360,innerWidth-376))}px`; browse.style.maxHeight=`${Math.max(100,innerHeight-rect.bottom-24)}px`; }
+  };
+  new ResizeObserver(measure).observe(header);
+  window.addEventListener('resize',measure); measure();
+  const closeBrowse=()=>{if(browse?.matches(':popover-open')) (browse as HTMLElement).hidePopover();};
+  const closeDrawer=()=>{if(drawer.open){document.body.style.overflow=oldOverflow;drawer.close();}};
+  trigger.addEventListener('click',()=>{closeBrowse(); oldOverflow=document.body.style.overflow; drawer.showModal(); document.body.style.overflow='hidden'; trigger.setAttribute('aria-expanded','true');});
+  drawer.addEventListener('close',()=>{trigger.setAttribute('aria-expanded','false');if(!document.querySelector('dialog[open]')){document.body.style.overflow=oldOverflow;trigger.focus({preventScroll:true});}});
+  document.getElementById('mobile-menu-close')?.addEventListener('click',closeDrawer);
+  drawer.addEventListener('click',e=>{if(e.target!==drawer)return;const r=drawer.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeDrawer();});
+  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeDrawer));
+  const openSearch=()=>{closeBrowse();closeDrawer();document.dispatchEvent(new CustomEvent('open-cmdk'));};
+  document.getElementById('cmd-k-trigger')?.addEventListener('click',openSearch);
+  drawer.querySelector('[data-open-cmdk]')?.addEventListener('click',openSearch);
+  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='k'){closeBrowse();closeDrawer();}});
+  browse?.addEventListener('toggle',()=>{browseTrigger?.setAttribute('aria-expanded',String(browse.matches(':popover-open')));measure();});
+  browse?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeBrowse));
+  const theme=document.getElementById('theme-toggle');
+  const syncTheme=()=>{const dark=document.documentElement.classList.contains('dark');theme?.setAttribute('aria-pressed',String(dark));document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark?'#14234c':'#e8eefb');};
+  theme?.addEventListener('click',()=>{const dark=document.documentElement.classList.toggle('dark');try{localStorage.setItem('theme',dark?'dark':'light');}catch{}syncTheme();});syncTheme();
+  matchMedia('(min-width:1280px)').addEventListener('change',()=>{closeBrowse();closeDrawer();});
 </script>

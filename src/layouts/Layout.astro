@@ -25,6 +25,8 @@ import { getLangFromUrl } from "../i18n/utils";
 import { localeMeta } from "../i18n/ui";
 import type { Lang } from "../i18n/ui";
 import "../styles.css";
+import "../campus-fonts.css";
+import "../campus.css";
 
 const detectedLang = getLangFromUrl(Astro.url);
 
@@ -47,6 +49,11 @@ if (noindex !== undefined && noindex !== !pagePolicy.indexable) {
 }
 // Preserve the existing verification mechanism until independent ownership is confirmed.
 const loadAds = enableAds && pagePolicy.adEligible;
+const route = Astro.url.pathname;
+const family = route.includes('/tools/') && !route.endsWith('/tools/') ? 'tool'
+  : /\/(student-tools|document-tools|writing-tools|workflows)\//.test(route) ? 'guide'
+  : route.includes('/blog/') || /\/(about|contact|privacy-policy|terms-and-conditions|standards|faq)\//.test(route) ? 'reading'
+  : 'library';
 ---
 
 <!doctype html>
@@ -73,6 +80,9 @@ const loadAds = enableAds && pagePolicy.adEligible;
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#e8eefb" />
+    <link rel="preload" href="/assets/campus/fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    {lang === 'hi' && <link rel="preload" href="/assets/campus/fonts/noto-sans-devanagari-devanagari-wght-normal.woff2" as="font" type="font/woff2" crossorigin />}
 	    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="48x48 96x96" />
 	    <link rel="icon" href="/favicon-96x96.png" sizes="any" />
 	    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -86,7 +96,7 @@ const loadAds = enableAds && pagePolicy.adEligible;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap"
       rel="stylesheet"
     />
 
@@ -114,16 +124,22 @@ const loadAds = enableAds && pagePolicy.adEligible;
       })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="campus min-h-screen flex flex-col" data-page-family={family}>
     <a href="#main-content" class="skip-link">Skip to content</a>
 
     <Nav />
     <CmdKSearch lang={lang} client:load />
 
-    <main id="main-content" class="flex-1">
+    <main id="main-content" class="flex-1" tabindex="-1">
       <slot />
     </main>
 
     <Footer />
+    <script is:inline defer src="/assets/campus/vendor/gsap.min.js"></script>
+    <script is:inline defer src="/assets/campus/vendor/ScrollTrigger.min.js"></script>
+    <script>
+      import { initCampusMotion } from '../scripts/campus-motion';
+      initCampusMotion();
+    </script>
   </body>
 </html>

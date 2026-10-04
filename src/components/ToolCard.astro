@@ -14,9 +14,11 @@ interface Props {
   categoryName?: string;
 }
 
+import Icon from "./CampusIcon.astro";
+const categoryIcons = {"text-tools":"text", "developer-tools":"code", "calculators":"calculator", "converters":"swap", "pdf-tools":"file", "seo-tools":"search", "design-tools":"palette"} as const;
 import { getCategoryBySlug } from "../data/tools";
 
-const { slug, name, description, icon, categorySlug, variant = "default", href, categoryName } = Astro.props;
+const { slug, name, description, categorySlug, variant = "default", href, categoryName } = Astro.props;
 const category = getCategoryBySlug(categorySlug);
 const isCompact = variant === "compact";
 const cardClass = isCompact ? "tool-card tool-card-compact group" : "tool-card group";
@@ -25,7 +27,7 @@ const displayCategoryName = categoryName || category?.name;
 ---
 
 <a href={toolHref} class={cardClass} id={`tool-${slug}`}>
-  <span class="tool-card-icon" aria-hidden="true">{icon}</span>
+  <span class="tool-card-icon" aria-hidden="true"><Icon name={categoryIcons[categorySlug as keyof typeof categoryIcons] || "file"} /></span>
   <span class="tool-card-body">
     <span class="tool-card-title-row">
       <span class="tool-card-title">{name}</span>

@@ -6,10 +6,12 @@ import Layout from "../../layouts/Layout.astro";
 import { getDefaultAlternates } from "../../i18n/utils";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import ToolCollection from "../../components/ToolCollection.astro";
+import Icon from "../../components/CampusIcon.astro";
 import { TOOLS, CATEGORIES, SITE, getToolsByCategory } from "../../data/tools";
 import { partitionToolsByDiscovery } from "../../data/tool-discovery";
 
 const { primary } = partitionToolsByDiscovery(TOOLS);
+const categoryIcons = {"text-tools":"text", "developer-tools":"code", "calculators":"calculator", "converters":"swap", "pdf-tools":"file", "seo-tools":"search", "design-tools":"palette"} as const;
 
 const toolsCollectionJsonLd = {
   "@context": "https://schema.org",
@@ -80,7 +82,7 @@ const toolsCollectionJsonLd = {
       <button type="button" data-filter="all" data-discovery-filter="all" class="filter-tab active" aria-pressed="true">All</button>
       {CATEGORIES.map((cat) => (
         <button type="button" data-filter={cat.slug} data-discovery-filter={cat.slug} class="filter-tab" aria-pressed="false">
-          <span aria-hidden="true">{cat.icon}</span> {cat.name}
+          <span aria-hidden="true"><Icon name={categoryIcons[cat.slug as keyof typeof categoryIcons]} /></span> {cat.name}
           <span class="filter-count">{getToolsByCategory(cat.slug).length}</span>
         </button>
       ))}
