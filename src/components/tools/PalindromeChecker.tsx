@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 interface CharPair {
   a: string;
@@ -35,6 +36,7 @@ function buildCharPairs(normalized: string): CharPair[] {
 }
 
 export default function PalindromeChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [text, setText] = useState("");
   const [ignoreCase, setIgnoreCase] = useState(true);
   const [ignoreSpaces, setIgnoreSpaces] = useState(true);
@@ -54,8 +56,12 @@ export default function PalindromeChecker() {
 
   const charPairs = useMemo(() => buildCharPairs(normalized), [normalized]);
 
+  useEffect(() => {
+    if (normalized.length > 0) recordSuccess("check");
+  }, [normalized, isPalindrome, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="palindrome-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Enter text to check

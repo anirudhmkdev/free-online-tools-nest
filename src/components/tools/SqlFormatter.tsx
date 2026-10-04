@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -19,10 +20,67 @@ const ALL_KEYWORDS = [...KEYWORDS_MAJOR, ...KEYWORDS_MINOR].sort(
   (a, b) => b.length - a.length
 );
 
-function formatSql(sql: string, indentSpaces: number): string {
+/** Preserve literal, identifier and comment bytes while formatting surrounding SQL. */
+function protectSqlSegments(sql: string): { code: string; restore: (value: string) => string } {
+  let prefix = "\uE000";
+  while (sql.includes(prefix)) prefix += "\uE000";
+  const segments: string[] = [];
+  let code = "";
+  let i = 0;
+  while (i < sql.length) {
+    const start = i;
+    const quote = sql[i];
+    if (quote === "'" || quote === '"' || quote === "`" || quote === "[") {
+      const closing = quote === "[" ? "]" : quote;
+      let closed = false;
+      i++;
+      while (i < sql.length) {
+        if (sql[i] === "\\" && quote !== "[") { i += 2; continue; }
+        if (sql[i] === closing) {
+          if (sql[i + 1] === closing) { i += 2; continue; }
+          i++;
+          closed = true;
+          break;
+        }
+        i++;
+      }
+      if (!closed) throw new Error("Unterminated SQL quote or identifier.");
+    } else if (sql.startsWith("--", i) || (quote === "#" && (i === 0 || /\s/.test(sql[i - 1])))) {
+      // Include the original line ending, so a following statement cannot enter the comment.
+      while (i < sql.length && sql[i] !== "\n" && sql[i] !== "\r") i++;
+      if (sql[i] === "\r") i++;
+      if (sql[i] === "\n") i++;
+    } else if (sql.startsWith("/*", i)) {
+      let depth = 1;
+      i += 2;
+      while (i < sql.length && depth > 0) {
+        if (sql.startsWith("/*", i)) { depth++; i += 2; }
+        else if (sql.startsWith("*/", i)) { depth--; i += 2; }
+        else i++;
+      }
+      if (depth > 0) throw new Error("Unterminated SQL comment.");
+    } else if (quote === "$" && /^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$/.test(sql.slice(i))) {
+      const delimiter = sql.slice(i).match(/^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$/)![0];
+      const closing = sql.indexOf(delimiter, i + delimiter.length);
+      if (closing < 0) throw new Error("Unterminated dollar-quoted SQL string.");
+      i = closing + delimiter.length;
+    } else {
+      code += sql[i++];
+      continue;
+    }
+    const index = segments.push(sql.slice(start, i)) - 1;
+    code += `${prefix}${index}\uE001`;
+  }
+  return {
+    code,
+    restore: value => value.replace(new RegExp(`${prefix}(\\d+)\uE001`, "g"), (_, index: string) => segments[Number(index)]),
+  };
+}
+
+export function formatSql(sql: string, indentSpaces: number): string {
   const indent = " ".repeat(indentSpaces);
-  let upper = sql.toUpperCase();
-  let result = sql;
+  const protectedSql = protectSqlSegments(sql);
+  let result = protectedSql.code;
 
   for (const kw of ALL_KEYWORDS) {
     const escaped = kw.replace(/ /g, "\\s+");
@@ -65,10 +123,11 @@ function formatSql(sql: string, indentSpaces: number): string {
     depth = Math.max(0, depth);
   }
 
-  return out.join("\n");
+  return protectedSql.restore(out.join("\n"));
 }
 
 export default function SqlFormatter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [indentSize, setIndentSize] = useState(2);
@@ -76,14 +135,16 @@ export default function SqlFormatter() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const format = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
       return;
     }
     try {
-      const formatted = formatSql(input.trim(), indentSize);
+      const formatted = formatSql(input, indentSize);
       setOutput(formatted);
+      if (formatted.trim()) recordSuccess("format");
       setError("");
     } catch {
       setError("Failed to format SQL. Please check your query syntax.");
@@ -92,13 +153,14 @@ export default function SqlFormatter() {
   }, [input, indentSize]);
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setOutput("");
     setError("");
   };
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="sql-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Paste your SQL query

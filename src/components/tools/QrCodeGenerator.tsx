@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback, useRef, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 
@@ -6,6 +7,9 @@ import ErrorBanner from "../ErrorBanner";
  * Uses the `qrcode` npm package for canvas-based generation.
  */
 export default function QrCodeGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
+  const operationRevision = useRef(0);
+  useEffect(() => () => { operationRevision.current++; }, []);
   const [input, setInput] = useState("");
   const [size, setSize] = useState(256);
   const [generated, setGenerated] = useState(false);
@@ -13,6 +17,8 @@ export default function QrCodeGenerator() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const generate = useCallback(async () => {
+    const revision = ++operationRevision.current;
+    markInteraction();
     if (!input.trim() || !canvasRef.current) return;
 
     try {
@@ -26,9 +32,12 @@ export default function QrCodeGenerator() {
           light: "#ffffff",
         },
       });
+      if (revision !== operationRevision.current) return;
       setGenerated(true);
+      recordSuccess("generate");
       setError("");
     } catch (err) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to generate QR code.");
     }
   }, [input, size]);
@@ -49,7 +58,7 @@ export default function QrCodeGenerator() {
   }, [size]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={() => { operationRevision.current++; markInteraction(); }} className="space-y-6">
       <div>
         <label htmlFor="qr-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Enter URL or text

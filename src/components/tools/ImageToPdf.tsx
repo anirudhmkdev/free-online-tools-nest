@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useEffect, useRef, useState } from "react";
 import {
   buildImagePdf,
@@ -22,6 +23,7 @@ interface Entry {
   pixels: number;
 }
 export default function ImageToPdf() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [files, setFiles] = useState<Entry[]>([]);
   const [format, setFormat] = useState<PdfSettings["format"]>("a4");
   const [orientation, setOrientation] =
@@ -63,6 +65,7 @@ export default function ImageToPdf() {
     [],
   );
   function resetResult() {
+    clearInteraction();
     if (download.current) URL.revokeObjectURL(download.current);
     download.current = null;
     setResult(null);
@@ -124,6 +127,7 @@ export default function ImageToPdf() {
     setAttempt((value) => value + 1);
     resetResult();
     setBusy(true);
+    markInteraction();
     const abort = new AbortController();
     controller.current = abort;
     try {
@@ -155,6 +159,7 @@ export default function ImageToPdf() {
       );
       download.current = url;
       setResult({ url, pages: files.length, bytes: bytes.length });
+      if (bytes.length > 0 && files.length > 0) recordSuccess("export");
       setStatus("PDF ready. Download it below.");
     } catch (err) {
       if (!abort.signal.aborted) {
@@ -383,6 +388,7 @@ export default function ImageToPdf() {
               pendingFocus.current = files.length
                 ? "image-pdf-create"
                 : "image-pdf-files";
+              clearInteraction();
               controller.current?.abort();
             }}
           >

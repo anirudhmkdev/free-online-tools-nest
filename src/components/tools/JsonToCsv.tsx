@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -34,6 +35,7 @@ function jsonToCsv(
 }
 
 export default function JsonToCsv() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [delimiter, setDelimiter] = useState<Delimiter>(",");
   const [includeHeaders, setIncludeHeaders] = useState(true);
@@ -52,7 +54,7 @@ export default function JsonToCsv() {
         setError("Array is empty.");
         return null;
       }
-      if (typeof result[0] !== "object" || result[0] === null || Array.isArray(result[0])) {
+      if (result.some(row => typeof row !== "object" || row === null || Array.isArray(row))) {
         setError("Array must contain objects.");
         return null;
       }
@@ -80,6 +82,10 @@ export default function JsonToCsv() {
     return Object.keys(parsed[0]);
   }, [parsed]);
 
+  useEffect(() => {
+    if (parsed && !error && csv && parsed.every(row => row !== null && typeof row === "object" && !Array.isArray(row))) recordSuccess("convert");
+  }, [parsed, error, csv, recordSuccess]);
+
   return (
     <div className="space-y-6">
       <div>
@@ -89,7 +95,7 @@ export default function JsonToCsv() {
         <textarea
           id="json-csv-input"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { markInteraction(); setInput(e.target.value); }}
           placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
           rows={6}
           className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150"

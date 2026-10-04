@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import ErrorBanner from "../ErrorBanner";
@@ -6,6 +7,7 @@ import ErrorBanner from "../ErrorBanner";
  * UrlEncoderDecoder — encode/decode URLs and query strings.
  */
 export default function UrlEncoderDecoder() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
@@ -13,6 +15,7 @@ export default function UrlEncoderDecoder() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const process = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -25,6 +28,7 @@ export default function UrlEncoderDecoder() {
         setOutput(decodeURIComponent(input));
       }
       setError("");
+      recordSuccess("convert");
     } catch {
       setOutput("");
       setError("Invalid input for decoding.");
@@ -32,7 +36,7 @@ export default function UrlEncoderDecoder() {
   }, [input, mode]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="url-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Input

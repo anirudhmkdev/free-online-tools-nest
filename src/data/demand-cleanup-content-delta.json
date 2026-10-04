@@ -1,0 +1,306 @@
+{
+  "baseCommit": "a81cc981a26ae144a7442d5702577e65c78a3fba",
+  "reviewDate": "2026-10-04",
+  "scope": "User-approved demand discovery, primary correctness repairs and supporting editorial review; publishing membership preserved",
+  "pages": {
+    "/blog/10-free-online-tools-2026/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "bae5e05b438ed856c3dedefb01c36fa5b1f77918eab4a817ce15baa08d8eadac"
+      }
+    },
+    "/blog/csv-to-json-delimiters-quotes-headers/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "cd7da5d93eb75dd321fe5c4a956ffc45a7ca52ed7bf53553465d11c633826d1f"
+      }
+    },
+    "/blog/decode-jwt-vs-verify-signature/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "300ddd90dfe59c90f012c0f5204b1102d4872b63f7c2fa0bcedff1ce774a233b"
+      }
+    },
+    "/blog/free-online-tools-guide-2026/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "78854bbc084d451030724d9d91e60c17d2fa54f0b086479fe815693cd456bedd"
+      }
+    },
+    "/blog/image-compression-resizing-format-conversion/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "00d7b932b9c8e2183e9f301b44321f99783f6f956f4c61d7ccc5d438dd563371"
+      }
+    },
+    "/blog/image-compressor-browser-only/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "f756a764aac6a8c79e43b3e6a4aa1684855cbb0def60e9c3baca379684c38af8"
+      }
+    },
+    "/blog/javascript-regex-flags-groups-mistakes/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "c69e6c877b2fe5d4c8c543281b48d4ec5ad70f8affeb6ba475153597dfb1c94b"
+      }
+    },
+    "/blog/json-formatting-validation-edge-cases/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "ce7b7168256a41b606c0ef5a336ce11f6e5e6749eabb6b0e492b7019294a8118"
+      }
+    },
+    "/blog/verify-browser-tool-no-upload/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "9e202bc2dcc17dd7576a8c1231797c47f45a5e394e878713feec6d867c4a9900"
+      }
+    },
+    "/blog/wcag-contrast-ratios-examples/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "7184422d519e8932bba65d077a67f89482bd6ed81bab86992fc6a0a4082cbb87"
+      }
+    },
+    "/blog/why-pdfs-compress-differently/": {
+      "reason": "Editorial examples and truthful dated-review header",
+      "signals": {
+        "ownedTextHash": "124e4a525e09ab5fc86d41059ea30d82db66792caec721af6044b720334312de"
+      }
+    },
+    "/categories/pdf-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "7c1fcb5928750f7ee6fc22d5f15e2e8ab019c9e21a8bcfe6bfa44da5347985a4"
+      }
+    },
+    "/categories/text-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "e7da6f7bbfeed0a2f1c3eef91b0c50af2300e4c905fd55239cf0519f21f34d0c"
+      }
+    },
+    "/es/categories/converters/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "d7b58d8437b796e37ec06df8e175eec4689d5c99e1d93c2cbe40f6219cef95a2"
+      }
+    },
+    "/es/categories/design-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "d1fe479bbc771c048e4c97ca80a122b5e957fac58831d7fc54429762ead696cf"
+      }
+    },
+    "/es/categories/developer-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "98ea7f430207389f38a7161cac59414ecb5c9cc79f1c913acb1b9ea686c34e3a"
+      }
+    },
+    "/es/categories/pdf-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "df7f88f2fb3e36eef5d11410bb61199c91f65f33b042b9a1bb52b77d9377a7ea"
+      }
+    },
+    "/es/categories/text-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "a225f3611fe4f561fa77951fe51fc9bcd26b32e6ebdfa30c789b77116c36e797"
+      }
+    },
+    "/es/": {
+      "reason": "Primary collection and accessible secondary discovery",
+      "signals": {
+        "ownedTextHash": "57fe34c9f709400c58539703c8631e401c0e3f18f80a28401f4abf6e96a3c80c"
+      }
+    },
+    "/es/tools/character-counter/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "27a6fdd733567188423031070de00260f03ed1a20c20bc704c6177bb1925ea4c"
+      }
+    },
+    "/es/tools/grammar-checker/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "description": "Comprueba patrones básicos de escritura en inglés localmente. Esta ayuda heurística no sustituye una revisión completa.",
+        "ownedTextHash": "ab7589fe06afcfaf5dee92c4698ac403543d86e10afb2d1746a45f2e91fd8de2"
+      }
+    },
+    "/es/tools/": {
+      "reason": "Primary collection and accessible secondary discovery",
+      "signals": {
+        "ownedTextHash": "6c4db31a1d705a6e56dca901616473b39dc0a3827f3a1b655ce05689f1bdbc13"
+      }
+    },
+    "/es/tools/pdf-compressor/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "description": "Reescribe un PDF sin subirlo a un servidor y compara los tamaños. El resultado puede ser mayor que el original.",
+        "ownedTextHash": "9bcc5f0f3a32a45b055edd015301715d3c0fe4e3373fc07cd339fe81998f0de4"
+      }
+    },
+    "/es/tools/pdf-merger/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "91959915f38f9bbdd46d29e01a6eeaccbbc8b7daaabdfc7ae5eac20ece8245c7"
+      }
+    },
+    "/es/tools/word-cloud-generator/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "5f0b0ddac1cd4e5ca7be8bfbf319a9b7e9647e0c2f79e1ec93ffa20efad0d966"
+      }
+    },
+    "/es/tools/word-counter/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "2084c933c3a69cb6d82cfa5b5156b9fb4459a29856d38eec3515d3ddaa44eff4"
+      }
+    },
+    "/hi/categories/converters/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "f344dd17dc9b2cdf4f2f7af417a3af227d244a9113f7943f7d43cd4342faef94"
+      }
+    },
+    "/hi/categories/design-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "e23c168a7066fd88e251af810cccd58873bd9a98091a60ee0355d497c1b8af60"
+      }
+    },
+    "/hi/categories/developer-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "64c3fd52f740212220c4738dd9734cd165cb2a9b5292573456b29479883eedaa"
+      }
+    },
+    "/hi/categories/pdf-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "e1e507fb64ccd4b19f1e5d4aa6dd0dfea12e51b645dea5b8911b9afb2da3f8d0"
+      }
+    },
+    "/hi/categories/text-tools/": {
+      "reason": "Native primary/secondary discovery with retained category destinations",
+      "signals": {
+        "ownedTextHash": "29452eaac8486d1518ca75af4f1fedebb9f3f0df791c8d6bc33dd9aff9c03f85"
+      }
+    },
+    "/hi/": {
+      "reason": "Primary collection and accessible secondary discovery",
+      "signals": {
+        "ownedTextHash": "cce9822bf352cd7db9527495b318fcb506afcba1d8ea0f681d1342edd70f4d68"
+      }
+    },
+    "/hi/tools/character-counter/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "0ce45f57b9d0c05df14d57e3a417afa5ed19b36dceb68daafe27daabb0d5f27f"
+      }
+    },
+    "/hi/tools/grammar-checker/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "description": "अंग्रेजी लेखन के कुछ patterns स्थानीय रूप से जाँचें. यह नियम-आधारित सहायता पूरी proofreading का विकल्प नहीं है.",
+        "ownedTextHash": "40e86df992daf44a6d5857e86471651f9d88180fb857f7e961f4db735416d8fa"
+      }
+    },
+    "/hi/tools/": {
+      "reason": "Primary collection and accessible secondary discovery",
+      "signals": {
+        "ownedTextHash": "fb5535a2a3a1a61382dd99662d37f6518fcc2461c836b382c68644f46ed4f85a"
+      }
+    },
+    "/hi/tools/pdf-compressor/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "description": "PDF को बिना upload दोबारा लिखें और आकार की तुलना करें. परिणाम मूल file से बड़ा भी हो सकता है.",
+        "ownedTextHash": "de0b463d08129f67a182232e72ac072fdc1b6932228e55f76cab310a1acd34ab"
+      }
+    },
+    "/hi/tools/pdf-merger/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "6a17fa449a1c1284bb497c81bd91211d4d8e76b4b289d5c05e3f56004de253e8"
+      }
+    },
+    "/hi/tools/word-cloud-generator/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "129264fafef8a16a21b9bcbf25d2e28fad7419253f3c51135b31ab289ca6413c"
+      }
+    },
+    "/hi/tools/word-counter/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "5cee615ec696e3add955b8956e7b53d7a4421b091ba18549b444be26c735bea1"
+      }
+    },
+    "/tools/image-compressor/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "description": "Re-encode JPEG, PNG and WebP images locally. Compare size and appearance; lossy settings can change quality and output may be larger.",
+        "ownedTextHash": "9996017ac1a69c4c6a9ad6517ee5187c0c1168965d670e55ab3c59803f89fe69"
+      }
+    },
+    "/tools/random-number-generator/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "dffeb8b8fe6a6fa186fca50f8f7f24ae57a910d9758961b7fe67f0b3a945265c"
+      }
+    },
+    "/tools/seo-length-checker/": {
+      "reason": "Correctness, validity, related-tool copy and guide-link repairs",
+      "signals": {
+        "ownedTextHash": "69ce040f0a5ba554eb1973387f05ae7382fef34b5d80a39c9e6446cf01c3e2e3"
+      }
+    }
+  },
+  "sources": {
+    "src/data/tools.ts": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "8b909cda5edb3ae8f8d5a05bceb6bbc594cdace16500c7887223cc0ec2f8ba57"
+    },
+    "src/data/tool-quality.ts": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "051d1da13382cb5d9b907bfed4505f7498558cbc9e51eda5f04eb0b3ee09c6e5"
+    },
+    "src/data/localized.ts": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "d0e0b2a4efa012ceb93d506a29224a13476a09ae5e2a0c904e30444fd48bf42a"
+    },
+    "src/content/blog/csv-to-json-delimiters-quotes-headers.md": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "af1ac294bec2e22427e0b94591f0c912e9706f82079b8d8c18f4cd6c1ee17ad6"
+    },
+    "src/content/blog/decode-jwt-vs-verify-signature.md": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "95f63c9abcdd2d1ce5bc6f8ba7c84f9c3dc9a149f1ad1e298dadf1f0c7d4f4d5"
+    },
+    "src/content/blog/json-formatting-validation-edge-cases.md": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "bb34f7b9504cd126e3de1653657b186c7cca9e2abf2002353ff8a420757c7cdf"
+    },
+    "src/content/blog/verify-browser-tool-no-upload.md": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "d7df6c5c5266bff32549be2238d04799c0b3f881293aa81fa14d65d6e8b66867"
+    },
+    "src/content/blog/wcag-contrast-ratios-examples.md": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "cf725e5a4ab6e16a493033702cf4248ddda52b2bb660f61f802306c42ca0d685"
+    },
+    "src/content/blog/why-pdfs-compress-differently.md": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "cfd5e967685a72f145868795e7eed9404047a182108cd07aa93a4baae591da59"
+    },
+    "src/components/tools/EpochConverter.tsx": {
+      "reason": "Approved primary-tool scope, telemetry or six-guide editorial review",
+      "hash": "506a2fe6629e3222594b1edcacfc170ca7440d05aec745e3ea5921bcd7c99e61"
+    }
+  }
+}

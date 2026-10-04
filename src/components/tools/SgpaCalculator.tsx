@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState } from "react";
 import {
   calculateSgpa,
@@ -19,6 +20,7 @@ export default function SgpaCalculator({
 }: {
   resultName?: "SGPA" | "CGPA";
 }) {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [config, setConfig] = useState(emptyGradeConfig);
   const [rows, setRows] = useState([emptyCourse(), emptyCourse()]);
   const [digits, setDigits] = useState(2);
@@ -31,16 +33,18 @@ export default function SgpaCalculator({
     setError("");
   }
   return (
-    <div>
+    <div onChangeCapture={markInteraction}>
       <CalculatorForm
         error={error}
         onEdit={clear}
         onSubmit={(e) => {
           e.preventDefault();
+          markInteraction();
           clear();
           try {
             const { courses, scale } = readCourses(rows, config);
             setResult({ ...calculateSgpa(courses, scale), scale });
+            recordSuccess("calculate");
           } catch (err) {
             setError((err as Error).message);
           }
@@ -84,6 +88,7 @@ export default function SgpaCalculator({
             type="button"
             className="btn-secondary"
             onClick={() => {
+              clearInteraction();
               setConfig({
                 maximum: "10",
                 mode: "points",

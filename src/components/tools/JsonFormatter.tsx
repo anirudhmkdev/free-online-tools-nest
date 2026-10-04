@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -6,6 +7,7 @@ import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
  * JsonFormatter — format, validate, and beautify JSON with error reporting.
  */
 export default function JsonFormatter() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
@@ -13,6 +15,7 @@ export default function JsonFormatter() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const format = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -21,26 +24,29 @@ export default function JsonFormatter() {
     try {
       const parsed = JSON.parse(input);
       setOutput(JSON.stringify(parsed, null, indentSize));
+      recordSuccess("format");
       setError("");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Invalid JSON";
       setError(msg);
       setOutput("");
     }
-  }, [input, indentSize]);
+  }, [input, indentSize, markInteraction, recordSuccess]);
 
   const minify = useCallback(() => {
+    markInteraction();
     if (!input.trim()) return;
     try {
       const parsed = JSON.parse(input);
       setOutput(JSON.stringify(parsed));
+      recordSuccess("format");
       setError("");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Invalid JSON";
       setError(msg);
       setOutput("");
     }
-  }, [input]);
+  }, [input, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">

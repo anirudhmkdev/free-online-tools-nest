@@ -12,13 +12,14 @@ interface Props {
 
 import Layout from "../layouts/Layout.astro";
 import Breadcrumbs from "./Breadcrumbs.astro";
-import ToolCard from "./ToolCard.astro";
+import ToolCollection from "./ToolCollection.astro";
 import CategoryCard from "./CategoryCard.astro";
 import { getToolsByCategory, getCategoryBySlug, CATEGORIES, SITE } from "../data/tools";
 import { getLocalizedCategories, getLocalizedCategory, getLocalizedToolsByCategory, hasLocalizedCategory, PUBLISHED_LOCALES } from "../data/localized";
 import { defaultLang } from "../i18n/ui";
 import { useTranslations } from "../i18n/utils";
 import type { Lang } from "../i18n/ui";
+import { partitionToolsByDiscovery } from "../data/tool-discovery";
 
 const { categorySlug, heading, locale = defaultLang, canonicalPath = `/categories/${categorySlug}/`, alternatePaths } = Astro.props;
 const localePrefix = locale === defaultLang ? "" : `/${locale}`;
@@ -26,6 +27,8 @@ const t = useTranslations(locale);
 const toolCountLabel = (count: number) => `${count} ${count === 1 ? t("common.toolSingular") : t("common.toolPlural")}`;
 const category = getLocalizedCategory(locale, categorySlug) ?? getCategoryBySlug(categorySlug)!;
 const tools = locale === defaultLang ? getToolsByCategory(categorySlug) : getLocalizedToolsByCategory(locale, categorySlug);
+const { primary } = partitionToolsByDiscovery(tools);
+const initiallyVisibleCount = primary.length || tools.length;
 const localizedCategories = locale === defaultLang ? CATEGORIES : getLocalizedCategories(locale);
 const otherCategories = localizedCategories.filter((c) => c.slug !== categorySlug);
 const pageId = `category-${categorySlug}`;
@@ -69,6 +72,7 @@ const collectionJsonLd = {
   <div
     class="container-page py-8 md:py-10"
     data-category-page={pageId}
+    data-discovery-surface
     data-showing-count-template={t("category.showingCount")}
     data-tool-singular={t("common.toolSingular")}
     data-tool-plural={t("common.toolPlural")}
@@ -105,10 +109,11 @@ const collectionJsonLd = {
                 placeholder={t("category.searchPlaceholder").replace("{category}", category.name.toLowerCase())}
                 class="w-full h-11 pl-10 pr-4 rounded-lg border border-hairline bg-canvas text-sm text-ink placeholder:text-mute focus:border-link transition-colors duration-150"
                 data-category-search
+                data-collection-search
               />
             </div>
-            <p class="mt-2 text-xs text-mute" aria-live="polite" data-category-count>
-              {t("category.showingCount").replace("{count}", String(tools.length)).replace("{label}", tools.length === 1 ? t("common.toolSingular") : t("common.toolPlural"))}
+            <p class="mt-2 text-xs text-body" aria-live="polite" data-category-count data-collection-count>
+              {t("category.showingCount").replace("{count}", String(initiallyVisibleCount)).replace("{label}", initiallyVisibleCount === 1 ? t("common.toolSingular") : t("common.toolPlural"))}
             </p>
           </div>
         )}
@@ -126,18 +131,7 @@ const collectionJsonLd = {
 
     {tools.length > 0 ? (
       <>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-14" data-category-grid>
-          {tools.map((tool) => (
-            <div data-category-tool data-tool-name={tool.name.toLowerCase()} data-tool-desc={tool.description.toLowerCase()} data-tool-keywords={tool.keywords.join(" ").toLowerCase()}>
-              <ToolCard slug={tool.slug} href={`${localePrefix}/tools/${tool.slug}/`} name={tool.name} description={tool.description} icon={tool.icon} categorySlug={tool.categorySlug} categoryName={category.name} />
-            </div>
-          ))}
-        </div>
-
-        <div class="hidden rounded-lg border border-hairline bg-canvas p-8 text-center mb-14" data-category-empty>
-          <p class="text-base font-medium text-ink">{t("category.noToolsSearchTitle")}</p>
-          <p class="mt-1 text-sm text-body">{t("category.noToolsSearchDesc")}</p>
-        </div>
+        <div class="mb-14"><ToolCollection tools={tools} locale={locale} categoryName={category.name} collectionId={pageId} /></div>
       </>
     ) : (
       <div class="rounded-lg border border-hairline bg-canvas p-8 text-center mb-14">
@@ -168,7 +162,11 @@ const collectionJsonLd = {
             color={cat.color}
             toolCount={locale === defaultLang ? getToolsByCategory(cat.slug).length : getLocalizedToolsByCategory(locale, cat.slug).length}
             countLabel={toolCountLabel(locale === defaultLang ? getToolsByCategory(cat.slug).length : getLocalizedToolsByCategory(locale, cat.slug).length)}
-            topTools={(locale === defaultLang ? getToolsByCategory(cat.slug) : getLocalizedToolsByCategory(locale, cat.slug)).slice(0, 3).map((tool) => tool.name)}
+            topTools={(() => {
+              const choices = locale === defaultLang ? getToolsByCategory(cat.slug) : getLocalizedToolsByCategory(locale, cat.slug);
+              const { primary } = partitionToolsByDiscovery(choices);
+              return (primary.length ? primary : choices).slice(0, 3).map(tool => tool.name);
+            })()}
           />
         ))}
       </div>
@@ -187,30 +185,3 @@ const collectionJsonLd = {
     )}
   </div>
 </Layout>
-
-<script>
-  const pages = document.querySelectorAll<HTMLElement>("[data-category-page]");
-  pages.forEach((page) => {
-    const input = page.querySelector<HTMLInputElement>("[data-category-search]");
-    const items = Array.from(page.querySelectorAll<HTMLElement>("[data-category-tool]"));
-    const count = page.querySelector<HTMLElement>("[data-category-count]");
-    const empty = page.querySelector<HTMLElement>("[data-category-empty]");
-
-    function filterCategoryTools() {
-      const query = input?.value.toLowerCase().trim() || "";
-      let visible = 0;
-      items.forEach((item) => {
-        const haystack = [item.dataset.toolName, item.dataset.toolDesc, item.dataset.toolKeywords].join(" ");
-        const show = !query || haystack.includes(query);
-        item.hidden = !show;
-        if (show) visible++;
-      });
-      const template = page.dataset.showingCountTemplate || "Showing {count} {label}";
-      const label = visible === 1 ? (page.dataset.toolSingular || "tool") : (page.dataset.toolPlural || "tools");
-      if (count) count.textContent = template.replace("{count}", String(visible)).replace("{label}", label);
-      empty?.classList.toggle("hidden", visible > 0);
-    }
-
-    input?.addEventListener("input", filterCategoryTools);
-  });
-</script>

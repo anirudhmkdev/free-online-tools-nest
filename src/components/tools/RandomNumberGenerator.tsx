@@ -1,5 +1,8 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback, useMemo } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+import ErrorBanner from "../ErrorBanner";
+import { generateRandomNumbers, MAX_RANDOM_COUNT, parseRandomNumberRequest, randomNumberTotals } from "../../helpers/random-numbers";
 
 interface Preset {
   label: string;
@@ -14,69 +17,56 @@ const PRESETS: Preset[] = [
   { label: "Percentage (0-100)", min: 0, max: 100 },
 ];
 
-function randomInt(min: number, max: number): number {
-  const range = max - min + 1;
-  const bytes = new Uint32Array(1);
-  crypto.getRandomValues(bytes);
-  return min + (bytes[0] % range);
-}
-
 export default function RandomNumberGenerator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [minVal, setMinVal] = useState("1");
   const [maxVal, setMaxVal] = useState("100");
   const [count, setCount] = useState("1");
   const [allowDuplicates, setAllowDuplicates] = useState(true);
   const [sortResults, setSortResults] = useState(false);
   const [numbers, setNumbers] = useState<number[]>([]);
+  const [error, setError] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const generate = useCallback(() => {
-    const min = parseInt(minVal);
-    const max = parseInt(maxVal);
-    const n = parseInt(count);
-    if (isNaN(min) || isNaN(max) || isNaN(n) || min > max || n < 1) return;
-
-    const result: number[] = [];
-    if (allowDuplicates) {
-      for (let i = 0; i < n; i++) {
-        result.push(randomInt(min, max));
-      }
-    } else {
-      const available = max - min + 1;
-      const desired = Math.min(n, available);
-      const pool = new Set<number>();
-      while (pool.size < desired) {
-        pool.add(randomInt(min, max));
-      }
-      result.push(...pool);
+    markInteraction();
+    setError("");
+    const validation = parseRandomNumberRequest(minVal, maxVal, count, allowDuplicates);
+    if (validation.error !== undefined) { setError(validation.error); setNumbers([]); return; }
+    try {
+      const result = generateRandomNumbers(validation.request);
+      if (sortResults) result.sort((a, b) => a - b);
+      setNumbers(result);
+      recordSuccess("generate");
+    } catch {
+      setNumbers([]);
+      setError("Secure random generation is unavailable. Try again in a browser that supports it.");
     }
-
-    if (sortResults) {
-      result.sort((a, b) => a - b);
-    }
-
-    setNumbers(result);
   }, [minVal, maxVal, count, allowDuplicates, sortResults]);
 
   const stats = useMemo(() => {
     if (numbers.length === 0) return null;
-    const sum = numbers.reduce((a, b) => a + b, 0);
+    const { sum, average } = randomNumberTotals(numbers);
     return {
       count: numbers.length,
       min: Math.min(...numbers),
       max: Math.max(...numbers),
       sum,
-      average: parseFloat((sum / numbers.length).toFixed(2)),
+      average,
     };
   }, [numbers]);
 
   const handlePreset = useCallback((preset: Preset) => {
+    clearInteraction();
     setMinVal(preset.min.toString());
     setMaxVal(preset.max.toString());
+    setNumbers([]);
+    setError("");
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={() => { markInteraction(); setError(""); setNumbers([]); }} className="space-y-6">
+      <p className="text-sm text-body">Generate up to 1,000 whole numbers per batch. Ranges may contain up to 4,294,967,296 values.</p>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label htmlFor="rng-min" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
@@ -85,6 +75,9 @@ export default function RandomNumberGenerator() {
           <input
             id="rng-min"
             type="number"
+            step="1"
+            min={Number.MIN_SAFE_INTEGER}
+            max={Number.MAX_SAFE_INTEGER}
             value={minVal}
             onChange={(e) => setMinVal(e.target.value)}
             placeholder="1"
@@ -105,6 +98,9 @@ export default function RandomNumberGenerator() {
           <input
             id="rng-max"
             type="number"
+            step="1"
+            min={Number.MIN_SAFE_INTEGER}
+            max={Number.MAX_SAFE_INTEGER}
             value={maxVal}
             onChange={(e) => setMaxVal(e.target.value)}
             placeholder="100"
@@ -129,6 +125,8 @@ export default function RandomNumberGenerator() {
             onChange={(e) => setCount(e.target.value)}
             placeholder="1"
             min="1"
+            step="1"
+            max={MAX_RANDOM_COUNT}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150 font-mono"
             style={{
               backgroundColor: "var(--color-canvas-soft)",
@@ -187,6 +185,8 @@ export default function RandomNumberGenerator() {
           </button>
         ))}
       </div>
+
+      <ErrorBanner message={error} />
 
       <button
         type="button"

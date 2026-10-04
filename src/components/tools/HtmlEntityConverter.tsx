@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -22,22 +23,26 @@ function decodeEntities(text: string): string {
 }
 
 export default function HtmlEntityConverter() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const process = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       return;
     }
     if (mode === "encode") {
       setOutput(encodeEntities(input));
+      recordSuccess("convert");
     } else {
       setOutput(decodeEntities(input));
+      recordSuccess("convert");
     }
-  }, [input, mode]);
+  }, [input, mode, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">

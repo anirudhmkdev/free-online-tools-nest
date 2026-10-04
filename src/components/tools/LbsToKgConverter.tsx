@@ -1,12 +1,15 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 const LBS_TO_KG = 0.453592;
 
 export default function LbsToKgConverter() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [lbs, setLbs] = useState("");
   const [kg, setKg] = useState("");
 
   const handleLbsChange = useCallback((value: string) => {
+    markInteraction();
     setLbs(value);
     if (value === "" || value === ".") {
       setKg("");
@@ -15,9 +18,11 @@ export default function LbsToKgConverter() {
     const num = parseFloat(value);
     if (isNaN(num)) return;
     setKg((num * LBS_TO_KG).toFixed(2));
-  }, []);
+    if (Number.isFinite(num * LBS_TO_KG)) recordSuccess("convert");
+  }, [markInteraction, recordSuccess]);
 
   const handleKgChange = useCallback((value: string) => {
+    markInteraction();
     setKg(value);
     if (value === "" || value === ".") {
       setLbs("");
@@ -26,7 +31,8 @@ export default function LbsToKgConverter() {
     const num = parseFloat(value);
     if (isNaN(num)) return;
     setLbs((num / LBS_TO_KG).toFixed(2));
-  }, []);
+    if (Number.isFinite(num / LBS_TO_KG)) recordSuccess("convert");
+  }, [markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">

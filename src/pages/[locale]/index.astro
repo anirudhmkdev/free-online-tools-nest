@@ -1,12 +1,13 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import ToolCard from "../../components/ToolCard.astro";
+import ToolCollection from "../../components/ToolCollection.astro";
 import CategoryCard from "../../components/CategoryCard.astro";
 import FAQSection from "../../components/FAQSection.astro";
 import { SITE } from "../../data/tools";
 import { getLocalizedCategories, getLocalizedTools, getLocalizedToolsByCategory, PUBLISHED_LOCALES } from "../../data/localized";
 import { getDefaultAlternates, useTranslations } from "../../i18n/utils";
 import type { Lang } from "../../i18n/ui";
+import { partitionToolsByDiscovery } from "../../data/tool-discovery";
 
 export function getStaticPaths() {
   return PUBLISHED_LOCALES.map((locale) => ({ params: { locale } }));
@@ -66,11 +67,7 @@ const faqItems = Array.from({ length: 7 }, (_, i) => {
       </div>
       <a href={`/${lang}/tools/`} class="pill-control">{t("home.viewAllTools")}</a>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {tools.slice(0, 12).map((tool) => (
-        <ToolCard slug={tool.slug} href={`/${lang}/tools/${tool.slug}/`} name={tool.name} description={tool.description} icon={tool.icon} categorySlug={tool.categorySlug} />
-      ))}
-    </div>
+    <ToolCollection tools={tools} locale={lang} collectionId={`home-${lang}`} />
   </section>
 
   <section class="container-page pb-12">
@@ -92,7 +89,11 @@ const faqItems = Array.from({ length: 7 }, (_, i) => {
           color={cat.color}
           toolCount={getLocalizedToolsByCategory(lang, cat.slug).length}
           countLabel={`${getLocalizedToolsByCategory(lang, cat.slug).length} ${getLocalizedToolsByCategory(lang, cat.slug).length === 1 ? t("common.toolSingular") : t("common.toolPlural")}`}
-          topTools={getLocalizedToolsByCategory(lang, cat.slug).slice(0, 3).map((tool) => tool.name)}
+          topTools={(() => {
+            const choices = getLocalizedToolsByCategory(lang, cat.slug);
+            const { primary } = partitionToolsByDiscovery(choices);
+            return (primary.length ? primary : choices).slice(0, 3).map(tool => tool.name);
+          })()}
         />
       ))}
     </div>

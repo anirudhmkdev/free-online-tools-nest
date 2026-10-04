@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -53,6 +54,7 @@ function jsonToXml(value: unknown, name: string, depth: number): string {
 }
 
 export default function JsonToXml() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [rootName, setRootName] = useState("root");
@@ -60,6 +62,7 @@ export default function JsonToXml() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const convert = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -72,15 +75,18 @@ export default function JsonToXml() {
       const parsed = JSON.parse(input);
       const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + jsonToXml(parsed, name, 0);
       setOutput(xml);
+      const xmlDocument = new DOMParser().parseFromString(xml, "application/xml");
+      if (!xmlDocument.querySelector("parsererror")) recordSuccess("convert");
       setError("");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Invalid JSON";
       setError(msg);
       setOutput("");
     }
-  }, [input, rootName]);
+  }, [input, rootName, markInteraction, recordSuccess]);
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setOutput("");
     setError("");

@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -165,12 +166,14 @@ function htmlToMarkdown(html: string): string {
 }
 
 export default function HtmlToMarkdown() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const convert = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -179,14 +182,16 @@ export default function HtmlToMarkdown() {
     try {
       const md = htmlToMarkdown(input.trim());
       setOutput(md);
+      if (md.trim()) recordSuccess("convert");
       setError("");
     } catch {
       setError("Failed to convert HTML to Markdown. Please check your HTML syntax.");
       setOutput("");
     }
-  }, [input]);
+  }, [input, markInteraction, recordSuccess]);
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setOutput("");
     setError("");

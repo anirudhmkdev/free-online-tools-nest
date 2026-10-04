@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 interface HeadingEntry {
   level: number;
@@ -58,6 +59,7 @@ function analyzeWarnings(headings: HeadingEntry[]): Warning[] {
 }
 
 export default function HeadingStructureChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [html, setHtml] = useState("");
 
   const headings = useMemo(() => extractHeadings(html), [html]);
@@ -92,6 +94,10 @@ export default function HeadingStructureChecker() {
     6: "#db2777",
   };
 
+  useEffect(() => {
+    if (html.trim()) recordSuccess("check");
+  }, [html, headings, recordSuccess]);
+
   return (
     <div className="space-y-6">
       <div>
@@ -101,7 +107,7 @@ export default function HeadingStructureChecker() {
         <textarea
           id="hs-html"
           value={html}
-          onChange={(e) => setHtml(e.target.value)}
+          onChange={(e) => { markInteraction(); setHtml(e.target.value); }}
           placeholder="<h1>Page Title</h1><h2>Section</h2><h3>Subsection</h3>..."
           rows={8}
           className="w-full p-3 border rounded-lg text-sm font-mono resize-y outline-none"

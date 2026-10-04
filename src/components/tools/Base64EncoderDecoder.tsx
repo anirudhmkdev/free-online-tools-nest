@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -7,6 +8,7 @@ import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
  * Uses native btoa/atob (no external dependency).
  */
 export default function Base64EncoderDecoder() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [mode, setMode] = useState<"encode" | "decode">("encode");
@@ -14,6 +16,7 @@ export default function Base64EncoderDecoder() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const process = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -28,6 +31,7 @@ export default function Base64EncoderDecoder() {
           )
         );
         setOutput(encoded);
+        recordSuccess("convert");
         setError("");
       } else {
         const decoded = decodeURIComponent(
@@ -36,13 +40,14 @@ export default function Base64EncoderDecoder() {
           ).join("")
         );
         setOutput(decoded);
+        recordSuccess("convert");
         setError("");
       }
     } catch {
       setError(mode === "decode" ? "Invalid Base64 string." : "Encoding failed.");
       setOutput("");
     }
-  }, [input, mode]);
+  }, [input, mode, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">

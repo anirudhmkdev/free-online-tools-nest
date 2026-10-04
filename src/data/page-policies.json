@@ -63,11 +63,11 @@
     "primaryIntent": "CSV to JSON: Delimiters, Quotes, Headers, and Type Pitfalls",
     "hub": "reference",
     "tier": "legacy",
-    "lastReviewed": null,
+    "lastReviewed": "2026-10-04",
     "adEligible": true,
     "relatedGuides": [],
     "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "reviewStatus": "reviewed"
   },
   "/blog/decode-jwt-vs-verify-signature/": {
     "indexable": true,
@@ -77,11 +77,11 @@
     "primaryIntent": "Decoding JWTs Safely: Decoding Is Not Signature Verification",
     "hub": "reference",
     "tier": "legacy",
-    "lastReviewed": null,
+    "lastReviewed": "2026-10-04",
     "adEligible": true,
     "relatedGuides": [],
     "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "reviewStatus": "reviewed"
   },
   "/blog/free-online-tools-guide-2026/": {
     "indexable": true,
@@ -161,11 +161,11 @@
     "primaryIntent": "JSON Formatting and Validation: Edge Cases That Break Real Payloads",
     "hub": "reference",
     "tier": "legacy",
-    "lastReviewed": null,
+    "lastReviewed": "2026-10-04",
     "adEligible": true,
     "relatedGuides": [],
     "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "reviewStatus": "reviewed"
   },
   "/blog/verify-browser-tool-no-upload/": {
     "indexable": true,
@@ -175,11 +175,11 @@
     "primaryIntent": "How to Verify That a Browser Tool Is Not Uploading Your Files",
     "hub": "reference",
     "tier": "legacy",
-    "lastReviewed": null,
+    "lastReviewed": "2026-10-04",
     "adEligible": true,
     "relatedGuides": [],
     "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "reviewStatus": "reviewed"
   },
   "/blog/wcag-contrast-ratios-examples/": {
     "indexable": true,
@@ -189,11 +189,11 @@
     "primaryIntent": "WCAG Contrast Ratios With Practical Color Examples",
     "hub": "reference",
     "tier": "legacy",
-    "lastReviewed": null,
+    "lastReviewed": "2026-10-04",
     "adEligible": true,
     "relatedGuides": [],
     "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "reviewStatus": "reviewed"
   },
   "/blog/why-pdfs-compress-differently/": {
     "indexable": true,
@@ -203,11 +203,11 @@
     "primaryIntent": "Why Some PDFs Compress Better Than Others",
     "hub": "reference",
     "tier": "legacy",
-    "lastReviewed": null,
+    "lastReviewed": "2026-10-04",
     "adEligible": true,
     "relatedGuides": [],
     "relatedWorkflows": [],
-    "reviewStatus": "pending-evidence"
+    "reviewStatus": "reviewed"
   },
   "/categories/calculators/": {
     "indexable": true,
@@ -1497,7 +1497,9 @@
     "tier": "legacy",
     "lastReviewed": "2026-08-26",
     "adEligible": true,
-    "relatedGuides": [],
+    "relatedGuides": [
+      "/blog/wcag-contrast-ratios-examples/"
+    ],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
   },
@@ -1567,7 +1569,9 @@
     "tier": "legacy",
     "lastReviewed": "2026-08-26",
     "adEligible": true,
-    "relatedGuides": [],
+    "relatedGuides": [
+      "/blog/csv-to-json-delimiters-quotes-headers/"
+    ],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
   },
@@ -1727,7 +1731,8 @@
     "adEligible": true,
     "relatedGuides": [
       "/blog/why-pdfs-compress-differently/",
-      "/blog/image-compression-resizing-format-conversion/"
+      "/blog/image-compression-resizing-format-conversion/",
+      "/blog/verify-browser-tool-no-upload/"
     ],
     "relatedWorkflows": [
       "/workflows/scan-notes-to-pdf/",
@@ -1795,7 +1800,8 @@
     "adEligible": true,
     "relatedGuides": [
       "/blog/why-pdfs-compress-differently/",
-      "/blog/image-compression-resizing-format-conversion/"
+      "/blog/image-compression-resizing-format-conversion/",
+      "/blog/verify-browser-tool-no-upload/"
     ],
     "relatedWorkflows": [
       "/workflows/scan-notes-to-pdf/",
@@ -1841,7 +1847,9 @@
     "tier": "legacy",
     "lastReviewed": "2026-08-26",
     "adEligible": true,
-    "relatedGuides": [],
+    "relatedGuides": [
+      "/blog/json-formatting-validation-edge-cases/"
+    ],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
   },
@@ -1855,7 +1863,9 @@
     "tier": "legacy",
     "lastReviewed": "2026-08-26",
     "adEligible": true,
-    "relatedGuides": [],
+    "relatedGuides": [
+      "/blog/csv-to-json-delimiters-quotes-headers/"
+    ],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
   },
@@ -1883,7 +1893,9 @@
     "tier": "legacy",
     "lastReviewed": "2026-08-26",
     "adEligible": true,
-    "relatedGuides": [],
+    "relatedGuides": [
+      "/blog/decode-jwt-vs-verify-signature/"
+    ],
     "relatedWorkflows": [],
     "reviewStatus": "pending-evidence"
   },
@@ -2067,7 +2079,8 @@
     "adEligible": true,
     "relatedGuides": [
       "/blog/why-pdfs-compress-differently/",
-      "/blog/image-compression-resizing-format-conversion/"
+      "/blog/image-compression-resizing-format-conversion/",
+      "/blog/verify-browser-tool-no-upload/"
     ],
     "relatedWorkflows": [
       "/workflows/prepare-pdf-for-upload/",
@@ -2087,7 +2100,8 @@
     "adEligible": true,
     "relatedGuides": [
       "/blog/why-pdfs-compress-differently/",
-      "/blog/image-compression-resizing-format-conversion/"
+      "/blog/image-compression-resizing-format-conversion/",
+      "/blog/verify-browser-tool-no-upload/"
     ],
     "relatedWorkflows": [
       "/workflows/submit-an-assignment/",
@@ -2623,7 +2637,9 @@
     "tier": "core",
     "lastReviewed": "2026-09-16",
     "adEligible": false,
-    "relatedGuides": [],
+    "relatedGuides": [
+      "/blog/verify-browser-tool-no-upload/"
+    ],
     "relatedWorkflows": [
       "/workflows/scan-notes-to-pdf/",
       "/workflows/submit-an-assignment/"

@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useRef, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_PDF_FILE_SIZE_BYTES } from "../../helpers/utils";
 
@@ -9,12 +10,18 @@ interface PdfFileItem {
 }
 
 export default function PdfMerger() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
+  const operationRevision = useRef(0);
+  useEffect(() => () => { operationRevision.current++; }, []);
   const [files, setFiles] = useState<PdfFileItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [mergedSize, setMergedSize] = useState<number | null>(null);
 
   const addFiles = useCallback((newFiles: FileList | File[]) => {
+    operationRevision.current++;
+    markInteraction();
+    setLoading(false);
     setError("");
     const pdfFiles = Array.from(newFiles).filter((f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"));
     if (pdfFiles.length === 0) {
@@ -46,11 +53,17 @@ export default function PdfMerger() {
   }, []);
 
   const removeFile = useCallback((id: string) => {
+    operationRevision.current++;
+    markInteraction();
+    setLoading(false);
     setFiles((prev) => prev.filter((f) => f.id !== id));
     setMergedSize(null);
   }, []);
 
   const moveFile = useCallback((index: number, direction: -1 | 1) => {
+    operationRevision.current++;
+    markInteraction();
+    setLoading(false);
     const target = index + direction;
     if (target < 0 || target >= files.length) return;
     setFiles((prev) => {
@@ -82,6 +95,8 @@ export default function PdfMerger() {
   }, []);
 
   const mergePdfs = useCallback(async () => {
+    const revision = ++operationRevision.current;
+    markInteraction();
     if (files.length < 2) {
       setError("Please upload at least 2 PDF files to merge.");
       return;
@@ -96,7 +111,8 @@ export default function PdfMerger() {
 
       for (const item of files) {
         const arrayBuf = await item.file.arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+        if (revision !== operationRevision.current) return;
+        const pdf = await PDFDocument.load(arrayBuf);
         const pageIndices = pdf.getPageIndices();
         const copiedPages = await mergedPdf.copyPages(pdf, pageIndices);
         for (const page of copiedPages) {
@@ -105,6 +121,7 @@ export default function PdfMerger() {
       }
 
       const pdfBytes = await mergedPdf.save();
+      if (revision !== operationRevision.current) return;
       setMergedSize(pdfBytes.length);
 
       const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
@@ -114,17 +131,19 @@ export default function PdfMerger() {
       link.download = "merged.pdf";
       link.click();
       URL.revokeObjectURL(url);
+      recordSuccess("export");
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to merge PDFs.");
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
   }, [files]);
 
   const totalOriginalSize = files.reduce((sum, f) => sum + f.size, 0);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={() => { operationRevision.current++; setLoading(false); markInteraction(); }} className="space-y-6">
       {/* Upload Zone */}
       {files.length === 0 && (
         <div

@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 interface AmortizationRow {
   payment: number;
@@ -60,6 +61,7 @@ function calculateAmortization(
 }
 
 export default function LoanCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [loanAmount, setLoanAmount] = useState("20000");
   const [interestRate, setInterestRate] = useState("5");
   const [loanTerm, setLoanTerm] = useState("5");
@@ -80,9 +82,10 @@ export default function LoanCalculator() {
   }, [loanAmount, interestRate, loanTerm, extraPayment, calculated]);
 
   const handleCalculate = useCallback(() => {
+    markInteraction();
     setCalculated(true);
     setShowAll(false);
-  }, []);
+  }, [markInteraction]);
 
   const displaySchedule = useMemo(() => {
     if (!result) return [];
@@ -93,6 +96,10 @@ export default function LoanCalculator() {
   const formatCurrency = (val: number): string => {
     return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(val);
   };
+
+  useEffect(() => {
+    if (result && [result.monthlyPayment, result.totalInterest, result.totalCost].every(Number.isFinite)) recordSuccess("calculate");
+  }, [result, recordSuccess]);
 
   return (
     <div className="space-y-6">

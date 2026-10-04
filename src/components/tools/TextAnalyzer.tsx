@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 type CaseMode = "upper" | "lower" | "title" | "sentence" | "camel" | "alternating";
@@ -26,6 +27,7 @@ function convertCase(text: string, mode: CaseMode): string {
 }
 
 export default function TextAnalyzer() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [text, setText] = useState("");
   const [activeMode, setActiveMode] = useState<CaseMode | null>(null);
   const [copied, handleCopy] = useCopyToClipboard();
@@ -75,8 +77,12 @@ export default function TextAnalyzer() {
     { key: "alternating", label: "aLtErNaTiNg" },
   ];
 
+  useEffect(() => {
+    if (text.trim().length > 0 && stats.words > 0) recordSuccess("analyze");
+  }, [text, stats, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Input */}
       <div>
         <label htmlFor="ta-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

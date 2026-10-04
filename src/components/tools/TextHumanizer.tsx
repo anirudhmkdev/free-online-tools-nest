@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -151,6 +152,7 @@ function humanizeText(text: string, tone: Tone): string {
 }
 
 export default function TextHumanizer() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [tone, setTone] = useState<Tone>("casual");
   const [output, setOutput] = useState("");
@@ -158,10 +160,12 @@ export default function TextHumanizer() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const handleHumanize = useCallback(() => {
+    markInteraction();
     if (!input.trim()) return;
     const result = humanizeText(input, tone);
     setOutput(result);
     setHasRun(true);
+    if (result.trim()) recordSuccess("convert");
   }, [input, tone]);
 
   const inputWords = input.trim() ? input.trim().split(/\s+/).filter(Boolean).length : 0;
@@ -170,7 +174,7 @@ export default function TextHumanizer() {
   const outputChars = output.length;
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Input */}
       <div>
         <label htmlFor="th-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

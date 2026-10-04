@@ -20,17 +20,28 @@ export function ownedSignals(html, route) {
     ownedTextHash: hashText(stable),
   };
 }
-export function checkProtection(root, fixture) {
+export function checkProtection(root, fixture, approvedChanges = { pages: {}, sources: {} }) {
   const failures = [];
+  // Later user-approved work is a separate delta; never rewrite the historical fixture.
+  for (const [route, delta] of Object.entries(approvedChanges.pages ?? {})) {
+    if (!fixture.pages[route] || !delta.reason || Object.keys(delta.signals ?? {}).some(key => !["ownedTextHash", "title", "description", "h1"].includes(key))) {
+      failures.push(`${route}: invalid approved content delta`);
+    }
+  }
+  for (const [path, delta] of Object.entries(approvedChanges.sources ?? {})) {
+    if (!fixture.sources[path] || !delta.reason || !/^[a-f0-9]{64}$/.test(delta.hash ?? "")) failures.push(`${path}: invalid approved source delta`);
+  }
   for (const [route, expected] of Object.entries(fixture.pages)) {
     const path = join(root, "dist", route.replace(/^\//, ""), "index.html");
     const actual = ownedSignals(readFileSync(path, "utf8"), route);
     for (const key of Object.keys(expected)) {
-      if (JSON.stringify(actual[key]) !== JSON.stringify(expected[key])) failures.push(`${route}: protected ${key} changed`);
+      const approved = approvedChanges.pages?.[route]?.signals?.[key] ?? expected[key];
+      if (JSON.stringify(actual[key]) !== JSON.stringify(approved)) failures.push(`${route}: protected ${key} changed`);
     }
   }
   for (const [path, expected] of Object.entries(fixture.sources)) {
-    if (hashText(readFileSync(join(root, path), "utf8")) !== expected) failures.push(`${path}: protected source changed`);
+    const approved = approvedChanges.sources?.[path]?.hash ?? expected;
+    if (hashText(readFileSync(join(root, path), "utf8")) !== approved) failures.push(`${path}: protected source changed`);
   }
   return failures;
 }

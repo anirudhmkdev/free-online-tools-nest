@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState } from "react";
 import {
   calculateRequiredMarks,
@@ -10,6 +11,7 @@ import CalculationResult, {
 } from "./shared/CalculationResult";
 
 export default function RequiredMarksCalculator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [current, setCurrent] = useState("");
   const [weight, setWeight] = useState("");
   const [target, setTarget] = useState("");
@@ -30,6 +32,7 @@ export default function RequiredMarksCalculator() {
         onEdit={clear}
         onSubmit={(e) => {
           e.preventDefault();
+          markInteraction();
           clear();
           try {
             const w = numberInput(
@@ -54,6 +57,7 @@ export default function RequiredMarksCalculator() {
                   : undefined,
               }),
             );
+            recordSuccess("calculate");
           } catch (err) {
             setError((err as Error).message);
           }
@@ -112,6 +116,7 @@ export default function RequiredMarksCalculator() {
             type="button"
             className="btn-secondary"
             onClick={() => {
+              clearInteraction();
               setCurrent("65");
               setWeight("40");
               setTarget("70");

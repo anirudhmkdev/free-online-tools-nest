@@ -1,34 +1,37 @@
-import { useState, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useRef, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_PDF_FILE_SIZE_BYTES, MAX_PDF_PAGE_COUNT } from "../../helpers/utils";
 
 type SplitMode = "all" | "range";
 
-function parsePageRange(input: string, totalPages: number): number[][] {
+export function parsePageRange(input: string, totalPages: number): number[][] {
   const ranges: number[][] = [];
   const parts = input.split(",").map((s) => s.trim());
 
   for (const part of parts) {
     if (/^\d+$/.test(part)) {
       const p = parseInt(part, 10);
-      if (p >= 1 && p <= totalPages) {
-        ranges.push([p]);
-      }
+      if (!Number.isSafeInteger(p) || p < 1 || p > totalPages) return [];
+      ranges.push([p]);
     } else if (/^(\d+)-(\d+)$/.test(part)) {
       const [, startStr, endStr] = part.match(/^(\d+)-(\d+)$/)!;
       const start = parseInt(startStr, 10);
       const end = parseInt(endStr, 10);
-      if (start >= 1 && end <= totalPages && start <= end) {
+      if (Number.isSafeInteger(start) && Number.isSafeInteger(end) && start >= 1 && end <= totalPages && start <= end) {
         const pages: number[] = [];
         for (let i = start; i <= end; i++) pages.push(i);
         ranges.push(pages);
-      }
-    }
+      } else return [];
+    } else return [];
   }
   return ranges;
 }
 
 export default function PdfSplitter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
+  useEffect(() => () => { operationRevision.current++; }, []);
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState(0);
   const [splitMode, setSplitMode] = useState<SplitMode>("all");
@@ -38,6 +41,8 @@ export default function PdfSplitter() {
   const [pdfBytes, setPdfBytes] = useState<ArrayBuffer | null>(null);
 
   const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const revision = ++operationRevision.current;
+    markInteraction();
     const f = e.target.files?.[0];
     if (!f) return;
     if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
@@ -60,6 +65,7 @@ export default function PdfSplitter() {
       const arrayBuf = await f.arrayBuffer();
       const { PDFDocument } = await import("pdf-lib");
       const pdf = await PDFDocument.load(arrayBuf, { ignoreEncryption: true });
+      if (revision !== operationRevision.current) return;
       const pages = pdf.getPageCount();
       if (pages > MAX_PDF_PAGE_COUNT) {
         setError(`This PDF has ${pages} pages. For browser stability, split files with ${MAX_PDF_PAGE_COUNT} pages or fewer.`);
@@ -71,16 +77,19 @@ export default function PdfSplitter() {
       setPdfBytes(arrayBuf);
       setPageCount(pages);
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to read PDF.");
       setFile(null);
       setPageCount(0);
       setPdfBytes(null);
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
   }, []);
 
   const handleReset = useCallback(() => {
+    operationRevision.current++;
+    clearInteraction();
     setFile(null);
     setPageCount(0);
     setSplitMode("all");
@@ -91,6 +100,8 @@ export default function PdfSplitter() {
   }, []);
 
   const splitPdf = useCallback(async () => {
+    const revision = ++operationRevision.current;
+    markInteraction();
     if (!pdfBytes) return;
     setLoading(true);
     setError("");
@@ -98,6 +109,7 @@ export default function PdfSplitter() {
     try {
       const { PDFDocument } = await import("pdf-lib");
       const sourcePdf = await PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+      if (revision !== operationRevision.current) return;
       const totalPages = sourcePdf.getPageCount();
 
       let pageSets: number[][];
@@ -124,6 +136,7 @@ export default function PdfSplitter() {
           newPdf.addPage(page);
         }
         const bytes = await newPdf.save();
+        if (revision !== operationRevision.current) return;
         const blob = new Blob([bytes as BlobPart], { type: "application/pdf" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -137,15 +150,17 @@ export default function PdfSplitter() {
         link.click();
         URL.revokeObjectURL(url);
       }
+      if (revision === operationRevision.current && pageSets.length > 0) recordSuccess("export");
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to split PDF.");
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
   }, [pdfBytes, splitMode, rangeInput, file]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={() => { operationRevision.current++; setLoading(false); markInteraction(); }} className="space-y-6">
       {/* Upload */}
       {!file && (
         <div

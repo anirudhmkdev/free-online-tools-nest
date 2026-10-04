@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 /**
@@ -15,15 +16,17 @@ const MODES: { key: CalcMode; label: string; desc: string }[] = [
 ];
 
 export default function PercentageCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [mode, setMode] = useState<CalcMode>("of");
   const [a, setA] = useState("");
   const [b, setB] = useState("");
   const [result, setResult] = useState<string | null>(null);
 
   const calculate = useCallback(() => {
+    markInteraction();
     const numA = parseFloat(a);
     const numB = parseFloat(b);
-    if (isNaN(numA) || isNaN(numB)) {
+    if (!Number.isFinite(numA) || !Number.isFinite(numB)) {
       setResult(null);
       return;
     }
@@ -44,7 +47,9 @@ export default function PercentageCalculator() {
       default:
         return;
     }
+    if (!Number.isFinite(res)) { setResult(null); return; }
     setResult(Number.isInteger(res) ? res.toString() : res.toFixed(4));
+    recordSuccess("calculate");
   }, [mode, a, b]);
 
   const getLabels = () => {
@@ -58,7 +63,7 @@ export default function PercentageCalculator() {
   const labels = getLabels();
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Mode selector */}
       <div className="flex flex-wrap gap-2">
         {MODES.map((m) => (

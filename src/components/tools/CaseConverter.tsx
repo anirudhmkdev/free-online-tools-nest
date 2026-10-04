@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 /**
@@ -35,11 +36,16 @@ function convertCase(text: string, mode: CaseMode): string {
 }
 
 export default function CaseConverter() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [text, setText] = useState("");
   const [mode, setMode] = useState<CaseMode>("upper");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const result = convertCase(text, mode);
+
+  useEffect(() => {
+    if (text.trim() && result) recordSuccess("convert");
+  }, [text, result, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -50,7 +56,7 @@ export default function CaseConverter() {
         <textarea
           id="case-input"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => { markInteraction(); setText(e.target.value); }}
           placeholder="Type or paste text to convert…"
           rows={5}
           className="w-full p-4 border rounded-lg text-base resize-y outline-none transition-colors duration-150"
@@ -89,7 +95,7 @@ export default function CaseConverter() {
             <span className="text-sm font-medium" style={{ color: "var(--color-ink)" }}>Result</span>
             <button
               type="button"
-              onClick={() => handleCopy(text)}
+              onClick={() => handleCopy(result)}
               className="text-sm px-3 py-1 rounded-md transition-colors duration-150"
               style={{
                 color: copied ? "var(--color-success)" : "var(--color-link)",

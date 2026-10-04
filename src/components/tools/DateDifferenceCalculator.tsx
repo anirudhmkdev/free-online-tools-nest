@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 interface DiffResult {
@@ -46,6 +47,7 @@ function computeDiff(from: Date, to: Date): DiffResult {
 }
 
 export default function DateDifferenceCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const today = new Date().toISOString().split("T")[0];
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(today);
@@ -53,6 +55,7 @@ export default function DateDifferenceCalculator() {
   const [error, setError] = useState("");
 
   const calculate = useCallback(() => {
+    markInteraction();
     setError("");
     if (!startDate || !endDate) {
       setError("Please select both dates.");
@@ -67,7 +70,8 @@ export default function DateDifferenceCalculator() {
       return;
     }
     setResult(computeDiff(sd, ed));
-  }, [startDate, endDate]);
+    recordSuccess("calculate");
+  }, [startDate, endDate, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">

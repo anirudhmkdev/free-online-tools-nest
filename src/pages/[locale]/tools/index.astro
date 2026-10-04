@@ -1,7 +1,7 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
-import ToolCard from "../../../components/ToolCard.astro";
+import ToolCollection from "../../../components/ToolCollection.astro";
 import { SITE } from "../../../data/tools";
 import { getLocalizedCategories, getLocalizedTools, PUBLISHED_LOCALES } from "../../../data/localized";
 import { getDefaultAlternates, useTranslations } from "../../../i18n/utils";
@@ -69,10 +69,6 @@ const toolsCollectionJsonLd = {
       ))}
     </nav>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {tools.map((tool) => (
-        <ToolCard slug={tool.slug} href={`/${lang}/tools/${tool.slug}/`} name={tool.name} description={tool.description} icon={tool.icon} categorySlug={tool.categorySlug} />
-      ))}
-    </div>
+    <ToolCollection tools={tools} locale={lang} collectionId={`tools-${lang}`} showSearch />
   </div>
 </Layout>

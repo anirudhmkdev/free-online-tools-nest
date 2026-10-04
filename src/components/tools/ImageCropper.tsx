@@ -1,4 +1,5 @@
-import { useState, useRef, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 type AspectRatio = "free" | "1:1" | "16:9" | "4:3" | "3:2";
 
@@ -18,6 +19,8 @@ const ASPECT_RATIO_LABELS: Record<AspectRatio, string> = {
 };
 
 export default function ImageCropper() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>("free");
@@ -49,6 +52,8 @@ export default function ImageCropper() {
   };
 
   const processFile = (file: File) => {
+    operationRevision.current++;
+    clearInteraction();
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image file.");
       return;
@@ -67,6 +72,8 @@ export default function ImageCropper() {
   };
 
   const handleCrop = useCallback(() => {
+    markInteraction();
+    const revision = ++operationRevision.current;
     if (!imgRef.current || !imageFile) {
       setError("No image loaded.");
       return;
@@ -147,7 +154,8 @@ export default function ImageCropper() {
 
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
+          if (revision !== operationRevision.current) return;
+          if (!blob || !blob.size) {
             setError("Failed to create cropped image.");
             return;
           }
@@ -157,13 +165,14 @@ export default function ImageCropper() {
           const blobUrl = URL.createObjectURL(blob);
           croppedSrcRef.current = blobUrl;
           setCroppedSrc(blobUrl);
+          recordSuccess("convert");
         },
         "image/png"
       );
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Crop failed.");
     }
-  }, [imageFile, aspectRatio, customWidth, customHeight, getAspectRatioValue]);
+  }, [imageFile, aspectRatio, customWidth, customHeight, getAspectRatioValue, markInteraction, recordSuccess]);
 
   const handleDownload = () => {
     if (!croppedSrc || !imageFile) return;
@@ -177,6 +186,8 @@ export default function ImageCropper() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (croppedSrcRef.current) {
       URL.revokeObjectURL(croppedSrcRef.current);
@@ -189,6 +200,8 @@ export default function ImageCropper() {
     setCustomHeight(0);
     setError("");
   };
+
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
 
   return (
     <div className="space-y-6">

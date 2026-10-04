@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 type CalcMode = "savings" | "discount-pct" | "final-price";
 
@@ -69,6 +70,7 @@ function getLabels(mode: CalcMode) {
 }
 
 export default function DiscountCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [mode, setMode] = useState<CalcMode>("savings");
   const [inputA, setInputA] = useState("");
   const [inputB, setInputB] = useState("");
@@ -87,6 +89,10 @@ export default function DiscountCalculator() {
     if (mode === "final-price" && b >= a) return "Discount amount must be less than original price.";
     return "";
   }, [mode, inputA, inputB]);
+
+  useEffect(() => {
+    if (result && !error && Object.values(result).every(Number.isFinite)) recordSuccess("calculate");
+  }, [result, error, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -123,7 +129,7 @@ export default function DiscountCalculator() {
             id="disc-a"
             type="number"
             value={inputA}
-            onChange={(e) => setInputA(e.target.value)}
+            onChange={(e) => { markInteraction(); setInputA(e.target.value); }}
             placeholder={labels.aPlaceholder}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
@@ -143,7 +149,7 @@ export default function DiscountCalculator() {
             id="disc-b"
             type="number"
             value={inputB}
-            onChange={(e) => setInputB(e.target.value)}
+            onChange={(e) => { markInteraction(); setInputB(e.target.value); }}
             placeholder={labels.bPlaceholder}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{

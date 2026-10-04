@@ -1206,7 +1206,7 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Image Compressor — JPEG, PNG, WebP",
     metaDescription:
-      "Compress images online for free. Reduce JPEG, PNG, and WebP file sizes without quality loss — all in your browser with private client-side processing.",
+      "Re-encode JPEG, PNG and WebP images locally. Compare size and appearance; lossy settings can change quality and output may be larger.",
     usageSteps: [
       {
         title: "Upload Your Image",
@@ -1229,13 +1229,13 @@ export const TOOLS: Tool[] = [
         question:
           "How much can I reduce file size with this image compressor online?",
         answer:
-          "You can typically reduce image file sizes by 50 to 80 percent depending on the original content and quality setting. This image compressor online uses smart compression algorithms that minimize visible quality loss while dramatically reducing file size for faster page loads.",
+          "Savings depend on the image, output codec and quality setting. JPEG and WebP can trade image quality for size; PNG may grow. Compare the actual before and after sizes and inspect the image instead of relying on a fixed percentage.",
       },
       {
         question:
           "Is it safe to compress images with sensitive content using this tool?",
         answer:
-          "Absolutely — all compression happens entirely in your browser using Canvas and WebAssembly APIs. Your images never leave your device when you use this image compressor online, making it completely safe for confidential or personal photos.",
+          "The tool reads and re-encodes the selected image using browser Canvas APIs without sending it to a processing server. The page can still load analytics or advertising, and browser extensions or other device software are outside this tool's control. Use harmless files when verifying privacy.",
       },
     ],
     additionalContent: [
@@ -1379,9 +1379,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "pdf-compressor",
     name: "PDF Compressor",
-    description: "Reduce PDF file size by compressing images and content.",
+    description: "Rewrite a PDF locally and compare its before and after file sizes.",
     longDescription:
-      "Use this compress PDF online tool to reduce PDF file size directly in your browser. Choose compression settings, process everyday documents locally, and download a smaller PDF without uploading private files to a remote server.",
+      "Rewrite a PDF in your browser with pdf-lib and compare the resulting size. Object streams can reduce structural overhead; this tool does not downsample images or promise a smaller file. Keep the original and inspect the downloaded copy.",
     categorySlug: "pdf-tools",
     icon: "🗜️",
     featured: true,
@@ -1403,12 +1403,12 @@ export const TOOLS: Tool[] = [
           "Select the document you want to compress PDF online. The file is loaded in your browser and checked against size guardrails before processing begins.",
       },
       {
-        title: "Pick Compression Settings",
+        title: "Choose a Save Mode",
         content:
-          "Choose the compression level that balances smaller file size with readable quality. Image-heavy PDFs usually offer the largest savings.",
+          "Choose a save mode. Object streams may reduce structural overhead; batching changes processing work, not image quality. Already compressed scans may barely change or produce a larger file.",
       },
       {
-        title: "Download the Smaller PDF",
+        title: "Compare and Download",
         content:
           "Download the compressed PDF when processing finishes. The compress PDF online workflow stays local, so your document is not uploaded to a server.",
       },
@@ -1422,7 +1422,7 @@ export const TOOLS: Tool[] = [
       {
         question: "Why did my compressed PDF not get much smaller?",
         answer:
-          "Some PDFs are already optimized or mostly text-based, so there may be little redundant data to remove. Scanned PDFs and image-heavy files usually have more room for compression.",
+          "This tool rewrites PDF structure without downsampling images. Already optimized PDFs and compressed scans may shrink little, stay the same size or grow. Compare the sizes and inspect the result before replacing your original.",
       },
     ],
     additionalContent: [
@@ -1434,7 +1434,7 @@ export const TOOLS: Tool[] = [
       {
         heading: "Best Use Cases for PDF Compression",
         content:
-          "Use the tool when a PDF is too large for email, web forms, document portals, or storage limits. Results vary by file because PDFs with many images usually compress more than text-only documents.",
+          "Use the tool for a local attempt at reducing structural overhead before sharing a PDF. Results depend on the source structure; image-heavy scans often need a specialist downsampling workflow instead.",
       },
       {
         heading: "Supported PDF Limits",
@@ -2470,7 +2470,7 @@ export const TOOLS: Tool[] = [
     description:
       "Check if your title tags and meta descriptions meet recommended length limits.",
     longDescription:
-      "Paste your title and meta description to instantly check if they meet SEO best practice length limits. See the character count, pixel width estimate, and whether your snippet will be truncated in search results. Get recommendations for optimal lengths.",
+      "Check character counts and approximate pixel widths for a title and meta description. The indicators are editing guides; search engines can rewrite snippets and use different layouts, so this tool cannot predict truncation or guarantee a complete display.",
     categorySlug: "seo-tools",
     icon: "📏",
     featured: false,
@@ -2498,19 +2498,19 @@ export const TOOLS: Tool[] = [
       {
         title: "Optimize Your Meta Content",
         content:
-          "Adjust your title and description until the length indicators show green across all metrics. Properly optimized meta content ensures your search result snippets display fully without being truncated.",
+          "Use the indicators to edit concise, accurate text. A green indicator does not guarantee a complete snippet: query, device, font and search engine rewriting can change its display.",
       },
     ],
     faq: [
       {
         question: "How accurate is this SEO length checker?",
         answer:
-          "This SEO length checker measures both character count and approximate pixel width for accurate length analysis. It follows current search engine display guidelines to give you reliable recommendations for your meta content.",
+          "Character counts are direct measurements; pixel widths are estimates. The tool cannot reproduce every search layout or predict search engine rewriting. Treat the limits as editing guides.",
       },
       {
         question: "What are the ideal SEO title and description lengths?",
         answer:
-          "According to SEO best practices, titles should be 50 to 60 characters and descriptions should be 150 to 160 characters for optimal search result display without truncation.",
+          "The interface uses approximate editing ranges, not a search engine rule. Prioritize a clear title and useful description; actual display length varies and snippets can be rewritten.",
       },
     ],
   },
@@ -3288,9 +3288,9 @@ export const TOOLS: Tool[] = [
     slug: "grammar-checker",
     name: "Grammar Checker",
     description:
-      "Check text for common grammar issues, punctuation, and spelling errors.",
+      "Check English text for selected repeated-word, spacing and punctuation patterns.",
     longDescription:
-      "Paste your text and check for common grammar mistakes, punctuation errors, capitalization issues, and repeated words. The checker highlights potential issues and suggests corrections. Perfect for writers, students, and professionals who want clean, error-free content.",
+      "Apply a small set of English writing rules to find potential repetition, spacing, capitalization and usage issues. Review the suggestions manually. This heuristic checker cannot certify correct grammar or provide exhaustive spelling and context review.",
     categorySlug: "text-tools",
     icon: "\u2713",
     featured: true,
@@ -3303,7 +3303,7 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Grammar Checker - Free Online Writing Assistant",
     metaDescription:
-      "Use our free grammar checker online to find grammar mistakes, punctuation errors, and spelling issues. Clean, error-free writing in seconds.",
+      "Check selected English writing patterns locally. Review repetition, spacing and punctuation suggestions; this heuristic tool does not provide exhaustive proofreading.",
     usageSteps: [
       {
         title: "Enter Your Text",
@@ -3313,25 +3313,25 @@ export const TOOLS: Tool[] = [
       {
         title: "Review Grammar Suggestions",
         content:
-          "Review each detected issue with explanations and suggested corrections. This free grammar checker online identifies problems like subject-verb agreement, comma splices, run-on sentences, and misused words.",
+          "Review the flagged patterns and explanations. A rule can produce false positives or miss a real issue; check the surrounding meaning before editing.",
       },
       {
         title: "Apply Corrections",
         content:
-          "Click on suggestions to accept corrections or dismiss them if the original is intentional. Using a free grammar checker online before publishing helps produce professional, error-free content.",
+          "Edit the input text manually to apply useful suggestions, then check again. There are no accept or dismiss controls. Keep intentional wording and use human proofreading when accuracy matters.",
       },
     ],
     faq: [
       {
         question: "What errors can a free grammar checker online detect?",
         answer:
-          "A free grammar checker online detects subject-verb agreement issues, punctuation errors including missing commas and incorrect apostrophes, capitalization mistakes, run-on sentences, sentence fragments, commonly confused words, and duplicate words.",
+          "This checker flags selected repeated-word, spacing, capitalization, sentence-length and usage patterns in English. It does not perform complete spelling, syntactic or contextual analysis.",
       },
       {
         question:
           "Is a free grammar checker online as accurate as premium grammar tools?",
         answer:
-          "While premium tools like Grammarly offer more advanced style suggestions, a free grammar checker online catches the most common and critical errors that affect readability and professionalism — making it perfect for everyday writing needs.",
+          "This tool uses a limited set of deterministic rules. It can help with mechanical draft checks, but an unflagged passage is not proof of correctness. A context-aware assistant or human editor provides a different level of review.",
       },
     ],
     additionalContent: [
@@ -4209,7 +4209,7 @@ export const TOOLS: Tool[] = [
     name: "Random Number Generator",
     description: "Generate random numbers, dice rolls, and lottery numbers.",
     longDescription:
-      "Generate truly random numbers with customizable ranges and quantities. Use it for dice rolls, lottery number picking, random sampling, giveaways, or any situation needing unbiased random values. Choose from single random numbers, multiple unique numbers, or sorted results. Perfect for games, contests, statistics, and decision making.",
+      "Generate whole numbers using the browser's cryptographic random source with unbiased range sampling. Choose safe integer bounds spanning at most 2³² possible values and generate up to 1,000 numbers per batch. Choose unique values or allow duplicates, and sort or copy the results.",
     categorySlug: "calculators",
     icon: "🎲",
     featured: true,
@@ -4227,12 +4227,12 @@ export const TOOLS: Tool[] = [
       {
         title: "Set your range",
         content:
-          "Enter the minimum and maximum values for your random number range. The random number generator supports any range from simple 1-6 dice rolls to complex ranges for lottery numbers or statistical sampling.",
+          "Enter safe whole-number minimum and maximum bounds. The inclusive range can contain at most 2³² possible values. For a dice roll, choose 1 through 6.",
       },
       {
         title: "Choose how many numbers",
         content:
-          "Select how many random numbers to generate and whether they should be unique. The random number generator can produce a single number or multiple numbers at once, with or without duplicates.",
+          "Choose 1 to 1,000 results. For unique numbers, the requested count must fit in the range; invalid requests show an error instead of a partial result. These are application guardrails.",
       },
       {
         title: "Copy your results",
@@ -4242,9 +4242,9 @@ export const TOOLS: Tool[] = [
     ],
     faq: [
       {
-        question: "Is the random number generator truly random?",
+        question: "How are the random values generated?",
         answer:
-          "The random number generator uses JavaScript's cryptographic random number generator (Crypto.getRandomValues) which provides cryptographically strong random values suitable for applications requiring unbiased randomness.",
+          "The browser's Crypto.getRandomValues supplies cryptographically strong pseudorandom bytes. Rejection sampling avoids modulo bias within the supported range. This is not a physical true-random source or a lottery prediction tool.",
       },
       {
         question:
@@ -4580,6 +4580,6 @@ export const SITE = {
   domain: "freeonlinetoolsnest.com",
   url: "https://freeonlinetoolsnest.com",
   description:
-    "Free tools for study, assignments and everyday documents. No signup required; tool inputs are processed locally in your browser.",
-  tagline: "Free tools for study, assignments and everyday documents.",
+    "Free browser tools for writing, code, SEO, images, PDFs and calculations. No signup required; tool inputs are processed locally.",
+  tagline: "Free browser tools for writing, code and everyday tasks.",
 };

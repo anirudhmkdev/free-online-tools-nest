@@ -1,47 +1,17 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
-interface AgeResult {
-  years: number;
-  months: number;
-  weeks: number;
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
-
-function computeAge(birthDate: Date, toDate: Date): AgeResult {
-  let years = toDate.getFullYear() - birthDate.getFullYear();
-  let months = toDate.getMonth() - birthDate.getMonth();
-  let days = toDate.getDate() - birthDate.getDate();
-
-  if (days < 0) {
-    months--;
-    const prevMonth = new Date(toDate.getFullYear(), toDate.getMonth(), 0);
-    days += prevMonth.getDate();
-  }
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  const diffMs = toDate.getTime() - birthDate.getTime();
-  const weeks = Math.floor(diffMs / (7 * 86400000));
-  const totalDays = Math.floor(diffMs / 86400000);
-  const hours = Math.floor(diffMs / 3600000);
-  const minutes = Math.floor(diffMs / 60000);
-  const seconds = Math.floor(diffMs / 1000);
-
-  return { years, months, weeks: weeks - years * 52, days, hours, minutes, seconds };
-}
+import { computeAge, type AgeResult } from "../../helpers/age-calculator";
 
 export default function AgeCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [birthDate, setBirthDate] = useState("");
   const [toDate, setToDate] = useState(new Date().toISOString().split("T")[0]);
   const [result, setResult] = useState<AgeResult | null>(null);
   const [error, setError] = useState("");
 
   const calculate = useCallback(() => {
+    markInteraction();
     setError("");
     if (!birthDate) {
       setError("Please enter your date of birth.");
@@ -61,7 +31,8 @@ export default function AgeCalculator() {
       return;
     }
     setResult(computeAge(bd, td));
-  }, [birthDate, toDate]);
+    recordSuccess("calculate");
+  }, [birthDate, toDate, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -101,6 +72,8 @@ export default function AgeCalculator() {
           />
         </div>
       </div>
+
+      <p className="text-sm text-body">Calendar months use their last day when the birth day is missing. Weeks and days are the remainder after complete years and months.</p>
 
       <button
         type="button"

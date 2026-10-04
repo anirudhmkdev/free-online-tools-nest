@@ -1,6 +1,8 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 export default function BorderRadiusGenerator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [topLeft, setTopLeft] = useState(16);
   const [topRight, setTopRight] = useState(16);
   const [bottomRight, setBottomRight] = useState(16);
@@ -47,6 +49,10 @@ export default function BorderRadiusGenerator() {
     { label: "Bottom-Left", value: bottomLeft, set: setBottomLeft, id: "bl-radius" },
   ];
 
+  useEffect(() => {
+    if ([topLeft, topRight, bottomRight, bottomLeft].every(Number.isFinite)) recordSuccess("generate");
+  }, [topLeft, topRight, bottomRight, bottomLeft, uniform, recordSuccess]);
+
   return (
     <div className="space-y-6">
       {/* Live preview */}
@@ -71,6 +77,7 @@ export default function BorderRadiusGenerator() {
             type="checkbox"
             checked={uniform}
             onChange={(e) => {
+              if (e.target.value.trim()) markInteraction(); else clearInteraction();
               setUniform(e.target.checked);
               if (e.target.checked) {
                 setAll(topLeft);
@@ -98,6 +105,7 @@ export default function BorderRadiusGenerator() {
                 max={100}
                 value={uniform && corner.value !== topLeft ? topLeft : corner.value}
                 onChange={(e) => {
+              if (e.target.value.trim()) markInteraction(); else clearInteraction();
                   const val = Number(e.target.value);
                   if (uniform) {
                     handleUniformChange(val);
@@ -117,6 +125,7 @@ export default function BorderRadiusGenerator() {
                 max={100}
                 value={uniform ? topLeft : corner.value}
                 onChange={(e) => {
+              if (e.target.value.trim()) markInteraction(); else clearInteraction();
                   const val = clamp(parseInt(e.target.value) || 0);
                   if (uniform) {
                     handleUniformChange(val);

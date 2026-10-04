@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 /**
@@ -58,6 +59,7 @@ function generateSlug(
 }
 
 export default function SlugGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [charLimit, setCharLimit] = useState(0);
   const [removeSpecial, setRemoveSpecial] = useState(true);
@@ -85,8 +87,12 @@ export default function SlugGenerator() {
     return liveSlug.split("-").filter(Boolean).length;
   }, [liveSlug]);
 
+  useEffect(() => {
+    if (liveSlug.length > 0) recordSuccess("generate");
+  }, [liveSlug, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Input */}
       <div>
         <label htmlFor="slug-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

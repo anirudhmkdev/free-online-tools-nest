@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 interface Rule {
@@ -39,6 +41,7 @@ function createSitemap(): SitemapRef {
 }
 
 export default function RobotsTxtGenerator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [userAgent, setUserAgent] = useState("* (All robots)");
   const [customUserAgent, setCustomUserAgent] = useState("");
   const [rules, setRules] = useState<Rule[]>([createRule()]);
@@ -48,6 +51,7 @@ export default function RobotsTxtGenerator() {
   const [preset, setPreset] = useState("");
 
   const applyPreset = useCallback((name: string) => {
+    clearInteraction();
     setPreset(name);
     if (name === "standard") {
       setUserAgent("* (All robots)");
@@ -127,8 +131,12 @@ export default function RobotsTxtGenerator() {
     if (robotsTxt) handleCopy(robotsTxt);
   }, [handleCopy, robotsTxt]);
 
+  useEffect(() => {
+    if (effectiveUserAgent.trim().length > 0 && (!crawlDelay.trim() || (Number.isFinite(Number(crawlDelay)) && Number(crawlDelay) >= 0)) && sitemaps.every(s => !s.url.trim() || isAbsoluteHttpUrl(s.url))) recordSuccess("generate");
+  }, [robotsTxt, effectiveUserAgent, crawlDelay, sitemaps, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Presets */}
       <div className="flex flex-wrap gap-2">
         <span className="text-sm self-center" style={{ color: "var(--color-mute)" }}>Presets:</span>

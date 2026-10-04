@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -44,12 +45,14 @@ function generateParagraphs(count: number): string {
 type Mode = "paragraphs" | "sentences" | "words";
 
 export default function LoremIpsumGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [mode, setMode] = useState<Mode>("paragraphs");
   const [amount, setAmount] = useState(3);
   const [output, setOutput] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const generate = useCallback(() => {
+    markInteraction();
     let result = "";
     switch (mode) {
       case "paragraphs":
@@ -63,7 +66,8 @@ export default function LoremIpsumGenerator() {
         break;
     }
     setOutput(result);
-  }, [mode, amount]);
+    if (result.trim()) recordSuccess("generate");
+  }, [mode, amount, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">

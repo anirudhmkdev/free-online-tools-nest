@@ -3,6 +3,7 @@ import { getLocalizedCategories, getLocalizedTools } from "./localized";
 import { useTranslations } from "../i18n/utils";
 import type { Lang } from "../i18n/ui";
 import type { SearchEntry, SearchLabels } from "../helpers/search";
+import { getToolDiscoveryTier } from "./tool-discovery";
 
 const closeLabels: Record<Lang, string> = {
   en: "Close search",
@@ -20,6 +21,7 @@ export function buildSearchData(lang: Lang, includeKeywords = false) {
       description: tool.description,
       icon: tool.icon,
       url: `${prefix}/tools/${tool.slug}/`,
+      discoveryTier: getToolDiscoveryTier(tool.slug),
       ...(includeKeywords ? { keywords: tool.keywords } : {}),
     })),
     ...getLocalizedCategories(lang).map((category) => ({

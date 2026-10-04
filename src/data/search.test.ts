@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildSearchData } from "./search";
 import { TOOLS, CATEGORIES } from "./tools";
 import { LOCALIZED_TOOL_SLUGS, getLocalizedTools } from "./localized";
+import { getToolDiscoveryTier } from "./tool-discovery";
 import {
   findSearchEntries,
   serializeSearchData,
@@ -37,6 +38,7 @@ describe("compact search data", () => {
       entries.forEach((entry) =>
         expect(Object.keys(entry).sort()).toEqual([
           "description",
+          ...(entry.type === "tool" ? ["discoveryTier"] : []),
           "icon",
           "name",
           "type",
@@ -73,9 +75,9 @@ describe("compact search data", () => {
       const q = query.trim().toLowerCase();
       const expected = TOOLS.filter(
         (t) =>
-          t.name.toLowerCase().includes(q) ||
+          (q ? t.name.toLowerCase().includes(q) ||
           t.description.toLowerCase().includes(q) ||
-          t.keywords.some((k) => k.includes(q)),
+          t.keywords.some((k) => k.toLowerCase().includes(q)) : getToolDiscoveryTier(t.slug) === "primary"),
       ).slice(0, 5);
       expect(
         findSearchEntries(entries, query, {

@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { hasValidSchemaValues } from "../../helpers/tool-output-validity";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 interface SchemaField {
@@ -189,6 +191,7 @@ function buildSchema(type: string, values: Record<string, string>): object | nul
 }
 
 export default function SchemaMarkupGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [schemaType, setSchemaType] = useState("Article");
   const [values, setValues] = useState<Record<string, string>>({});
   const [copied, handleCopy] = useCopyToClipboard();
@@ -208,8 +211,12 @@ export default function SchemaMarkupGenerator() {
     if (jsonLd) handleCopy(jsonLd);
   }, [handleCopy, jsonLd]);
 
+  useEffect(() => {
+    if (jsonLd && hasValidSchemaValues(schemaType, values, currentType.fields.filter(field => field.required).map(field => field.key))) recordSuccess("generate");
+  }, [jsonLd, currentType, values, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="sm-schema-type" className="block text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
           Schema Type

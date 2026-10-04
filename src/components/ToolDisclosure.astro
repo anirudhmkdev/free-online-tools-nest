@@ -1,0 +1,27 @@
+---
+import { discoveryLabels } from "../data/discovery-labels";
+import type { Lang } from "../i18n/ui";
+
+interface Props { count: number; locale?: Lang; open?: boolean; id?: string; }
+const { count, locale = "en", open = false, id } = Astro.props;
+---
+
+<details id={id} class="tool-disclosure" open={open} data-secondary-tools>
+  <summary>
+    <span>{discoveryLabels[locale].more} <span class="disclosure-count">({count})</span></span>
+    <svg class="disclosure-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+  </summary>
+  <div class="disclosure-content"><slot /></div>
+</details>
+
+<style>
+  .tool-disclosure { margin-top: 32px; border-block: 1px solid var(--color-hairline); }
+  .tool-disclosure summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding: 16px 0; cursor: pointer; list-style: none; color: var(--color-ink); font-size: 16px; font-weight: 500; }
+  .tool-disclosure summary::-webkit-details-marker { display: none; }
+  .tool-disclosure summary:hover { color: var(--color-link); }
+  .tool-disclosure summary:focus-visible { outline: 2px solid var(--color-link); outline-offset: 4px; border-radius: 4px; }
+  .disclosure-count { color: var(--color-body); font-size: 14px; font-weight: 400; }
+  .disclosure-chevron { flex-shrink: 0; }
+  .tool-disclosure[open] .disclosure-chevron { transform: rotate(180deg); }
+  .disclosure-content { padding: 8px 0 24px; }
+</style>

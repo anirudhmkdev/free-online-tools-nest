@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -33,6 +34,7 @@ function generatePassword(length: number, charset: string): string {
 }
 
 export default function PasswordGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [length, setLength] = useState(16);
   const [useUpper, setUseUpper] = useState(true);
   const [useLower, setUseLower] = useState(true);
@@ -53,6 +55,7 @@ export default function PasswordGenerator() {
   }, []);
 
   const handleGenerate = useCallback(() => {
+    markInteraction();
     let charset = "";
     if (useUpper) charset += UPPER;
     if (useLower) charset += LOWER;
@@ -90,6 +93,7 @@ export default function PasswordGenerator() {
       generated.push(pwd);
     }
     setPasswords(generated);
+    if (generated.length > 0) recordSuccess("generate");
   }, [length, useUpper, useLower, useDigits, useSymbols, excludeAmbiguous, count]);
 
   const charSetsUsed = [useUpper, useLower, useDigits, useSymbols].filter(Boolean).length;
@@ -103,7 +107,7 @@ export default function PasswordGenerator() {
   const strength = passwords.length > 0 ? getStrength(length, Math.max(charSetSizes, 26)) : null;
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Length */}
       <div>
         <label htmlFor="pwd-length" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

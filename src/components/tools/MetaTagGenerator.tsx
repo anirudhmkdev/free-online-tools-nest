@@ -1,7 +1,10 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 export default function MetaTagGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [keywords, setKeywords] = useState("");
@@ -73,8 +76,12 @@ export default function MetaTagGenerator() {
     handleCopy(metaTags);
   }, [handleCopy, metaTags]);
 
+  useEffect(() => {
+    if ((title.trim() || description.trim() || keywords.trim() || ogImage.trim() || canonicalUrl.trim()) && (!ogImage || isAbsoluteHttpUrl(ogImage)) && (!canonicalUrl || isAbsoluteHttpUrl(canonicalUrl))) recordSuccess("generate");
+  }, [metaTags, title, description, keywords, ogImage, canonicalUrl, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left: Inputs */}
         <div className="space-y-4">

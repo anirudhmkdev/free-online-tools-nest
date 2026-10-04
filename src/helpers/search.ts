@@ -6,6 +6,7 @@ export interface SearchEntry {
   icon: string;
   url: string;
   keywords?: string[];
+  discoveryTier?: "primary" | "secondary";
 }
 
 export interface SearchLabels {
@@ -37,11 +38,11 @@ export function findSearchEntries(
     .filter(
       (entry) =>
         (!toolsOnly || entry.type === "tool") &&
-        (!q ||
+        (!q ? entry.type === "tool" && entry.discoveryTier !== "secondary" :
           entry.name.toLowerCase().includes(q) ||
           entry.description.toLowerCase().includes(q) ||
           (includeKeywords &&
-            entry.keywords?.some((keyword) => keyword.includes(q)))),
+            entry.keywords?.some((keyword) => keyword.toLowerCase().includes(q)))),
     )
     .slice(0, limit);
 }

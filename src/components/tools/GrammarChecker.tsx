@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 interface GrammarIssue {
@@ -212,23 +213,26 @@ function checkGrammar(text: string): { issues: GrammarIssue[]; categories: Categ
 }
 
 export default function GrammarChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [text, setText] = useState("");
   const [issues, setIssues] = useState<GrammarIssue[]>([]);
   const [categories, setCategories] = useState<CategoryCount[]>([]);
   const [checked, setChecked] = useState(false);
 
   const handleCheck = useCallback(() => {
+    markInteraction();
     if (!text.trim()) {
       setIssues([]);
       setCategories([]);
-      setChecked(true);
+      setChecked(false);
       return;
     }
     const result = checkGrammar(text);
     setIssues(result.issues);
     setCategories(result.categories);
+    recordSuccess("check");
     setChecked(true);
-  }, [text]);
+  }, [text, markInteraction, recordSuccess]);
 
   const totalIssues = issues.length;
 
@@ -246,7 +250,7 @@ export default function GrammarChecker() {
             setText(e.target.value);
             setChecked(false);
           }}
-          placeholder="Paste or type text here to check for grammar, spelling, and style issues..."
+          placeholder="Paste English text to review common pattern suggestions..."
           rows={8}
           className="w-full p-4 border rounded-lg text-base resize-y outline-none transition-colors duration-150"
           style={{
@@ -378,10 +382,10 @@ export default function GrammarChecker() {
             >
               <div className="text-xl mb-1">👍</div>
               <div className="text-sm font-medium" style={{ color: "#22c55e" }}>
-                No issues found!
+                No issues found by these checks.
               </div>
               <div className="text-xs mt-1" style={{ color: "var(--color-mute)" }}>
-                Your text looks clean.
+                These limited English pattern checks do not certify that your text is correct. Review it manually.
               </div>
             </div>
           )}
@@ -390,7 +394,7 @@ export default function GrammarChecker() {
 
       {!checked && (
         <div className="py-8 text-center text-sm" style={{ color: "var(--color-mute)" }}>
-          Enter text and click "Check Grammar" to scan for issues.
+          Enter English text and click "Check Grammar" to review common patterns.
         </div>
       )}
     </div>

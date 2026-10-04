@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useEffect, useRef, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_IMAGE_FILE_SIZE_BYTES } from "../../helpers/utils";
@@ -13,6 +14,8 @@ interface ImageStats {
 }
 
 export default function ImageCompressor() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [quality, setQuality] = useState<number>(0.8);
@@ -29,6 +32,7 @@ export default function ImageCompressor() {
 
   // Perform compression client-side
   const compressImage = useCallback(() => {
+    const revision = ++operationRevision.current;
     if (!originalImgRef.current || !imageFile) return;
 
     const img = originalImgRef.current;
@@ -59,7 +63,8 @@ export default function ImageCompressor() {
       // Convert canvas content to blob
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
+          if (revision !== operationRevision.current) return;
+          if (!blob || !blob.size) {
             setError("Compression failed. Unable to extract image blob.");
             setCompressing(false);
             return;
@@ -73,6 +78,7 @@ export default function ImageCompressor() {
           const blobUrl = URL.createObjectURL(blob);
           compressedSrcRef.current = blobUrl;
           setCompressedSrc(blobUrl);
+          recordSuccess("convert");
 
           setStats({
             name: imageFile.name,
@@ -93,7 +99,7 @@ export default function ImageCompressor() {
       setError(err instanceof Error ? err.message : "Failed to compress image.");
       setCompressing(false);
     }
-  }, [imageFile, quality, format, scaleWidth]);
+  }, [imageFile, quality, format, scaleWidth, recordSuccess]);
 
   // Clean up object URLs on unmount
   useEffect(() => {
@@ -117,6 +123,8 @@ export default function ImageCompressor() {
   };
 
   const processFile = (file: File) => {
+    operationRevision.current++;
+    clearInteraction();
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image file.");
       return;
@@ -129,6 +137,7 @@ export default function ImageCompressor() {
     }
 
     setError("");
+    markInteraction();
     setImageFile(file);
 
     // Revoke previous URLs
@@ -168,6 +177,8 @@ export default function ImageCompressor() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (compressedSrc) URL.revokeObjectURL(compressedSrc);
     setImageSrc("");
@@ -180,6 +191,8 @@ export default function ImageCompressor() {
   const savingsPercentage = stats
     ? Math.max(0, Math.round(((stats.originalSize - stats.compressedSize) / stats.originalSize) * 100))
     : 0;
+
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
 
   return (
     <div className="space-y-6">

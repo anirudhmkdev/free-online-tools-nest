@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback, useMemo } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -58,6 +59,7 @@ function computeDiff(left: string[], right: string[]): DiffLine[] {
 }
 
 export default function TextDiff() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [leftText, setLeftText] = useState("");
   const [rightText, setRightText] = useState("");
   const [diffResult, setDiffResult] = useState<DiffLine[] | null>(null);
@@ -78,6 +80,7 @@ export default function TextDiff() {
   }, [diffResult]);
 
   const handleCompare = useCallback(() => {
+    markInteraction();
     const leftLines = leftText.split("\n");
     const rightLines = rightText.split("\n");
     // Remove trailing empty line if the text doesn't end with a newline
@@ -90,6 +93,7 @@ export default function TextDiff() {
     const diff = computeDiff(leftLines, rightLines);
     setDiffResult(diff);
     setShowDiff(true);
+    if (leftText.trim() || rightText.trim()) recordSuccess("analyze");
   }, [leftText, rightText]);
 
   const diffText = useMemo(() => {
@@ -106,7 +110,7 @@ export default function TextDiff() {
   }, [diffResult]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Inputs */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div>
@@ -164,7 +168,7 @@ export default function TextDiff() {
         {diffResult && (
           <button
             type="button"
-            onClick={() => { setLeftText(""); setRightText(""); setDiffResult(null); setShowDiff(false); }}
+            onClick={() => { clearInteraction(); setLeftText(""); setRightText(""); setDiffResult(null); setShowDiff(false); }}
             className="btn-secondary btn-sm"
             style={{ borderColor: "var(--color-hairline)", color: "var(--color-ink)", backgroundColor: "var(--color-canvas)" }}
           >

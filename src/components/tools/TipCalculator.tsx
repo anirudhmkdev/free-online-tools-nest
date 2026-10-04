@@ -1,8 +1,10 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 const PRESET_PERCENTS = [10, 15, 18, 20, 25];
 
 export default function TipCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [bill, setBill] = useState("");
   const [tipPercent, setTipPercent] = useState(15);
   const [customTip, setCustomTip] = useState("");
@@ -33,8 +35,12 @@ export default function TipCalculator() {
     };
   }, [bill, tipPercent, customTip, people]);
 
+  useEffect(() => {
+    if (result && Object.values(result).every(Number.isFinite) && Number.isInteger(Number(people))) recordSuccess("calculate");
+  }, [result, people, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Bill amount */}
       <div>
         <label htmlFor="bill-amount" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

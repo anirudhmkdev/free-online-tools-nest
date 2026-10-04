@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 const FONT_WEIGHT = 700;
 const FONT_SIZE_PX = 20;
@@ -37,6 +38,7 @@ function getDescStatus(chars: number): { label: string; color: string } {
 }
 
 export default function SeoLengthChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -57,8 +59,12 @@ export default function SeoLengthChecker() {
     return description.length > 160 ? description.slice(0, 157) + "..." : description;
   }, [description]);
 
+  useEffect(() => {
+    if (title.trim().length > 0 || description.trim().length > 0) recordSuccess("check");
+  }, [title, description, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Title */}
       <div>
         <label htmlFor="slc-title" className="block text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>

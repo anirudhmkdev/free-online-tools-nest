@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 type Base = "binary" | "decimal" | "hex" | "octal";
@@ -33,6 +34,7 @@ function parseValue(value: string, base: Base): number | null {
 }
 
 export default function BinaryConverter() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [base, setBase] = useState<Base>("decimal");
   const [copiedLabel, setCopiedLabel] = useState<string | null>(null);
@@ -68,6 +70,10 @@ export default function BinaryConverter() {
     }
   }, []);
 
+  useEffect(() => {
+    if (input.trim() && num !== null && Number.isSafeInteger(num)) recordSuccess("convert");
+  }, [input, num, recordSuccess]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-3">
@@ -79,7 +85,7 @@ export default function BinaryConverter() {
             id="bin-input"
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { markInteraction(); setInput(e.target.value); }}
             placeholder={base === "decimal" ? "42" : base === "binary" ? "101010" : base === "hex" ? "2A" : "52"}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none font-mono"
             style={{

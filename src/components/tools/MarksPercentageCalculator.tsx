@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState } from "react";
 import {
   calculateMarks,
@@ -11,6 +12,7 @@ import CalculationResult, {
 } from "./shared/CalculationResult";
 
 export default function MarksPercentageCalculator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [rows, setRows] = useState([{ obtained: "", maximum: "" }]);
   const [useGrades, setUseGrades] = useState(false);
   const [thresholds, setThresholds] = useState([{ label: "", minimum: "" }]);
@@ -29,6 +31,7 @@ export default function MarksPercentageCalculator() {
         onEdit={clear}
         onSubmit={(e) => {
           e.preventDefault();
+          markInteraction();
           clear();
           try {
             setResult(
@@ -51,6 +54,7 @@ export default function MarksPercentageCalculator() {
                   : [],
               ),
             );
+            recordSuccess("calculate");
           } catch (err) {
             setError((err as Error).message);
           }
@@ -200,6 +204,7 @@ export default function MarksPercentageCalculator() {
             type="button"
             className="btn-secondary"
             onClick={() => {
+              clearInteraction();
               setRows([
                 { obtained: "80", maximum: "100" },
                 { obtained: "45", maximum: "50" },

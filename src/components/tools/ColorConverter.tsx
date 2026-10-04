@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback, useEffect } from "react";
 
 /**
@@ -65,6 +66,7 @@ function hslToRgb(h: number, s: number, l: number): [number, number, number] {
 type InputFormat = "hex" | "rgb" | "hsl";
 
 export default function ColorConverter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [format, setFormat] = useState<InputFormat>("hex");
   const [hexVal, setHexVal] = useState("#0070f3");
   const [rgbR, setRgbR] = useState(0);
@@ -103,6 +105,7 @@ export default function ColorConverter() {
   }, []);
 
   const handleHexChange = (val: string) => {
+    markInteraction();
     setHexVal(val);
     if (/^#[0-9a-f]{6}$/i.test(val)) {
       syncFromHex(val);
@@ -123,6 +126,10 @@ export default function ColorConverter() {
   const hexString = hexVal.toUpperCase();
   const rgbString = `rgb(${rgbR}, ${rgbG}, ${rgbB})`;
   const hslString = `hsl(${hslH}, ${hslS}%, ${hslL}%)`;
+
+  useEffect(() => {
+    if (/^#[0-9a-f]{6}$/i.test(hexVal) && [rgbR, rgbG, rgbB, hslH, hslS, hslL].every(Number.isFinite)) recordSuccess("convert");
+  }, [hexVal, rgbR, rgbG, rgbB, hslH, hslS, hslL, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -205,7 +212,7 @@ export default function ColorConverter() {
                 min={0}
                 max={255}
                 value={ch.value}
-                onChange={(e) => ch.set(Math.min(255, Math.max(0, parseInt(e.target.value) || 0)))}
+                onChange={(e) => { if (e.target.value.trim()) markInteraction(); else clearInteraction(); ch.set(Math.min(255, Math.max(0, parseInt(e.target.value) || 0))); }}
                 className="w-full h-12 px-4 border rounded-lg text-base outline-none"
                 style={{
                   backgroundColor: "var(--color-canvas-soft)",
@@ -235,7 +242,7 @@ export default function ColorConverter() {
                 min={0}
                 max={ch.max}
                 value={ch.value}
-                onChange={(e) => ch.set(Math.min(ch.max, Math.max(0, parseInt(e.target.value) || 0)))}
+                onChange={(e) => { if (e.target.value.trim()) markInteraction(); else clearInteraction(); ch.set(Math.min(ch.max, Math.max(0, parseInt(e.target.value) || 0))); }}
                 className="w-full h-12 px-4 border rounded-lg text-base outline-none"
                 style={{
                   backgroundColor: "var(--color-canvas-soft)",

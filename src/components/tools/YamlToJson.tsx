@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -100,12 +101,14 @@ function parseScalar(value: string): string | number | boolean | null {
 }
 
 export default function YamlToJson() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const convert = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -115,6 +118,7 @@ export default function YamlToJson() {
       const parsed = parseYaml(input);
       setOutput(JSON.stringify(parsed, null, 2));
       setError("");
+      recordSuccess("convert");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Invalid YAML";
       setError(msg);
@@ -123,7 +127,7 @@ export default function YamlToJson() {
   }, [input]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="yaml-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           YAML Input

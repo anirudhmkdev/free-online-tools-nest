@@ -1,121 +1,43 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
+import { formatHtmlNodes } from "../../helpers/html-formatting";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 export default function HtmlFormatter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [indentSize, setIndentSize] = useState("2");
   const [error, setError] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
-  const formatHtmlString = useCallback((htmlStr: string, indentVal: string) => {
+  const processHtmlString = useCallback((htmlStr: string, indentVal: string, minify = false) => {
+    markInteraction();
     if (!htmlStr.trim()) {
       setOutput("");
       setError("");
       return;
     }
-
     try {
-      const indentChar = indentVal === "tab" ? "\t" : " ".repeat(parseInt(indentVal, 10));
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(htmlStr, "text/html");
-
-      // Check parser errors
-      const parserError = doc.querySelector("parsererror");
-      if (parserError) {
-        throw new Error("Invalid HTML syntax or parser error.");
-      }
-
-      const selfClosing = [
-        "area", "base", "br", "col", "embed", "hr", "img", "input",
-        "link", "meta", "param", "source", "track", "wbr"
-      ];
-
-      const formatNode = (node: Node, depth: number): string => {
-        const indent = indentChar.repeat(depth);
-
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          const el = node as Element;
-          const tagName = el.tagName.toLowerCase();
-
-          // Build attributes
-          let attrs = "";
-          for (let i = 0; i < el.attributes.length; i++) {
-            const attr = el.attributes[i];
-            attrs += ` ${attr.name}="${attr.value}"`;
-          }
-
-          if (selfClosing.includes(tagName)) {
-            return `${indent}<${tagName}${attrs}>\n`;
-          }
-
-          const children = Array.from(node.childNodes);
-          const hasElements = children.some(c => c.nodeType === Node.ELEMENT_NODE);
-
-          if (hasElements) {
-            let inner = "";
-            children.forEach(child => {
-              inner += formatNode(child, depth + 1);
-            });
-            return `${indent}<${tagName}${attrs}>\n${inner}${indent}</${tagName}>\n`;
-          } else {
-            const textContent = el.textContent?.trim() || "";
-            if (textContent) {
-              return `${indent}<${tagName}${attrs}>${textContent}</${tagName}>\n`;
-            } else {
-              return `${indent}<${tagName}${attrs}></${tagName}>\n`;
-            }
-          }
-        } else if (node.nodeType === Node.TEXT_NODE) {
-          const text = node.textContent?.trim() || "";
-          return text ? `${indent}${text}\n` : "";
-        } else if (node.nodeType === Node.COMMENT_NODE) {
-          const comment = node.textContent?.trim() || "";
-          return `${indent}<!-- ${comment} -->\n`;
-        }
-        return "";
-      };
-
-      let formatted = "";
-      const isFullDoc = /<html/i.test(htmlStr) || /<body/i.test(htmlStr) || /<head/i.test(htmlStr);
-
-      if (isFullDoc) {
-        formatted = formatNode(doc.documentElement, 0);
-      } else {
-        const bodyChildren = Array.from(doc.body.childNodes);
-        bodyChildren.forEach(child => {
-          formatted += formatNode(child, 0);
-        });
-      }
-
-      setOutput(formatted.trim());
+      const indent = indentVal === "tab" ? "\t" : " ".repeat(parseInt(indentVal, 10));
+      const doc = new DOMParser().parseFromString(htmlStr, "text/html");
+      const fullDocument = /<(?:html|body|head)\b/i.test(htmlStr);
+      const nodes = fullDocument
+        ? [doc.doctype, doc.documentElement].filter((node): node is DocumentType | HTMLElement => Boolean(node))
+        : [...Array.from(doc.head.childNodes), ...Array.from(doc.body.childNodes)];
+      const formatted = formatHtmlNodes(nodes, indent, minify);
+      setOutput(formatted);
       setError("");
+      if (formatted) recordSuccess("format");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to format HTML.");
       setOutput("");
     }
-  }, []);
-
-  const minifyHtmlString = useCallback((htmlStr: string) => {
-    if (!htmlStr.trim()) {
-      setOutput("");
-      setError("");
-      return;
-    }
-    // Remove comments and collapse whitespaces
-    const minified = htmlStr
-      .replace(/<!--[\s\S]*?-->/g, "")
-      .replace(/\s+/g, " ")
-      .replace(/>\s+</g, "><")
-      .trim();
-    setOutput(minified);
-    setError("");
-  }, []);
-
-
+  }, [markInteraction, recordSuccess]);
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setOutput("");
     setError("");
@@ -213,7 +135,7 @@ export default function HtmlFormatter() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => formatHtmlString(input, indentSize)}
+              onClick={() => processHtmlString(input, indentSize)}
               className="btn-primary btn-sm"
               style={{ backgroundColor: "var(--color-primary)", color: "var(--color-on-primary)" }}
             >
@@ -221,7 +143,7 @@ export default function HtmlFormatter() {
             </button>
             <button
               type="button"
-              onClick={() => minifyHtmlString(input)}
+              onClick={() => processHtmlString(input, indentSize, true)}
               className="px-3 py-1.5 text-xs font-medium rounded-md transition-colors duration-150 border"
               style={{
                 backgroundColor: "var(--color-canvas)",

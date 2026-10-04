@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 const STOP_WORDS: Set<string> = new Set([
@@ -31,7 +32,7 @@ interface ScoredSentence {
   score: number;
 }
 
-function summarize(text: string, sentenceCount: number): ScoredSentence[] {
+export function summarize(text: string, sentenceCount: number): ScoredSentence[] {
   const sentences = splitSentences(text);
   if (sentences.length === 0) return [];
 
@@ -57,27 +58,24 @@ function summarize(text: string, sentenceCount: number): ScoredSentence[] {
   const topN = [...scored]
     .sort((a, b) => b.score - a.score)
     .slice(0, sentenceCount);
-  const topSet = new Set(topN.map((s) => s.text));
-
-  return scored
-    .filter((s) => topSet.has(s.text))
-    .sort((a, b) => {
-      const ai = scored.indexOf(a);
-      const bi = scored.indexOf(b);
-      return ai - bi;
-    });
+  // Select occurrences, so repeated sentence text cannot expand the requested count.
+  const topSet = new Set(topN);
+  return scored.filter((sentence) => topSet.has(sentence));
 }
 
 export default function TextSummarizer() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [summary, setSummary] = useState<ScoredSentence[]>([]);
   const [sentenceCount, setSentenceCount] = useState(6);
   const [copied, setCopied] = useState(false);
 
   const handleSummarize = useCallback(() => {
+    markInteraction();
     if (!input.trim()) return;
     const result = summarize(input, sentenceCount);
     setSummary(result);
+    if (result.length > 0) recordSuccess("analyze");
   }, [input, sentenceCount]);
 
   const handleCopy = useCallback(() => {
@@ -94,7 +92,7 @@ export default function TextSummarizer() {
     inputWords > 0 ? Math.round((1 - summaryWords / inputWords) * 100) : 0;
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Input */}
       <div>
         <label
