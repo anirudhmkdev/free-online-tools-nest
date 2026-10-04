@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 function hexToRgb(hex: string): [number, number, number] | null {
   const clean = hex.replace(/^#/, "");
@@ -127,6 +128,7 @@ function generatePalette(hex: string, type: PaletteType): string[] {
 }
 
 export default function ColorPaletteGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [baseColor, setBaseColor] = useState("#0070f3");
   const [hexInput, setHexInput] = useState("#0070f3");
   const [paletteType, setPaletteType] = useState<PaletteType>("monochromatic");
@@ -136,6 +138,7 @@ export default function ColorPaletteGenerator() {
   const palette = useMemo(() => generatePalette(baseColor, paletteType), [baseColor, paletteType]);
 
   const handleColorChange = (hex: string) => {
+    markInteraction();
     setHexInput(hex);
     if (/^#[0-9a-f]{6}$/i.test(hex)) {
       setBaseColor(hex);
@@ -159,6 +162,10 @@ export default function ColorPaletteGenerator() {
       setTimeout(() => setCopiedAll(false), 2000);
     } catch { /* ignore */ }
   };
+
+  useEffect(() => {
+    if (/^#[0-9a-f]{6}$/i.test(hexInput) && palette.length > 0) recordSuccess("generate");
+  }, [hexInput, palette, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -203,7 +210,7 @@ export default function ColorPaletteGenerator() {
             <button
               key={t.value}
               type="button"
-              onClick={() => setPaletteType(t.value)}
+              onClick={() => { markInteraction(); setPaletteType(t.value); }}
               className="px-3 py-1.5 text-sm rounded-full border transition-all duration-150"
               style={{
                 backgroundColor: paletteType === t.value ? "var(--color-primary)" : "var(--color-canvas)",

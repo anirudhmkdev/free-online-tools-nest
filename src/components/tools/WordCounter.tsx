@@ -1,9 +1,11 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 /**
  * WordCounter — counts words, characters, sentences, paragraphs, and reading time.
  */
 export default function WordCounter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [text, setText] = useState("");
 
   const s = useMemo(() => {
@@ -21,8 +23,12 @@ export default function WordCounter() {
     return { words, characters, charsNoSpaces, sentences, paragraphs, readingTime };
   }, [text]);
 
+  useEffect(() => {
+    if (text.trim().length > 0 && s.words > 0) recordSuccess("analyze");
+  }, [text, s, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="wc-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Enter your text
@@ -73,7 +79,7 @@ export default function WordCounter() {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => setText("")}
+          onClick={() => { clearInteraction(); setText(""); }}
           className="btn-secondary btn-sm"
           style={{ borderColor: "var(--color-hairline)", color: "var(--color-ink)", backgroundColor: "var(--color-canvas)" }}
         >

@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useRef, useCallback, useEffect } from "react";
 
 type FilterPreset = "original" | "grayscale" | "sepia" | "invert" | "blur";
@@ -17,6 +18,8 @@ const FILTER_PRESETS: { key: FilterPreset; label: string }[] = [
 ];
 
 export default function ImageFilter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterPreset>("original");
@@ -33,11 +36,14 @@ export default function ImageFilter() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const processFile = (file: File) => {
+    operationRevision.current++;
+    clearInteraction();
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image file.");
       return;
     }
     setError("");
+    markInteraction();
     setImageFile(file);
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (filteredSrcRef.current) {
@@ -91,6 +97,7 @@ export default function ImageFilter() {
 
   // Apply filter via canvas
   const applyFilter = useCallback(() => {
+    const revision = ++operationRevision.current;
     if (!imgRef.current || !imageFile) {
       setError("No image loaded.");
       return;
@@ -116,7 +123,8 @@ export default function ImageFilter() {
 
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
+          if (revision !== operationRevision.current) return;
+          if (!blob || !blob.size) {
             setError("Failed to apply filter.");
             return;
           }
@@ -126,13 +134,14 @@ export default function ImageFilter() {
           const blobUrl = URL.createObjectURL(blob);
           filteredSrcRef.current = blobUrl;
           setFilteredSrc(blobUrl);
+          recordSuccess("convert");
         },
         "image/png"
       );
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Filter application failed.");
     }
-  }, [imageFile, activeFilter, values, buildFilterString]);
+  }, [imageFile, activeFilter, values, buildFilterString, recordSuccess]);
 
   // Re-apply whenever filter or values change
   useEffect(() => {
@@ -146,6 +155,8 @@ export default function ImageFilter() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (filteredSrcRef.current) {
       URL.revokeObjectURL(filteredSrcRef.current);
@@ -169,16 +180,17 @@ export default function ImageFilter() {
     link.click();
   };
 
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
+
   return (
     <div className="space-y-6">
       {!imageSrc && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("filter-file-input")?.click()}
         >
           <span className="text-4xl mb-4">🎨</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -189,9 +201,10 @@ export default function ImageFilter() {
           </p>
           <input
             id="filter-file-input"
+            aria-label="Choose an image"
             type="file"
             accept="image/*"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

@@ -1,0 +1,162 @@
+{
+  "mainCommit": "d20c1a7a3edfbd2f2859ee70c2329ab4fe3f1db1",
+  "featureCommit": "21e7f0f512a8a229039bfcffc3e1355e520e43f3",
+  "reviewDate": "2026-10-04",
+  "scope": "User-authorized merge of existing main quality repairs and demand discovery; original evidence, routes, indexing, canonicals and advertising preserved",
+  "pages": {
+    "/blog/10-free-online-tools-2026/": {
+      "reason": "Preserve main reviewed article rewrite with the demand editorial header",
+      "signals": {
+        "ownedTextHash": "374ba950e13fa41fe521bbcd3663e4dca42646ac7af6bea750124d87c4ca5a76"
+      }
+    },
+    "/blog/free-online-tools-guide-2026/": {
+      "reason": "Preserve main reviewed article rewrite with the demand editorial header",
+      "signals": {
+        "ownedTextHash": "37c55dd31e5bb90944e197eb0e121468ac323629477ce0d7f9da065e6d446278"
+      }
+    },
+    "/categories/pdf-tools/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "9cfe1576f6278d45e9c0a56ed5ac1ed3850421dcd8dc2b4edc46cc2c1b82337f"
+      }
+    },
+    "/categories/text-tools/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "d1dc6c1acbf4636c9e324d46bb116afab24777dbe2251dcdec93006592231cac"
+      }
+    },
+    "/es/categories/text-tools/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "1e8d9a2d8eb1c5e298b04f8d010a148710dde6bacd21377682b8231b0f55fc9c"
+      }
+    },
+    "/es/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "a94e9c1a27d5fd220327ee71e5825ede40ba5986f0916dbd6c4d1a26c6902e7c"
+      }
+    },
+    "/es/tools/character-counter/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "e2a15001af640b60f2045715b9cc5f2666f344e00edd5512b996d730f8132a26"
+      }
+    },
+    "/es/tools/grammar-checker/": {
+      "reason": "Preserve main corrected grammar capabilities and translated limits with telemetry",
+      "signals": {
+        "description": "Comprueba repeticiones y algunas erratas en inglés, localmente. Conoce las limitaciones y revisa cada sugerencia.",
+        "ownedTextHash": "f852d4a2eea2c6de8f5791237679a8e17027ea87fda40274d416f794e930cae4"
+      }
+    },
+    "/es/tools/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "56521a199ec38628567e9ec07a005442ce238bc0cbec5f3c2bee50835c0db1ab"
+      }
+    },
+    "/es/tools/pdf-compressor/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "c37ef43127a0bbd1533e94a90292a766c7acbe9d4674eb348859dc5774e4069a"
+      }
+    },
+    "/es/tools/pdf-merger/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "8a9c648fb77f55bb406eb8fac43726717ea4fce0148b1a897d269a3f8ece20ae"
+      }
+    },
+    "/es/tools/word-cloud-generator/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "738c11dd6c84085d69f63e33afafcae6c8c0ecc0082dcf45fa6e71446d542046"
+      }
+    },
+    "/es/tools/word-counter/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "e8e2dc1ceee223a139696a23577ea45fb934e8c00b1948dd52a841026919aca5"
+      }
+    },
+    "/hi/categories/text-tools/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "c33fa2e1ab36e27f8d67e512a0e986fa07eb7ef3d057102bc4361e72177b35b6"
+      }
+    },
+    "/hi/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "cff4340793f468513df9daa8980a75acc097144e4fcba0970cbe86867ea99ee3"
+      }
+    },
+    "/hi/tools/character-counter/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "c98220e029be285e4fb9e0c3451d62223c86c55b89eebbb9ba514a0b1995569b"
+      }
+    },
+    "/hi/tools/grammar-checker/": {
+      "reason": "Preserve main corrected grammar capabilities and translated limits with telemetry",
+      "signals": {
+        "description": "अंग्रेज़ी पाठ के दोहराव और कुछ वर्तनी त्रुटियाँ ब्राउज़र में जाँचें। सुझाव गलत हो सकते हैं; पूरी जाँच का दावा नहीं।",
+        "ownedTextHash": "8dc0662d4417e98f040c996aae5bb420d5e499116217b5aa856de5b9b691ae34"
+      }
+    },
+    "/hi/tools/": {
+      "reason": "Combine demand discovery tiers with main reviewed tool descriptions",
+      "signals": {
+        "ownedTextHash": "20160cf37b547cb2a8d86e9eb77b185d2b409e8d14bc87fc048a7c8f4a05b10e"
+      }
+    },
+    "/hi/tools/pdf-compressor/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "fcbdb1a798ef345260acd8690e76f1fc4861096402a6f2eafb2b5fe0db7c61f2"
+      }
+    },
+    "/hi/tools/pdf-merger/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "8475074dc4c96f9fdc0e2260df584a5fa40d41b73013c94bba48c6043195ff1f"
+      }
+    },
+    "/hi/tools/word-cloud-generator/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "168bf34f50540c7b5e3726b5773af846febaa6e31c771264d274eed0e49b49f4"
+      }
+    },
+    "/hi/tools/word-counter/": {
+      "reason": "Combine main reviewed tool quality copy and dossiers with demand telemetry and guide links",
+      "signals": {
+        "ownedTextHash": "7b1a5620565b9dd691dac7cf1ab4000cbd6ab0fa33624cbd76e1309edf1079e9"
+      }
+    },
+    "/tools/seo-length-checker/": {
+      "reason": "Preserve main rough snippet estimates and guide labels with telemetry",
+      "signals": {
+        "ownedTextHash": "32bb07cdc0b2b819013efd10a27ae0c4491660e2a862462a4e24ac326edde3f4"
+      }
+    }
+  },
+  "sources": {
+    "src/data/tools.ts": {
+      "reason": "Combine preserved main reviewed quality copy and evidence with demand discovery corrections and guide reviews",
+      "hash": "f037134a796bc4518e14f7351f01d1fb94d886b8769054b27a67e7b648327cce"
+    },
+    "src/data/tool-quality.ts": {
+      "reason": "Combine preserved main reviewed quality copy and evidence with demand discovery corrections and guide reviews",
+      "hash": "e13a9e0eedcf2a26cfe995642fe92c39435d6da95bdb95ca338f7880b1a34e36"
+    },
+    "src/data/localized.ts": {
+      "reason": "Combine preserved main reviewed quality copy and evidence with demand discovery corrections and guide reviews",
+      "hash": "2bf3e9d490e07efc402f9dbf0b7ddf75c95e9c556dc64571e6916ab3fbfa6977"
+    }
+  }
+}

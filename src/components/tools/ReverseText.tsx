@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 function reverseChars(text: string): string {
@@ -18,6 +19,7 @@ function reverseBoth(text: string): string {
 }
 
 export default function ReverseText() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [text, setText] = useState("");
   const [copiedChar, handleCopyChar] = useCopyToClipboard();
   const [copiedWords, handleCopyWords] = useCopyToClipboard();
@@ -27,8 +29,12 @@ export default function ReverseText() {
   const resultWords = useMemo(() => reverseWords(text), [text]);
   const resultBoth = useMemo(() => reverseBoth(text), [text]);
 
+  useEffect(() => {
+    if (text.trim().length > 0 && resultChar.length > 0) recordSuccess("convert");
+  }, [text, resultChar, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="reverse-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Enter text to reverse

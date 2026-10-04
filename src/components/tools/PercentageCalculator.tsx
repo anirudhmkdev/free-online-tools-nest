@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 /**
@@ -18,6 +19,7 @@ const MODES: { key: CalcMode; label: string; desc: string }[] = [
 ];
 
 export default function PercentageCalculator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [error, setError] = useState("");
   const [formula, setFormula] = useState("");
   const [mode, setMode] = useState<CalcMode>("of");
@@ -26,13 +28,15 @@ export default function PercentageCalculator() {
   const [result, setResult] = useState<string | null>(null);
 
   const calculate = useCallback(() => {
+    markInteraction();
     setResult(null); setFormula(""); setError("");
     try {
       const { value, formula } = calculatePercentage(mode, a, b);
       setResult(Number.isInteger(value) ? value.toString() : value.toFixed(4));
       setFormula(formula);
+      recordSuccess("calculate");
     } catch (error) { setError(error instanceof Error ? error.message : "Unable to calculate."); }
-  }, [mode, a, b]);
+  }, [mode, a, b, markInteraction, recordSuccess]);
 
   const getLabels = () => {
     switch (mode) {
@@ -45,14 +49,14 @@ export default function PercentageCalculator() {
   const labels = getLabels();
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Mode selector */}
       <div className="flex flex-wrap gap-2">
         {MODES.map((m) => (
           <button
             key={m.key}
             type="button"
-            onClick={() => { setMode(m.key); setResult(null); setFormula(""); setError(""); }}
+            onClick={() => { clearInteraction(); setMode(m.key); setResult(null); setFormula(""); setError(""); }}
             className="px-4 py-2 text-sm rounded-full border transition-all duration-150"
             style={{
               backgroundColor: mode === m.key ? "var(--color-primary)" : "var(--color-canvas)",

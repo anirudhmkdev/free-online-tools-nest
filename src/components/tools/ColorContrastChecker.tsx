@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 function linearize(channel: number): number {
   const c = channel / 255;
@@ -14,7 +15,7 @@ function relativeLuminance(hex: string): number {
   return 0.2126 * linearize(r) + 0.7152 * linearize(g) + 0.0722 * linearize(b);
 }
 
-function contrastRatio(fgHex: string, bgHex: string): number {
+export function contrastRatio(fgHex: string, bgHex: string): number {
   const fg = relativeLuminance(fgHex);
   const bg = relativeLuminance(bgHex);
   const lighter = Math.max(fg, bg);
@@ -32,7 +33,7 @@ interface CheckResult {
   pass: boolean;
 }
 
-function getChecks(ratio: number): CheckResult[] {
+export function getChecks(ratio: number): CheckResult[] {
   return [
     { label: "AA Normal Text", threshold: 4.5, pass: ratio >= 4.5 },
     { label: "AA Large Text", threshold: 3, pass: ratio >= 3 },
@@ -59,6 +60,7 @@ function suggestAdjustment(
 }
 
 export default function ColorContrastChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [fgColor, setFgColor] = useState("#171717");
   const [bgColor, setBgColor] = useState("#ffffff");
   const [fgHexInput, setFgHexInput] = useState("#171717");
@@ -66,7 +68,7 @@ export default function ColorContrastChecker() {
 
   const ratio = useMemo(() => {
     if (!isValidHex(fgColor) || !isValidHex(bgColor)) return 0;
-    return Math.round(contrastRatio(fgColor, bgColor) * 100) / 100;
+    return contrastRatio(fgColor, bgColor);
   }, [fgColor, bgColor]);
 
   const checks = useMemo(() => getChecks(ratio), [ratio]);
@@ -79,16 +81,19 @@ export default function ColorContrastChecker() {
   const passCount = useMemo(() => checks.filter((c) => c.pass).length, [checks]);
 
   const handleFgChange = (hex: string) => {
+    markInteraction();
     setFgHexInput(hex);
     if (isValidHex(hex)) setFgColor(hex);
   };
 
   const handleBgChange = (hex: string) => {
+    markInteraction();
     setBgHexInput(hex);
     if (isValidHex(hex)) setBgColor(hex);
   };
 
   const swapColors = () => {
+    markInteraction();
     const tmpFg = fgColor;
     const tmpBg = bgColor;
     setFgColor(tmpBg);
@@ -96,6 +101,10 @@ export default function ColorContrastChecker() {
     setFgHexInput(tmpBg);
     setBgHexInput(tmpFg);
   };
+
+  useEffect(() => {
+    if (isValidHex(fgHexInput) && isValidHex(bgHexInput) && Number.isFinite(ratio)) recordSuccess("check");
+  }, [ratio, fgHexInput, bgHexInput, recordSuccess]);
 
   return (
     <div className="space-y-6">

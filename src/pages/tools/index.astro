@@ -5,8 +5,11 @@
 import Layout from "../../layouts/Layout.astro";
 import { getDefaultAlternates } from "../../i18n/utils";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import ToolCard from "../../components/ToolCard.astro";
+import ToolCollection from "../../components/ToolCollection.astro";
 import { TOOLS, CATEGORIES, SITE, getToolsByCategory } from "../../data/tools";
+import { partitionToolsByDiscovery } from "../../data/tool-discovery";
+
+const { primary } = partitionToolsByDiscovery(TOOLS);
 
 const toolsCollectionJsonLd = {
   "@context": "https://schema.org",
@@ -32,7 +35,7 @@ const toolsCollectionJsonLd = {
   jsonLd={toolsCollectionJsonLd}
   enableAds={true}
 >
-  <div class="container-page py-8 md:py-10">
+  <div class="container-page py-8 md:py-10" data-discovery-surface>
     <Breadcrumbs items={[{ label: "All Tools" }]} />
 
     <header class="app-panel p-5 sm:p-7 md:p-8 mb-8">
@@ -59,6 +62,7 @@ const toolsCollectionJsonLd = {
             </svg>
             <input
               id="tools-search"
+              data-collection-search
               type="search"
               name="tools-search"
               placeholder="Filter tools…"
@@ -67,33 +71,22 @@ const toolsCollectionJsonLd = {
               aria-label="Filter tools"
             />
           </div>
-          <p id="tools-result-count" class="mt-2 text-xs text-mute" aria-live="polite">Showing {TOOLS.length} tools</p>
+          <p id="tools-result-count" class="mt-2 text-xs text-body" aria-live="polite" data-collection-count>Showing {primary.length} tools</p>
         </div>
       </div>
     </header>
 
     <div class="mb-8 flex gap-2 overflow-x-auto pb-2" id="category-filters" role="group" aria-label="Filter by category">
-      <button type="button" data-filter="all" class="filter-tab active" aria-pressed="true">All</button>
+      <button type="button" data-filter="all" data-discovery-filter="all" class="filter-tab active" aria-pressed="true">All</button>
       {CATEGORIES.map((cat) => (
-        <button type="button" data-filter={cat.slug} class="filter-tab" aria-pressed="false">
+        <button type="button" data-filter={cat.slug} data-discovery-filter={cat.slug} class="filter-tab" aria-pressed="false">
           <span aria-hidden="true">{cat.icon}</span> {cat.name}
           <span class="filter-count">{getToolsByCategory(cat.slug).length}</span>
         </button>
       ))}
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="tools-grid">
-      {TOOLS.map((tool) => (
-        <div data-category={tool.categorySlug} data-name={tool.name.toLowerCase()} data-desc={tool.description.toLowerCase()} data-keywords={tool.keywords.join(" ").toLowerCase()}>
-          <ToolCard slug={tool.slug} name={tool.name} description={tool.description} icon={tool.icon} categorySlug={tool.categorySlug} />
-        </div>
-      ))}
-    </div>
-
-    <div id="no-results" class="hidden rounded-lg border border-hairline bg-canvas p-10 text-center mt-8">
-      <p class="text-base font-medium text-ink">No tools match your search.</p>
-      <p class="mt-1 text-sm text-body">Try a broader keyword or switch category filters.</p>
-    </div>
+    <ToolCollection tools={TOOLS} collectionId="tools-grid" />
   </div>
 </Layout>
 
@@ -134,47 +127,3 @@ const toolsCollectionJsonLd = {
     font-size: 12px;
   }
 </style>
-
-<script>
-  const grid = document.getElementById("tools-grid");
-  const search = document.getElementById("tools-search") as HTMLInputElement;
-  const noResults = document.getElementById("no-results");
-  const resultCount = document.getElementById("tools-result-count");
-  const filterBtns = document.querySelectorAll<HTMLButtonElement>(".filter-tab");
-
-  let activeCategory = "all";
-
-  function filterTools() {
-    if (!grid) return;
-    const query = search?.value.toLowerCase().trim() || "";
-    const items = grid.querySelectorAll<HTMLElement>("[data-category]");
-    let visible = 0;
-
-    items.forEach((item) => {
-      const cat = item.dataset.category || "";
-      const haystack = [item.dataset.name, item.dataset.desc, item.dataset.keywords].join(" ");
-      const matchesCategory = activeCategory === "all" || cat === activeCategory;
-      const matchesSearch = !query || haystack.includes(query);
-      item.hidden = !(matchesCategory && matchesSearch);
-      if (!item.hidden) visible++;
-    });
-
-    noResults?.classList.toggle("hidden", visible > 0);
-    if (resultCount) resultCount.textContent = `Showing ${visible} ${visible === 1 ? "tool" : "tools"}`;
-  }
-
-  search?.addEventListener("input", filterTools);
-
-  filterBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      filterBtns.forEach((b) => {
-        b.classList.remove("active");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("active");
-      btn.setAttribute("aria-pressed", "true");
-      activeCategory = btn.dataset.filter || "all";
-      filterTools();
-    });
-  });
-</script>

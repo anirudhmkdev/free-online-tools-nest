@@ -12,6 +12,16 @@ The [JWT Decoder](/tools/jwt-decoder/) splits the token, decodes the header and 
 
 Consider a payload containing `{"role":"admin"}`. A person can create that text and encode it into a token-shaped string. A decoder will display the claim correctly because decoding asks only “what bytes are here?” Verification asks “did a trusted issuer sign these exact bytes with an allowed algorithm?”
 
+## A harmless decoding example
+
+Paste this deliberately unsigned example into the decoder:
+
+```text
+eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJkZW1vIiwicm9sZSI6InJlYWRlciJ9.
+```
+
+The header is `{"alg":"none","typ":"JWT"}` and the payload is `{"sub":"demo","role":"reader"}`. The signature segment is empty. These readable values provide no authorization evidence. An application expecting a signed token must reject this example. Use it only to check decoding, never as an authentication credential.
+
 ## Safe validation requires more
 
 - Pin the expected signing algorithm; never accept an algorithm just because the token header requests it.

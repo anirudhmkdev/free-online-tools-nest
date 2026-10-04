@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useEffect } from "react";
 import { marked } from "marked";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -5,6 +6,7 @@ import { sanitizeHtml } from "../../helpers/utils";
 import ErrorBanner from "../ErrorBanner";
 
 export default function MarkdownToHtml() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState(
     "# Markdown Guide\n\nWrite your **markdown** content here! You can add:\n\n* Bulleted lists\n* Bold and italic styling\n* [Links](https://freeonlinetoolsnest.com)\n\n## Custom Table Example\n\n| Tool Name | Speed | Usefulness |\n| :--- | :--- | :--- |\n| Markdown to HTML | Instant | 10/10 |\n| CSV to JSON | Fast | 10/10 |\n\n```javascript\n// Code highlight blocks\nconst greeting = 'Hello, developer!';\nconsole.log(greeting);\n```"
   );
@@ -15,6 +17,7 @@ export default function MarkdownToHtml() {
 
   // Compile Markdown to HTML
   useEffect(() => {
+    let active = true;
     if (!input.trim()) {
       setOutputHtml("");
       setError("");
@@ -28,10 +31,18 @@ export default function MarkdownToHtml() {
       });
       // Resolve potential Promise (marked.parse can return string or Promise depending on options/async plugins)
       if (typeof parsed === "string") {
-        setOutputHtml(sanitizeHtml(parsed));
+        const html = sanitizeHtml(parsed);
+        setOutputHtml(html);
         setError("");
+        if (html.trim()) recordSuccess("convert");
       } else {
-        parsed.then((res) => { setOutputHtml(sanitizeHtml(res)); setError(""); }).catch(() => {
+        parsed.then((res) => {
+          if (!active) return;
+          const html = sanitizeHtml(res);
+          setOutputHtml(html); setError("");
+          if (html.trim()) recordSuccess("convert");
+        }).catch(() => {
+          if (!active) return;
           setOutputHtml("");
           setError("Error parsing markdown content.");
         });
@@ -40,17 +51,19 @@ export default function MarkdownToHtml() {
       setOutputHtml("");
       setError("Error parsing markdown content.");
     }
-  }, [input]);
+    return () => { active = false; };
+  }, [input, recordSuccess]);
 
 
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setOutputHtml("");
   };
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Editor (Markdown Input) */}
         <div className="flex flex-col">

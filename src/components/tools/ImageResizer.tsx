@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { formatBytes } from "../../helpers/utils";
 
@@ -10,6 +11,8 @@ const FORMAT_OPTIONS: { value: OutputFormat; label: string }[] = [
 ];
 
 export default function ImageResizer() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [originalWidth, setOriginalWidth] = useState<number>(0);
@@ -50,6 +53,8 @@ export default function ImageResizer() {
   );
 
   const processFile = (file: File) => {
+    operationRevision.current++;
+    clearInteraction();
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image file.");
       return;
@@ -84,6 +89,8 @@ export default function ImageResizer() {
   }, []);
 
   const handleResize = useCallback(() => {
+    markInteraction();
+    const revision = ++operationRevision.current;
     if (!imgRef.current || !imageFile) {
       setError("No image loaded.");
       return;
@@ -110,7 +117,8 @@ export default function ImageResizer() {
 
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
+          if (revision !== operationRevision.current) return;
+          if (!blob || !blob.size) {
             setError("Resize failed.");
             setProcessing(false);
             return;
@@ -121,6 +129,7 @@ export default function ImageResizer() {
           const blobUrl = URL.createObjectURL(blob);
           resizedSrcRef.current = blobUrl;
           setResizedSrc(blobUrl);
+          recordSuccess("convert");
           setResizedSize(blob.size);
           setProcessing(false);
         },
@@ -131,7 +140,7 @@ export default function ImageResizer() {
       setError(err instanceof Error ? err.message : "Resize failed.");
       setProcessing(false);
     }
-  }, [imageFile, width, height, format, quality]);
+  }, [imageFile, width, height, format, quality, markInteraction, recordSuccess]);
 
   const handleDownload = () => {
     if (!resizedSrc || !imageFile) return;
@@ -145,6 +154,8 @@ export default function ImageResizer() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (resizedSrcRef.current) {
       URL.revokeObjectURL(resizedSrcRef.current);
@@ -169,16 +180,17 @@ export default function ImageResizer() {
     };
   }, []);
 
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
+
   return (
     <div className="space-y-6">
       {!imageSrc && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("resize-file-input")?.click()}
         >
           <span className="text-4xl mb-4">📐</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -189,9 +201,10 @@ export default function ImageResizer() {
           </p>
           <input
             id="resize-file-input"
+            aria-label="Choose an image"
             type="file"
             accept="image/*"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

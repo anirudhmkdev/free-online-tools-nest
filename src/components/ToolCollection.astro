@@ -1,0 +1,47 @@
+---
+import ToolCard from "./ToolCard.astro";
+import ToolDisclosure from "./ToolDisclosure.astro";
+import { partitionToolsByDiscovery } from "../data/tool-discovery";
+import { discoveryLabels } from "../data/discovery-labels";
+import type { Tool } from "../data/tools";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+  tools: Tool[];
+  locale?: Lang;
+  categoryName?: string;
+  collectionId: string;
+  showSearch?: boolean;
+}
+const { tools, locale = "en", categoryName, collectionId, showSearch = false } = Astro.props;
+const { primary, secondary } = partitionToolsByDiscovery(tools);
+const labels = discoveryLabels[locale];
+const prefix = locale === "en" ? "" : `/${locale}`;
+const initialVisibleCount = primary.length || secondary.length;
+---
+
+<div id={collectionId} data-tool-collection={collectionId} data-showing-template={labels.showing} data-tool-singular={labels.tool} data-tool-plural={labels.tools}>
+  {showSearch && <div class="mb-6 max-w-lg">
+    <label for={`${collectionId}-search`} class="block mb-2 text-sm font-medium text-ink">{labels.filter}</label>
+    <input id={`${collectionId}-search`} type="search" autocomplete="off" data-collection-search class="w-full h-11 px-4 border border-hairline rounded-lg bg-canvas text-sm text-ink" />
+    <p class="mt-2 text-xs text-body" aria-live="polite" data-collection-count>{labels.showing.replace("{count}", String(initialVisibleCount)).replace("{label}", initialVisibleCount === 1 ? labels.tool : labels.tools)}</p>
+  </div>}
+  {primary.length > 0 && <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-primary-grid>
+    {primary.map(tool => <div data-collection-tool data-discovery-tier="primary" data-category={tool.categorySlug} data-name={tool.name.toLowerCase()} data-desc={tool.description.toLowerCase()} data-keywords={tool.keywords.join(" ").toLowerCase()}>
+      <ToolCard slug={tool.slug} href={`${prefix}/tools/${tool.slug}/`} name={tool.name} description={tool.description} icon={tool.icon} categorySlug={tool.categorySlug} categoryName={categoryName} />
+    </div>)}
+  </div>}
+  {secondary.length > 0 && <ToolDisclosure count={secondary.length} locale={locale} open={primary.length === 0}>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-secondary-grid>
+      {secondary.map(tool => <div data-collection-tool data-discovery-tier="secondary" data-category={tool.categorySlug} data-name={tool.name.toLowerCase()} data-desc={tool.description.toLowerCase()} data-keywords={tool.keywords.join(" ").toLowerCase()}>
+        <ToolCard slug={tool.slug} href={`${prefix}/tools/${tool.slug}/`} name={tool.name} description={tool.description} icon={tool.icon} categorySlug={tool.categorySlug} categoryName={categoryName} />
+      </div>)}
+    </div>
+  </ToolDisclosure>}
+  <div hidden class="mt-8 text-center py-8" data-collection-empty><p class="font-medium text-ink">{labels.noResults}</p><p class="mt-2 text-sm text-body">{labels.noResultsHelp}</p></div>
+</div>
+
+<script>
+  import { initializeToolCollection } from "../helpers/tool-collection";
+  document.querySelectorAll<HTMLElement>("[data-tool-collection]").forEach(initializeToolCollection);
+</script>

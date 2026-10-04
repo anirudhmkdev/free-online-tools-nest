@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 interface HreflangEntry {
@@ -38,6 +39,7 @@ const LANGUAGE_OPTIONS = [
 ];
 
 export default function CanonicalTagGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [hreflangs, setHreflangs] = useState<HreflangEntry[]>([]);
   const [copied, handleCopy] = useCopyToClipboard();
@@ -51,10 +53,11 @@ export default function CanonicalTagGenerator() {
   }, []);
 
   const updateHreflang = useCallback((id: number, field: "lang" | "href", value: string) => {
+    if (field === "href") markInteraction();
     setHreflangs((prev) =>
       prev.map((h) => (h.id === id ? { ...h, [field]: value } : h))
     );
-  }, []);
+  }, [markInteraction]);
 
   const generatedTags = useMemo(() => {
     const lines: string[] = [];
@@ -74,6 +77,14 @@ export default function CanonicalTagGenerator() {
   }, [handleCopy, generatedTags]);
 
   const hasContent = canonicalUrl.trim().length > 0 || hreflangs.some((h) => h.href.trim().length > 0);
+
+  useEffect(() => {
+    const urls = [canonicalUrl.trim(), ...hreflangs.filter(row => row.lang).map(row => row.href.trim())].filter(Boolean);
+    if (!generatedTags || !urls.length) return;
+    try {
+      if (urls.every(value => ["http:", "https:"].includes(new URL(value).protocol))) recordSuccess("generate");
+    } catch { /* incomplete URLs do not produce a successful result */ }
+  }, [canonicalUrl, hreflangs, generatedTags, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -98,7 +109,7 @@ export default function CanonicalTagGenerator() {
           id="ct-canonical"
           type="url"
           value={canonicalUrl}
-          onChange={(e) => setCanonicalUrl(e.target.value)}
+          onChange={(e) => { markInteraction(); setCanonicalUrl(e.target.value); }}
           placeholder="https://example.com/your-page"
           className="w-full h-10 px-3 border rounded-lg text-sm outline-none"
           style={{ backgroundColor: "var(--color-canvas-soft)", borderColor: "var(--color-hairline)", color: "var(--color-ink)" }}

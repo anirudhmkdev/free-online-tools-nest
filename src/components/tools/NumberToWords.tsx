@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 const ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
@@ -51,11 +52,13 @@ function numberToWords(n: number): string {
 }
 
 export default function NumberToWords() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   const convert = useCallback(() => {
+    markInteraction();
     setError("");
     const trimmed = input.trim();
     if (!trimmed) {
@@ -64,8 +67,8 @@ export default function NumberToWords() {
       return;
     }
 
-    const num = parseFloat(trimmed);
-    if (isNaN(num)) {
+    const num = Number(trimmed);
+    if (!Number.isFinite(num)) {
       setError("Please enter a valid number.");
       setResult(null);
       return;
@@ -76,6 +79,7 @@ export default function NumberToWords() {
       const decPart = Math.round((Math.abs(num) - intPart) * 100);
       const intWords = numberToWords(intPart) || "zero";
       setResult(`${num < 0 ? "negative " : ""}${intWords} and ${decPart}/100`);
+      if (Math.abs(num) <= 999999999999999) recordSuccess("convert");
       return;
     }
 
@@ -86,10 +90,11 @@ export default function NumberToWords() {
     }
 
     setResult(numberToWords(num));
+    recordSuccess("convert");
   }, [input]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="number-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Enter a Number

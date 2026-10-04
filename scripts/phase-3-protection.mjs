@@ -40,18 +40,33 @@ export function applyContentChanges(fixture, changes = { pages: {}, sources: {} 
   return { fixture: result, failures };
 }
 
-export function checkProtection(root, fixture, changes) {
-  const approved = applyContentChanges(fixture, changes);
-  fixture = approved.fixture;
+/** Compose later scoped deltas while keeping every historical approval unchanged. */
+export function applyApprovedDeltas(fixture, approvedChanges = { pages: {}, sources: {} }) {
+  const result = structuredClone(fixture);
+  const failures = [];
+  const allowed = new Set(["ownedTextHash", "title", "description", "h1"]);
+  for (const [route, delta] of Object.entries(approvedChanges.pages ?? {})) {
+    if (!fixture.pages[route] || !delta.reason?.trim() || Object.keys(delta.signals ?? {}).some(key => !allowed.has(key))) {
+      failures.push(`${route}: invalid approved content delta`);
+    } else Object.assign(result.pages[route], delta.signals);
+  }
+  for (const [path, delta] of Object.entries(approvedChanges.sources ?? {})) {
+    if (!fixture.sources[path] || !delta.reason?.trim() || !/^[a-f0-9]{64}$/.test(delta.hash ?? "")) failures.push(`${path}: invalid approved source delta`);
+    else result.sources[path] = delta.hash;
+  }
+  return { fixture: result, failures };
+}
+export function checkProtection(root, fixture, approvedChanges = { pages: {}, sources: {} }) {
+  const approved = applyApprovedDeltas(fixture, approvedChanges);
   const failures = [...approved.failures];
-  for (const [route, expected] of Object.entries(fixture.pages)) {
+  for (const [route, expected] of Object.entries(approved.fixture.pages)) {
     const path = join(root, "dist", route.replace(/^\//, ""), "index.html");
     const actual = ownedSignals(readFileSync(path, "utf8"), route);
     for (const key of Object.keys(expected)) {
       if (JSON.stringify(actual[key]) !== JSON.stringify(expected[key])) failures.push(`${route}: protected ${key} changed`);
     }
   }
-  for (const [path, expected] of Object.entries(fixture.sources)) {
+  for (const [path, expected] of Object.entries(approved.fixture.sources)) {
     if (hashText(readFileSync(join(root, path), "utf8")) !== expected) failures.push(`${path}: protected source changed`);
   }
   return failures;

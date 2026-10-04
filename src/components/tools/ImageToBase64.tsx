@@ -1,7 +1,10 @@
-import { useState, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { fileSizeLimitMessage, MAX_IMAGE_FILE_SIZE_BYTES } from "../../helpers/utils";
 
 export default function ImageToBase64() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [base64Str, setBase64Str] = useState<string>("");
   const [includePrefix, setIncludePrefix] = useState<boolean>(true);
@@ -10,6 +13,8 @@ export default function ImageToBase64() {
 
   const processFile = useCallback(
     (file: File) => {
+      const revision = ++operationRevision.current;
+      clearInteraction();
       if (!file.type.startsWith("image/")) {
         setError("Please upload a valid image file.");
         return;
@@ -19,6 +24,7 @@ export default function ImageToBase64() {
         setError(sizeError);
         return;
       }
+      markInteraction();
       setError("");
       setCopied(false);
 
@@ -29,15 +35,18 @@ export default function ImageToBase64() {
       // Read as base64
       const reader = new FileReader();
       reader.onload = () => {
+        if (revision !== operationRevision.current) return;
         const result = reader.result as string;
         setBase64Str(result);
+        if (file.size > 0 && /^data:image\/[^;]+;base64,.+/.test(result)) recordSuccess("convert");
       };
       reader.onerror = () => {
+        if (revision !== operationRevision.current) return;
         setError("Failed to read file.");
       };
       reader.readAsDataURL(file);
     },
-    [imageSrc]
+    [imageSrc, markInteraction, recordSuccess, clearInteraction]
   );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +85,8 @@ export default function ImageToBase64() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     setImageSrc("");
     setBase64Str("");
@@ -85,16 +96,17 @@ export default function ImageToBase64() {
 
   const charCount = getDisplayBase64().length;
 
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
+
   return (
     <div className="space-y-6">
       {!imageSrc && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("b64-file-input")?.click()}
         >
           <span className="text-4xl mb-4">🔤</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -105,9 +117,10 @@ export default function ImageToBase64() {
           </p>
           <input
             id="b64-file-input"
+            aria-label="Choose an image"
             type="file"
             accept="image/*"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

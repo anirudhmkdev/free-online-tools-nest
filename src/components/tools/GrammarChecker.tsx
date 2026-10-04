@@ -1,25 +1,30 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 import { checkGrammar, type GrammarIssue, type CategoryCount } from "../../helpers/grammar-checker";
 
 export default function GrammarChecker() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [text, setText] = useState("");
   const [issues, setIssues] = useState<GrammarIssue[]>([]);
   const [categories, setCategories] = useState<CategoryCount[]>([]);
   const [checked, setChecked] = useState(false);
 
   const handleCheck = useCallback(() => {
+    clearInteraction();
+    markInteraction();
     if (!text.trim()) {
       setIssues([]);
       setCategories([]);
-      setChecked(true);
+      setChecked(false);
       return;
     }
     const result = checkGrammar(text);
     setIssues(result.issues);
     setCategories(result.categories);
+    recordSuccess("check");
     setChecked(true);
-  }, [text]);
+  }, [text, markInteraction, recordSuccess, clearInteraction]);
 
   const totalIssues = issues.length;
 
@@ -35,10 +40,11 @@ export default function GrammarChecker() {
           id="gc-input"
           value={text}
           onChange={(e) => {
+            clearInteraction();
             setText(e.target.value);
             setChecked(false);
           }}
-          placeholder="Paste or type text here to check for grammar, spelling, and style issues..."
+          placeholder="Paste or type English text here for limited spelling and pattern checks..."
           rows={8}
           className="w-full p-4 border rounded-lg text-base resize-y outline-none transition-colors duration-150"
           style={{

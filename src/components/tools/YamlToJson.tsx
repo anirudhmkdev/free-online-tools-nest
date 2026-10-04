@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -5,12 +6,14 @@ import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 import { parseSimpleYaml as parseYaml } from "../../helpers/simple-yaml";
 
 export default function YamlToJson() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const convert = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setOutput("");
       setError("");
@@ -20,15 +23,16 @@ export default function YamlToJson() {
       const parsed = parseYaml(input);
       setOutput(JSON.stringify(parsed, null, 2));
       setError("");
+      recordSuccess("convert");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Invalid YAML";
       setError(msg);
       setOutput("");
     }
-  }, [input]);
+  }, [input, markInteraction, recordSuccess]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <p className="text-sm">A limited YAML subset: mappings, scalar lists, strings, finite numbers, booleans and null. Use two spaces per nesting level. Anchors, aliases, tags, flow collections, block strings and object items in lists are rejected. Maximum 100,000 characters, 1,000 lines and 32 nesting levels are application guardrails.</p>
       <div>
         <label htmlFor="yaml-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

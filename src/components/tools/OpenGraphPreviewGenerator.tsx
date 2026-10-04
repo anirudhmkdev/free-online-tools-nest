@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 const OG_TYPES = [
@@ -14,6 +16,7 @@ const TWITTER_CARDS = [
 ];
 
 export default function OpenGraphPreviewGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [ogTitle, setOgTitle] = useState("");
   const [ogDesc, setOgDesc] = useState("");
   const [ogImage, setOgImage] = useState("");
@@ -58,8 +61,12 @@ export default function OpenGraphPreviewGenerator() {
     if (metaHtml) handleCopy(metaHtml);
   }, [handleCopy, metaHtml]);
 
+  useEffect(() => {
+    if ((ogTitle.trim() || ogDesc.trim() || ogImage.trim() || ogUrl.trim() || ogSiteName.trim()) && (!ogImage || isAbsoluteHttpUrl(ogImage)) && (!ogUrl || isAbsoluteHttpUrl(ogUrl))) recordSuccess("generate");
+  }, [metaHtml, ogTitle, ogDesc, ogImage, ogUrl, ogSiteName, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Inputs */}
         <div className="space-y-4">

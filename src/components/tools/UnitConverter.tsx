@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 type Category = "length" | "weight" | "temperature" | "speed" | "volume";
 
@@ -145,6 +146,7 @@ const COMMON_PRESETS: Record<Category, { from: string; to: string; label: string
 };
 
 export default function UnitConverter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [category, setCategory] = useState<Category>("length");
   const [fromUnit, setFromUnit] = useState("m");
   const [toUnit, setToUnit] = useState("ft");
@@ -159,6 +161,7 @@ export default function UnitConverter() {
   }, [category, inputValue, fromUnit, toUnit]);
 
   const handleCategoryChange = (cat: Category) => {
+    clearInteraction();
     setCategory(cat);
     const units = UNITS[cat];
     setFromUnit(units[0].value);
@@ -172,14 +175,19 @@ export default function UnitConverter() {
 
   const handlePresetClick = useCallback(
     (from: string, to: string) => {
+      clearInteraction();
       setFromUnit(from);
       setToUnit(to);
     },
     []
   );
 
+  useEffect(() => {
+    if (result !== null && Number.isFinite(result)) recordSuccess("convert");
+  }, [result, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Category tabs */}
       <div className="flex flex-wrap gap-2">
         {CATEGORIES.map((cat) => (

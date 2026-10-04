@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useEffect, useMemo } from "react";
 
 interface MatchResult {
@@ -8,6 +9,7 @@ interface MatchResult {
 }
 
 export default function RegexTester() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [pattern, setPattern] = useState("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
   const [testText, setTestText] = useState(
     "Hello! Please contact us at support@example.com or info@freeonlinetoolsnest.com for more info."
@@ -77,11 +79,12 @@ export default function RegexTester() {
         }
       }
       setMatches(found);
+      if (testText.trim()) recordSuccess("check");
     } catch (err: unknown) {
       setRegexError(err instanceof Error ? err.message : "Invalid regular expression.");
       setMatches([]);
     }
-  }, [pattern, testText, flags]);
+  }, [pattern, testText, flags, recordSuccess]);
 
   // Generate highlighted text output safely
   const highlightedHTML = useMemo(() => {
@@ -126,7 +129,7 @@ export default function RegexTester() {
   }, [pattern, testText, matches, regexError, flags]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Editor pane */}
         <div className="space-y-4">

@@ -16,6 +16,20 @@ Try this in the [JSON Formatter](/tools/json-formatter/):
 
 The tool uses the browser's native `JSON.parse` and `JSON.stringify` behavior. It produces indented output because the input is valid JSON. Change `true` to `True`, add a comma after the final property, or wrap keys in single quotes and parsing will fail. Those forms may appear in JavaScript or Python, but they are not JSON.
 
+With the two-space setting, the output is:
+
+```json
+{
+  "user": {
+    "id": 7,
+    "name": "Ada"
+  },
+  "active": true
+}
+```
+
+Try `{"active":True}` or `{"active":true,}` next. Both should produce a parsing error and no formatted result. The exact browser error wording can vary. Correct them to `{"active":true}` and format again. This validates syntax only; it cannot establish that `active` is the field your application expects.
+
 ## Edge cases worth checking
 
 - JSON allows strings, numbers, objects, arrays, booleans, and `null`; it does not allow comments, `undefined`, `NaN`, or `Infinity`.

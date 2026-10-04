@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState } from "react";
 import {
   calculateMarks,
@@ -11,6 +12,7 @@ import CalculationResult, {
 } from "./shared/CalculationResult";
 
 export default function MarksPercentageCalculator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [rows, setRows] = useState([{ obtained: "", maximum: "" }]);
   const [useGrades, setUseGrades] = useState(false);
   const [thresholds, setThresholds] = useState([{ label: "", minimum: "" }]);
@@ -29,6 +31,7 @@ export default function MarksPercentageCalculator() {
         onEdit={clear}
         onSubmit={(e) => {
           e.preventDefault();
+          markInteraction();
           clear();
           try {
             setResult(
@@ -51,6 +54,7 @@ export default function MarksPercentageCalculator() {
                   : [],
               ),
             );
+            recordSuccess("calculate");
           } catch (err) {
             setError((err as Error).message);
           }
@@ -90,7 +94,7 @@ export default function MarksPercentageCalculator() {
             </div>
             <button
               type="button"
-              className="mt-3 text-sm text-link underline disabled:opacity-40"
+              className="mt-3 min-h-11 min-w-11 py-2 text-sm text-link underline disabled:opacity-40"
               disabled={rows.length === 1}
               onClick={() => {
                 setRows(rows.filter((_, j) => i !== j));
@@ -112,7 +116,7 @@ export default function MarksPercentageCalculator() {
         >
           Add subject
         </button>
-        <label className="flex items-start gap-3 text-sm">
+        <label className="flex min-h-11 cursor-pointer items-start gap-3 py-2 text-sm">
           <input
             type="checkbox"
             checked={useGrades}
@@ -122,7 +126,7 @@ export default function MarksPercentageCalculator() {
           Apply my own percentage-to-grade thresholds
         </label>
         {useGrades && (
-          <fieldset className="space-y-4 rounded-lg border border-hairline p-4">
+          <fieldset className="min-w-0 space-y-4 rounded-lg border border-hairline p-4">
             <legend className="px-2 font-semibold">
               Your grade thresholds
             </legend>
@@ -168,7 +172,7 @@ export default function MarksPercentageCalculator() {
                 />
                 <button
                   type="button"
-                  className="text-left text-sm text-link underline disabled:opacity-40"
+                  className="min-h-11 min-w-11 py-2 text-left text-sm text-link underline disabled:opacity-40"
                   disabled={thresholds.length === 1}
                   onClick={() => {
                     setThresholds(thresholds.filter((_, j) => i !== j));
@@ -200,6 +204,7 @@ export default function MarksPercentageCalculator() {
             type="button"
             className="btn-secondary"
             onClick={() => {
+              clearInteraction();
               setRows([
                 { obtained: "80", maximum: "100" },
                 { obtained: "45", maximum: "50" },

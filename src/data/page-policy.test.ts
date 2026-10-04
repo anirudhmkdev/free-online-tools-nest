@@ -10,7 +10,8 @@ describe("Phase 1 publishing migration", () => {
     expect(Object.keys(PAGE_POLICIES).filter(route => !additions.includes(route) && !phase3.includes(route)).sort()).toEqual(legacyRoutes.sort());
     for (const route of additions) {
       const policy = PAGE_POLICIES[route];
-      expect(policy, route).toMatchObject({ indexable: true, sitemapEligible: true, canonicalPath: route, adEligible: false, reviewStatus: "reviewed", relatedGuides: [] });
+      const approvedGuides = route === "/tools/image-to-pdf/" ? ["/blog/verify-browser-tool-no-upload/"] : [];
+      expect(policy, route).toMatchObject({ indexable: true, sitemapEligible: true, canonicalPath: route, adEligible: false, reviewStatus: "reviewed", relatedGuides: approvedGuides });
       expect(policy.lastReviewed, route).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     }
     for (const page of baseline.pages) {

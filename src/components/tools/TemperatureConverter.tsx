@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -16,12 +17,14 @@ function formatTemp(value: number): string {
 }
 
 export default function TemperatureConverter() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [celsius, setCelsius] = useState("");
   const [fahrenheit, setFahrenheit] = useState("");
   const [kelvin, setKelvin] = useState("");
   const [copied, handleCopy] = useCopyToClipboard();
 
   const handleChange = useCallback((value: string, unit: Unit) => {
+    markInteraction();
     if (value === "" || value === "-") {
       setCelsius("");
       setFahrenheit("");
@@ -38,6 +41,7 @@ export default function TemperatureConverter() {
     setCelsius(unit === "celsius" ? value : c.toFixed(2));
     setFahrenheit(unit === "fahrenheit" ? value : f.toFixed(2));
     setKelvin(unit === "kelvin" ? value : k.toFixed(2));
+    if (Number.isFinite(c) && Number.isFinite(f) && Number.isFinite(k) && k >= 0) recordSuccess("convert");
   }, []);
 
   const outputs = [
@@ -47,7 +51,7 @@ export default function TemperatureConverter() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {outputs.map(({ label, unit, value, symbol }) => (
           <div key={unit}>

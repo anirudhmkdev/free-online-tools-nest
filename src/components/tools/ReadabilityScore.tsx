@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 
@@ -22,13 +23,13 @@ function countSyllables(word: string): number {
 }
 
 function countSentences(text: string): number {
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentences = text.split(/[.!?]+/).filter(s => /[a-zA-Z]/.test(s));
   return Math.max(sentences.length, 1);
 }
 
-function countWords(text: string): number {
-  const words = text.trim().split(/\s+/).filter(w => w.length > 0);
-  return Math.max(words.length, 1);
+function englishStyleWords(text: string): string[] {
+  // This is an input guard, not language detection or a dictionary-based tokenizer.
+  return text.trim().split(/\s+/).filter(word => /[a-zA-Z]/.test(word));
 }
 
 function countComplexWords(words: string[]): number {
@@ -58,16 +59,16 @@ interface ReadabilityScores {
   complexWordCount: number;
 }
 
-function calculateScores(text: string): ReadabilityScores | null {
-  if (!text.trim()) return null;
-
-  const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+export function calculateScores(text: string): ReadabilityScores | null {
+  const words = englishStyleWords(text);
+  if (words.length < 10) return null;
   const wordCount = words.length;
   const sentenceCount = countSentences(text);
   const totalSyllables = words.reduce((sum, w) => sum + countSyllables(w), 0);
   const complexWordCount = countComplexWords(words);
-  const charCount = countCharacters(text);
-  const letterCount = countLetters(text);
+  const scoredWords = words.join(" ");
+  const charCount = countCharacters(scoredWords);
+  const letterCount = countLetters(scoredWords);
 
   const avgWordsPerSentence = wordCount / sentenceCount;
   const avgSyllablesPerWord = totalSyllables / wordCount;
@@ -81,12 +82,12 @@ function calculateScores(text: string): ReadabilityScores | null {
   const ari = Math.round((4.71 * (charCount / wordCount) + 0.5 * avgWordsPerSentence - 21.43) * 10) / 10;
 
   return {
-    fleschKincaidGrade: Math.max(0, fleschKincaidGrade),
-    fleschReadingEase: Math.min(100, Math.max(0, fleschReadingEase)),
-    gunningFog: Math.max(0, gunningFog),
-    colemanLiau: Math.max(0, colemanLiau),
-    smog: Math.max(0, isNaN(smog) ? 0 : smog),
-    ari: Math.max(0, ari),
+    fleschKincaidGrade,
+    fleschReadingEase,
+    gunningFog,
+    colemanLiau,
+    smog,
+    ari,
     wordCount,
     sentenceCount,
     syllableCount: totalSyllables,
@@ -97,6 +98,7 @@ function calculateScores(text: string): ReadabilityScores | null {
 }
 
 function getGradeLabel(grade: number): string {
+  if (grade < 0) return "Below typical grade range";
   if (grade <= 1) return "Kindergarten";
   if (grade <= 2) return "1st-2nd Grade";
   if (grade <= 3) return "3rd Grade";
@@ -153,33 +155,38 @@ function ScoreCard({ name, score, label, color }: ScoreCardProps) {
 }
 
 export default function ReadabilityScore() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [scores, setScores] = useState<ReadabilityScores | null>(null);
   const [error, setError] = useState("");
 
   const handleAnalyze = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setError("Please enter some text to analyze.");
       setScores(null);
       return;
     }
-    if (input.trim().split(/\s+/).length < 10) {
-      setError("Enter at least 10 words for meaningful readability scores.");
+    const result = calculateScores(input);
+    if (!result) {
+      setError("Enter English prose with at least 10 words containing A–Z letters. Numbers or punctuation alone cannot be scored.");
       setScores(null);
       return;
     }
     setError("");
-    setScores(calculateScores(input));
+    setScores(result);
+    recordSuccess("analyze");
   }, [input]);
 
   const handleClear = useCallback(() => {
+    clearInteraction();
     setInput("");
     setScores(null);
     setError("");
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="readability-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Paste your text
@@ -188,7 +195,7 @@ export default function ReadabilityScore() {
           id="readability-input"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Paste the text you want to analyze for readability..."
+          placeholder="Paste English prose with at least 10 words..."
           rows={8}
           className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150"
           style={{
@@ -224,6 +231,12 @@ export default function ReadabilityScore() {
 
       {scores && (
         <div className="space-y-6">
+          <p className="text-sm leading-relaxed text-body">
+            These are heuristic estimates for English prose, not a language or comprehension test.
+            Short samples, names and abbreviations make the estimates less reliable. Formula results
+            are shown without clamping, so they can fall outside the usual score bands.
+            {scores.sentenceCount < 30 && <> The <a href="https://ogg.osu.edu/media/documents/health_lit/WRRSMOG_Readability_Formula_G._Harry_McLaughlin__1969_.pdf" className="text-link underline">original SMOG method</a> uses a 30-sentence sample; this shorter-sample value is exploratory.</>}
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <ScoreCard
               name="Flesch-Kincaid Grade Level"
@@ -249,7 +262,7 @@ export default function ReadabilityScore() {
             <ScoreCard
               name="SMOG Index"
               score={scores.smog}
-              label={getGradeLabel(scores.smog)}
+              label={scores.sentenceCount < 30 ? "Exploratory · fewer than 30 sentences" : getGradeLabel(scores.smog)}
             />
             <ScoreCard
               name="Automated Readability Index"

@@ -1,9 +1,12 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 import { summarize, type ScoredSentence } from "../../helpers/text-summarizer";
+export { summarize } from "../../helpers/text-summarizer";
 import ErrorBanner from "../ErrorBanner";
 
 export default function TextSummarizer() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [error, setError] = useState("");
   const [input, setInput] = useState("");
   const [summary, setSummary] = useState<ScoredSentence[]>([]);
@@ -11,6 +14,7 @@ export default function TextSummarizer() {
   const [copied, setCopied] = useState(false);
 
   const handleSummarize = useCallback(() => {
+    markInteraction();
     setSummary([]);
     setError("");
     try {
@@ -18,8 +22,9 @@ export default function TextSummarizer() {
       const result = summarize(input, sentenceCount);
       if (!result.length) throw new Error("Enter at least one sentence containing words.");
       setSummary(result);
+      recordSuccess("analyze");
     } catch (error) { setError(error instanceof Error ? error.message : "Unable to select sentences."); }
-  }, [input, sentenceCount]);
+  }, [input, sentenceCount, markInteraction, recordSuccess]);
 
   const handleCopy = useCallback(() => {
     const text = summary.map((s) => s.text).join(" ");
@@ -35,7 +40,7 @@ export default function TextSummarizer() {
     inputWords > 0 ? Math.round((1 - summaryWords / inputWords) * 100) : 0;
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <p className="text-sm">Selects existing English sentences by word frequency and preserves their order. It does not understand meaning or rewrite text. Check omitted context, quotations and facts against your source. Abbreviations can split sentences incorrectly.</p>
       <ErrorBanner message={error} />
       {/* Input */}

@@ -1,4 +1,5 @@
-import { useState, useCallback, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 type Mode = "ts-to-date" | "date-to-ts";
@@ -42,15 +43,18 @@ interface DateFields {
   second: string;
 }
 
-function dateFieldsToTimestamp(fields: DateFields): number | null {
-  const y = parseInt(fields.year);
-  const m = parseInt(fields.month);
-  const d = parseInt(fields.day);
-  const h = parseInt(fields.hour);
-  const min = parseInt(fields.minute);
-  const s = parseInt(fields.second);
-  if (isNaN(y) || isNaN(m) || isNaN(d) || isNaN(h) || isNaN(min) || isNaN(s)) return null;
-  return Date.UTC(y, m - 1, d, h, min, s);
+export function dateFieldsToTimestamp(fields: DateFields): number | null {
+  if (!Object.values(fields).every(value => /^\d+$/.test(value))) return null;
+  const y = Number(fields.year), m = Number(fields.month), d = Number(fields.day);
+  const h = Number(fields.hour), min = Number(fields.minute), sec = Number(fields.second);
+  if (![y, m, d, h, min, sec].every(Number.isSafeInteger)
+    || m < 1 || m > 12 || d < 1 || d > 31 || h > 23 || min > 59 || sec > 59) return null;
+  const result = new Date(0);
+  result.setUTCFullYear(y, m - 1, d);
+  result.setUTCHours(h, min, sec, 0);
+  if (!Number.isFinite(result.getTime()) || result.getUTCFullYear() !== y
+    || result.getUTCMonth() !== m - 1 || result.getUTCDate() !== d) return null;
+  return result.getTime();
 }
 
 function formatDateInput(d: Date): string {
@@ -63,6 +67,7 @@ function formatDateInput(d: Date): string {
 }
 
 export default function EpochConverter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [mode, setMode] = useState<Mode>("ts-to-date");
   const [tsInput, setTsInput] = useState("");
   const [dateFields, setDateFields] = useState<DateFields>(() => {
@@ -86,7 +91,8 @@ export default function EpochConverter() {
 
   const tsResult = useMemo(() => {
     if (!tsInput.trim()) return null;
-    const clean = tsInput.replace(/[^0-9.-]/g, "");
+    const clean = tsInput.trim();
+    if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(clean)) return null;
     const num = parseFloat(clean);
     if (isNaN(num)) return null;
     let ms: number;
@@ -116,7 +122,7 @@ export default function EpochConverter() {
     } else {
       ms = dateFieldsToTimestamp(dateFields);
     }
-    if (ms === null) return null;
+    if (ms === null || !Number.isFinite(ms)) return null;
     return {
       seconds: Math.floor(ms / 1000),
       milliseconds: ms,
@@ -124,11 +130,13 @@ export default function EpochConverter() {
   }, [dtInput, dateFields]);
 
   const handleFieldChange = (field: keyof DateFields, value: string) => {
+    markInteraction();
     setDateFields((prev) => ({ ...prev, [field]: value }));
     setDtInput("");
   };
 
   const handleDtChange = (value: string) => {
+    if (value) markInteraction(); else clearInteraction();
     setDtInput(value);
     if (value) {
       const d = new Date(value);
@@ -145,6 +153,10 @@ export default function EpochConverter() {
     }
   };
 
+  useEffect(() => {
+    if (mode === "ts-to-date" ? tsResult !== null : dtResult !== null) recordSuccess("convert");
+  }, [mode, tsResult, dtResult, recordSuccess]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap gap-2">
@@ -152,7 +164,7 @@ export default function EpochConverter() {
           <button
             key={m.key}
             type="button"
-            onClick={() => setMode(m.key)}
+            onClick={() => { clearInteraction(); setMode(m.key); }}
             className="px-4 py-2 text-sm rounded-full border transition-all duration-150"
             style={{
               backgroundColor: mode === m.key ? "var(--color-primary)" : "var(--color-canvas)",
@@ -175,7 +187,7 @@ export default function EpochConverter() {
               id="epoch-ts"
               type="text"
               value={tsInput}
-              onChange={(e) => setTsInput(e.target.value)}
+              onChange={(e) => { markInteraction(); setTsInput(e.target.value); }}
               placeholder="1700000000"
               className="w-full h-12 px-4 border rounded-lg text-base outline-none font-mono transition-colors duration-150"
               style={{
@@ -330,7 +342,7 @@ export default function EpochConverter() {
           <span className="text-xs uppercase tracking-wider" style={{ color: "var(--color-mute)", fontFamily: "var(--font-mono)" }}>
             Current Timestamp (ms)
           </span>
-          <div className="text-lg font-semibold font-mono" style={{ color: "var(--color-ink)", fontFamily: "var(--font-mono)" }}>
+          <div suppressHydrationWarning className="text-lg font-semibold font-mono" style={{ color: "var(--color-ink)", fontFamily: "var(--font-mono)" }}>
             {now}
           </div>
         </div>

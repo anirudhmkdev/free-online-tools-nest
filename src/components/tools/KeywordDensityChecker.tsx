@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 const STOP_WORDS = new Set([
   "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
@@ -24,6 +25,7 @@ type SortKey = "frequency" | "density";
 type SortDir = "asc" | "desc";
 
 export default function KeywordDensityChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [text, setText] = useState("");
   const [minLength, setMinLength] = useState(2);
   const [ignoreStopWords, setIgnoreStopWords] = useState(true);
@@ -64,6 +66,8 @@ export default function KeywordDensityChecker() {
     return entries;
   }, [filteredWords, totalWords, sortKey, sortDir]);
 
+  useEffect(() => { if (text.trim() && totalWords > 0) recordSuccess("analyze"); }, [text, totalWords, recordSuccess]);
+
   const toggleSort = (key: SortKey) => {
     if (sortKey === key) {
       setSortDir((d) => (d === "desc" ? "asc" : "desc"));
@@ -87,7 +91,7 @@ export default function KeywordDensityChecker() {
         <textarea
           id="kd-input"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => { markInteraction(); setText(e.target.value); }}
           placeholder="Paste or type your text here for keyword density analysis…"
           rows={8}
           className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150"

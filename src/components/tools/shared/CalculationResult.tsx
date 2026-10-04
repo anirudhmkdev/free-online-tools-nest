@@ -209,9 +209,32 @@ export default function CalculationResult({
   impossible?: boolean;
 }) {
   const result = useRef<HTMLElement>(null);
+  const resultValue = useRef<HTMLParagraphElement>(null);
   const resultId = useId();
   useEffect(() => {
     focusToolElement(result.current, "start");
+    const element = resultValue.current;
+    if (!element || typeof element.animate !== "function") return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const style = getComputedStyle(element);
+    // A short color acknowledgment marks each submission, including identical answers.
+    // Never count through invented intermediate values or delay the breakdown.
+    const feedback = element.animate(
+      [
+        { color: style.getPropertyValue("--color-link").trim() },
+        { color: style.color },
+      ],
+      {
+        duration: preference.matches ? 100 : 280,
+        easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      },
+    );
+    const cancelFeedback = () => feedback.cancel();
+    preference.addEventListener("change", cancelFeedback);
+    return () => {
+      feedback.cancel();
+      preference.removeEventListener("change", cancelFeedback);
+    };
   }, [value, label, lines]);
   return (
     <section
@@ -225,6 +248,7 @@ export default function CalculationResult({
         {label}
       </p>
       <p
+        ref={resultValue}
         id={`${resultId}-value`}
         className="mt-2 break-words text-3xl font-semibold tracking-tight text-ink"
         style={{ fontVariantNumeric: "tabular-nums" }}

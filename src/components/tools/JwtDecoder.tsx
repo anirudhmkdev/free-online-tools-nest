@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -23,6 +24,7 @@ function formatJson(str: string): string {
 }
 
 export default function JwtDecoder() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [header, setHeader] = useState("");
   const [payload, setPayload] = useState("");
@@ -32,6 +34,7 @@ export default function JwtDecoder() {
   const [copiedPayload, handleCopyPayload] = useCopyToClipboard();
 
   const decode = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setHeader("");
       setPayload("");
@@ -52,9 +55,17 @@ export default function JwtDecoder() {
     try {
       const decodedHeader = base64UrlDecode(parts[0]);
       const decodedPayload = base64UrlDecode(parts[1]);
+      // A JWT header and claims payload must contain valid JSON.
+      const headerData = JSON.parse(decodedHeader);
+      const payloadData = JSON.parse(decodedPayload);
+      if ([headerData, payloadData].some(value => value === null || typeof value !== "object" || Array.isArray(value))) {
+        throw new Error("JWT header and payload must contain JSON objects.");
+      }
       setHeader(formatJson(decodedHeader));
       setPayload(formatJson(decodedPayload));
       setSignature(parts[2]);
+      // Successful JWT decoding requires JSON; this never verifies the signature.
+      recordSuccess("convert");
       setError("");
     } catch {
       setError("Failed to decode JWT. Ensure the token is properly formatted and not malformed.");
@@ -62,9 +73,10 @@ export default function JwtDecoder() {
       setPayload("");
       setSignature("");
     }
-  }, [input]);
+  }, [input, markInteraction, recordSuccess]);
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setHeader("");
     setPayload("");

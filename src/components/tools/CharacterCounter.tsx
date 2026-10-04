@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useEffect } from "react";
 
 /**
  * CharacterCounter — count characters with/without spaces, track social media limits.
  */
 export default function CharacterCounter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [text, setText] = useState("");
 
   const chars = text.length;
@@ -17,6 +19,10 @@ export default function CharacterCounter() {
     { name: "Instagram bio", max: 150 },
   ];
 
+  useEffect(() => {
+    if (text.trim()) recordSuccess("analyze");
+  }, [text, recordSuccess]);
+
   return (
     <div className="space-y-6">
       <p className="text-sm">Counts use UTF-16 code units, not visible symbols: an emoji may count as two or more. Reference budgets are approximate; platform rules, URLs and SMS encoding can differ. A meta description has no guaranteed display length.</p>
@@ -27,7 +33,7 @@ export default function CharacterCounter() {
         <textarea
           id="cc-input"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => { markInteraction(); setText(e.target.value); }}
           placeholder="Type or paste your text here…"
           rows={6}
           className="w-full p-4 border rounded-lg text-base resize-y outline-none transition-colors duration-150"
@@ -99,7 +105,7 @@ export default function CharacterCounter() {
 
       <button
         type="button"
-        onClick={() => setText("")}
+        onClick={() => { clearInteraction(); setText(""); }}
         className="btn-secondary btn-sm"
         style={{ borderColor: "var(--color-hairline)", color: "var(--color-ink)", backgroundColor: "var(--color-canvas)" }}
       >

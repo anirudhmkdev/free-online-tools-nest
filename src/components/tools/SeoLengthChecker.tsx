@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 const FONT_SIZE_PX = 20;
 
@@ -35,6 +36,7 @@ function getDescStatus(chars: number): { label: string; color: string } {
 }
 
 export default function SeoLengthChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -55,8 +57,12 @@ export default function SeoLengthChecker() {
     return description.length > 160 ? description.slice(0, 157) + "..." : description;
   }, [description]);
 
+  useEffect(() => {
+    if (title.trim() || description.trim()) recordSuccess("check");
+  }, [title, description, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <p className="text-sm">Character ranges are editing guides, not search-engine limits. Width is a rough character-based estimate, not a font measurement. Google may rewrite or truncate titles and snippets differently by query and device. A green indicator does not guarantee display or ranking.</p>
       {/* Title */}
       <div>

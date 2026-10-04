@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState } from "react";
 import {
   calculateAttendance,
@@ -10,6 +11,7 @@ import CalculationResult, {
 } from "./shared/CalculationResult";
 
 export default function AttendanceCalculator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [attended, setAttended] = useState("");
   const [total, setTotal] = useState("");
   const [target, setTarget] = useState("");
@@ -19,6 +21,7 @@ export default function AttendanceCalculator() {
   > | null>(null);
   const [error, setError] = useState("");
   function clearResult() {
+    clearInteraction();
     setResult(null);
     setError("");
   }
@@ -30,6 +33,7 @@ export default function AttendanceCalculator() {
         onSubmit={(e) => {
           e.preventDefault();
           clearResult();
+          markInteraction();
           try {
             setResult(
               calculateAttendance({
@@ -41,6 +45,7 @@ export default function AttendanceCalculator() {
                   : undefined,
               }),
             );
+            recordSuccess("calculate");
           } catch (err) {
             setError((err as Error).message);
           }

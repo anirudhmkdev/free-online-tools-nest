@@ -1,8 +1,10 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 
 type GradientType = "linear" | "radial";
 
 export default function GradientGenerator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [startColor, setStartColor] = useState("#0070f3");
   const [startInput, setStartInput] = useState("#0070f3");
   const [endColor, setEndColor] = useState("#00c6ff");
@@ -14,11 +16,13 @@ export default function GradientGenerator() {
   const isValidHex = (hex: string) => /^#[0-9a-f]{6}$/i.test(hex);
 
   const handleStartChange = (hex: string) => {
+    markInteraction();
     setStartInput(hex);
     if (isValidHex(hex)) setStartColor(hex);
   };
 
   const handleEndChange = (hex: string) => {
+    markInteraction();
     setEndInput(hex);
     if (isValidHex(hex)) setEndColor(hex);
   };
@@ -37,6 +41,10 @@ export default function GradientGenerator() {
       setTimeout(() => setCopied(false), 2000);
     } catch { /* ignore */ }
   };
+
+  useEffect(() => {
+    if (isValidHex(startInput) && isValidHex(endInput) && Number.isFinite(angle)) recordSuccess("generate");
+  }, [startInput, endInput, angle, cssValue, recordSuccess]);
 
   return (
     <div className="space-y-6">
@@ -124,7 +132,7 @@ export default function GradientGenerator() {
             <button
               key={t}
               type="button"
-              onClick={() => setGradientType(t)}
+              onClick={() => { markInteraction(); setGradientType(t); }}
               className="px-4 py-2 text-sm rounded-full border transition-all duration-150 capitalize"
               style={{
                 backgroundColor: gradientType === t ? "var(--color-primary)" : "var(--color-canvas)",
@@ -151,7 +159,7 @@ export default function GradientGenerator() {
               min={0}
               max={360}
               value={angle}
-              onChange={(e) => setAngle(Number(e.target.value))}
+              onChange={(e) => { markInteraction(); setAngle(Number(e.target.value)); }}
               className="flex-1 h-2 rounded-lg appearance-none cursor-pointer"
               style={{
                 accentColor: "var(--color-primary)",
@@ -163,7 +171,7 @@ export default function GradientGenerator() {
               min={0}
               max={360}
               value={angle}
-              onChange={(e) => setAngle(Math.min(360, Math.max(0, parseInt(e.target.value) || 0)))}
+              onChange={(e) => { if (e.target.value.trim()) markInteraction(); else clearInteraction(); setAngle(Math.min(360, Math.max(0, parseInt(e.target.value) || 0))); }}
               className="h-10 w-20 px-3 border rounded-md text-sm text-center outline-none"
               style={{
                 backgroundColor: "var(--color-canvas)",

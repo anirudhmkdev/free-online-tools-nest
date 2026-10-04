@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import React, { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 
@@ -101,6 +102,7 @@ function renderHighlightedText(
 }
 
 export default function PlagiarismChecker() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [textA, setTextA] = useState("");
   const [textB, setTextB] = useState("");
   const [similarity, setSimilarity] = useState<number | null>(null);
@@ -109,6 +111,7 @@ export default function PlagiarismChecker() {
   const [error, setError] = useState("");
 
   const handleCompare = useCallback(() => {
+    markInteraction();
     if (!textA.trim() || !textB.trim()) {
       setError("Please enter text in both fields.");
       setSimilarity(null);
@@ -119,9 +122,11 @@ export default function PlagiarismChecker() {
     setSimilarity(result.similarity);
     setRangesA(result.rangesA);
     setRangesB(result.rangesB);
+    recordSuccess("analyze");
   }, [textA, textB]);
 
   const handleClear = useCallback(() => {
+    clearInteraction();
     setTextA("");
     setTextB("");
     setSimilarity(null);
@@ -143,7 +148,7 @@ export default function PlagiarismChecker() {
   };
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="flex flex-col">
           <label htmlFor="plag-text-a" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

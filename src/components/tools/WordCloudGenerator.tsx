@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback, useRef, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 
@@ -62,7 +63,7 @@ function drawWordCloud(
   textColor: string
 ) {
   const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  if (!ctx) return false;
 
   const w = canvas.width;
   const h = canvas.height;
@@ -76,7 +77,7 @@ function drawWordCloud(
     ctx.font = "16px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText("No words to display. Enter some text to generate a word cloud.", w / 2, h / 2);
-    return;
+    return false;
   }
 
   const maxCount = words[0].count;
@@ -136,9 +137,11 @@ function drawWordCloud(
 
     placed.push({ x: x!, y: y!, width: textWidth, height: textHeight, text: words[i].text, color });
   }
+  return placed.length > 0;
 }
 
 export default function WordCloudGenerator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState("");
   const [maxWords, setMaxWords] = useState(50);
   const [paletteName, setPaletteName] = useState("Ocean");
@@ -148,6 +151,7 @@ export default function WordCloudGenerator() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const generate = useCallback(() => {
+    markInteraction();
     if (!input.trim()) {
       setError("Please enter some text to generate a word cloud.");
       return;
@@ -170,8 +174,8 @@ export default function WordCloudGenerator() {
     const style = getComputedStyle(canvas);
     const bgColor = style.getPropertyValue("--color-canvas").trim() || "#ffffff";
     const textColor = style.getPropertyValue("--color-ink").trim() || "#333333";
-    drawWordCloud(canvas, wordEntries, palette, bgColor, textColor);
-  }, [wordEntries, paletteName]);
+    if (drawWordCloud(canvas, wordEntries, palette, bgColor, textColor)) recordSuccess("generate");
+  }, [wordEntries, paletteName, recordSuccess]);
 
   const handleDownload = useCallback(() => {
     const canvas = canvasRef.current;
@@ -183,13 +187,14 @@ export default function WordCloudGenerator() {
   }, []);
 
   const handleClear = useCallback(() => {
+    clearInteraction();
     setInput("");
     setWordEntries([]);
     setError("");
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div>
         <label htmlFor="wc-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Paste your text

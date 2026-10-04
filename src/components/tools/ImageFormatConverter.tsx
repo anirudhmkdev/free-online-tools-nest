@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { formatBytes } from "../../helpers/utils";
 
@@ -10,6 +11,8 @@ const FORMAT_OPTIONS: { value: OutputFormat; label: string; ext: string; mime: s
 ];
 
 export default function ImageFormatConverter() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [originalFormat, setOriginalFormat] = useState<string>("");
@@ -25,6 +28,8 @@ export default function ImageFormatConverter() {
   const convertedSrcRef = useRef<string>("");
 
   const processFile = (file: File) => {
+    operationRevision.current++;
+    clearInteraction();
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image file.");
       return;
@@ -48,6 +53,8 @@ export default function ImageFormatConverter() {
   };
 
   const handleConvert = useCallback(() => {
+    markInteraction();
+    const revision = ++operationRevision.current;
     if (!imgRef.current || !imageFile) {
       setError("No image loaded.");
       return;
@@ -79,7 +86,8 @@ export default function ImageFormatConverter() {
 
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
+          if (revision !== operationRevision.current) return;
+          if (!blob || !blob.size) {
             setError("Conversion failed.");
             setConverting(false);
             return;
@@ -90,6 +98,7 @@ export default function ImageFormatConverter() {
           const blobUrl = URL.createObjectURL(blob);
           convertedSrcRef.current = blobUrl;
           setConvertedSrc(blobUrl);
+          recordSuccess("convert");
           setConvertedSize(blob.size);
           setConverting(false);
         },
@@ -100,7 +109,7 @@ export default function ImageFormatConverter() {
       setError(err instanceof Error ? err.message : "Conversion failed.");
       setConverting(false);
     }
-  }, [imageFile, outputFormat, quality, maxWidth]);
+  }, [imageFile, outputFormat, quality, maxWidth, markInteraction, recordSuccess]);
 
   const handleDownload = () => {
     if (!convertedSrc || !imageFile) return;
@@ -114,6 +123,8 @@ export default function ImageFormatConverter() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (convertedSrcRef.current) {
       URL.revokeObjectURL(convertedSrcRef.current);
@@ -134,16 +145,17 @@ export default function ImageFormatConverter() {
     };
   }, []);
 
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
+
   return (
     <div className="space-y-6">
       {!imageSrc && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("convert-file-input")?.click()}
         >
           <span className="text-4xl mb-4">🔄</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -154,9 +166,10 @@ export default function ImageFormatConverter() {
           </p>
           <input
             id="convert-file-input"
+            aria-label="Choose an image"
             type="file"
             accept="image/*"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

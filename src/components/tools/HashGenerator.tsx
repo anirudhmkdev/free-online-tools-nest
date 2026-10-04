@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 /**
@@ -193,6 +194,8 @@ const ALGORITHMS: { key: Algorithm; label: string }[] = [
 ];
 
 export default function HashGenerator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [input, setInput] = useState("");
   const [algorithm, setAlgorithm] = useState<Algorithm>("SHA-256");
   const [hash, setHash] = useState("");
@@ -203,6 +206,8 @@ export default function HashGenerator() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const handleGenerate = useCallback(async () => {
+    markInteraction();
+    const revision = ++operationRevision.current;
     if (!input.trim()) {
       setHash("");
       setError("");
@@ -217,18 +222,23 @@ export default function HashGenerator() {
       } else {
         result = await shaHash(algorithm, input);
       }
+      if (revision !== operationRevision.current) return;
       setHash(result);
+      if (/^[0-9a-f]+$/i.test(result)) recordSuccess("generate");
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Hash computation failed.");
       setHash("");
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
-  }, [input, algorithm]);
+  }, [input, algorithm, markInteraction, recordSuccess]);
 
   const matchResult = hash && showCompare && compareHash
     ? (hash === compareHash.trim().toLowerCase() ? "Match" : "No match")
     : null;
+
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
 
   return (
     <div className="space-y-6">
@@ -240,7 +250,7 @@ export default function HashGenerator() {
         <textarea
           id="hash-input"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { operationRevision.current++; clearInteraction(); setLoading(false); setInput(e.target.value); }}
           placeholder="Enter text to hash…"
           rows={5}
           className="w-full p-4 border rounded-lg text-base resize-y outline-none transition-colors duration-150"
@@ -265,7 +275,7 @@ export default function HashGenerator() {
               <button
                 key={algo.key}
                 type="button"
-                onClick={() => setAlgorithm(algo.key)}
+                onClick={() => { operationRevision.current++; clearInteraction(); setLoading(false); setHash(""); setAlgorithm(algo.key); }}
                 className="px-4 py-2 text-sm font-mono transition-colors duration-150 outline-none"
                 style={{
                   backgroundColor: algorithm === algo.key ? "var(--color-primary)" : "var(--color-canvas)",

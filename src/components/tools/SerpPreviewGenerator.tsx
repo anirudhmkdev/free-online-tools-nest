@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 function estimatePixelWidth(text: string): number {
@@ -18,6 +20,7 @@ function estimatePixelWidth(text: string): number {
 }
 
 export default function SerpPreviewGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -70,8 +73,12 @@ export default function SerpPreviewGenerator() {
     handleCopy(metaHtml);
   }, [handleCopy, metaHtml]);
 
+  useEffect(() => {
+    if (metaHtml && (title.trim() || description.trim()) && (!url || isAbsoluteHttpUrl(url))) recordSuccess("generate");
+  }, [metaHtml, title, description, url, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>

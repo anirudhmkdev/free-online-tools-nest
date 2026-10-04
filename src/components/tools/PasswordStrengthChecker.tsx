@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -89,6 +90,7 @@ function generatePassword(length: number, charset: string): string {
 }
 
 export default function PasswordStrengthChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [genLength, setGenLength] = useState(16);
   const [useUpper, setUseUpper] = useState(true);
   const [useLower, setUseLower] = useState(true);
@@ -104,6 +106,7 @@ export default function PasswordStrengthChecker() {
   const strength = checkPwd ? analyzeStrength(checkPwd) : null;
 
   const handleGenerate = useCallback(() => {
+    markInteraction();
     let charset = "";
     if (useUpper) charset += UPPER;
     if (useLower) charset += LOWER;
@@ -127,6 +130,7 @@ export default function PasswordStrengthChecker() {
       pwd = pwd.slice(1) + SYMBOLS[crypto.getRandomValues(new Uint32Array(1))[0] % SYMBOLS.length];
     }
     setGeneratedPwd(pwd);
+    if (pwd.length > 0) recordSuccess("generate");
   }, [genLength, useUpper, useLower, useDigits, useSymbols, excludeAmbiguous]);
 
   const criteria = [
@@ -137,8 +141,12 @@ export default function PasswordStrengthChecker() {
     { label: "No common patterns", pass: !/(12345|password|qwerty|abcde|letmein|admin|welcome|login)/i.test(checkPwd) },
   ];
 
+  useEffect(() => {
+    if (strength !== null) recordSuccess("check");
+  }, [strength, checkPwd, recordSuccess]);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div onChangeCapture={markInteraction} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Generator Card */}
       <div
         className="p-6 rounded-xl"

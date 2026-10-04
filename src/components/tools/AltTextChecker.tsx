@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 interface ImageResult {
   index: number;
@@ -9,6 +10,7 @@ interface ImageResult {
 }
 
 export default function AltTextChecker() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [html, setHtml] = useState("");
   const [checked, setChecked] = useState(false);
 
@@ -66,8 +68,9 @@ export default function AltTextChecker() {
   const failCount = results.filter((r) => r.status === "fail").length;
 
   const handleCheck = useCallback(() => {
+    markInteraction();
     setChecked(true);
-  }, []);
+  }, [markInteraction]);
 
   const statusIcon = (status: string) => {
     switch (status) {
@@ -86,6 +89,10 @@ export default function AltTextChecker() {
       default: return "var(--color-mute)";
     }
   };
+
+  useEffect(() => {
+    if (checked && html.trim()) recordSuccess("check");
+  }, [checked, html, results, recordSuccess]);
 
   return (
     <div className="space-y-6">

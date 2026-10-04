@@ -1,4 +1,6 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 interface UrlEntry {
@@ -19,6 +21,7 @@ function createEntry(id: number): UrlEntry {
 }
 
 export default function SitemapGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [entries, setEntries] = useState<UrlEntry[]>([
     createEntry(1),
     createEntry(2),
@@ -70,8 +73,12 @@ export default function SitemapGenerator() {
     if (xmlOutput) handleCopy(xmlOutput);
   }, [handleCopy, xmlOutput]);
 
+  useEffect(() => {
+    if (xmlOutput && entries.filter(entry => entry.url.trim()).every(entry => isAbsoluteHttpUrl(entry.url))) recordSuccess("generate");
+  }, [xmlOutput, entries, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="space-y-3">
         {entries.map((entry, index) => (
           <div

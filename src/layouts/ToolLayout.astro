@@ -22,6 +22,7 @@ interface Props {
 }
 
 import { getPagePolicy } from "../data/page-policy";
+import { getToolDiscoveryTier } from "../data/tool-discovery";
 import { getCollection } from "astro:content";
 import Layout from "./Layout.astro";
 import RelatedWorkflowLinks from "../components/content/RelatedWorkflowLinks.astro";
@@ -156,7 +157,8 @@ const ogImage = `/og/${categorySlug}.png`;
           </div>
         </header>
 
-        <section class="app-panel overflow-hidden" aria-label={`${title} tool`}>
+        <section class="app-panel overflow-hidden" aria-label={`${title} tool`}
+          data-tool-slug={toolSlug} data-tool-locale={locale} data-tool-tier={getToolDiscoveryTier(toolSlug)}>
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-hairline px-4 py-3 sm:px-6">
             <div>
               <p class="text-sm font-medium text-ink">Workspace</p>

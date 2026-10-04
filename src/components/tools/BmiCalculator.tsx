@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
 function bmiCategory(bmi: number): { label: string; color: string } {
@@ -21,6 +22,7 @@ const BMI_RANGES = [
 ];
 
 export default function BmiCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [unit, setUnit] = useState<"metric" | "imperial">("metric");
@@ -28,6 +30,7 @@ export default function BmiCalculator() {
   const [error, setError] = useState("");
 
   const calculate = useCallback(() => {
+    markInteraction();
     setError("");
     const w = parseFloat(weight);
     const h = parseFloat(height);
@@ -44,8 +47,14 @@ export default function BmiCalculator() {
     } else {
       bmiValue = (w / (h * h)) * 703;
     }
+    if (!Number.isFinite(bmiValue) || bmiValue <= 0) {
+      setError("Please enter height and weight within a finite calculation range.");
+      setBmi(null);
+      return;
+    }
     setBmi(Math.round(bmiValue * 10) / 10);
-  }, [height, weight, unit]);
+    recordSuccess("calculate");
+  }, [height, weight, unit, markInteraction, recordSuccess]);
 
   const category = bmi !== null ? bmiCategory(bmi) : null;
 

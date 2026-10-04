@@ -1,8 +1,11 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import ErrorBanner from "../ErrorBanner";
+import { parseCsv, csvToRecords } from "../../helpers/csv-conversion";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 export default function CsvToJson() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [input, setInput] = useState(
     "id,name,role,email\n1,Alex Rivera,Developer,alex@example.com\n2,Jordan Lee,Designer,jordan@example.com\n3,Taylor Chen,Product Manager,taylor@example.com"
   );
@@ -13,47 +16,6 @@ export default function CsvToJson() {
   const [error, setError] = useState("");
   const [copied, handleCopyToClipboard] = useCopyToClipboard();
 
-  // Parse CSV function
-  const parseCSV = useCallback((csvText: string, separator: string): string[][] => {
-    const rows: string[][] = [];
-    let row: string[] = [];
-    let insideQuote = false;
-    let entry = "";
-
-    for (let i = 0; i < csvText.length; i++) {
-      const char = csvText[i];
-      const nextChar = csvText[i + 1];
-
-      if (char === '"') {
-        if (insideQuote && nextChar === '"') {
-          entry += '"';
-          i++; // Skip next quote
-        } else {
-          insideQuote = !insideQuote;
-        }
-      } else if (char === separator && !insideQuote) {
-        row.push(entry);
-        entry = "";
-      } else if ((char === "\n" || char === "\r") && !insideQuote) {
-        if (char === "\r" && nextChar === "\n") {
-          i++;
-        }
-        row.push(entry);
-        rows.push(row);
-        row = [];
-        entry = "";
-      } else {
-        entry += char;
-      }
-    }
-    if (entry || row.length > 0) {
-      row.push(entry);
-      rows.push(row);
-    }
-    // Filter empty rows
-    return rows.filter((r) => r.length > 0 && r.some((cell) => cell.trim() !== ""));
-  }, []);
-
   // Run conversion
   useEffect(() => {
     if (!input.trim()) {
@@ -63,7 +25,7 @@ export default function CsvToJson() {
     }
 
     try {
-      const parsed = parseCSV(input, delimiter);
+      const parsed = parseCsv(input, delimiter);
       if (parsed.length === 0) {
         setOutput("");
         setError("No valid CSV rows found.");
@@ -71,45 +33,30 @@ export default function CsvToJson() {
       }
 
       setError("");
-      let resultData: Record<string, string>[] | string[][] | null = null;
-
-      if (hasHeader) {
-        const headers = parsed[0].map((h) => h.trim());
-        const dataRows = parsed.slice(1);
-        
-        resultData = dataRows.map((row) => {
-          const obj: Record<string, string> = {};
-          headers.forEach((header, index) => {
-            obj[header || `field_${index + 1}`] = (row[index] || "").trim();
-          });
-          return obj;
-        });
-      } else {
-        // Just convert to array of arrays
-        resultData = parsed.map((row) => row.map((cell) => cell.trim()));
-      }
+      const resultData = csvToRecords(parsed, hasHeader);
 
       const formatted = minify
         ? JSON.stringify(resultData)
         : JSON.stringify(resultData, null, 2);
 
       setOutput(formatted);
+      if (resultData.length > 0) recordSuccess("convert");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to parse CSV data.");
       setOutput("");
     }
-  }, [input, delimiter, hasHeader, minify, parseCSV]);
+  }, [input, delimiter, hasHeader, minify, recordSuccess]);
 
   // Compute table preview (limit to first 10 rows for safety)
   const previewData = useMemo(() => {
     if (!input.trim() || error) return null;
     try {
-      const parsed = parseCSV(input, delimiter);
+      const parsed = parseCsv(input, delimiter);
       return parsed.slice(0, 10);
     } catch {
       return null;
     }
-  }, [input, delimiter, error, parseCSV]);
+  }, [input, delimiter, error]);
 
   const handleCopy = useCallback(() => {
     handleCopyToClipboard(output);
@@ -127,6 +74,7 @@ export default function CsvToJson() {
   }, [output]);
 
   const handleClear = () => {
+    clearInteraction();
     setInput("");
     setOutput("");
     setError("");
@@ -143,7 +91,7 @@ export default function CsvToJson() {
           <textarea
             id="csv-input"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { markInteraction(); setInput(e.target.value); }}
             placeholder="name,email,phone&#10;John,john@example.com,555-0199&#10;Jane,jane@example.com,555-0120"
             rows={10}
             className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150 flex-1 min-h-[260px]"

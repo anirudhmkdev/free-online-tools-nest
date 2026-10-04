@@ -1,4 +1,5 @@
-import { useState, useRef, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 type AspectRatio = "free" | "1:1" | "16:9" | "4:3" | "3:2";
 
@@ -18,6 +19,8 @@ const ASPECT_RATIO_LABELS: Record<AspectRatio, string> = {
 };
 
 export default function ImageCropper() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
   const [imageSrc, setImageSrc] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>("free");
@@ -49,6 +52,8 @@ export default function ImageCropper() {
   };
 
   const processFile = (file: File) => {
+    operationRevision.current++;
+    clearInteraction();
     if (!file.type.startsWith("image/")) {
       setError("Please upload a valid image file.");
       return;
@@ -67,6 +72,8 @@ export default function ImageCropper() {
   };
 
   const handleCrop = useCallback(() => {
+    markInteraction();
+    const revision = ++operationRevision.current;
     if (!imgRef.current || !imageFile) {
       setError("No image loaded.");
       return;
@@ -147,7 +154,8 @@ export default function ImageCropper() {
 
       canvas.toBlob(
         (blob) => {
-          if (!blob) {
+          if (revision !== operationRevision.current) return;
+          if (!blob || !blob.size) {
             setError("Failed to create cropped image.");
             return;
           }
@@ -157,13 +165,14 @@ export default function ImageCropper() {
           const blobUrl = URL.createObjectURL(blob);
           croppedSrcRef.current = blobUrl;
           setCroppedSrc(blobUrl);
+          recordSuccess("convert");
         },
         "image/png"
       );
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Crop failed.");
     }
-  }, [imageFile, aspectRatio, customWidth, customHeight, getAspectRatioValue]);
+  }, [imageFile, aspectRatio, customWidth, customHeight, getAspectRatioValue, markInteraction, recordSuccess]);
 
   const handleDownload = () => {
     if (!croppedSrc || !imageFile) return;
@@ -177,6 +186,8 @@ export default function ImageCropper() {
   };
 
   const handleReset = () => {
+    operationRevision.current++;
+    clearInteraction();
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     if (croppedSrcRef.current) {
       URL.revokeObjectURL(croppedSrcRef.current);
@@ -190,16 +201,17 @@ export default function ImageCropper() {
     setError("");
   };
 
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
+
   return (
     <div className="space-y-6">
       {!imageSrc && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center cursor-pointer flex flex-col items-center justify-center min-h-[200px] transition-all duration-200"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("crop-file-input")?.click()}
         >
           <span className="text-4xl mb-4">✂️</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -210,9 +222,10 @@ export default function ImageCropper() {
           </p>
           <input
             id="crop-file-input"
+            aria-label="Choose an image"
             type="file"
             accept="image/*"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

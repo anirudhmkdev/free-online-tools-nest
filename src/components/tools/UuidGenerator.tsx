@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -39,6 +40,7 @@ function formatUUID(uuid: string, upperCase: boolean, withDashes: boolean): stri
 }
 
 export default function UuidGenerator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [quantity, setQuantity] = useState(1);
   const [uuids, setUuids] = useState<string[]>([]);
   const [upperCase, setUpperCase] = useState(false);
@@ -55,6 +57,7 @@ export default function UuidGenerator() {
   }, []);
 
   const handleGenerate = useCallback(() => {
+    markInteraction();
     const generated: string[] = [];
     const seen = new Set<string>();
     const maxAttempts = quantity * 5;
@@ -70,10 +73,11 @@ export default function UuidGenerator() {
       }
     }
     setUuids(generated);
+    if (generated.length > 0) recordSuccess("generate");
   }, [quantity, upperCase, withDashes]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       {/* Controls */}
       <div className="flex flex-wrap items-end gap-4">
         <div>

@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useEffect, useRef } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_PDF_FILE_SIZE_BYTES } from "../../helpers/utils";
 
@@ -10,6 +11,9 @@ const LEVEL_CONFIG: Record<CompressionLevel, { label: string; description: strin
 };
 
 export default function PdfCompressor() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
+  useEffect(() => () => { operationRevision.current++; clearInteraction(); }, [clearInteraction]);
   const [file, setFile] = useState<File | null>(null);
   const [level, setLevel] = useState<CompressionLevel>("compact");
   const [loading, setLoading] = useState(false);
@@ -22,6 +26,9 @@ export default function PdfCompressor() {
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
+    operationRevision.current++;
+    clearInteraction();
+    setLoading(false);
     if (f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) {
       setError("Please upload a valid PDF file.");
       return;
@@ -36,19 +43,24 @@ export default function PdfCompressor() {
     setOriginalSize(null);
     setCompressedSize(null);
     setCompressedUrl("");
-  }, []);
+  }, [clearInteraction]);
 
   const handleReset = useCallback(() => {
+    operationRevision.current++;
+    clearInteraction();
+    setLoading(false);
     setFile(null);
     setOriginalSize(null);
     setCompressedSize(null);
     setCompressedUrl("");
     setError("");
     if (compressedUrl) URL.revokeObjectURL(compressedUrl);
-  }, [compressedUrl]);
+  }, [compressedUrl, clearInteraction]);
 
   const compressPdf = useCallback(async () => {
     if (!file) return;
+    const revision = ++operationRevision.current;
+    markInteraction();
     setLoading(true);
     setError("");
     setOriginalSize(null);
@@ -58,22 +70,27 @@ export default function PdfCompressor() {
 
     try {
       const arrayBuf = await file.arrayBuffer();
+      if (revision !== operationRevision.current) return;
       setOriginalSize(arrayBuf.byteLength);
 
       const { rewritePdf } = await import("../../helpers/pdf-rewrite");
+      if (revision !== operationRevision.current) return;
       const pdfBytes = await rewritePdf(arrayBuf, level === "compact");
+      if (revision !== operationRevision.current) return;
 
       setCompressedSize(pdfBytes.length);
 
       const blob = new Blob([pdfBytes as BlobPart], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setCompressedUrl(url);
+      if (pdfBytes.length > 0) recordSuccess("export");
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to compress PDF.");
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
-  }, [file, level, compressedUrl]);
+  }, [file, level, compressedUrl, markInteraction, recordSuccess]);
 
   const handleDownload = useCallback(() => {
     if (!compressedUrl || !file) return;
@@ -94,12 +111,11 @@ export default function PdfCompressor() {
       {/* Upload */}
       {!file && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("pdf-compressor-input")?.click()}
         >
           <span className="text-4xl mb-4">🗜️</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -110,9 +126,10 @@ export default function PdfCompressor() {
           </p>
           <input
             id="pdf-compressor-input"
+            aria-label="Choose a PDF file"
             type="file"
             accept=".pdf"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>
@@ -132,7 +149,6 @@ export default function PdfCompressor() {
             <button
               type="button"
               onClick={handleReset}
-              disabled={loading}
               className="btn-secondary btn-sm"
             >
               Choose Different
@@ -142,7 +158,7 @@ export default function PdfCompressor() {
           {/* PDF save mode */}
           <fieldset className="space-y-3">
             <legend className="text-sm font-medium" style={{ color: "var(--color-ink)" }}>
-              Compression Level
+              Save mode
             </legend>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {(Object.entries(LEVEL_CONFIG) as [CompressionLevel, typeof LEVEL_CONFIG['plain']][]).map(([key, config]) => (
@@ -161,8 +177,7 @@ export default function PdfCompressor() {
                     name="compressionLevel"
                     value={key}
                     checked={level === key}
-                    disabled={loading}
-                    onChange={() => { setLevel(key); if (compressedUrl) URL.revokeObjectURL(compressedUrl); setCompressedUrl(""); setCompressedSize(null); }}
+                    onChange={() => { operationRevision.current++; clearInteraction(); setLoading(false); setLevel(key); if (compressedUrl) URL.revokeObjectURL(compressedUrl); setCompressedUrl(""); setCompressedSize(null); setOriginalSize(null); }}
                     className="accent-current"
                   />
                   <div>
@@ -228,7 +243,7 @@ export default function PdfCompressor() {
                 </div>
                 <div>
                   <span className="block text-[10px] uppercase tracking-wider font-medium" style={{ color: "var(--color-mute)" }}>
-                    Savings
+                    Size change
                   </span>
                   <span className="text-base font-semibold" style={{ color: "var(--color-success)" }}>
                     {savings < 0 ? `${Math.abs(savings)}% larger` : savings > 0 ? `${savings}% smaller` : "No reduction"}

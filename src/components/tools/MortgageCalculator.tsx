@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useCallback, useEffect } from "react";
 
 interface MonthlyBreakdown {
   principalAndInterest: number;
@@ -55,6 +56,7 @@ function calculateMortgage(
 }
 
 export default function MortgageCalculator() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [homePrice, setHomePrice] = useState("300000");
   const [downPaymentDollar, setDownPaymentDollar] = useState("60000");
   const [downPaymentPercent, setDownPaymentPercent] = useState("20");
@@ -125,8 +127,12 @@ export default function MortgageCalculator() {
 
   const totalMonthly = result?.breakdown.total ?? 0;
 
+  useEffect(() => {
+    if (result && Object.values(result.breakdown).every(Number.isFinite) && Number.isFinite(result.totalInterest) && Number(downPaymentDollar) >= 0 && Number(downPaymentPercent) >= 0 && Number(propertyTax) >= 0 && Number(homeInsurance) >= 0 && Number(pmiRate) >= 0) recordSuccess("calculate");
+  }, [result, downPaymentDollar, downPaymentPercent, propertyTax, homeInsurance, pmiRate, recordSuccess]);
+
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={markInteraction} className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label htmlFor="mc-price" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

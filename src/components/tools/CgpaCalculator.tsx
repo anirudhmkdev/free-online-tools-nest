@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState } from "react";
 import {
   calculateCgpaSemesters,
@@ -13,6 +14,7 @@ import CalculationResult, {
 import SgpaCalculator from "./SgpaCalculator";
 
 export default function CgpaCalculator() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [mode, setMode] = useState("semesters");
   const [scale, setScale] = useState("");
   const [method, setMethod] = useState<SemesterWeighting | "">("");
@@ -25,6 +27,7 @@ export default function CgpaCalculator() {
   > | null>(null);
   const [error, setError] = useState("");
   function clear() {
+    clearInteraction();
     setResult(null);
     setError("");
   }
@@ -64,6 +67,7 @@ export default function CgpaCalculator() {
             onSubmit={(e) => {
               e.preventDefault();
               clear();
+              markInteraction();
               try {
                 if (!method)
                   throw new Error(
@@ -85,6 +89,7 @@ export default function CgpaCalculator() {
                     method,
                   ),
                 );
+                recordSuccess("calculate");
               } catch (err) {
                 setError((err as Error).message);
               }
@@ -162,7 +167,7 @@ export default function CgpaCalculator() {
                 <button
                   type="button"
                   disabled={rows.length === 1}
-                  className="mt-3 text-sm text-link underline disabled:opacity-40"
+                  className="mt-3 min-h-11 min-w-11 py-2 text-sm text-link underline disabled:opacity-40"
                   onClick={() => {
                     setRows(rows.filter((_, j) => i !== j));
                     clear();

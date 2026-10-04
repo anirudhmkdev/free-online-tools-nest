@@ -1,3 +1,4 @@
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useEffect, useRef, useState } from "react";
 import {
   buildImagePdf,
@@ -22,6 +23,7 @@ interface Entry {
   pixels: number;
 }
 export default function ImageToPdf() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
   const [files, setFiles] = useState<Entry[]>([]);
   const [format, setFormat] = useState<PdfSettings["format"]>("a4");
   const [orientation, setOrientation] =
@@ -43,11 +45,11 @@ export default function ImageToPdf() {
   const errorPanel = useRef<HTMLDivElement>(null);
   const downloadLink = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
-    if (pendingFocus.current) {
+    if (!busy && pendingFocus.current) {
       focusToolElement(document.getElementById(pendingFocus.current));
       pendingFocus.current = null;
     }
-  }, [files]);
+  }, [files, busy]);
   useEffect(() => {
     if (error) focusToolElement(errorPanel.current);
   }, [error, attempt]);
@@ -63,6 +65,7 @@ export default function ImageToPdf() {
     [],
   );
   function resetResult() {
+    clearInteraction();
     if (download.current) URL.revokeObjectURL(download.current);
     download.current = null;
     setResult(null);
@@ -74,7 +77,7 @@ export default function ImageToPdf() {
     previews.current.delete(entry.preview);
   }
   async function addFiles(selected: File[]) {
-    if (!selected.length) return;
+    if (!selected.length || controller.current) return;
     setAttempt((value) => value + 1);
     resetResult();
     setBusy(true);
@@ -120,9 +123,11 @@ export default function ImageToPdf() {
     }
   }
   async function generate() {
+    if (controller.current) return;
     setAttempt((value) => value + 1);
     resetResult();
     setBusy(true);
+    markInteraction();
     const abort = new AbortController();
     controller.current = abort;
     try {
@@ -154,6 +159,7 @@ export default function ImageToPdf() {
       );
       download.current = url;
       setResult({ url, pages: files.length, bytes: bytes.length });
+      if (bytes.length > 0 && files.length > 0) recordSuccess("export");
       setStatus("PDF ready. Download it below.");
     } catch (err) {
       if (!abort.signal.aborted) {
@@ -352,6 +358,7 @@ export default function ImageToPdf() {
       </p>
       <div className="flex flex-wrap gap-3">
         <button
+          id="image-pdf-create"
           type="button"
           className="btn-primary disabled:cursor-not-allowed disabled:opacity-40"
           disabled={busy || !files.length}
@@ -377,7 +384,13 @@ export default function ImageToPdf() {
           <button
             type="button"
             className="btn-secondary"
-            onClick={() => controller.current?.abort()}
+            onClick={() => {
+              pendingFocus.current = files.length
+                ? "image-pdf-create"
+                : "image-pdf-files";
+              clearInteraction();
+              controller.current?.abort();
+            }}
           >
             Cancel
           </button>

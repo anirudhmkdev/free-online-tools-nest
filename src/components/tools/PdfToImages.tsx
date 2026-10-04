@@ -1,4 +1,5 @@
-import { useState, useCallback, useRef } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useRef, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_PDF_FILE_SIZE_BYTES, MAX_PDF_IMAGE_PAGE_COUNT } from "../../helpers/utils";
 
@@ -27,6 +28,9 @@ interface PageImage {
 }
 
 export default function PdfToImages() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
+  useEffect(() => () => { operationRevision.current++; }, []);
   const [file, setFile] = useState<File | null>(null);
   const [format, setFormat] = useState<ImageFormat>("image/png");
   const [quality, setQuality] = useState(0.9);
@@ -58,8 +62,11 @@ export default function PdfToImages() {
   }, []);
 
   const handleReset = useCallback(() => {
+    operationRevision.current++;
+    clearInteraction();
     objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u));
     objectUrlsRef.current = [];
+    setLoading(false);
     setFile(null);
     setPageImages([]);
     setError("");
@@ -67,6 +74,8 @@ export default function PdfToImages() {
   }, []);
 
   const convertToImages = useCallback(async () => {
+    const revision = ++operationRevision.current;
+    markInteraction();
     if (!file) return;
     setLoading(true);
     setError("");
@@ -77,6 +86,7 @@ export default function PdfToImages() {
       const data = new Uint8Array(arrayBuf);
       const pdfjsLib = await getPdfjs();
       const pdfDoc = await pdfjsLib.getDocument({ data }).promise;
+      if (revision !== operationRevision.current) return;
       const totalPages = pdfDoc.numPages;
       if (totalPages > MAX_PDF_IMAGE_PAGE_COUNT) {
         setError(`This PDF has ${totalPages} pages. For browser stability, convert files with ${MAX_PDF_IMAGE_PAGE_COUNT} pages or fewer.`);
@@ -105,6 +115,7 @@ export default function PdfToImages() {
         };
 
         await page.render(renderContext).promise;
+        if (revision !== operationRevision.current) return;
 
         const blob = await new Promise<Blob>((resolve, reject) => {
           canvas.toBlob(
@@ -117,6 +128,7 @@ export default function PdfToImages() {
           );
         });
 
+        if (revision !== operationRevision.current) return;
         const url = URL.createObjectURL(blob);
         objectUrlsRef.current.push(url);
 
@@ -124,11 +136,14 @@ export default function PdfToImages() {
         setProgress({ current: i, total: totalPages });
       }
 
+      if (revision !== operationRevision.current) return;
       setPageImages(results);
+      if (results.length > 0) recordSuccess("convert");
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to convert PDF to images.");
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
   }, [file, format, quality]);
 
@@ -151,16 +166,15 @@ export default function PdfToImages() {
   const totalSize = pageImages.reduce((sum, img) => sum + img.size, 0);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={() => { operationRevision.current++; setLoading(false); markInteraction(); }} className="space-y-6">
       {/* Upload */}
       {!file && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("pdf-images-input")?.click()}
         >
           <span className="text-4xl mb-4">🖼️</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -171,9 +185,10 @@ export default function PdfToImages() {
           </p>
           <input
             id="pdf-images-input"
+            aria-label="Choose a PDF file"
             type="file"
             accept=".pdf"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

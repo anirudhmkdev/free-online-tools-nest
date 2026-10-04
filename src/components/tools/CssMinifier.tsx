@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
 function minifyCss(input: string): string {
@@ -20,6 +21,7 @@ function minifyCss(input: string): string {
 }
 
 export default function CssMinifier() {
+  const { markInteraction, recordSuccess } = useToolTelemetry();
   const [input, setInput] = useState(
     "/* Primary styles */\n.container {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n  margin: 0 auto;\n  padding: 20px;\n}\n\n/* Heading */\n.title {\n  font-size: 24px;\n  font-weight: bold;\n  color: #333333;\n}\n"
   );
@@ -40,6 +42,10 @@ export default function CssMinifier() {
     };
   }, [input, output]);
 
+  useEffect(() => {
+    if (input.trim() && output) recordSuccess("format");
+  }, [input, output, recordSuccess]);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -51,7 +57,7 @@ export default function CssMinifier() {
           <textarea
             id="css-input"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => { markInteraction(); setInput(e.target.value); }}
             placeholder="Paste your CSS here..."
             rows={12}
             className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150 flex-1 min-h-[300px]"

@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useToolTelemetry } from "../../hooks/useToolTelemetry";
+import { useState, useCallback, useRef, useEffect } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { fileSizeLimitMessage, formatBytes, MAX_PDF_FILE_SIZE_BYTES, MAX_PDF_PAGE_COUNT } from "../../helpers/utils";
 
@@ -18,6 +19,9 @@ async function getPdfjs(): Promise<typeof import("pdfjs-dist")> {
 }
 
 export default function PdfToText() {
+  const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
+  const operationRevision = useRef(0);
+  useEffect(() => () => { operationRevision.current++; }, []);
   const [file, setFile] = useState<File | null>(null);
   const [extractedText, setExtractedText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +47,9 @@ export default function PdfToText() {
   }, []);
 
   const handleReset = useCallback(() => {
+    operationRevision.current++;
+    clearInteraction();
+    setLoading(false);
     setFile(null);
     setExtractedText("");
     setError("");
@@ -50,6 +57,8 @@ export default function PdfToText() {
   }, []);
 
   const extractText = useCallback(async () => {
+    const revision = ++operationRevision.current;
+    markInteraction();
     if (!file) return;
     setLoading(true);
     setError("");
@@ -61,6 +70,7 @@ export default function PdfToText() {
 
       const pdfjsLib = await getPdfjs();
       const pdfDoc = await pdfjsLib.getDocument({ data }).promise;
+      if (revision !== operationRevision.current) return;
       const totalPages = pdfDoc.numPages;
       if (totalPages > MAX_PDF_PAGE_COUNT) {
         setError(`This PDF has ${totalPages} pages. For browser stability, extract text from files with ${MAX_PDF_PAGE_COUNT} pages or fewer.`);
@@ -71,17 +81,25 @@ export default function PdfToText() {
       for (let i = 1; i <= totalPages; i++) {
         const page = await pdfDoc.getPage(i);
         const content = await page.getTextContent();
+        if (revision !== operationRevision.current) return;
         const pageText = content.items
           .map((item) => ("str" in item ? item.str : ""))
           .join(" ");
         pagesText.push(pageText);
       }
 
+      if (revision !== operationRevision.current) return;
+      if (!pagesText.some(text => text.trim())) {
+        setError("No selectable text found. Scanned PDFs need OCR, which this tool does not provide.");
+        return;
+      }
       setExtractedText(pagesText.join("\n\n--- Page Break ---\n\n"));
+      recordSuccess("convert");
     } catch (err: unknown) {
+      if (revision !== operationRevision.current) return;
       setError(err instanceof Error ? err.message : "Failed to extract text from PDF.");
     } finally {
-      setLoading(false);
+      if (revision === operationRevision.current) setLoading(false);
     }
   }, [file]);
 
@@ -97,16 +115,15 @@ export default function PdfToText() {
   }, [extractedText]);
 
   return (
-    <div className="space-y-6">
+    <div onChangeCapture={() => { operationRevision.current++; setLoading(false); markInteraction(); }} className="space-y-6">
       {/* Upload */}
       {!file && (
         <div
-          className="border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
+          className="file-upload-zone border-2 border-dashed rounded-xl p-10 text-center transition-all duration-200 cursor-pointer flex flex-col items-center justify-center min-h-[220px]"
           style={{
             borderColor: "var(--color-hairline)",
             backgroundColor: "var(--color-canvas-soft)",
           }}
-          onClick={() => document.getElementById("pdf-text-input")?.click()}
         >
           <span className="text-4xl mb-4">📝</span>
           <p className="text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
@@ -117,9 +134,10 @@ export default function PdfToText() {
           </p>
           <input
             id="pdf-text-input"
+            aria-label="Choose a PDF file"
             type="file"
             accept=".pdf"
-            className="hidden"
+            className="file-upload-input"
             onChange={handleFileChange}
           />
         </div>

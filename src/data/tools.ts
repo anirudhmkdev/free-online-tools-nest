@@ -1199,7 +1199,7 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Image Compressor — JPEG, PNG, WebP",
     metaDescription:
-      "Compress images online for free. Reduce JPEG, PNG, and WebP file sizes without quality loss — all in your browser with private client-side processing.",
+      "Re-encode JPEG, PNG and WebP images locally. Compare size and appearance; lossy settings can change quality and output may be larger.",
     usageSteps: [
       {
         title: "Upload Your Image",
@@ -1222,13 +1222,13 @@ export const TOOLS: Tool[] = [
         question:
           "How much can I reduce file size with this image compressor online?",
         answer:
-          "You can typically reduce image file sizes by 50 to 80 percent depending on the original content and quality setting. This image compressor online uses smart compression algorithms that minimize visible quality loss while dramatically reducing file size for faster page loads.",
+          "Savings depend on the image, output codec and quality setting. JPEG and WebP can trade image quality for size; PNG may grow. Compare the actual before and after sizes and inspect the image instead of relying on a fixed percentage.",
       },
       {
         question:
           "Is it safe to compress images with sensitive content using this tool?",
         answer:
-          "Absolutely — all compression happens entirely in your browser using Canvas and WebAssembly APIs. Your images never leave your device when you use this image compressor online, making it completely safe for confidential or personal photos.",
+          "The tool reads and re-encodes the selected image using browser Canvas APIs without sending it to a processing server. The page can still load analytics or advertising, and browser extensions or other device software are outside this tool's control. Use harmless files when verifying privacy.",
       },
     ],
     additionalContent: [
@@ -3622,7 +3622,7 @@ additionalContent: []
     name: "SQL Formatter",
     description: "Format and beautify SQL queries online.",
     longDescription:
-      "Format and beautify your SQL queries with configurable indentation and case options. Paste unformatted SQL and instantly get clean, readable output. Supports SELECT, INSERT, UPDATE, DELETE, CREATE, and other SQL statements. Perfect for developers debugging complex queries or formatting code for readability.",
+      "Format common SQL keywords and whitespace with two- or four-space indentation. Quoted values, identifiers, comments and dollar-quoted bodies are preserved as entered. Unterminated protected segments are rejected. This heuristic formatter does not execute SQL or validate a database dialect.",
     categorySlug: "developer-tools",
     icon: "🗄️",
     featured: false,
@@ -3640,30 +3640,30 @@ additionalContent: []
       {
         title: "Paste your SQL query",
         content:
-          "Paste any unformatted SQL query into the SQL formatter input. The tool recognizes common keywords such as SELECT, FROM and WHERE. It does not validate a query or guarantee that a dialect-specific statement is formatted correctly.",
+          "Paste SQL into the formatter input. Common keywords such as SELECT, FROM and WHERE can be reformatted; quoted values, identifiers, comments and dollar-quoted bodies are preserved. An unterminated protected segment produces an error.",
       },
       {
         title: "Choose formatting options",
         content:
-          "Select your preferred indentation size and keyword case (uppercase or lowercase). The SQL formatter applies these settings instantly, transforming messy queries into clean, readable, well-structured SQL code.",
+          "Choose two- or four-space indentation, then select Format. Recognized code keywords become uppercase; text inside protected segments keeps its original case and spacing.",
       },
       {
         title: "Copy the formatted output",
         content:
-          "Copy the beautified SQL query to your clipboard with one click. The SQL formatter produces consistently formatted output that's easier to read, debug, and share with your development team.",
+          "Review the output before copying it. Formatting does not establish that a statement is valid or equivalent in your database dialect; use your database tooling for validation.",
       },
     ],
     faq: [
       {
         question: "What SQL dialects does the SQL formatter support?",
         answer:
-          "The formatter applies heuristic keyword and whitespace rules; it is not a SQL parser or validator. Quoted values and comments are preserved, while dollar quoting, nested comments and backslash-escaped strings are rejected. Use a dialect-aware tool for database-specific syntax.",
+          "The formatter applies heuristic keyword and whitespace rules; it is not a SQL parser or dialect validator. Quoted values and identifiers, line and nested block comments, and dollar-quoted bodies are preserved as entered. Unterminated protected segments are rejected. Use a dialect-aware tool to validate database-specific syntax.",
       },
       {
         question:
           "Can the SQL formatter handle complex queries with multiple JOINs?",
         answer:
-          "Yes, the SQL formatter is designed to handle complex queries with multiple JOINs, nested subqueries, Common Table Expressions (CTEs), and complex WHERE clauses. Each clause is properly indented for maximum readability.",
+          "It can reflow common keywords and use parenthesis-based indentation, but it does not parse complete query structure. Review JOINs, subqueries and CTEs manually. Preserving a protected body does not validate the SQL inside it.",
       },
     ],
   },
@@ -4139,7 +4139,7 @@ additionalContent: []
     name: "Random Number Generator",
     description: "Generate random numbers, dice rolls, and lottery numbers.",
     longDescription:
-      "Generate truly random numbers with customizable ranges and quantities. Use it for dice rolls, lottery number picking, random sampling, giveaways, or any situation needing unbiased random values. Choose from single random numbers, multiple unique numbers, or sorted results. Perfect for games, contests, statistics, and decision making.",
+      "Generate whole numbers using the browser's cryptographic random source with unbiased range sampling. Choose safe integer bounds spanning at most 2³² possible values and generate up to 1,000 numbers per batch. Choose unique values or allow duplicates, and sort or copy the results.",
     categorySlug: "calculators",
     icon: "🎲",
     featured: true,
@@ -4157,12 +4157,12 @@ additionalContent: []
       {
         title: "Set your range",
         content:
-          "Enter the minimum and maximum values for your random number range. The random number generator supports any range from simple 1-6 dice rolls to complex ranges for lottery numbers or statistical sampling.",
+          "Enter safe whole-number minimum and maximum bounds. The inclusive range can contain at most 2³² possible values. For a dice roll, choose 1 through 6.",
       },
       {
         title: "Choose how many numbers",
         content:
-          "Select how many random numbers to generate and whether they should be unique. The random number generator can produce a single number or multiple numbers at once, with or without duplicates.",
+          "Choose 1 to 1,000 results. For unique numbers, the requested count must fit in the range; invalid requests show an error instead of a partial result. These are application guardrails.",
       },
       {
         title: "Copy your results",
@@ -4172,9 +4172,9 @@ additionalContent: []
     ],
     faq: [
       {
-        question: "Is the random number generator truly random?",
+        question: "How are the random values generated?",
         answer:
-          "The random number generator uses JavaScript's cryptographic random number generator (Crypto.getRandomValues) which provides cryptographically strong random values suitable for applications requiring unbiased randomness.",
+          "The browser's Crypto.getRandomValues supplies cryptographically strong pseudorandom bytes. Rejection sampling avoids modulo bias within the supported range. This is not a physical true-random source or a lottery prediction tool.",
       },
       {
         question:
@@ -4510,6 +4510,6 @@ export const SITE = {
   domain: "freeonlinetoolsnest.com",
   url: "https://freeonlinetoolsnest.com",
   description:
-    "Free tools for study, assignments and everyday documents. No signup required; tool inputs are processed locally in your browser.",
-  tagline: "Free tools for study, assignments and everyday documents.",
+    "Free browser tools for writing, code, SEO, images, PDFs and calculations. No signup required; tool inputs are processed locally.",
+  tagline: "Free browser tools for writing, code and everyday tasks.",
 };

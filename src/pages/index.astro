@@ -1,38 +1,24 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
-import { getToolBySlug, SITE } from "../data/tools";
+import { getToolBySlug, TOOLS, SITE } from "../data/tools";
+import ToolDisclosure from "../components/ToolDisclosure.astro";
+import { partitionToolsByDiscovery } from "../data/tool-discovery";
 import { getDefaultAlternates } from "../i18n/utils";
 import { getCollection } from "astro:content";
 
+const { secondary } = partitionToolsByDiscovery(TOOLS);
 const toolkits = [
-  { id: "study-assignment-tools", label: "Student Tools", intro: "Plan attendance and grades using the rules and targets you enter.", tasks: [
-    { slug: "attendance-calculator", purpose: "Check attendance and classes needed for your target." },
-    { slug: "sgpa-calculator", purpose: "Calculate semester GPA with your credits and grade scale." },
-    { slug: "cgpa-calculator", purpose: "Combine semesters using the weighting you choose." },
-    { slug: "marks-percentage-calculator", purpose: "Calculate a percentage from subject marks and maxima." },
-    { slug: "required-marks-calculator", purpose: "Find the remaining score needed for your overall target." },
-    { slug: "word-counter", purpose: "Check the length of an assignment draft." },
-    { slug: "qr-code-generator", purpose: "Make a QR code for a project or reference link." },
-  ] },
-  { id: "document-tools", label: "Assignment & Document Toolkit", intro: "Get the right pages, dimensions and file size for your submission.", tasks: [
-    { slug: "image-to-pdf", purpose: "Turn JPEG and PNG assignment pages into one PDF." },
-    { slug: "pdf-merger", purpose: "Combine PDFs into one document." },
-    { slug: "pdf-splitter", purpose: "Keep only the pages you need." },
-    { slug: "pdf-compressor", purpose: "Try reducing file size; savings depend on the PDF." },
-    { slug: "pdf-to-text", purpose: "Extract selectable text. Scanned pages need OCR elsewhere." },
-    { slug: "pdf-to-images", purpose: "Save PDF pages as images." },
-    { slug: "image-compressor", purpose: "Adjust image encoding for a smaller upload." },
-    { slug: "image-resizer", purpose: "Set the required pixel dimensions." },
-    { slug: "image-cropper", purpose: "Remove unwanted edges from an image." },
-  ] },
-  { id: "writing-tools", label: "Writing Toolkit", intro: "Check length and common mistakes while keeping your draft local.", tasks: [
-    { slug: "word-counter", purpose: "Count words and estimate reading time." },
-    { slug: "character-counter", purpose: "Check character limits for applications and forms." },
-    { slug: "grammar-checker", purpose: "Flag common English grammar patterns; review suggestions yourself." },
-  ] },
+  { id: "writing-tools", label: "Writing Toolkit", intro: "Check length, readability and common mistakes while keeping your draft local.", slugs: ["word-counter", "character-counter", "lorem-ipsum-generator", "grammar-checker", "readability-score", "word-cloud-generator"], guide: "/writing-tools/" },
+  { id: "code-tools", label: "Code & formats", intro: "Format markup, test an expression or convert a document format.", slugs: ["json-formatter", "html-formatter", "regex-tester", "markdown-to-html", "sql-formatter"], guide: "/categories/developer-tools/" },
+  { id: "seo-tools", label: "SEO utilities", intro: "Prepare page metadata, crawling rules and search previews.", slugs: ["robots-txt-generator", "seo-length-checker", "canonical-tag-generator", "alt-text-checker", "serp-preview-generator"], guide: "/categories/seo-tools/" },
+  { id: "document-tools", label: "Assignment & Document Toolkit", intro: "Get the right dimensions and file size for your submission.", slugs: ["image-compressor", "image-resizer", "pdf-merger", "pdf-compressor"], guide: "/document-tools/" },
+  { id: "calculator-tools", label: "Calculators", intro: "Calculate an age or generate numbers within your chosen range.", slugs: ["age-calculator", "random-number-generator"], guide: "/categories/calculators/" },
+  { id: "everyday-tools", label: "Everyday utilities", intro: "Convert a timestamp, make a QR code or check a color pair.", slugs: ["epoch-converter", "qr-code-generator", "color-contrast-checker"], guide: "/tools/" },
 ];
-const hubPaths: Record<string, string> = { "study-assignment-tools": "/student-tools/", "document-tools": "/document-tools/", "writing-tools": "/writing-tools/" };
+const studentSlugs = new Set(["attendance-calculator", "sgpa-calculator", "cgpa-calculator", "marks-percentage-calculator", "required-marks-calculator"]);
+const studentTools = secondary.filter(tool => studentSlugs.has(tool.slug));
+const otherTools = secondary.filter(tool => !studentSlugs.has(tool.slug));
 const posts = await getCollection("blog");
 const guideIds = ["why-pdfs-compress-differently", "image-compression-resizing-format-conversion", "verify-browser-tool-no-upload"];
 const guides = guideIds.map(id => posts.find(post => post.id === id)!).filter(Boolean);
@@ -69,20 +55,29 @@ const websiteJsonLd = {
 };
 ---
 
-<Layout title="Student, Assignment & Document Tools" description="Calculate attendance, SGPA, CGPA and marks using your own inputs. Prepare assignments and turn images into PDFs locally in your browser, with no signup." canonicalPath="/" alternatePaths={getDefaultAlternates("/")} jsonLd={[websiteJsonLd, organizationJsonLd]} enableAds={true}>
+<Layout title="Free Tools for Text, Code, Images & Everyday Tasks" description="Find browser tools for writing, code, SEO, images, PDFs and calculations. Start with a focused collection, or browse more tools. No signup required." canonicalPath="/" alternatePaths={getDefaultAlternates("/")} jsonLd={[websiteJsonLd, organizationJsonLd]} enableAds={true}>
   <Hero />
   <div class="container-page home-toolkit-sections">
     {toolkits.map(kit => (
       <section id={kit.id} class="toolkit-section" aria-labelledby={kit.id + "-heading"}>
-        <div class="toolkit-heading"><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p><a class="inline-flex min-h-11 items-center py-2 text-link underline" href={hubPaths[kit.id]}>Choose the right tool →</a></div>
+        <div class="toolkit-heading"><h2 id={kit.id + "-heading"}>{kit.label}</h2><p>{kit.intro}</p><a class="inline-flex min-h-11 items-center py-2 text-link underline" href={kit.guide}>Choose the right tool →</a></div>
         <ul class="task-list">
-          {kit.tasks.map(task => {
-            const tool = getToolBySlug(task.slug)!;
-            return <li><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{task.purpose}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>;
+          {kit.slugs.map(slug => {
+            const tool = getToolBySlug(slug)!;
+            return <li data-discovery-tier="primary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>;
           })}
         </ul>
       </section>
     ))}
+    <ToolDisclosure count={secondary.length}>
+      <section id="study-assignment-tools" class="secondary-student-tools" aria-labelledby="study-assignment-tools-heading">
+        <h2 id="study-assignment-tools-heading">Student Tools</h2>
+        <p class="text-sm text-body mt-2">Plan attendance and grades using the rules and targets you enter.</p>
+        <a class="inline-flex min-h-11 items-center py-2 text-link underline" href="/student-tools/">Choose the right student tool →</a>
+        <ul class="task-list">{studentTools.map(tool => <li data-discovery-tier="secondary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>)}</ul>
+      </section>
+      <ul class="task-list secondary-list">{otherTools.map(tool => <li data-discovery-tier="secondary"><a href={"/tools/" + tool.slug + "/"}><span><strong>{tool.name}</strong><span class="task-purpose">{tool.description}</span></span><span class="task-arrow" aria-hidden="true">↗</span></a></li>)}</ul>
+    </ToolDisclosure>
     <div class="more-tools-note"><p>Preparing a submission, checking a draft or working out a result?</p><a href="/workflows/">Follow a practical workflow →</a></div>
     <div class="more-tools-note"><p>Looking for a developer utility, converter or another familiar tool?</p><a href="/tools/">Browse the full tool directory <span aria-hidden="true">→</span></a></div>
   </div>
@@ -115,6 +110,9 @@ const websiteJsonLd = {
   .task-list strong { font-size: 15px; font-weight: 500; }
   .task-purpose { display: block; margin-top: 6px; font-size: 13px; color: var(--color-body); line-height: 1.6; }
   .task-arrow { color: var(--color-link); }
+  .secondary-student-tools { scroll-margin-top: 100px; padding-bottom: 24px; }
+  .secondary-student-tools h2 { font-size: 20px; font-weight: 500; }
+  .secondary-list { border-top: 1px solid var(--color-hairline); padding-top: 24px; }
   .more-tools-note { padding: 30px 0 44px; font-size: 14px; color: var(--color-body); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
   .more-tools-note a, .home-trust a, .home-about a, .guide-read { color: var(--color-link); text-decoration: underline; text-underline-offset: 4px; }
   .home-guides { padding: 48px 0; border-block: 1px solid var(--color-hairline); background: var(--color-canvas); scroll-margin-top: 100px; }
