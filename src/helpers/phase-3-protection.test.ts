@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ownedSignals, checkHubMetadata } from "../../scripts/phase-3-protection.mjs";
 import baseline from "../data/__fixtures__/post-phase-2-routes.json";
 import { PAGE_POLICIES } from "../data/page-policy";
+import retirements from "../data/approved-tool-retirements.json";
 
 describe("stable Phase 2 protection", () => {
   it("rejects matching hub/category titles, descriptions or H1s", () => {
@@ -12,6 +13,11 @@ describe("stable Phase 2 protection", () => {
   it("preserves all 182 existing policy decisions independently of approved additions", () => {
     expect(baseline.pages).toHaveLength(182);
     for (const page of baseline.pages) {
+      if (retirements.retirements.some(item => item.route === page.route)) {
+        expect(page.route).toBe("/tools/text-humanizer/");
+        expect(PAGE_POLICIES[page.route]).toBeUndefined();
+        continue;
+      }
       expect(PAGE_POLICIES[page.route], page.route).toMatchObject({
         indexable: page.indexable, sitemapEligible: page.sitemapEligible,
         canonicalPath: page.route, adEligible: page.adEligible,

@@ -1,64 +1,7 @@
+import { calculateAmortization } from "../../helpers/quality-calculators";
+import ErrorBanner from "../ErrorBanner";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useMemo, useCallback, useEffect } from "react";
-
-interface AmortizationRow {
-  payment: number;
-  principal: number;
-  interest: number;
-  totalPayment: number;
-  balance: number;
-}
-
-function calculateAmortization(
-  loanAmount: number,
-  annualRate: number,
-  years: number,
-  extraPayment: number
-): { monthlyPayment: number; totalInterest: number; totalCost: number; schedule: AmortizationRow[] } {
-  const monthlyRate = annualRate / 100 / 12;
-  const totalPayments = years * 12;
-
-  let monthlyPayment: number;
-  if (monthlyRate === 0) {
-    monthlyPayment = loanAmount / totalPayments;
-  } else {
-    monthlyPayment =
-      (loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments))) /
-      (Math.pow(1 + monthlyRate, totalPayments) - 1);
-  }
-
-  const schedule: AmortizationRow[] = [];
-  let balance = loanAmount;
-  let totalInterest = 0;
-
-  for (let i = 1; i <= totalPayments && balance > 0; i++) {
-    const interestPayment = balance * monthlyRate;
-    let principalPayment = monthlyPayment - interestPayment;
-    principalPayment += extraPayment;
-
-    if (principalPayment > balance) {
-      principalPayment = balance;
-    }
-
-    balance = parseFloat((balance - principalPayment).toFixed(2));
-    totalInterest += interestPayment;
-
-    schedule.push({
-      payment: i,
-      principal: parseFloat(principalPayment.toFixed(2)),
-      interest: parseFloat(interestPayment.toFixed(2)),
-      totalPayment: parseFloat((principalPayment + interestPayment).toFixed(2)),
-      balance: balance < 0 ? 0 : balance,
-    });
-
-    if (balance <= 0) break;
-  }
-
-  totalInterest = parseFloat(totalInterest.toFixed(2));
-  const totalCost = parseFloat((loanAmount + totalInterest).toFixed(2));
-
-  return { monthlyPayment: parseFloat(monthlyPayment.toFixed(2)), totalInterest, totalCost, schedule };
-}
 
 export default function LoanCalculator() {
   const { markInteraction, recordSuccess } = useToolTelemetry();
@@ -74,11 +17,11 @@ export default function LoanCalculator() {
     const amount = parseFloat(loanAmount);
     const rate = parseFloat(interestRate);
     const years = parseFloat(loanTerm);
-    const extra = parseFloat(extraPayment) || 0;
+    const extra = extraPayment.trim() ? Number(extraPayment) : 0;
 
     if (isNaN(amount) || isNaN(rate) || isNaN(years) || amount <= 0 || rate < 0 || years <= 0) return null;
 
-    return calculateAmortization(amount, rate, years, extra);
+    try { return calculateAmortization(amount, rate, years, extra); } catch { return null; }
   }, [loanAmount, interestRate, loanTerm, extraPayment, calculated]);
 
   const handleCalculate = useCallback(() => {
@@ -103,6 +46,8 @@ export default function LoanCalculator() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Fixed nominal annual rate with monthly payments. Fees are excluded. The schedule rounds each payment to cents and settles any rounding residual in the final payment.</p>
+      <ErrorBanner message={calculated && !result ? "Use a positive loan up to $1 trillion, 0–100% annual interest, a term of 1–1200 whole months, and a nonnegative extra payment." : ""} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label htmlFor="loan-amount" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

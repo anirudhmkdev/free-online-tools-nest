@@ -1,3 +1,4 @@
+import { parseInteger as parseValue } from "../../helpers/quality-converters";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -10,28 +11,6 @@ const BASE_OPTIONS: { key: Base; label: string }[] = [
   { key: "hex", label: "Hex (16)" },
   { key: "octal", label: "Octal (8)" },
 ];
-
-function parseValue(value: string, base: Base): number | null {
-  if (!value.trim()) return null;
-  switch (base) {
-    case "binary": {
-      if (!/^[01]+$/.test(value)) return null;
-      return parseInt(value, 2);
-    }
-    case "decimal": {
-      if (!/^\d+$/.test(value)) return null;
-      return parseInt(value, 10);
-    }
-    case "hex": {
-      if (!/^[0-9a-fA-F]+$/.test(value)) return null;
-      return parseInt(value, 16);
-    }
-    case "octal": {
-      if (!/^[0-7]+$/.test(value)) return null;
-      return parseInt(value, 8);
-    }
-  }
-}
 
 export default function BinaryConverter() {
   const { markInteraction, recordSuccess } = useToolTelemetry();
@@ -71,11 +50,12 @@ export default function BinaryConverter() {
   }, []);
 
   useEffect(() => {
-    if (input.trim() && num !== null && Number.isSafeInteger(num)) recordSuccess("convert");
+    if (input.trim() && num !== null) recordSuccess("convert");
   }, [input, num, recordSuccess]);
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Exact nonnegative integer conversion, up to 4,096 input digits. Enter digits without radix prefixes, signs or fractions.</p>
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1">
           <label htmlFor="bin-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

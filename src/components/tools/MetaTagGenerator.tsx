@@ -1,3 +1,5 @@
+import { metadataUrlError } from "../../helpers/metadata-urls";
+import ErrorBanner from "../ErrorBanner";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
 import { useState, useMemo, useCallback, useEffect } from "react";
@@ -13,7 +15,9 @@ export default function MetaTagGenerator() {
   const [pageType, setPageType] = useState("website");
   const [copied, handleCopy] = useCopyToClipboard();
 
+  const urlError = metadataUrlError({"OG image":ogImage,"Canonical URL":canonicalUrl});
   const metaTags = useMemo(() => {
+    if (urlError) return "";
     const lines: string[] = [];
     if (title) {
       lines.push(`<title>${escapeHtml(title)}</title>`);
@@ -45,7 +49,7 @@ export default function MetaTagGenerator() {
     }
     lines.push(`<meta name="twitter:card" content="summary_large_image" />`);
     return lines.join("\n");
-  }, [title, description, keywords, ogImage, canonicalUrl, pageType]);
+  }, [title, description, keywords, ogImage, canonicalUrl, pageType, urlError]);
 
   const googleTitle = useMemo(() => {
     if (!title) return "Page Title Will Appear Here";
@@ -82,6 +86,8 @@ export default function MetaTagGenerator() {
 
   return (
     <div onChangeCapture={markInteraction} className="space-y-6">
+      <ErrorBanner message={urlError} />
+      <p className="text-sm">Generated tags are drafts. Preview layouts are illustrative; they do not guarantee search or social display, indexing or rankings.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left: Inputs */}
         <div className="space-y-4">
@@ -195,6 +201,7 @@ export default function MetaTagGenerator() {
           <button
             type="button"
             onClick={handleCopyAll}
+            disabled={!metaTags}
             className="text-sm px-3 py-1 rounded-md transition-colors duration-150"
             style={{
               color: copied ? "var(--color-success)" : "var(--color-link)",

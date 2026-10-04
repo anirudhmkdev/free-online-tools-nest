@@ -12,7 +12,8 @@ const root = process.cwd();
 describe("Phase 2 student tool publication", () => {
   it("requires all six reviewed dossiers and keeps advertising disabled", () => {
     expect(additions).toHaveLength(6);
-    expect(TOOLS).toHaveLength(83);
+    expect(TOOLS).toHaveLength(82);
+    expect(TOOLS.some(tool => tool.slug === "text-humanizer")).toBe(false);
     for (const route of additions) {
       const slug = route.split("/")[2];
       const tool = TOOLS.find(tool => tool.slug === slug)!;
@@ -55,7 +56,7 @@ describe("AdSense content eligibility", () => {
       expect(quality.limits.length, slug).toBeGreaterThan(0);
       expect(quality.limitations.length, slug).toBeGreaterThan(0);
       expect(quality.sections.some((section) => section.example), slug).toBe(true);
-      expect(quality.sections.some((section) => section.comparison), slug).toBe(true);
+      expect(quality.sections.find(section => section.heading === "When to use another workflow")?.content, slug).toBeTruthy();
       expect(quality.verifiedOn, slug).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     }
 

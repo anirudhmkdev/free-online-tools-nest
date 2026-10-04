@@ -1,3 +1,4 @@
+import { computeAge } from "../../helpers/age-calculator";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 
@@ -11,39 +12,6 @@ interface DiffResult {
   totalMinutes: number;
   totalSeconds: number;
   isFuture: boolean;
-}
-
-function computeDiff(from: Date, to: Date): DiffResult {
-  const [start, end] = from <= to ? [from, to] : [to, from];
-  const isFuture = from > to;
-
-  let years = end.getFullYear() - start.getFullYear();
-  let months = end.getMonth() - start.getMonth();
-  let days = end.getDate() - start.getDate();
-
-  if (days < 0) {
-    months--;
-    const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
-    days += prevMonth.getDate();
-  }
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
-
-  const diffMs = end.getTime() - start.getTime();
-  const totalDays = Math.floor(diffMs / 86400000);
-  const weeks = Math.floor(totalDays / 7);
-  const remainingDays = totalDays % 7;
-
-  return {
-    years, months, weeks: weeks, days: remainingDays,
-    totalDays,
-    totalHours: Math.floor(diffMs / 3600000),
-    totalMinutes: Math.floor(diffMs / 60000),
-    totalSeconds: Math.floor(diffMs / 1000),
-    isFuture,
-  };
 }
 
 export default function DateDifferenceCalculator() {
@@ -69,12 +37,16 @@ export default function DateDifferenceCalculator() {
       setResult(null);
       return;
     }
-    setResult(computeDiff(sd, ed));
+    const [start,end] = sd <= ed ? [sd,ed] : [ed,sd];
+    const calendar = computeAge(start,end);
+    const totalDays = Math.round((end.getTime() - start.getTime()) / 86400000);
+    setResult({years:calendar.years,months:calendar.months,weeks:calendar.weeks,days:calendar.days,totalDays,totalHours:totalDays*24,totalMinutes:totalDays*1440,totalSeconds:totalDays*86400,isFuture:sd>ed});
     recordSuccess("calculate");
   }, [startDate, endDate, markInteraction, recordSuccess]);
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Elapsed calendar dates, excluding the end date. Calendar months use clamped month-end anniversaries. Hours and seconds assume 24-hour days; business days and time zones are not calculated.</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="start-date" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
@@ -84,7 +56,7 @@ export default function DateDifferenceCalculator() {
             id="start-date"
             type="date"
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            onChange={(e) => { markInteraction(); setStartDate(e.target.value); setResult(null); setError(""); }}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
               backgroundColor: "var(--color-canvas-soft)",
@@ -101,7 +73,7 @@ export default function DateDifferenceCalculator() {
             id="end-date"
             type="date"
             value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+            onChange={(e) => { markInteraction(); setEndDate(e.target.value); setResult(null); setError(""); }}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
               backgroundColor: "var(--color-canvas-soft)",

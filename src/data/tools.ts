@@ -597,9 +597,9 @@ export const TOOLS: Tool[] = [
     slug: "age-calculator",
     name: "Age Calculator",
     description:
-      "Calculate your exact age from date of birth in years, months, days, hours, and more.",
+      "Compare birth and target dates using a clear calendar-age convention.",
     longDescription:
-      "Enter your date of birth and get your exact age in years, months, weeks, days, hours, minutes, and seconds. You can also calculate the age between any two dates. Perfect for birthdays, anniversaries, and determining precise age for forms.",
+      "Calculate years, months and residual weeks/days between calendar dates. Missing month-end anniversaries clamp to the target month’s last day. Total time units assume 24-hour days; birth times and daylight-saving transitions are not measured.",
     categorySlug: "calculators",
     icon: "\uD83C\uDF82",
     featured: true,
@@ -613,44 +613,50 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Age Calculator — Chronological Age",
     metaDescription:
-      "Use our chronological age calculator to find your exact age from your date of birth in years, months, days, hours, minutes, and seconds. Free and accurate.",
+      "Compare birth and target dates using a clear calendar-age convention.",
     usageSteps: [
       {
-        title: "Enter Your Date of Birth",
-        content:
-          "Select your date of birth using the date picker or type it directly into the chronological age calculator online free. The tool accepts all standard date formats for your convenience.",
+        "title": "Choose a birth date",
+        "content": "Use the date picker’s calendar date format. It does not accept arbitrary free-form date formats."
       },
       {
-        title: "Set the Reference Date",
-        content:
-          "Choose the reference date to calculate age as of — typically today. This chronological age calculator online free can compute your age for any past or future date.",
+        "title": "Choose the target date",
+        "content": "The target must not be earlier than the birth date."
       },
       {
-        title: "View Your Exact Age Breakdown",
-        content:
-          "View your complete age breakdown in years, months, days, hours, minutes, and seconds. The chronological age calculator online free also shows your next birthday countdown for easy planning.",
-      },
+        "title": "Calculate and check the convention",
+        "content": "Read calendar years and months separately from total elapsed time. A legal or institutional rule may use a different anniversary convention."
+      }
     ],
     faq: [
       {
-        question: "What is a chronological age calculator?",
-        answer:
-          "A chronological age calculator determines the exact time elapsed from a person's date of birth to a specified reference date. Unlike biological or developmental age, chronological age is a precise measurement based purely on calendar time.",
+        "question": "How does February 29 work?",
+        "answer": "A missing anniversary date clamps to the last day of the target month. This is an arithmetic convention, not a ruling about a legal birthday."
       },
       {
-        question: "How accurate is this chronological age calculator?",
-        answer:
-          "This chronological age calculator is highly accurate, accounting for leap years, varying month lengths, and even daylight saving time transitions. It calculates your exact age down to the second for complete precision.",
+        "question": "Are seconds the exact time since birth?",
+        "answer": "No. The input contains dates only. Seconds are derived from elapsed whole dates assuming 24-hour days."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "January 31, 2025 to February 28, 2025 is one calendar month under this convention."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Use the rule specified by the receiving form, institution or jurisdiction for eligibility decisions."
+      }
     ],
   },
   {
     slug: "bmi-calculator",
     name: "BMI Calculator",
     description:
-      "Calculate your Body Mass Index and see where you fall on the BMI scale.",
+      "Calculate adult BMI with categories based on the unrounded value.",
     longDescription:
-      "Enter your height and weight to calculate your Body Mass Index (BMI). The result includes your BMI value, a visual indicator on the BMI scale, and weight category classification (underweight, normal, overweight, obese).",
+      "Enter metric or imperial height and weight to calculate Body Mass Index for adults aged 20 and older. The displayed result is rounded to two decimals; category thresholds use the unrounded value. BMI is a screening measure, not a diagnosis.",
     categorySlug: "calculators",
     icon: "\u2695\uFE0F",
     featured: true,
@@ -664,35 +670,41 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "BMI Calculator — Body Mass Index",
     metaDescription:
-      "Use our BMI calculator online to get your Body Mass Index instantly. Enter height and weight to see your BMI value, weight category, and scale position.",
+      "Calculate adult BMI with categories based on the unrounded value.",
     usageSteps: [
       {
-        title: "Enter Your Height and Weight",
-        content:
-          "Input your height in centimeters or feet and weight in kilograms or pounds. Our BMI calculator online free supports both metric and imperial units for users worldwide.",
+        "title": "Choose matching units",
+        "content": "Select cm/kg or inches/lb and enter positive height and weight."
       },
       {
-        title: "Click Calculate BMI",
-        content:
-          "Press calculate and the tool processes your numbers using the standard BMI formula. This BMI calculator online free delivers your BMI value and category within seconds.",
+        "title": "Calculate and read the category",
+        "content": "Calculate BMI and compare the category with the numeric value. Rounded display can appear near a boundary without crossing it."
       },
       {
-        title: "Interpret Your BMI Category",
-        content:
-          "Review your BMI score and weight category — underweight, normal, overweight, or obese — displayed with a visual scale indicator. Use this BMI calculator online free to track your health metrics.",
-      },
+        "title": "Interpret with appropriate guidance",
+        "content": "Consider the result alongside relevant health information with a qualified professional. Children and teens require a different age- and sex-specific assessment."
+      }
     ],
     faq: [
       {
-        question: "How does a BMI calculator online work?",
-        answer:
-          "A BMI calculator online uses the formula weight (kg) / height\u00B2 (m\u00B2) to calculate your Body Mass Index. Simply enter your height and weight and the tool instantly computes your BMI value and places you on the standard BMI scale.",
+        "question": "Why can 24.96 show Healthy weight?",
+        "answer": "The adult healthy-weight category is 18.5 to below 25. The tool classifies the unrounded value, so rounding cannot change the category."
       },
       {
-        question: "Is this BMI calculator online accurate for all body types?",
-        answer:
-          "This BMI calculator online is accurate for the general population as a health screening tool. However, athletes, pregnant women, and elderly individuals may get less accurate results because BMI does not distinguish between muscle and fat mass.",
+        "question": "Does BMI measure body fat or health directly?",
+        "answer": "No. BMI does not directly measure body composition or establish an individual diagnosis. Muscle mass and other factors require context."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "99.84 kg at 200 cm gives 24.96, within the adult Healthy weight category. A BMI of exactly 25 enters Overweight."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Category reference: CDC Adult BMI Categories at https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html. This calculator does not provide treatment or dietary advice."
+      }
     ],
   },
   {
@@ -749,9 +761,9 @@ export const TOOLS: Tool[] = [
     slug: "date-difference-calculator",
     name: "Date Difference Calculator",
     description:
-      "Calculate the exact number of days, months, and years between two dates.",
+      "Compare calendar dates with a month-end convention and elapsed-day totals.",
     longDescription:
-      "Pick any two dates and find the exact duration between them in years, months, weeks, and days. Perfect for calculating age, project timelines, countdowns, anniversaries, and days until an event.",
+      "Compare two date-only values. Calendar years and months use clamped month-end anniversaries; remaining weeks and days complete that calendar breakdown. Total hours, minutes and seconds assume 24-hour days rather than elapsed zoned timestamps.",
     categorySlug: "calculators",
     icon: "\uD83D\uDCC5",
     featured: true,
@@ -765,45 +777,50 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Date Difference Calculator - Free Online Tool",
     metaDescription:
-      "Use our free date difference calculator to find exact days, months, and years between two dates. Great for project timelines, countdowns, and age math.",
+      "Compare calendar dates with a month-end convention and elapsed-day totals.",
     usageSteps: [
       {
-        title: "Select Your Start Date",
-        content:
-          "Pick your start date using the calendar widget or type it manually. This date difference calculator accepts dates from any year and computes the duration between them.",
+        "title": "Select two dates",
+        "content": "Select start and end calendar dates. Reversed inputs are compared by magnitude and indicated in the result."
       },
       {
-        title: "Select Your End Date",
-        content:
-          "Select your end date to complete the comparison. The tool automatically computes positive values even if you reverse the dates.",
+        "title": "Calculate the interval",
+        "content": "Read the calendar decomposition separately from the total elapsed days. The end date is excluded from the elapsed count."
       },
       {
-        title: "View the Duration Breakdown",
-        content:
-          "View the total days, weeks, months, and years between the dates. This date difference calculator also provides business day counts for professional planning and scheduling.",
-      },
+        "title": "Use the correct counting rule",
+        "content": "This does not exclude weekends or holidays. Use a business calendar or zoned timestamp calculation if your task requires them."
+      }
     ],
     faq: [
       {
-        question: "How does this date difference calculator compute durations?",
-        answer:
-          "This date difference calculator computes the difference between two dates in years, months, days, and business days. It offers an intuitive visual interface for quick date math.",
+        "question": "How are month ends treated?",
+        "answer": "A missing anniversary date clamps to the last day of the target month. January 31 to February 28 in 2025 is one calendar month and 28 total days."
       },
       {
-        question:
-          "Can I use this date difference calculator for business planning?",
-        answer:
-          "Yes, this date difference calculator shows both calendar days and business days between dates. It automatically excludes weekends and is ideal for project planning, deadline tracking, and contract date calculations.",
+        "question": "Are daylight-saving changes included?",
+        "answer": "No. These are date-only values and fixed 24-hour-day totals, not local-clock durations across time zones."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "2025-01-31 to 2025-02-28 gives one month, zero residual weeks/days and 28 total days."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Deadline systems can count inclusively or apply holidays; check the rule that controls your actual submission."
+      }
     ],
   },
   {
     slug: "number-to-words",
     name: "Number to Words",
     description:
-      "Convert any number to its English word representation (e.g., 123 \u2192 one hundred twenty-three).",
+      "Write plain decimal numbers in English, with fractions rounded to hundredths.",
     longDescription:
-      "Enter any number and get its English word form instantly. Supports whole numbers up to trillions. Perfect for writing checks, formal documents, invoices, and learning number spelling.",
+      "Convert up to 15 integer digits to English words. Decimal fractions are written as hundredths and rounded half away from zero using decimal-string arithmetic. Currency names, scientific notation and comma-separated input are not supported.",
     categorySlug: "calculators",
     icon: "\u{1F522}",
     featured: true,
@@ -816,43 +833,49 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Number to Words - Free Online Converter Tool",
     metaDescription:
-      "Convert any number to English words online free. Spell numbers for checks, documents, and invoices with our easy-to-use converter.",
+      "Write plain decimal numbers in English, with fractions rounded to hundredths.",
     usageSteps: [
       {
-        title: "Enter Your Number",
-        content:
-          "Type any number into the input field. Our number to words converter supports whole numbers, decimals, and values up to trillions.",
+        "title": "Enter a plain decimal",
+        "content": "Use digits and an optional leading sign and decimal fraction. Remove grouping commas."
       },
       {
-        title: "Choose Your Output Format",
-        content:
-          "The result appears in standard English words format. This flexibility makes our number to words converter useful for writing checks, contracts, and formal documents.",
+        "title": "Convert to words",
+        "content": "Convert, then check both the integer words and the hundredths. Rounding can carry into the integer part."
       },
       {
-        title: "Copy or Download the Result",
-        content:
-          "The converted text appears instantly in readable English words. Copy it to your clipboard for checks, contracts, invoices, or formal documentation.",
-      },
+        "title": "Use the wording in context",
+        "content": "Add the required currency or document wording yourself. This is a spelling utility, not a legally standardized cheque formatter."
+      }
     ],
     faq: [
       {
-        question: "How does a number to words converter work?",
-        answer:
-          "A number to words converter translates numeric digits into their English word representation, such as converting 123 into 'one hundred twenty-three'. This makes it easier to spell out numbers for checks, contracts, invoices, and formal documents.",
+        "question": "What happens to 1.999?",
+        "answer": "It rounds to 2.00 and is written as two and 00/100. The same rounding is applied to the magnitude of negative values."
       },
       {
-        question: "Can the number to words converter handle large numbers too?",
-        answer:
-          "Yes, this tool can convert any number up to trillions into English words. Whether you need to spell out a check amount, formal document number, or large figure for official records, it handles all cases.",
+        "question": "What input is rejected?",
+        "answer": "Scientific notation, nonnumeric suffixes and values outside the stated range are rejected. Rounded values must remain at or below 999,999,999,999,999.99 in magnitude."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "123 becomes one hundred twenty-three. -1.995 becomes negative two and 00/100."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Check the destination document’s required spelling convention and decimal precision."
+      }
     ],
   },
   {
     slug: "qr-code-generator",
     name: "QR Code Generator",
-    description: "Generate downloadable QR codes from any URL or text.",
+    description: "Create a PNG QR code from text or a URL, then test it before sharing.",
     longDescription:
-      "Enter any URL, text, or data and generate a high-quality QR code instantly. Customize the size and download as PNG. Perfect for marketing materials, business cards, and event tickets.",
+      "Encode a short text value or URL locally, choose the image size and download a PNG. The code uses fixed dark and light colors. It does not create a managed redirect, track scans or assemble contact/Wi-Fi records for you.",
     categorySlug: "converters",
     icon: "📱",
     featured: true,
@@ -866,54 +889,40 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "QR Code Generator Online — Custom QR Codes",
     metaDescription:
-      "Generate custom QR codes online free. Create downloadable QR codes from URLs, text, and more — no signup needed.",
+      "Create a PNG QR code from text or a URL, then test it before sharing.",
     usageSteps: [
       {
-        title: "Enter Your Content",
-        content:
-          "Type or paste the URL, text, or data you want to encode. Our QR code generator lets you create scannable codes for websites, contact details, Wi-Fi credentials, and any other text-based information in seconds.",
+        "title": "Enter the payload",
+        "content": "Paste the exact text or complete URL to encode. For a structured payload such as Wi-Fi settings, supply the correct format yourself."
       },
       {
-        title: "Customize Your QR Code",
-        content:
-          "Choose from size options and add colors to personalize your QR code's appearance. This QR code generator gives you full control over the output so your codes match your brand or project style perfectly.",
+        "title": "Choose a size",
+        "content": "Choose one of the available image sizes. Color customization is not provided."
       },
       {
-        title: "Download Your QR Code",
-        content:
-          "Click download to save your QR code as a high-resolution PNG image. Generate QR codes with this QR code generator online and use them on business cards, flyers, menus, or digital displays.",
-      },
+        "title": "Download and scan",
+        "content": "Save the PNG and test it with the camera or scanning app your audience will use. Check the destination before printing."
+      }
     ],
     faq: [
       {
-        question:
-          "How does a QR code generator work to create scannable codes?",
-        answer:
-          "A QR code generator encodes text or URLs into a matrix barcode that smartphone cameras can scan instantly. Our tool processes everything in your browser so you can generate QR codes securely — without uploading your data to any server.",
+        "question": "Can the destination change later?",
+        "answer": "A downloaded static QR code contains the original payload. To change it, generate and distribute a new code, or manage your own redirect URL."
       },
       {
-        question:
-          "Can I customize colors and sizes with this QR code generator?",
-        answer:
-          "Yes, you can adjust the QR code size and choose custom colors before downloading. This QR code generator provides flexible options so your codes remain scannable while matching your design preferences for marketing materials or product packaging.",
-      },
+        "question": "Why might a code fail to scan?",
+        "answer": "Very long payloads, small print, insufficient quiet space or a low-quality image can reduce reliability. Test the actual printed or displayed version."
+      }
     ],
     additionalContent: [
       {
-        heading: "Create QR Codes in Your Browser",
-        content:
-          "The QR code generator turns URLs, text, contact details, and short messages into downloadable QR codes. The code is generated locally, keeping draft campaign links and internal URLs private.",
+        "heading": "A result you can check",
+        "content": "Encode https://example.com/ and scan the saved PNG. The decoded URL should be the same address."
       },
       {
-        heading: "Common QR Code Uses",
-        content:
-          "Use QR codes for flyers, menus, event check-ins, classroom resources, business cards, product packaging, and quick mobile access to landing pages.",
-      },
-      {
-        heading: "Download and Test Before Publishing",
-        content:
-          "After generating a QR code, download the image and test it with a phone camera before printing or sharing. Clear contrast and enough quiet space around the code improve scanning reliability.",
-      },
+        "heading": "Before using the result",
+        "content": "Encoding does not verify that a destination is trustworthy, available or safe."
+      }
     ],
   },
   {
@@ -1254,9 +1263,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "pdf-merger",
     name: "PDF Merger",
-    description: "Combine multiple PDF files into a single document instantly.",
+    description: "Combine whole PDF files in a chosen order using your browser.",
     longDescription:
-      "Upload two or more PDF files and merge them into one cohesive document. Reorder pages before merging and download the combined result. Perfect for combining reports, invoices, contracts, and scanned documents.",
+      "Select at least two unencrypted PDFs, move whole files up or down and download the combined document. Pages within each input retain their original order. There is no individual-page rearrangement or merged-document preview.",
     categorySlug: "pdf-tools",
     icon: "📑",
     featured: true,
@@ -1270,52 +1279,40 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Merge PDF Files Online Free — Combine PDFs",
     metaDescription:
-      "Merge PDF files online free — select, reorder, and combine multiple PDFs in your browser without sending the selected documents to our processing server.",
+      "Combine whole PDF files in a chosen order using your browser.",
     usageSteps: [
       {
-        title: "Upload Your PDF Files",
-        content:
-          "Start by selecting the PDF files you want to combine with our PDF merger. You can upload multiple documents at once using our secure drag-and-drop interface. Your files are processed entirely in your browser with no server upload required.",
+        "title": "Select the PDFs",
+        "content": "Choose the input documents. Encrypted or unsupported PDFs can fail to load; keep your originals."
       },
       {
-        title: "Arrange the Order",
-        content:
-          "Drag and drop your uploaded files to arrange them in the desired sequence before merging. The preview panel lets you see exactly how your combined document will look, making it easy to perfect your final PDF output.",
+        "title": "Order the files",
+        "content": "Use Move up and Move down to arrange the file list. Remove an unwanted file before merging."
       },
       {
-        title: "Merge and Download",
-        content:
-          "Click the merge button to combine all your PDFs into a single cohesive document using our PDF merger. Your merged file is generated instantly and ready for download with just one click.",
-      },
+        "title": "Merge and inspect",
+        "content": "Merge, save the output and open it in a PDF viewer. Check the complete page sequence, orientation and legibility."
+      }
     ],
     faq: [
       {
-        question: "How does the PDF merger handle multiple pages?",
-        answer:
-          "Our PDF merger handles page reordering seamlessly across all uploaded documents. You can rearrange individual pages from different PDFs before finalizing the merge, giving you complete control over the final output.",
+        "question": "Can I rearrange individual pages?",
+        "answer": "This workspace orders entire files. Use PDF Splitter to extract the needed pages first, then merge those files in the desired order."
       },
       {
-        question: "Is the PDF merger compatible with all PDF versions?",
-        answer:
-          "Yes, our PDF merger supports all standard PDF formats and versions. Files created in any PDF software work seamlessly with our free online tool.",
-      },
+        "question": "Will every PDF feature survive?",
+        "answer": "No universal compatibility is promised. Forms, signatures, attachments, annotations and other advanced features may change or be lost. Inspect the downloaded document."
+      }
     ],
     additionalContent: [
       {
-        heading: "Merge PDF Files Without Uploading",
-        content:
-          "The PDF merger combines documents directly in your browser. This browser-only approach is useful for invoices, forms, contracts, class notes, and internal files that should not be uploaded to a third-party server.",
+        "heading": "A result you can check",
+        "content": "Two one-page inputs ordered A then B should produce a two-page document with A before B. Reverse the files and inspect the reversed result."
       },
       {
-        heading: "Best Uses for PDF Merging",
-        content:
-          "Use the tool to combine multiple PDFs into one packet, reorder document sections, join scanned pages, or prepare a single file for email and form submissions.",
-      },
-      {
-        heading: "File Handling and Limits",
-        content:
-          "PDF processing uses local browser memory, so very large batches may be limited to protect performance. For everyday documents, the merge workflow stays fast and private.",
-      },
+        "heading": "Before using the result",
+        "content": "Do not use the merged copy as a substitute for a signed original. Browser memory and source-file complexity affect processing."
+      }
     ],
   },
   {
@@ -1418,9 +1415,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "pdf-to-text",
     name: "PDF to Text",
-    description: "Extract and copy text content from PDF files.",
+    description: "Extract an existing PDF text layer; scanned pages require separate OCR.",
     longDescription:
-      "Upload a PDF and extract all text content from every page. The extracted text preserves paragraph structure and is immediately copyable. Perfect for pulling quotes, research data, or content from PDFs for reuse.",
+      "Read selectable text from PDF pages using the browser PDF renderer. Image-only pages have no text layer to extract. The output is plain text and may not reproduce paragraphs, columns, tables or reading order exactly.",
     categorySlug: "pdf-tools",
     icon: "📝",
     featured: false,
@@ -1434,44 +1431,49 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "PDF to Text - Free Online PDF Extractor Tool",
     metaDescription:
-      "Use our pdf to text converter to extract text from PDF files instantly in your browser. No uploads, no signups — copy formatted text with one click.",
+      "Extract an existing PDF text layer; scanned pages require separate OCR.",
     usageSteps: [
       {
-        title: "Upload Your PDF",
-        content:
-          "Select the PDF file you want to extract text from using our pdf to text converter. The tool supports scanned documents and image-based PDFs with built-in browser-side processing.",
+        "title": "Choose a PDF",
+        "content": "Select a readable document with a text layer. Keep the original and use a harmless fixture for checks."
       },
       {
-        title: "Extract Text Instantly",
-        content:
-          "Click Convert to extract all text content from your PDF with the pdf to text tool. The extraction preserves paragraph structure, headings, and list formatting for clean, usable output.",
+        "title": "Extract the available text",
+        "content": "Extract and review every needed page. Empty output from a scan does not mean the document is blank."
       },
       {
-        title: "Copy or Download the Text",
-        content:
-          "Review the extracted text in our preview panel, then copy it to your clipboard or download it as a plain text file. The entire pdf to text process takes seconds and works entirely offline.",
-      },
+        "title": "Copy or download and proofread",
+        "content": "Copy the text or save a text file. Compare names, numbers and reading order with the original PDF."
+      }
     ],
     faq: [
       {
-        question: "Can the pdf to text converter handle scanned documents?",
-        answer:
-          "Yes, our pdf to text converter recognizes and extracts text from scanned PDFs and image-based documents using built-in browser processing. Simply upload your scanned PDF and the tool handles the rest.",
+        "question": "Can this tool recognize text in scanned images?",
+        "answer": "No. There is no OCR engine. Use OCR in an appropriate document application, then inspect recognition errors."
       },
       {
-        question:
-          "Does pdf to text extraction preserve the original formatting?",
-        answer:
-          "The pdf to text extraction preserves paragraph structure, line breaks, and basic formatting from your original PDF. For complex layouts with columns or tables, some adjustments may occur but extracted content remains fully readable.",
+        "question": "Will the formatting be identical?",
+        "answer": "No. PDF text items do not always encode logical paragraph or table structure. Complex layouts need manual correction."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "A PDF with the selectable text Sample 123 should include that text in the extraction. An image-only scan of the same words can return no text."
       },
+      {
+        "heading": "Before using the result",
+        "content": "A library or worker can need network loading. Local text extraction does not guarantee offline availability or accessibility tagging."
+      }
     ],
   },
   {
     slug: "pdf-to-images",
     name: "PDF to Images",
-    description: "Convert PDF pages to high-quality PNG or JPEG images.",
+    description: "Render PDF pages as PNG or JPEG images and download them locally.",
     longDescription:
-      "Upload a PDF and convert each page into a separate image file. Choose between PNG (lossless) and JPEG (smaller file) format, adjust image quality, and download individual pages or all pages as a ZIP. Perfect for creating thumbnails, presentations, or sharing PDF content as images.",
+      "The browser renders PDF pages to a raster canvas and exports PNG or JPEG images. JPEG quality is adjustable; rendered dimensions depend on the tool’s scale. Download all starts separate image downloads, not a ZIP archive.",
     categorySlug: "pdf-tools",
     icon: "🖼️",
     featured: false,
@@ -1485,37 +1487,41 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "PDF to Images - Convert Pages to PNG JPG Online",
     metaDescription:
-      "Convert PDF to images online free with high quality. Turn each PDF page into PNG or JPEG format instantly in your browser — download individually or all as ZIP.",
+      "Render PDF pages as PNG or JPEG images and download them locally.",
     usageSteps: [
       {
-        title: "Upload Your PDF Document",
-        content:
-          "Select the PDF file you want to convert PDF to images online free using our tool. It supports multi-page PDFs and converts each page into a separate high-quality image file.",
+        "title": "Select a PDF",
+        "content": "Choose a PDF the browser renderer can open. Image rendering is separate from extracting selectable text."
       },
       {
-        title: "Choose Image Format and Quality",
-        content:
-          "Select your preferred output format — PNG for maximum quality or JPEG for smaller file sizes. When you convert PDF to images online free, you can also adjust the image resolution to suit your needs.",
+        "title": "Choose the output",
+        "content": "Select PNG or JPEG and, for JPEG, the quality setting. Conversion rasterizes text and vector shapes."
       },
       {
-        title: "Download Individual or All Images",
-        content:
-          "Preview each converted page image and download them individually or as a convenient ZIP archive containing all images. The conversion is fast and processed entirely in your browser.",
-      },
+        "title": "Inspect and download",
+        "content": "Review the generated pages. Save individual images or use Download all; your browser may require permission for multiple downloads."
+      }
     ],
     faq: [
       {
-        question:
-          "Can I convert PDF to images online free without quality loss?",
-        answer:
-          "Yes, when you convert PDF to images online free with our tool, PNG output preserves full quality with transparency. JPEG offers smaller sizes while maintaining excellent visual clarity for web use.",
+        "question": "Does PNG preserve the original PDF quality?",
+        "answer": "PNG preserves the pixels of the rendered canvas, not the source document’s vectors, selectable text or metadata. Zooming a raster image can reveal pixelation."
       },
       {
-        question:
-          "What image formats are available when I convert PDF to images online free?",
-        answer:
-          "When you convert PDF to images online free, both PNG and JPEG are supported. PNG delivers the highest quality with transparency, while JPEG offers smaller file sizes ideal for sharing and web use.",
+        "question": "Is Download all a ZIP?",
+        "answer": "No. It requests separate files. If the browser blocks additional downloads, allow them for the site or save pages individually."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "A two-page PDF should produce two image previews in the same page order. Check both, including small text and rotated pages."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Keep the source PDF when you need searchable text, accessibility structure or exact vector scaling."
+      }
     ],
   },
 
@@ -1621,9 +1627,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "image-format-converter",
     name: "Image Format Converter",
-    description: "Convert images between PNG, JPEG, WebP, and other formats.",
+    description: "Export a browser-decodable image as PNG, JPEG or WebP.",
     longDescription:
-      "Upload an image and convert it to your desired format. Supports PNG, JPEG, and WebP output. Adjust quality for JPEG and WebP. Perfect for converting screenshots, optimizing web images, and preparing assets for different platforms.",
+      "Decode one image in the browser and export PNG, JPEG or WebP through Canvas. JPEG and WebP quality are adjustable. Other output formats, animation preservation and original metadata/color-profile preservation are not provided.",
     categorySlug: "converters",
     icon: "🔄",
     featured: true,
@@ -1636,37 +1642,41 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Image Format Converter - Free Online File Tool",
     metaDescription:
-      "Convert images between PNG, JPEG, and WebP formats instantly with this free image format converter. Browser-based with quality controls and no uploads.",
+      "Export a browser-decodable image as PNG, JPEG or WebP.",
     usageSteps: [
       {
-        title: "Upload Your Image",
-        content:
-          "Select an image file from your computer by clicking the upload button or dragging it into the designated area. This image format converter accepts JPEG, PNG, WebP, GIF, BMP, TIFF, and ICO input files.",
+        "title": "Choose a decodable image",
+        "content": "Start with JPEG, PNG or WebP. Other input formats depend on your browser; a filename extension is not a guarantee of decoding support."
       },
       {
-        title: "Choose Output Format",
-        content:
-          "Pick your desired output format from the dropdown menu — options include JPEG, PNG, WebP, GIF, BMP, and TIFF. Each format shows estimated file size and use case recommendations as you use this image format converter.",
+        "title": "Choose PNG, JPEG or WebP",
+        "content": "Select one of the actual output options. JPEG does not support transparency, and WebP quality here is not a lossless-mode switch."
       },
       {
-        title: "Download the Converted Image",
-        content:
-          "Click the convert button and wait a moment for processing, then download your image in the new format. This image format converter preserves quality settings and color profiles for professional results.",
-      },
+        "title": "Convert and inspect",
+        "content": "Save the output and compare its dimensions, transparent areas, colors and file size with the original."
+      }
     ],
     faq: [
       {
-        question:
-          "What output formats does this image format converter support?",
-        answer:
-          "This image format converter supports JPEG, PNG, WebP, GIF, BMP, and TIFF output formats. Each format is optimized for different use cases — JPEG for photographs, PNG for graphics with transparency, WebP for modern web performance.",
+        "question": "Can I export GIF, BMP or TIFF?",
+        "answer": "These are not output options. Use a dedicated format converter when they are required."
       },
       {
-        question:
-          "Does the image format converter preserve quality during conversion?",
-        answer:
-          "Yes, this image format converter preserves original quality when converting between lossless formats like PNG to WebP. When converting to JPEG, you can adjust the quality slider to balance file size and visual fidelity.",
+        "question": "Will animation or metadata be preserved?",
+        "answer": "Canvas exports a raster image rather than the original file structure. Animation, EXIF metadata and source color profiles can be lost or changed."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "Convert a small transparent PNG to PNG and JPEG. Confirm that PNG can retain transparent pixels and that JPEG has no alpha channel."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Keep the original. Quality sliders affect supported lossy encoders and do not promise a particular file size."
+      }
     ],
   },
   {
@@ -1777,9 +1787,9 @@ export const TOOLS: Tool[] = [
   {
     slug: "password-generator",
     name: "Password Generator",
-    description: "Generate strong, secure passwords with customizable options.",
+    description: "Generate random passwords using browser cryptographic randomness.",
     longDescription:
-      "Create strong random passwords with full control over length, character types (uppercase, lowercase, numbers, symbols), and exclusions. See password strength indicator and copy generated passwords with one click. Perfect for creating secure credentials for any account.",
+      "Choose a length and enabled character sets, then generate and copy a password. The generator uses the browser’s cryptographic random source. Its length/variety indicator is a rough guide, not a promise that a password cannot be cracked.",
     categorySlug: "developer-tools",
     icon: "🔑",
     featured: true,
@@ -1793,45 +1803,50 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Password Generator — Secure Online",
     metaDescription:
-      "Generate secure passwords with custom length and character options. Free online secure password generator with strength indicator — fully client-side.",
+      "Generate random passwords using browser cryptographic randomness.",
     usageSteps: [
       {
-        title: "Set Your Password Requirements",
-        content:
-          "Adjust the password length slider and select character types including uppercase, lowercase, digits, and special symbols. This secure password generator uses cryptographically strong randomness to create passwords that resist brute-force and dictionary attacks.",
+        "title": "Choose your requirements",
+        "content": "Set the length and enabled character groups accepted by the destination service. Avoid unnecessarily small lengths or restricted sets."
       },
       {
-        title: "Review the Generated Password",
-        content:
-          "The tool instantly displays a random password matching your criteria with a visual strength indicator. Each password from this secure password generator is truly unpredictable and free from common patterns that hackers exploit.",
+        "title": "Generate a fresh value",
+        "content": "Generate locally and check that the output meets that service’s requirements. Do not treat an appearance-based rating as a security guarantee."
       },
       {
-        title: "Copy and Store Your Password",
-        content:
-          "Click the copy button to save the generated password to your clipboard. After you generate a strong password with this secure password generator, store it in a password manager for safe keeping.",
-      },
+        "title": "Store securely",
+        "content": "Copy it into a trusted password manager and use a different password for each account. Protect the clipboard on shared devices."
+      }
     ],
     faq: [
       {
-        question:
-          "How does a secure password generator create uncrackable passwords?",
-        answer:
-          "A secure password generator uses cryptographically strong random number generation to select characters with true unpredictability. This ensures every password created by our secure password generator has maximum entropy and cannot be predicted or reproduced.",
+        "question": "Are passwords uncrackable?",
+        "answer": "No. Randomness does not make an account invulnerable. Length, service storage, phishing, reuse and device security all matter."
       },
       {
-        question: "What password length should I choose for maximum security?",
-        answer:
-          "We recommend at least 16 characters with all character types enabled for maximum security. When you use this secure password generator to generate a strong password, longer lengths with mixed character sets provide exponentially stronger protection against modern cracking techniques.",
+        "question": "Can I use the tool for recovery tokens?",
+        "answer": "Use your application’s established token mechanism for security-sensitive identifiers. This interface is intended for creating account passwords, not designing an authentication system."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "Set a length of 16 with uppercase, lowercase, digits and symbols enabled. Confirm the length and selected groups in the generated value; generate again rather than publishing a sample as a real credential."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Do not paste an existing password into a shared device. A password manager can generate and store credentials without exposing them to the clipboard."
+      }
     ],
   },
   {
     slug: "hash-generator",
     name: "Hash Generator",
     description:
-      "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes of any text.",
+      "Compute UTF-8 text checksums using MD5, SHA-1, SHA-256 or SHA-512.",
     longDescription:
-      "Use this hash generator to create MD5, SHA-1, SHA-256, and SHA-512 hashes from text in your browser. Generate digests for checksums, test fixtures, comparisons, and developer documentation without sending input to a server.",
+      "Hash the exact text entered, including spaces and line breaks. MD5 uses an RFC 1321 implementation and SHA variants use Web Crypto. MD5 and SHA-1 are legacy checksums and are unsuitable for collision-resistant security or password storage.",
     categorySlug: "developer-tools",
     icon: "#",
     featured: false,
@@ -1844,43 +1859,49 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "Hash Generator - Free MD5 SHA256 SHA512 Tool",
     metaDescription:
-      "Generate hashes online with this hash generator for MD5, SHA-1, SHA-256, and SHA-512. Fast browser-based digests for developers and tests.",
+      "Compute UTF-8 text checksums using MD5, SHA-1, SHA-256 or SHA-512.",
     usageSteps: [
       {
-        title: "Enter Text to Hash",
-        content:
-          "Paste the text or value you want to process into the hash generator. The tool supports common hashing workflows for checksums, testing, and development.",
+        "title": "Enter exact text",
+        "content": "Paste the text whose digest is needed. Text encoding is UTF-8; invisible whitespace changes a digest."
       },
       {
-        title: "Choose a Hash Algorithm",
-        content:
-          "Select MD5, SHA-1, SHA-256, or SHA-512 depending on your needs. The hash generator creates the digest locally using browser crypto features where supported.",
+        "title": "Choose the algorithm",
+        "content": "Select the algorithm required by the receiving system. This interface hashes text rather than uploaded files."
       },
       {
-        title: "Copy the Hash Output",
-        content:
-          "Copy the generated hash for logs, verification, fixtures, or documentation. Do not use simple hashes alone for storing passwords in production systems.",
-      },
+        "title": "Compare complete digests",
+        "content": "Generate and compare the full hexadecimal output. Matching text checksums do not authenticate who supplied the data."
+      }
     ],
     faq: [
       {
-        question: "What is a hash generator used for?",
-        answer:
-          "A hash generator turns input text into a fixed-length digest. Developers use hashes for checksums, comparisons, test fixtures, and data integrity checks.",
+        "question": "Can I recover text from its hash?",
+        "answer": "Hashing is one-way, but guessable inputs can be tested. A hash is not encryption and does not safely hide a short password."
       },
       {
-        question: "Can I use this hash generator for passwords?",
-        answer:
-          "This tool can generate hash values, but production password storage should use dedicated password hashing algorithms with salts, such as bcrypt, Argon2, or PBKDF2.",
+        "question": "Which algorithm is suitable for passwords?",
+        "answer": "Use a purpose-built password hashing scheme through your application’s authentication system. This general digest generator is not a password-storage tool."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "For abc, MD5 is 900150983cd24fb0d6963f7d28e17f72. A trailing newline produces a different digest."
       },
+      {
+        "heading": "Before using the result",
+        "content": "When checking a downloaded file, use a file-hashing utility and a digest obtained from a trusted source; this workspace handles text."
+      }
     ],
   },
   {
     slug: "uuid-generator",
     name: "UUID Generator",
-    description: "Generate random UUIDs (v4) for databases, APIs, and testing.",
+    description: "Generate random version 4 UUID identifiers for data and testing.",
     longDescription:
-      "Generate one or more random UUID v4 identifiers instantly. Copy to clipboard with one click. Choose how many UUIDs to generate at once (1-100). Perfect for database primary keys, API identifiers, session tokens, and testing.",
+      "Generate one to 100 UUID v4 identifiers and copy the output. Only the random v4 format is provided; there is no v1 or v7 selector. UUIDs identify records but should not replace authentication secrets.",
     categorySlug: "developer-tools",
     icon: "\ud83d\udd22",
     featured: false,
@@ -1893,37 +1914,41 @@ export const TOOLS: Tool[] = [
     ],
     metaTitle: "UUID Generator - Free Random v4 ID Creator",
     metaDescription:
-      "Free random UUID generator — generate UUID v4 identifiers instantly in your browser. Copy to clipboard for database keys, API tokens, and testing.",
+      "Generate random version 4 UUID identifiers for data and testing.",
     usageSteps: [
       {
-        title: "Choose the UUID Version You Need",
-        content:
-          "Select from UUID versions such as v4 (random) or v1 (time-based) depending on your use case. When you use this random UUID generator, the tool creates a universally unique identifier that follows the standard 8-4-4-4-12 hexadecimal format with 122 bits of entropy.",
+        "title": "Set the count",
+        "content": "Choose a whole count from 1 to 100."
       },
       {
-        title: "Set the Quantity of UUIDs",
-        content:
-          "Specify how many unique identifiers you need in a single batch — whether it is one ID for a database record or dozens for bulk data seeding. The tool generates multiple UUIDs simultaneously so you can use this random UUID generator to produce and copy them all at once.",
+        "title": "Generate v4 identifiers",
+        "content": "Generate the random UUIDs. Each uses the version 4 and RFC variant bit pattern."
       },
       {
-        title: "Copy the Generated Identifiers",
-        content:
-          "The list of UUIDs appears in the output area formatted for easy copying. Use these identifiers as primary keys in your database, unique user IDs, session tokens, or request tracking IDs across your distributed systems — all generated by this free random UUID generator.",
-      },
+        "title": "Copy and enforce uniqueness",
+        "content": "Copy the identifiers and apply an appropriate unique constraint in the destination database."
+      }
     ],
     faq: [
       {
-        question:
-          "Why should I use a random UUID generator instead of auto-incrementing integers?",
-        answer:
-          "A random UUID generator produces identifiers that are globally unique across systems, tables, and even separate databases, making them ideal for distributed architectures and microservices where auto-incrementing integers would collide. When you use this random UUID generator, you get identifiers that can be safely merged across databases without conflicts.",
+        "question": "Can I choose time-based UUIDs?",
+        "answer": "No. This interface generates v4 only. Use a UUID implementation supporting the required version when ordering or time semantics matter."
       },
       {
-        question:
-          "What is the difference between UUID v4 from a random UUID generator and UUID v1?",
-        answer:
-          "UUID v4 generated by a random UUID generator uses 122 bits of random entropy, giving you an extremely low probability of collision. UUID v1 uses the current timestamp and the host machine's MAC address, which makes the IDs sortable chronologically but potentially exposes the generation time and hardware identity.",
+        "question": "Are collisions impossible?",
+        "answer": "Random UUID collisions are unlikely, not impossible. Validate uniqueness where it is required and do not use this tool as a session-token security design."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "A v4 UUID has 36 characters with hyphens: xxxxxxxx-xxxx-4xxx-[89ab]xxx-xxxxxxxxxxxx, where x is a hexadecimal digit."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Generated examples are identifiers, not credentials or proof of uniqueness across every system."
+      }
     ],
   },
 
@@ -2080,9 +2105,9 @@ additionalContent: []
     slug: "password-strength-checker",
     name: "Password Strength Checker",
     description:
-      "Generate strong passwords and check password strength with detailed analysis.",
+      "Inspect sample-password patterns with a clearly limited local heuristic.",
     longDescription:
-      "Two tools in one: generate secure random passwords with full control over length and character types, and check the strength of any password with real-time analysis. The strength meter evaluates length, character variety, and patterns to give a score with actionable improvement tips.",
+      "The checker looks at length, character groups and a small set of repeated/common patterns. Common or repeated values are capped at a very weak rating. Its score is not measured entropy, a breach-database search or a cracking-time prediction.",
     categorySlug: "developer-tools",
     icon: "🛡️",
     featured: true,
@@ -2096,36 +2121,41 @@ additionalContent: []
     ],
     metaTitle: "Password Strength Checker - Free Security Tool",
     metaDescription:
-      "Check password strength online with real-time analysis. Test your password security, get a strength score, and actionable tips to make your passwords stronger.",
+      "Inspect sample-password patterns with a clearly limited local heuristic.",
     usageSteps: [
       {
-        title: "Enter Your Password",
-        content:
-          "Type or paste the password you want to evaluate into the input field. This password strength checker online analyzes your password in real time, scoring length, character variety, and pattern usage as you type each character.",
+        "title": "Use a sample",
+        "content": "Try a synthetic example rather than a password used on an account."
       },
       {
-        title: "Review the Strength Score and Feedback",
-        content:
-          "The tool displays a clear strength rating from weak to strong along with a numeric score. Detailed recommendations highlight specific improvements such as adding special characters or increasing length.",
+        "title": "Inspect the score and patterns",
+        "content": "Read the component scores as heuristic feedback. A low score identifies selected weaknesses; a high score does not establish security."
       },
       {
-        title: "Improve Your Password",
-        content:
-          "Use the actionable suggestions to strengthen your password by adding more character types or making it longer. Check password strength online again after each change to see your score improve incrementally.",
-      },
+        "title": "Choose a safer account workflow",
+        "content": "Use a trusted password manager, unique credentials and the account’s available second factor. The accompanying generator is separate from the checker."
+      }
     ],
     faq: [
       {
-        question:
-          "How does a password strength checker online evaluate my passwords?",
-        answer:
-          "A password strength checker online evaluates length, character diversity, common pattern avoidance, and resistance to brute-force attacks. Our tool also checks for dictionary words and sequential patterns that significantly weaken your password.",
+        "question": "Does it know whether a password was leaked?",
+        "answer": "No. There is no breach-database lookup."
       },
       {
-        question: "What makes a password score as strong in this checker?",
-        answer:
-          "Passwords scoring as strong typically have at least 12 characters with a mix of uppercase, lowercase, digits, and symbols, plus no common patterns or dictionary words. Check password strength online frequently to ensure all your accounts meet this security threshold.",
+        "question": "Why can a long password still be weak?",
+        "answer": "Repeating a short pattern or a common password creates predictable structure. For example, repeating Password1! does not make it a strong secret."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "Password1! repeated seven times is classified Very Weak despite its length and mixed characters."
       },
+      {
+        "heading": "Before using the result",
+        "content": "The pattern list is limited. Do not interpret an unflagged value as safe for any particular account."
+      }
     ],
   },
   {
@@ -2180,9 +2210,9 @@ additionalContent: []
     slug: "meta-tag-generator",
     name: "Meta Tag Generator",
     description:
-      "Generate SEO meta tags including title, description, and Open Graph tags.",
+      "Draft title, description and social metadata from entered values.",
     longDescription:
-      "Create optimized meta tags for your web pages. Enter your title, description, keywords, and OG image URL to generate complete meta tag HTML. Preview how your page will appear in search results and social media shares. Copy the generated code with one click.",
+      "Create escaped HTML tags and illustrative previews from your form values. Optional canonical and image URLs must be absolute HTTP(S) URLs. The preview is not a live search result; metadata does not guarantee rankings or a particular snippet.",
     categorySlug: "seo-tools",
     icon: "🏷️",
     featured: true,
@@ -2196,43 +2226,49 @@ additionalContent: []
     ],
     metaTitle: "SEO Meta Tag Generator - Free Meta Creator",
     metaDescription:
-      "Use our free SEO meta tag generator to create optimized title, description, Open Graph, and Twitter Card tags. Preview snippets and copy HTML code instantly.",
+      "Draft title, description and social metadata from entered values.",
     usageSteps: [
       {
-        title: "Enter Your Page Title & Description",
-        content:
-          "Launch our SEO meta tag generator and fill in your page title, description, and keywords. The tool helps you craft optimized meta tags that improve your search engine visibility.",
+        "title": "Describe the actual page",
+        "content": "Write a useful title and description that match visible content. Avoid keyword lists written only for a ranking target."
       },
       {
-        title: "Configure Meta Tag Options",
-        content:
-          "Add Open Graph and Twitter Card meta tags for better social media sharing. Our SEO meta tag generator also supports canonical URL, author information, and viewport settings with simple checkboxes.",
+        "title": "Enter valid URLs",
+        "content": "Use the actual canonical and image URLs, or leave those optional fields blank."
       },
       {
-        title: "Generate and Copy Meta Tags",
-        content:
-          "Click Generate to instantly produce complete HTML meta tag code optimized for search engines. Copy the generated tags with one click and paste them directly into your website's head section for immediate SEO improvement.",
-      },
+        "title": "Copy and inspect the deployed head",
+        "content": "Review the generated tags in your website’s template and check for duplicate or contradictory metadata."
+      }
     ],
     faq: [
       {
-        question: "What meta tags should my SEO meta tag generator include?",
-        answer:
-          "A comprehensive SEO meta tag generator should produce title tags, meta descriptions, Open Graph tags, and Twitter Cards. These essential tags help search engines and social platforms properly understand and display your page content.",
+        "question": "Does Google require a 150–160 character description?",
+        "answer": "There is no fixed display guarantee. Search snippets can be rewritten or truncated according to the query, device and available space."
       },
       {
-        question: "How long should my meta description be for optimal SEO?",
-        answer:
-          "The ideal meta description length is between 150 and 160 characters. Our SEO meta tag generator automatically validates your description length and highlights any issues, ensuring your meta tags meet search engine best practices.",
+        "question": "Does the keywords tag improve Google rankings?",
+        "answer": "Google does not use the meta keywords tag for web search ranking. Its presence in this draft is not an SEO recommendation."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "A title containing A & B should be escaped as A &amp; B in generated HTML while reading as A & B in a browser."
       },
+      {
+        "heading": "Before using the result",
+        "content": "The Open Graph image preview may request the entered image URL. It does not fetch and audit your page HTML."
+      }
     ],
   },
   {
     slug: "keyword-density-checker",
     name: "Keyword Density Checker",
-    description: "Analyze keyword frequency and density in any text content.",
+    description: "Count individual word frequency using a limited Latin-text tokenizer.",
     longDescription:
-      "Paste your content and instantly see keyword frequency, density percentages, and ranking. The analyzer breaks down single words and phrases, showing how often each appears and what percentage of the total text it represents. Perfect for SEO content optimization.",
+      "Analyze repeated single-word tokens in pasted text. Percentages describe token frequency in that input, not SEO quality or an ideal ranking target. This is not phrase analysis, a multilingual segmenter or a web crawler.",
     categorySlug: "seo-tools",
     icon: "📈",
     featured: true,
@@ -2246,43 +2282,49 @@ additionalContent: []
     ],
     metaTitle: "Keyword Density Checker - Free SEO Content Tool",
     metaDescription:
-      "Use our free keyword density checker to analyze keyword frequency and density in any text. Optimize your content for better search engine rankings instantly.",
+      "Count individual word frequency using a limited Latin-text tokenizer.",
     usageSteps: [
       {
-        title: "Paste Your Content for Analysis",
-        content:
-          "Copy and paste your article or blog post into our free keyword density checker. The tool instantly scans your text and calculates keyword frequency across all words and phrases.",
+        "title": "Paste text",
+        "content": "Use the text to be counted. The tokenizer is limited to the implementation’s Latin-word rules and may omit other scripts."
       },
       {
-        title: "Enter Target Keywords",
-        content:
-          "Specify the keywords you want to check the density for. Our keyword density checker free tool supports multiple keywords at once and provides detailed percentage analysis for each term.",
+        "title": "Inspect repeated tokens",
+        "content": "Review the words and counts. Treat stop-word filtering and punctuation handling as counting choices rather than language understanding."
       },
       {
-        title: "Review and Optimize Density",
-        content:
-          "View keyword density percentages for each term with clear indicators showing optimal ranges. Adjust your content until your target keywords fall within the recommended 1 to 3 percent density for best SEO performance.",
-      },
+        "title": "Edit for the reader",
+        "content": "Check whether repetition helps or obscures meaning. Do not add keywords just to meet a numerical percentage."
+      }
     ],
     faq: [
       {
-        question: "How accurate is this free keyword density checker?",
-        answer:
-          "Our keyword density checker free tool provides precise percentage calculations for every word and phrase in your content. It clearly marks which keywords fall within the optimal range and which ones need adjustment for better search rankings.",
+        "question": "What density does Google require?",
+        "answer": "This tool provides no required or ideal density. Search quality depends on usefulness and many other signals, not a prescribed word percentage."
       },
       {
-        question: "What is the best keyword density for SEO content?",
-        answer:
-          "The recommended keyword density for SEO is typically between 1 and 3 percent. Our free keyword density checker helps you maintain natural keyword usage to avoid penalties from over-optimization while ensuring search engines understand your content's topic.",
+        "question": "Does it count multiword phrases?",
+        "answer": "The interface analyzes individual tokens, not phrases or semantic topics."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "In a short passage containing the same word twice, check its count against the entered text before interpreting the percentage."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Use language-specific analysis for Hindi or other scripts; this tool’s tokenizer is not universal."
+      }
     ],
   },
   {
     slug: "sitemap-generator",
     name: "Sitemap Generator",
-    description: "Generate XML sitemaps for your website from a list of URLs.",
+    description: "Draft validated XML sitemap entries from absolute URLs on one host.",
     longDescription:
-      "Create SEO-friendly XML sitemaps by entering your page URLs. Set priority, change frequency, and last modified dates for each URL. The generator produces valid sitemap XML that you can submit to Google Search Console and other search engines.",
+      "Enter same-protocol, same-host HTTP(S) URLs and optional real modification dates. Invalid URLs, impossible dates and out-of-range priorities prevent output. This manual generator does not crawl a website or decide which pages deserve indexing.",
     categorySlug: "seo-tools",
     icon: "🗺️",
     featured: true,
@@ -2295,43 +2337,49 @@ additionalContent: []
     ],
     metaTitle: "Sitemap Generator - Free XML SEO Sitemap Tool",
     metaDescription:
-      "Use this sitemap generator to create XML sitemaps with priority, frequency, and last modified dates. Copy valid sitemap code for Google Search Console.",
+      "Draft validated XML sitemap entries from absolute URLs on one host.",
     usageSteps: [
       {
-        title: "Enter Your Website URLs",
-        content:
-          "Paste all your important page URLs into this sitemap generator. The tool supports bulk URL entry and automatically detects the correct protocol for each address.",
+        "title": "Enter the actual page URLs",
+        "content": "Use absolute URLs without fragments or credentials. All entries must have the same origin."
       },
       {
-        title: "Configure Sitemap Settings",
-        content:
-          "Set priority levels, change frequency, and last modified dates for each URL in your list. This sitemap generator produces search-engine-valid XML that Google and Bing can parse correctly.",
+        "title": "Set optional protocol fields",
+        "content": "Leave unknown modification dates blank. Priority must be 0–1; Google ignores priority and change frequency."
       },
       {
-        title: "Generate and Submit Sitemap",
-        content:
-          "Click Generate to create your complete XML sitemap file that follows all search engine standards. Download the output and submit it to Google Search Console for faster and more comprehensive site indexing.",
-      },
+        "title": "Review and publish separately",
+        "content": "Copy valid XML, verify those pages and use your site’s publishing process. A sitemap does not guarantee indexing."
+      }
     ],
     faq: [
       {
-        question: "Why use a sitemap generator for my website?",
-        answer:
-          "This sitemap generator creates valid XML sitemaps that follow official search engine protocols. It saves time by automatically formatting your URLs with proper priority, frequency, and last-modified date tags.",
+        "question": "Does this discover every page?",
+        "answer": "No. You enter the rows manually. Use your site generator or CMS for a large, maintained URL inventory."
       },
       {
-        question: "Does this sitemap generator support large websites?",
-        answer:
-          "Yes, this sitemap generator can handle hundreds of URLs at once. The generated XML follows standard sitemap protocol and can be submitted directly to Google Search Console, Bing Webmaster Tools, and other search engines.",
+        "question": "What limits are enforced?",
+        "answer": "At most 50,000 populated URLs and 50 MB of uncompressed XML. Each URL must be shorter than 2,048 characters. Your device can impose practical limits earlier."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "For https://example.com/a?x=1&y=2, the XML loc contains &amp; between the query parameters. A relative /a path produces an error."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Only include pages you actually intend to publish and index. Do not invent a modification date to imply freshness."
+      }
     ],
   },
   {
     slug: "robots-txt-generator",
     name: "Robots.txt Generator",
-    description: "Create robots.txt files to control search engine crawling.",
+    description: "Draft robots.txt crawler rules and inspect them before publishing.",
     longDescription:
-      "Generate a robots.txt file for your website. Add rules to allow or disallow specific user agents (search engine bots) from crawling certain paths. Include sitemap URLs and set crawl delays. Perfect for SEO professionals managing search engine access.",
+      "Build a plain-text robots.txt draft using the form’s user-agent, path and sitemap fields. Rules are requests to compliant crawlers; they do not restrict visitors or protect private files. A blocked URL can still appear in search.",
     categorySlug: "seo-tools",
     icon: "🤖",
     featured: true,
@@ -2345,44 +2393,50 @@ additionalContent: []
     ],
     metaTitle: "Robots.txt Generator - Free SEO Crawl Config",
     metaDescription:
-      "Use our robots.txt generator to create optimized crawl rules for search engine bots. Add allow/disallow directives, sitemap URLs, and crawl delays.",
+      "Draft robots.txt crawler rules and inspect them before publishing.",
     usageSteps: [
       {
-        title: "Enter Your Domain",
-        content:
-          "Type your website domain into this robots.txt generator. The tool helps you create appropriate crawl rules based on your site structure.",
+        "title": "Choose a crawler and paths",
+        "content": "Select the user agent and enter paths relative to your site. Avoid accidentally blocking resources needed to render public pages."
       },
       {
-        title: "Configure Crawl Rules for Your Site",
-        content:
-          "Set allow and disallow rules for Googlebot, Bingbot, and other search engine crawlers. This robots.txt generator includes pre-built rules for common directories like admin panels, system folders, and other non-public areas.",
+        "title": "Add the actual sitemap URL",
+        "content": "Use the sitemap served by your site. A sitemap declaration does not guarantee crawling or indexing."
       },
       {
-        title: "Generate and Deploy Robots.txt",
-        content:
-          "Click Generate to create your complete robots.txt file with all configured rules. Copy the generated code and upload it to the root directory of your website for search engines to find immediately.",
-      },
+        "title": "Review before deployment",
+        "content": "Copy the draft to a review environment first. Check your existing rules and the target crawler’s supported directives."
+      }
     ],
     faq: [
       {
-        question: "Why does my website need a custom robots.txt file?",
-        answer:
-          "A robots.txt generator helps you control which parts of your website are crawled by search engines. Blocking admin pages, system directories, and other non-public areas prevents wasted crawl budget on irrelevant content.",
+        "question": "Can robots.txt protect sensitive content?",
+        "answer": "No. Use authentication and access controls. Robots.txt is publicly readable and advisory."
       },
       {
-        question: "Can a robots.txt generator block specific bots?",
-        answer:
-          "Yes, this robots.txt generator lets you create specific user-agent rules for Googlebot, Bingbot, and any other crawler individually. You can block certain bots entirely or restrict them to specific areas of your site.",
+        "question": "Will crawl-delay work for Googlebot?",
+        "answer": "Google does not support crawl-delay in robots.txt. Support differs between crawlers, so do not rely on it for Googlebot throttling."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "User-agent: * followed by Disallow: /private/ asks compliant crawlers not to request that path; it does not stop a browser from opening it."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Do not replace a working production robots.txt solely because this generator produced a syntactically plausible draft."
+      }
     ],
   },
   {
     slug: "open-graph-preview-generator",
     name: "Open Graph Preview Generator",
     description:
-      "Generate and preview Open Graph meta tags for social media sharing.",
+      "Draft social metadata and inspect an illustrative card preview.",
     longDescription:
-      "Use this open graph preview tool to test how titles, descriptions, images, and URLs may appear when shared on social platforms. Preview social cards and copy Open Graph and Twitter card meta tags before publishing a page or campaign.",
+      "Generate escaped Open Graph and Twitter card tags from entered values. The tool does not crawl the page URL. An image preview can request the supplied remote image URL; actual social platforms have their own fetch, cache and rendering behavior.",
     categorySlug: "seo-tools",
     icon: "🔗",
     featured: false,
@@ -2395,35 +2449,41 @@ additionalContent: []
     ],
     metaTitle: "Open Graph Preview Tool - Social Share Preview",
     metaDescription:
-      "Use this open graph preview tool for Facebook, X, LinkedIn, and social shares. Preview cards and generate clean title, image, and URL tags.",
+      "Draft social metadata and inspect an illustrative card preview.",
     usageSteps: [
       {
-        title: "Enter Page Details",
-        content:
-          "Add your title, description, image URL, and page URL into the open graph preview tool. The preview updates as you adjust each field.",
+        "title": "Enter accurate page details",
+        "content": "Enter title, description and site name that match the page being shared."
       },
       {
-        title: "Check Social Cards",
-        content:
-          "Review how your content may appear on Facebook, LinkedIn, X, and other platforms. The open graph preview tool helps catch cropped images and weak snippets.",
+        "title": "Use valid page and image URLs",
+        "content": "Use absolute HTTP(S) URLs. Choose a card/type supported by the target platform and review any additional required fields."
       },
       {
-        title: "Copy Meta Tags",
-        content:
-          "Copy the generated Open Graph and Twitter card tags into your page head. Use the open graph preview tool before publishing campaigns or blog posts.",
-      },
+        "title": "Copy and validate on the destination",
+        "content": "Copy the draft tags, then test the deployed URL with the destination platform’s own tools."
+      }
     ],
     faq: [
       {
-        question: "What is an open graph preview tool?",
-        answer:
-          "An open graph preview tool shows how a URL title, description, and image may appear when shared on social platforms. It helps improve click-through before a page is published.",
+        "question": "Will every card type work with these fields alone?",
+        "answer": "No. App, player and specialized types can require extra properties or platform approval. The generator is a draft, not a conformance validator."
       },
       {
-        question: "Does this open graph preview tool fetch my live page?",
-        answer:
-          "No. This tool focuses on previewing and generating tags from the values you enter, which keeps the workflow fast and avoids unnecessary external requests.",
+        "question": "Does this show the current cached social card?",
+        "answer": "No. It illustrates your entered values and does not query a platform’s cache."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "Enter Example page as the title, then inspect that it appears in the preview and both generated title tags."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Do not enter a private image URL into a preview if fetching it is inappropriate. The external image host can receive the request."
+      }
     ],
   },
   {
@@ -2476,9 +2536,9 @@ additionalContent: []
     slug: "canonical-tag-generator",
     name: "Canonical Tag Generator",
     description:
-      "Generate canonical link tags to prevent duplicate content issues.",
+      "Draft a canonical link pointing to your preferred page URL.",
     longDescription:
-      "Create canonical URL tags for your web pages to tell search engines which version is the master copy. Enter your canonical URL and optional hreflang tags for multi-language sites. Copy the generated HTML link tag with one click.",
+      "Generate a link element for a preferred URL. A canonical is a search-engine signal, not a redirect or a guarantee that a duplicate will be consolidated. Review the complete page and other indexing signals before installation.",
     categorySlug: "seo-tools",
     icon: "🔗",
     featured: false,
@@ -2492,44 +2552,50 @@ additionalContent: []
     ],
     metaTitle: "Canonical Tag Generator - Fix Duplicate Content",
     metaDescription:
-      "Use our free canonical tag generator to create rel=canonical tags and prevent duplicate content issues. Generate canonical URLs with hreflang support.",
+      "Draft a canonical link pointing to your preferred page URL.",
     usageSteps: [
       {
-        title: "Enter Your Preferred Canonical URL",
-        content:
-          "Type the full URL you want to designate as the canonical version into our canonical tag generator. This tells search engines which URL should be treated as the authoritative source for ranking signals.",
+        "title": "Enter the preferred URL",
+        "content": "Use the actual absolute URL of the page you want to identify."
       },
       {
-        title: "Configure Hreflang Attributes",
-        content:
-          "Add optional hreflang tags for multi-language or multi-region versions of your page. Our canonical tag generator supports all language codes and region combinations for international SEO.",
+        "title": "Copy the link element",
+        "content": "Copy the generated markup into the appropriate head template in a review environment."
       },
       {
-        title: "Generate and Copy the Tag",
-        content:
-          "Click Generate to produce the complete rel=canonical link tag with your specified URL and optional attributes. Copy the HTML code and place it in the head section of duplicate pages to consolidate ranking signals.",
-      },
+        "title": "Check the deployed page",
+        "content": "Ensure a single consistent canonical, matching redirects, internal links and sitemap entries."
+      }
     ],
     faq: [
       {
-        question: "What exactly does a canonical tag generator do?",
-        answer:
-          "A canonical tag generator creates rel=canonical HTML link tags that tell search engines which URL is the preferred version when duplicate content exists. It prevents SEO dilution by consolidating ranking signals to a single authoritative URL.",
+        "question": "Will a canonical force Google to use this URL?",
+        "answer": "No. Google can select another canonical when other signals disagree."
       },
       {
-        question: "When should I use a canonical tag generator for my site?",
-        answer:
-          "Use a canonical tag generator whenever you have identical content accessible through multiple URLs, such as www versus non-www versions, HTTP versus HTTPS, URL parameters, printer-friendly pages, or product pages with multiple sort options.",
+        "question": "Does it replace a redirect?",
+        "answer": "No. Visitors remain on the current URL. URL migrations and duplicate handling require a separate plan."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "For https://example.com/article/, inspect that the link’s href is that complete preferred URL."
       },
+      {
+        "heading": "Before using the result",
+        "content": "This generator does not crawl your site or decide which page is the best canonical."
+      }
     ],
   },
   {
     slug: "alt-text-checker",
     name: "Alt Text Checker",
     description:
-      "Analyze HTML content for missing or empty image alt attributes.",
+      "Inspect image alt attributes in pasted HTML for manual review.",
     longDescription:
-      "Paste your HTML code and instantly find all images that are missing alt text or have empty alt attributes. The checker scans img tags and reports which ones need accessibility improvements. Essential for WCAG compliance and SEO.",
+      "List img elements from detached HTML and classify their alt attributes as present, empty or missing. Presence alone does not establish meaningful alternative text or WCAG conformance. Empty alt can be correct for decorative images.",
     categorySlug: "seo-tools",
     icon: "👁️",
     featured: false,
@@ -2543,35 +2609,41 @@ additionalContent: []
     ],
     metaTitle: "Alt Text Checker - Free SEO Image Audit Tool",
     metaDescription:
-      "Use our free alt text checker to scan HTML for missing or empty image alt attributes. Improve accessibility and SEO with this WCAG compliance tool.",
+      "Inspect image alt attributes in pasted HTML for manual review.",
     usageSteps: [
       {
-        title: "Paste Your HTML Content",
-        content:
-          "Copy and paste your webpage HTML code into our alt text checker. The tool automatically scans every img tag and identifies which images have missing or empty alt attributes.",
+        "title": "Paste the markup",
+        "content": "Paste the HTML containing the images to inspect. This does not fetch a URL or scan the rendered page."
       },
       {
-        title: "Review Missing Alt Text Report",
-        content:
-          "View a detailed analysis showing each image's current alt text status. The alt text checker clearly categorizes images with missing descriptions, empty attributes, and properly described alternatives for easy action.",
+        "title": "Check attribute presence",
+        "content": "Review missing and empty values. A data-alt attribute is not an alt attribute."
       },
       {
-        title: "Fix and Export Updated HTML",
-        content:
-          "Click on suggestions to add descriptive alt text for images that are missing descriptions. Export the updated HTML with all alt text issues resolved, ready to deploy to your website for improved accessibility and SEO.",
-      },
+        "title": "Edit the source yourself",
+        "content": "Write context-appropriate alternatives in your own editor. This tool does not suggest descriptions or export repaired HTML."
+      }
     ],
     faq: [
       {
-        question: "Why should I use an alt text checker for my website?",
-        answer:
-          "An alt text checker helps you identify images missing descriptive attributes that are critical for both accessibility and SEO. Screen readers rely on alt text for visually impaired users, while search engines use it to understand and rank image content.",
+        "question": "Is empty alt always an error?",
+        "answer": "No. An image that is decorative in context can use alt=\"\" without requiring an extra role attribute. Review its purpose, including whether it is a link or conveys information."
       },
       {
-        question: "How often should I run an alt text checker on my site?",
-        answer:
-          "Run an alt text checker after every content update or site redesign that adds new images. Regular scanning ensures your site maintains WCAG compliance and that all images contribute properly to your overall SEO strategy.",
+        "question": "Does a Present result prove accessibility?",
+        "answer": "No. The alternative can be inaccurate, redundant or inappropriate. Evaluate the surrounding content and actual experience with assistive technology."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "For <img src=\"a.png\" data-alt=\"label\">, expect Missing. For <img src=\"a.png\" alt=\"\">, expect an empty value requiring context review."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Use a full accessibility review for SVG, CSS backgrounds, accessible names, dynamic images and image links."
+      }
     ],
   },
 
@@ -2879,9 +2951,9 @@ additionalContent: []
     slug: "loan-calculator",
     name: "Loan Calculator",
     description:
-      "Calculate monthly payments, total interest, and amortization for any loan.",
+      "Estimate fixed-rate monthly payments and a cent-rounded amortization schedule.",
     longDescription:
-      "Enter loan amount, interest rate, and term to calculate monthly payments, total interest payable, and total cost. View a detailed amortization schedule showing the breakdown of principal vs interest for each payment. Perfect for mortgage, auto, and personal loan planning.",
+      "Enter an amount, nominal annual interest rate, term in years and optional extra monthly payment. The estimate assumes equal monthly periods and excludes fees. Extra payments shorten the schedule; a final adjustment settles cent rounding.",
     categorySlug: "calculators",
     icon: "\uD83C\uDFE6",
     featured: true,
@@ -2895,44 +2967,50 @@ additionalContent: []
     ],
     metaTitle: "Loan Calculator - Free Monthly Payment Estimator",
     metaDescription:
-      "Use our online loan calculator to estimate monthly payments, total interest, and full amortization schedules. Free for mortgages, auto, and personal loans.",
+      "Estimate fixed-rate monthly payments and a cent-rounded amortization schedule.",
     usageSteps: [
       {
-        title: "Enter Your Loan Details",
-        content:
-          "Input the loan amount, annual interest rate, and loan term in years or months. This online loan calculator free tool uses these parameters to compute your monthly payment obligations instantly.",
+        "title": "Enter finite loan terms",
+        "content": "Use a positive amount up to $1 trillion, 0–100% annual interest and a term that equals 1–1200 whole months. For example, 1.5 years means 18 months."
       },
       {
-        title: "View Monthly Payment Breakdown",
-        content:
-          "See your estimated monthly payment with a full breakdown of principal versus interest. This online loan calculator free tool also shows the total interest payable over the entire loan term.",
+        "title": "Set a nonnegative extra payment",
+        "content": "Leave extra payment at zero for the regular schedule, or add a fixed monthly amount. Negative extra payments are rejected."
       },
       {
-        title: "Review the Amortization Schedule",
-        content:
-          "Review the complete amortization schedule showing each payment's principal, interest, and remaining balance. Use this online loan calculator free tool to plan your repayment strategy with confidence.",
-      },
+        "title": "Calculate and inspect",
+        "content": "Calculate and review the schedule. The final payment may differ because of early payoff or cent rounding. Downloaded or lender-specific terms must be checked separately."
+      }
     ],
     faq: [
       {
-        question: "How does an online loan calculator work?",
-        answer:
-          "An online loan calculator uses the standard amortization formula to divide your total loan amount and interest into equal monthly payments over your chosen term. It calculates the exact payment needed to pay off the loan by the end of the term.",
+        "question": "Is the estimate a lender quote?",
+        "answer": "No. Fees, actual-day accrual, rate changes and lender rounding policies can change payments. The input is a nominal annual rate, not a fee-inclusive APR model."
       },
       {
-        question: "What can I calculate with this online loan calculator?",
-        answer:
-          "This online loan calculator can compute monthly payments for mortgages, auto loans, personal loans, and student loans. Just enter the amount, rate, and term to see your payment, total interest, and full amortization schedule.",
+        "question": "Does zero interest work?",
+        "answer": "Yes. Principal is divided across the term and extra payments can still accelerate payoff."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "$12,000 at 0% for one year with no extra payment gives 12 payments of $1,000 and $0 interest."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Compare the assumptions and rounding convention with the actual loan agreement before making a financial decision."
+      }
     ],
   },
   {
     slug: "discount-calculator",
     name: "Discount Calculator",
     description:
-      "Calculate sale prices, savings, and discount percentages instantly.",
+      "Calculate sale prices, savings and discount percentages, including 0% and 100%.",
     longDescription:
-      "Calculate the final price after a discount. Enter the original price and discount percentage to see how much you save and the final price. Also calculate the discount percentage when you know the original and sale price. Perfect for shopping and budgeting.",
+      "Compare an original positive price with a discount percentage, sale price or discount amount. Equal original and sale prices mean zero savings; a discount equal to the original price produces a zero final price.",
     categorySlug: "calculators",
     icon: "\uD83C\uDFF7\uFE0F",
     featured: false,
@@ -2946,45 +3024,50 @@ additionalContent: []
     ],
     metaTitle: "Discount Calculator - Free Sale Price Finder",
     metaDescription:
-      "Use our percent discount calculator to find sale prices and savings. Enter original price and discount percentage to see the final price and amount you save.",
+      "Calculate sale prices, savings and discount percentages, including 0% and 100%.",
     usageSteps: [
       {
-        title: "Enter the Original Price",
-        content:
-          "Enter the original price of the item in the first field. This percent discount calculator online free accepts any currency and works across all calculation modes.",
+        "title": "Choose the calculation",
+        "content": "Select savings, discount percentage or final price. Each mode uses different units for the second field."
       },
       {
-        title: "Enter the Discount Percentage or Amount",
-        content:
-          "Input the discount percentage off or the fixed dollar amount. This percent discount calculator online free instantly shows your savings and the final price after the discount.",
+        "title": "Enter valid amounts",
+        "content": "Use a positive original price, a 0–100% discount, or a nonnegative sale/discount amount no greater than the original."
       },
       {
-        title: "Review Your Total Savings",
-        content:
-          "Review the amount you save and the final price you pay. When you use a percent discount calculator online free, you can compare multiple deals side by side for smarter shopping.",
-      },
+        "title": "Read the rounded result",
+        "content": "Inspect savings, final price and percentage. Currency amounts are displayed in USD and rounded to cents."
+      }
     ],
     faq: [
       {
-        question: "How do you use a percent discount calculator?",
-        answer:
-          "To use a percent discount calculator, enter the original price and the discount percentage. The tool multiplies the price by the discount percentage to calculate savings, then subtracts from the original to show your final cost.",
+        "question": "Can the final price be zero?",
+        "answer": "Yes. A 100% discount or a discount amount equal to the original price yields a zero final price."
       },
       {
-        question:
-          "Can this percent discount calculator also calculate the discount percentage?",
-        answer:
-          "Yes, this percent discount calculator works both ways — enter the original and sale prices to find the discount percentage, or enter the original price and percentage to find the sale price. It supports all common discount math scenarios.",
+        "question": "Are taxes and stacked coupons included?",
+        "answer": "No. This tool calculates one discount. Apply checkout-specific rules separately when tax, coupons or shipping affect the total."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "Original $100 and sale $100 gives 0% discount. Original $100 and discount amount $100 gives a $0 final price."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Displayed results are rounded; the store’s final checkout determines the actual amount payable."
+      }
     ],
   },
   {
     slug: "mortgage-calculator",
     name: "Mortgage Calculator",
     description:
-      "Estimate monthly mortgage payments with taxes, insurance, and PMI.",
+      "Estimate fixed-rate mortgage payments with selected recurring expenses.",
     longDescription:
-      "Calculate your monthly mortgage payment including principal, interest, property taxes, homeowners insurance, and PMI. Enter home price, down payment, interest rate, and loan term to get a complete monthly payment breakdown. Perfect for home buying planning.",
+      "Estimate principal and interest plus annual property-tax percentage, annual insurance amount and a monthly PMI percentage of the loan. These expenses remain constant in the model. Closing costs, HOA fees and changing insurance or tax bills are excluded.",
     categorySlug: "calculators",
     icon: "\uD83C\uDFE0",
     featured: false,
@@ -2998,35 +3081,41 @@ additionalContent: []
     ],
     metaTitle: "Mortgage Calculator - Free Monthly Payment Tool",
     metaDescription:
-      "Use our free mortgage calculator to estimate monthly payments with taxes, insurance, and PMI. Plan your home purchase with this free mortgage estimator.",
+      "Estimate fixed-rate mortgage payments with selected recurring expenses.",
     usageSteps: [
       {
-        title: "Enter Home Price and Loan Details",
-        content:
-          "Enter the home price, down payment, interest rate, and loan term. This mortgage calculator online free tool estimates your principal and interest portion.",
+        "title": "Enter the home and loan terms",
+        "content": "Enter the home price, a nonnegative down payment below the price, annual nominal rate and term in years."
       },
       {
-        title: "Add Taxes, Insurance, and PMI",
-        content:
-          "Add annual property tax, homeowners insurance, and PMI if your down payment is under 20%. This mortgage calculator gives a complete picture of your total monthly housing cost.",
+        "title": "Set the expense units carefully",
+        "content": "Property tax is an annual percentage of home price; insurance is an annual dollar amount; PMI is a monthly percentage of loan principal. Use zero when an item does not apply."
       },
       {
-        title: "Review Your Full Monthly Payment",
-        content:
-          "See your total monthly mortgage payment broken down by component. This mortgage calculator also shows total interest over the loan's lifetime for informed home buying.",
-      },
+        "title": "Compare the breakdown",
+        "content": "Review each monthly component and interest total. The result is an estimate under fixed assumptions rather than a complete ownership budget."
+      }
     ],
     faq: [
       {
-        question: "How does this mortgage calculator help with home buying?",
-        answer:
-          "This mortgage calculator helps you estimate total monthly payments including all costs. It lets you compare different loan terms and down payment scenarios to find an affordable payment option that works for your budget.",
+        "question": "Does it include every housing cost?",
+        "answer": "No. Maintenance, utilities, closing costs, HOA fees and changes in taxes, insurance or PMI are outside this model."
       },
       {
-        question: "What factors does this mortgage calculator include?",
-        answer:
-          "This mortgage calculator includes principal, interest, property taxes, homeowners insurance, and PMI for a complete view of your full housing cost before committing to a mortgage.",
+        "question": "Is PMI automatically removed?",
+        "answer": "No. The entered monthly PMI amount stays constant. Your actual cancellation rules and lender charges require a separate check."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "A $12,000 home with zero down, 0% interest, one-year term and zero expenses gives $1,000 monthly principal and interest."
       },
+      {
+        "heading": "Before using the result",
+        "content": "A PMI value of 0.5 means 0.5% per month here, not per year. Convert an annual percentage to a monthly one before entering it."
+      }
     ],
   },
 
@@ -3035,9 +3124,9 @@ additionalContent: []
     slug: "css-minifier",
     name: "CSS Minifier",
     description:
-      "Minify and compress CSS code to reduce file size for production.",
+      "Compact CSS whitespace while preserving strings and token boundaries.",
     longDescription:
-      "Paste your CSS code and compress it by removing whitespace, comments, and redundant properties. See the original vs minified size with compression ratio. Copy the minified output with one click. Essential for optimizing website performance.",
+      "Conservatively collapse whitespace outside strings and replace comments with empty token separators. Escapes, quoted content and spacing in CSS math are preserved. This tool does not deduplicate rules, optimize selectors or validate the full CSS grammar.",
     categorySlug: "developer-tools",
     icon: "\ud83c\udfa8",
     featured: false,
@@ -3050,36 +3139,41 @@ additionalContent: []
     ],
     metaTitle: "CSS Minifier - Minify CSS Code Online Free",
     metaDescription:
-      "Free CSS minifier tool — compress CSS by removing whitespace and comments. See compression ratio and copy minified output to speed up your website.",
+      "Compact CSS whitespace while preserving strings and token boundaries.",
     usageSteps: [
       {
-        title: "Paste Your CSS Code",
-        content:
-          "Copy your CSS code from your project and paste it into the input area. This CSS minifier tool accepts any valid CSS including media queries, animations, and complex selectors, then compresses it by removing all unnecessary characters.",
+        "title": "Paste the stylesheet",
+        "content": "Use a copy of your CSS. Keep an unmodified source file for review and debugging."
       },
       {
-        title: "View the Minified Output",
-        content:
-          "The minified version appears instantly with all unnecessary whitespace, comments, and redundant properties removed. The CSS minifier displays the compression ratio so you can see exactly how much file size you saved for your production stylesheet.",
+        "title": "Check output and errors",
+        "content": "The result updates as you type. Unclosed comments or strings are reported rather than returning a partial result."
       },
       {
-        title: "Copy and Deploy",
-        content:
-          "Click the copy button to grab the minified CSS and paste it into your production stylesheet. Minifying with this CSS minifier tool reduces page load times and improves website performance scores with minimal effort.",
-      },
+        "title": "Compare in your project",
+        "content": "Copy the compact output and verify the affected pages. The size figures count characters, not transferred gzip/Brotli bytes."
+      }
     ],
     faq: [
       {
-        question: "How much can a CSS minifier improve page load speed?",
-        answer:
-          "A CSS minifier typically reduces file size by 30% to 60%, depending on how much whitespace, comments, and redundant code your original stylesheet contains. This translates directly to faster page load times, especially on slower network connections where every kilobyte matters.",
+        "question": "Why are empty comments retained?",
+        "answer": "A comment can separate tokens without introducing a CSS whitespace token. Keeping /**/ prevents formerly separated tokens from joining or gaining a different selector meaning."
       },
       {
-        question:
-          "Does CSS minification from a CSS minifier tool change how my styles render?",
-        answer:
-          "No, a CSS minifier only removes unnecessary characters like spaces, line breaks, and comments without changing any property values, selectors, or functionality. Your styles render identically to the original unminified version after using a CSS minifier.",
+        "question": "Will the tool remove duplicate declarations?",
+        "answer": "No. It compacts text conservatively; use a maintained CSS build pipeline for grammar-aware optimization and source maps."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "width: calc(100% - 2px) must retain spaces around the subtraction operator. content: \"a  b\" must retain the two spaces inside the string."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Savings depend on the input. Check browser rendering; a smaller character count does not guarantee a measurable performance improvement."
+      }
     ],
   },
   {
@@ -3137,9 +3231,9 @@ additionalContent: []
     slug: "binary-converter",
     name: "Binary Converter",
     description:
-      "Convert numbers between binary, decimal, hexadecimal, and octal.",
+      "Convert nonnegative integers exactly between bases 2, 8, 10 and 16.",
     longDescription:
-      "Convert numbers between binary (base-2), decimal (base-10), hexadecimal (base-16), and octal (base-8) formats. Enter a value in any base and see the equivalent in all others instantly. Perfect for programmers, students, and digital electronics enthusiasts.",
+      "Convert digit strings using BigInt, avoiding JavaScript Number rounding for large integers. Enter up to 4,096 digits without signs, fractions or radix prefixes. Results update locally in all four bases.",
     categorySlug: "developer-tools",
     icon: "\ud83d\udcbb",
     featured: false,
@@ -3152,88 +3246,41 @@ additionalContent: []
     ],
     metaTitle: "Binary Converter - Decimal to Hex Translator",
     metaDescription:
-      "Free binary converter online — convert numbers between binary, decimal, hex, and octal formats instantly. Perfect for devs, students, and electronics.",
+      "Convert nonnegative integers exactly between bases 2, 8, 10 and 16.",
     usageSteps: [
       {
-        title: "Enter a Number in Any Base",
-        content:
-          "Type a number into the binary, decimal, hexadecimal, or octal input field. This number base converter tool automatically validates the input for each base and flags invalid digits so you always get accurate conversions.",
+        "title": "Choose the input base",
+        "content": "Select Binary, Decimal, Hexadecimal or Octal before entering digits."
       },
       {
-        title: "View the Equivalent Values",
-        content:
-          "See the number converted and displayed in all four number bases simultaneously. The converter updates all fields in real time as you type in any single base, giving you instant cross-base results for programming and computer science tasks.",
+        "title": "Enter an unsigned integer",
+        "content": "Use only the digits permitted by that base. Leading zeros are accepted; output normalizes them."
       },
       {
-        title: "Copy Any Base Value",
-        content:
-          "Click the copy icon next to any converted value to copy it to your clipboard. When you use this number base converter, you get accurate conversions for programming, digital electronics, and computer science applications without any manual calculation.",
-      },
+        "title": "Copy the exact representation",
+        "content": "Copy the desired base output. This converts a numerical value, not a character encoding or a fixed-width two’s-complement bit pattern."
+      }
     ],
     faq: [
       {
-        question: "How do I use a number base converter for programming?",
-        answer:
-          "A number base converter helps programmers quickly translate between number bases when working with memory addresses, color codes, bitmasks, and low-level data manipulation. Simply type your value in any base and the tool shows you the equivalent in binary, decimal, hex, and octal simultaneously.",
+        "question": "Does it handle integers above 2^53?",
+        "answer": "Yes. BigInt preserves integers above Number’s safe range within the application’s 4,096-digit input limit."
       },
       {
-        question:
-          "What are binary, decimal, hexadecimal, and octal used for in computing?",
-        answer:
-          "Binary (base-2) is the fundamental language of computers representing on/off states. Decimal (base-10) is for everyday human use. Hexadecimal (base-16) is used in programming for memory addresses and color codes. Octal (base-8) appears in Unix file permissions and some legacy systems — all of which a number base converter handles instantly.",
-      },
+        "question": "Can I convert signed numbers or text?",
+        "answer": "No. Negative values, fractions, prefixes and text encodings require a different representation or tool."
+      }
     ],
-  },
 
-  // ── Text Tools (4) ──────────────────────────────────────────
-  {
-    slug: "text-humanizer",
-    name: "Text Humanizer",
-    description:
-      "Rewrite AI-generated text to sound more natural and human-like.",
-    longDescription:
-      "Use this humanize AI text tool to rewrite stiff or repetitive draft copy into clearer, more natural language. Review every suggestion, add your own context, and use it as a writing helper rather than a way to bypass rules.",
-    categorySlug: "text-tools",
-    icon: "✍️",
-    featured: true,
-    keywords: [
-      "humanize ai text",
-      "ai text humanizer",
-      "humanize text online",
-      "make ai text sound natural",
-      "rewrite ai text naturally",
-    ],
-    metaTitle: "Humanize AI Text - Free Natural Rewrite Tool",
-    metaDescription:
-      "Humanize AI text with a free browser-based rewrite helper. Make draft copy sound clearer, more natural, and easier to read before publishing.",
-    usageSteps: [
+    additionalContent: [
       {
-        title: "Paste Your Draft Text",
-        content:
-          "Paste the AI-assisted or rough draft into the humanize AI text tool. The goal is clearer, more natural wording, not hiding policy violations or misrepresenting authorship.",
+        "heading": "A result you can check",
+        "content": "Decimal 9007199254740993 becomes hexadecimal 20000000000001. Converting that hex value back must retain the original final digit."
       },
       {
-        title: "Choose a Rewrite Style",
-        content:
-          "Adjust tone and readability options, then review the suggested rewrite. The humanize AI text workflow helps reduce stiff phrasing and repeated patterns.",
-      },
-      {
-        title: "Review Before Publishing",
-        content:
-          "Read the output carefully, fact-check claims, and edit it in your own voice. Humanizing text works best when you add real experience and context.",
-      },
-    ],
-    faq: [
-      {
-        question: "What does it mean to humanize AI text?",
-        answer:
-          "To humanize AI text means to rewrite draft copy so it sounds clearer, more natural, and less repetitive. It should still be reviewed and edited by a real person before publishing.",
-      },
-      {
-        question: "Is this tool meant to bypass AI detection?",
-        answer:
-          "No. This tool is positioned as a writing and readability helper, not as a way to bypass academic, workplace, or platform rules.",
-      },
+        "heading": "Before using the result",
+        "content": "Leading zeros and input letter case are normalized. The output does not preserve an original word size."
+      }
     ],
   },
   {
@@ -3670,9 +3717,9 @@ additionalContent: []
   {
     slug: "html-to-markdown",
     name: "HTML to Markdown Converter",
-    description: "Convert HTML to clean Markdown format online.",
+    description: "Convert detached HTML to Markdown while preserving common text structure.",
     longDescription:
-      "Convert any HTML snippet or full document to clean Markdown format. Paste HTML and get well-formatted Markdown output that preserves headings, links, images, lists, code blocks, and tables. The perfect companion to our Markdown to HTML converter for bidirectional conversion needs.",
+      "Convert headings, inline emphasis, lists, links, images, fenced code and simple tables using Turndown with its GFM plugin. Scripts and unsafe URL schemes are excluded. Complex layout, merged table cells and interactive controls do not have equivalent Markdown representations.",
     categorySlug: "developer-tools",
     icon: "🔄",
     featured: false,
@@ -3685,44 +3732,49 @@ additionalContent: []
     ],
     metaTitle: "HTML to Markdown Converter — Free Online",
     metaDescription:
-      "Convert HTML to Markdown with our free HTML to Markdown converter. Transform HTML to clean Markdown format preserving headings, links, images, and code blocks.",
+      "Convert detached HTML to Markdown while preserving common text structure.",
     usageSteps: [
       {
-        title: "Paste your HTML code",
-        content:
-          "Paste any HTML content into the converter input field. The HTML to Markdown converter handles everything from simple inline formatting to complex nested structures including tables, lists, and code blocks.",
+        "title": "Paste HTML",
+        "content": "Use up to 1,000,000 characters. The input is parsed in a detached template rather than inserted into the page."
       },
       {
-        title: "Convert HTML to Markdown",
-        content:
-          "Click convert and the tool transforms your HTML into clean, readable Markdown. The HTML to Markdown converter preserves heading hierarchy, link URLs, image sources, code block formatting, and table structures.",
+        "title": "Convert and inspect",
+        "content": "Check inline spacing, nesting, code fences and tables in the output. A table needs ordinary header cells for GFM conversion."
       },
       {
-        title: "Copy the Markdown result",
-        content:
-          "Copy the generated Markdown to your clipboard with one click. The HTML to Markdown converter produces output compatible with GitHub Flavored Markdown, making it perfect for documentation, README files, and static site generators.",
-      },
+        "title": "Copy to your destination",
+        "content": "Copy and preview it in the Markdown renderer used by your documentation or publishing system."
+      }
     ],
     faq: [
       {
-        question:
-          "Does the HTML to Markdown converter preserve image and link formatting?",
-        answer:
-          "Yes, the HTML to Markdown converter converts images to standard Markdown image syntax and links to Markdown link format, preserving both the URL and alt text or link text from the original HTML.",
+        "question": "Is this an exact round trip?",
+        "answer": "No. HTML layout, scripts, styles and many interactive features cannot be represented as plain Markdown."
       },
       {
-        question: "How does the HTML to Markdown converter handle tables?",
-        answer:
-          "The HTML to Markdown converter transforms HTML tables into Markdown table format with pipe-separated columns and dash separators. Complex tables with merged cells are handled with reasonable approximation for clean Markdown output.",
+        "question": "How are complex tables handled?",
+        "answer": "Simple header-based tables convert to GFM. Merged cells and other complex structures are not promised to retain their original layout."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "The input <p>Hello <strong>world</strong> again.</p> should become Hello **world** again., preserving spaces around the emphasized word."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Treat converted links and images as untrusted references. Review the final destination before publishing."
+      }
     ],
   },
   {
     slug: "json-to-xml",
     name: "JSON to XML Converter",
-    description: "Convert JSON data to structured XML format online.",
+    description: "Map JSON to XML with validated element names and explicit array rules.",
     longDescription:
-      "Convert JSON objects and arrays into properly structured XML format. The converter handles nested objects, arrays, numbers, booleans, and null values — transforming them into valid XML elements with appropriate attributes. Perfect for data migration, API integration, and format conversion workflows.",
+      "Choose a root name and convert JSON to an indented XML document. Object keys become elements; arrays contain item children; null uses a declared xsi:nil attribute. Unsupported names, characters and excessive nesting produce errors.",
     categorySlug: "developer-tools",
     icon: "📄",
     featured: false,
@@ -3735,36 +3787,41 @@ additionalContent: []
     ],
     metaTitle: "JSON to XML Converter — Free Online",
     metaDescription:
-      "Convert JSON to XML with our free online converter. Transform JSON data into structured XML format with proper nesting. Instant client-side conversion.",
+      "Map JSON to XML with validated element names and explicit array rules.",
     usageSteps: [
       {
-        title: "Paste your JSON data",
-        content:
-          "Paste valid JSON into the JSON to XML converter input. The tool accepts JSON objects, arrays, and nested structures — automatically parsing them and preparing for XML transformation.",
+        "title": "Paste JSON",
+        "content": "Use valid JSON with representable numbers. Large numbers follow JavaScript JSON parsing limits; preserve important large identifiers as strings."
       },
       {
-        title: "Choose conversion options",
-        content:
-          "Set the root element name and decide whether to use attributes for primitive values. The JSON to XML converter gives you control over the output structure while ensuring valid XML formatting.",
+        "title": "Set a valid root name",
+        "content": "Use a letter or underscore first, then letters, digits, underscore, hyphen or period. Namespace prefixes and names starting with xml are not supported."
       },
       {
-        title: "Copy the XML output",
-        content:
-          "Copy the generated XML to your clipboard or download it as a file. The JSON to XML converter produces clean, indented XML that can be used for data exchange, configuration files, or API integration.",
-      },
+        "title": "Convert and review the mapping",
+        "content": "Convert and copy the XML. No primitive-attribute mode or download button is provided. The output is checked as XML before being shown."
+      }
     ],
     faq: [
       {
-        question: "How does the JSON to XML converter handle JSON arrays?",
-        answer:
-          "The JSON to XML converter wraps array items in a parent element named after the array key, with each item as a child element. Empty arrays are represented as empty elements in the XML output.",
+        "question": "How are arrays and null represented?",
+        "answer": "An array becomes a container with repeated item children; an empty array is an empty container. Null becomes an element with xsi:nil=\"true\" and the namespace declared on the root."
       },
       {
-        question:
-          "Can the JSON to XML converter handle deeply nested JSON structures?",
-        answer:
-          "Yes, the JSON to XML converter recursively processes nested JSON objects and arrays, creating properly nested XML elements with appropriate depth and structure for complex data hierarchies.",
+        "question": "Is this a reversible JSON mapping?",
+        "answer": "No. An empty object and an empty array can look alike in XML, and primitive type information is not fully retained. Agree on a schema with the receiving system."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "For {\"items\":[],\"missing\":null}, expect an empty items element and a missing element with xsi:nil=\"true\", without an invented array item."
       },
+      {
+        "heading": "Before using the result",
+        "content": "The application accepts at most 100,000 JSON characters, 10,000 generated nodes and 32 nesting levels. Invalid XML names must be changed in the source data."
+      }
     ],
   },
   {
@@ -3820,9 +3877,9 @@ additionalContent: []
   {
     slug: "heading-structure-checker",
     name: "Heading Structure Checker",
-    description: "Analyze heading hierarchy (H1-H6) from HTML content.",
+    description: "Inspect pasted HTML headings and review hierarchy prompts.",
     longDescription:
-      "Paste your HTML content to analyze the heading structure and hierarchy. The tool extracts all H1 through H6 tags and displays them in a structured outline, highlighting any hierarchy violations like missing levels or multiple H1 tags. Essential for SEO content optimization and accessibility compliance.",
+      "Parse heading elements from detached HTML, including multiline content and inline markup. The report counts levels and flags empty or skipped headings for manual review. It does not fetch a website, predict rankings or certify accessibility.",
     categorySlug: "seo-tools",
     icon: "📑",
     featured: false,
@@ -3835,35 +3892,41 @@ additionalContent: []
     ],
     metaTitle: "Heading Structure Checker — H1-H6 Analyzer",
     metaDescription:
-      "Analyze your heading structure with our free heading structure checker. Check H1-H6 hierarchy and find SEO issues like missing levels or duplicate H1s.",
+      "Inspect pasted HTML headings and review hierarchy prompts.",
     usageSteps: [
       {
-        title: "Paste your HTML content",
-        content:
-          "Paste your page's HTML content into the heading structure checker. The tool automatically scans for all H1 through H6 heading tags and extracts their text content for structural analysis.",
+        "title": "Paste the relevant HTML",
+        "content": "Use a complete page when evaluating the main heading, or remember that a snippet may legitimately have no H1."
       },
       {
-        title: "Review the heading outline",
-        content:
-          "The heading structure checker displays a visual outline of your heading hierarchy, properly indented to show the document structure. Any issues like skipped heading levels or multiple H1 tags are highlighted for attention.",
+        "title": "Inspect the ordered outline",
+        "content": "Read headings in DOM order and check that their levels express the actual content structure."
       },
       {
-        title: "Fix structural issues",
-        content:
-          "Use the heading structure checker's recommendations to fix heading hierarchy problems. Proper heading structure improves both SEO rankings and accessibility for screen reader users navigating your content.",
-      },
+        "title": "Resolve meaningful issues",
+        "content": "Add useful heading text or adjust levels where needed. Multiple H1 elements require context review, not an automatic ranking penalty assumption."
+      }
     ],
     faq: [
       {
-        question: "Why is heading structure important for SEO?",
-        answer:
-          "Proper heading structure helps search engines understand your content hierarchy and topic relationships. The heading structure checker identifies issues like missing heading levels or multiple H1 tags that can negatively impact your search rankings.",
+        "question": "Does every warning mean a search penalty?",
+        "answer": "No. These are structural prompts. Search ranking is not calculated by this tool."
       },
       {
-        question: "How many H1 tags should a page have?",
-        answer:
-          "Best practice recommends one H1 tag per page that describes the main topic. The heading structure checker flags pages with multiple H1 tags as a potential SEO issue, as this can confuse search engines about the primary topic of your content.",
+        "question": "Can it inspect dynamic headings or accessible names?",
+        "answer": "Only the pasted markup is analyzed. Script-generated content, CSS appearance and some accessible-name behavior require a browser/accessibility review."
+      }
+    ],
+
+    additionalContent: [
+      {
+        "heading": "A result you can check",
+        "content": "An H2 with text on multiple lines remains one H2 entry. A comment containing a fake heading is not a rendered heading."
       },
+      {
+        "heading": "Before using the result",
+        "content": "Compare the outline with the rendered page and keyboard/screen-reader experience before deciding on changes."
+      }
     ],
   },
   {

@@ -6,13 +6,13 @@ import { findSearchEntries, serializeSearchData } from "../helpers/search";
 import { PRIMARY_TOOL_SLUGS, getToolDiscoveryTier, partitionToolsByDiscovery } from "./tool-discovery";
 
 describe("demand-based tool discovery", () => {
-  it("keeps all 83 tools in disjoint 25 primary / 58 secondary collections", () => {
+  it("keeps all 82 retained tools in disjoint 25 primary / 57 secondary collections", () => {
     const { primary, secondary } = partitionToolsByDiscovery(TOOLS);
     expect(primary).toHaveLength(25);
-    expect(secondary).toHaveLength(58);
+    expect(secondary).toHaveLength(57);
     expect(new Set(PRIMARY_TOOL_SLUGS).size).toBe(25);
     expect(primary.map(tool => tool.slug).sort()).toEqual([...PRIMARY_TOOL_SLUGS].sort());
-    expect(new Set([...primary, ...secondary].map(tool => tool.slug)).size).toBe(83);
+    expect(new Set([...primary, ...secondary].map(tool => tool.slug)).size).toBe(82);
   });
 
   it("keeps recent student tools and the PDF to Text workflow dependency accessible as secondary", () => {
@@ -36,7 +36,7 @@ describe("search discovery", () => {
   it.each(["en", "es", "hi"] as const)("shows primary tools for an empty %s search and keeps all tools in the search index", locale => {
     const { entries } = buildSearchData(locale, true);
     const tools = entries.filter(entry => entry.type === "tool");
-    expect(tools).toHaveLength(locale === "en" ? 83 : 20);
+    expect(tools).toHaveLength(locale === "en" ? 82 : 20);
     const initial = findSearchEntries(entries, "  ", { limit: 100 });
     expect(initial.length).toBeGreaterThan(0);
     expect(initial.every(entry => entry.type === "tool" && entry.discoveryTier === "primary")).toBe(true);

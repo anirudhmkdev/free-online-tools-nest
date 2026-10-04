@@ -11,32 +11,24 @@ interface Warning {
   type: "missing-h1" | "multiple-h1" | "skipped-level" | "empty-heading" | "too-many";
   message: string;
 }
-
 function extractHeadings(html: string): HeadingEntry[] {
-  const tagRegex = /<h([1-6])(?:\s[^>]*)?>(.*?)<\/h\1>/gi;
-  const entries: HeadingEntry[] = [];
-  let match: RegExpExecArray | null;
-  while ((match = tagRegex.exec(html)) !== null) {
-    const level = parseInt(match[1], 10);
-    const inner = match[2].replace(/<[^>]*>/g, "").trim();
-    entries.push({ level, tag: `H${level}`, text: inner });
-  }
-  return entries;
+  if (!html.trim()) return [];
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  return Array.from(template.content.querySelectorAll("h1,h2,h3,h4,h5,h6")).map(heading=>({level:Number(heading.tagName[1]),tag:heading.tagName,text:heading.textContent?.trim() ?? ""}));
 }
+
 
 function analyzeWarnings(headings: HeadingEntry[]): Warning[] {
   const warnings: Warning[] = [];
 
   const h1s = headings.filter((h) => h.level === 1);
   if (h1s.length === 0) {
-    warnings.push({ type: "missing-h1", message: "Missing H1 tag — each page should have exactly one H1" });
+    warnings.push({ type: "missing-h1", message: "No H1 in this input. For a complete page, review whether its main heading is clear." });
   } else if (h1s.length > 1) {
     warnings.push({ type: "multiple-h1", message: `Found ${h1s.length} H1 tags — pages should typically have only one H1` });
   }
 
-  if (headings.length > 50) {
-    warnings.push({ type: "too-many", message: `Found ${headings.length} headings — consider consolidating for better structure` });
-  }
 
   for (let i = 1; i < headings.length; i++) {
     const prev = headings[i - 1].level;
@@ -100,6 +92,7 @@ export default function HeadingStructureChecker() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Headings in pasted HTML, including multiline content. Warnings are review prompts for your document hierarchy, not a ranking score or complete accessibility audit.</p>
       <div>
         <label htmlFor="hs-html" className="block text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
           Paste HTML Content

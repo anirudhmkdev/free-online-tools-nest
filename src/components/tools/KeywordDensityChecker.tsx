@@ -189,7 +189,7 @@ export default function KeywordDensityChecker() {
                       className="inline-block h-2 rounded-full"
                       style={{
                         width: `${Math.min(kd.density * 3, 100)}%`,
-                        backgroundColor: kd.density > 5 ? "var(--color-error)" : kd.density > 2 ? "var(--color-warning, #d97706)" : "var(--color-link)",
+                        backgroundColor: "var(--color-link)",
                       }}
                     />
                   </td>

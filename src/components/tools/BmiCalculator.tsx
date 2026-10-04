@@ -1,20 +1,11 @@
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
+import { bmiCategory } from "../../helpers/quality-calculators";
 
-function bmiCategory(bmi: number): { label: string; color: string } {
-  if (bmi < 16) return { label: "Severely Underweight", color: "#3b82f6" };
-  if (bmi < 18.5) return { label: "Underweight", color: "#60a5fa" };
-  if (bmi < 25) return { label: "Normal", color: "#22c55e" };
-  if (bmi < 30) return { label: "Overweight", color: "#eab308" };
-  if (bmi < 35) return { label: "Obese Class I", color: "#f97316" };
-  if (bmi < 40) return { label: "Obese Class II", color: "#ef4444" };
-  return { label: "Obese Class III", color: "#dc2626" };
-}
 
 const BMI_RANGES = [
-  { min: 0, max: 16, color: "#3b82f6", label: "Severely underweight" },
-  { min: 16, max: 18.5, color: "#60a5fa", label: "Underweight" },
-  { min: 18.5, max: 25, color: "#22c55e", label: "Normal" },
+  { min: 0, max: 18.5, color: "#60a5fa", label: "Underweight" },
+  { min: 18.5, max: 25, color: "#22c55e", label: "Healthy weight" },
   { min: 25, max: 30, color: "#eab308", label: "Overweight" },
   { min: 30, max: 35, color: "#f97316", label: "Obese I" },
   { min: 35, max: 40, color: "#ef4444", label: "Obese II" },
@@ -52,7 +43,7 @@ export default function BmiCalculator() {
       setBmi(null);
       return;
     }
-    setBmi(Math.round(bmiValue * 10) / 10);
+    setBmi(bmiValue);
     recordSuccess("calculate");
   }, [height, weight, unit, markInteraction, recordSuccess]);
 
@@ -60,6 +51,7 @@ export default function BmiCalculator() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">For adults aged 20 and older. BMI is a screening measure, not a diagnosis. Categories use the unrounded result. <a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html" className="underline">CDC category reference</a>.</p>
       {/* Unit toggle */}
       <div className="flex gap-2">
         {(["metric", "imperial"] as const).map((u) => (
@@ -88,7 +80,7 @@ export default function BmiCalculator() {
             id="bmi-height"
             type="number"
             value={height}
-            onChange={(e) => setHeight(e.target.value)}
+            onChange={(e) => { setHeight(e.target.value); setBmi(null); setError(""); }}
             placeholder={unit === "metric" ? "e.g. 175" : "e.g. 69"}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
@@ -107,7 +99,7 @@ export default function BmiCalculator() {
             id="bmi-weight"
             type="number"
             value={weight}
-            onChange={(e) => setWeight(e.target.value)}
+            onChange={(e) => { setWeight(e.target.value); setBmi(null); setError(""); }}
             placeholder={unit === "metric" ? "e.g. 70" : "e.g. 154"}
             className="w-full h-12 px-4 border rounded-lg text-base outline-none transition-colors duration-150"
             style={{
@@ -143,7 +135,7 @@ export default function BmiCalculator() {
               Your BMI
             </div>
             <div className="text-4xl font-semibold" style={{ color: "var(--color-ink)", letterSpacing: "-1.28px" }}>
-              {bmi}
+              {bmi.toFixed(2)}
             </div>
             {category && (
               <div className="mt-2 inline-block px-3 py-1 rounded-full text-sm font-medium" style={{ backgroundColor: category.color + "20", color: category.color }}>

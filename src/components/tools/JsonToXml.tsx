@@ -1,57 +1,8 @@
+import { jsonToXmlDocument } from "../../helpers/quality-converters";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useCallback } from "react";
 import ErrorBanner from "../ErrorBanner";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
-
-function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
-function jsonToXml(value: unknown, name: string, depth: number): string {
-  const indent = "  ".repeat(depth);
-  const nextIndent = "  ".repeat(depth + 1);
-
-  if (value === null) {
-    return `${indent}<${name} xsi:nil="true"/>\n`;
-  }
-
-  if (typeof value === "string") {
-    return `${indent}<${name}>${escapeXml(value)}</${name}>\n`;
-  }
-
-  if (typeof value === "number" || typeof value === "boolean") {
-    return `${indent}<${name}>${String(value)}</${name}>\n`;
-  }
-
-  if (Array.isArray(value)) {
-    const singular = name.replace(/s$/, "") || "item";
-    if (value.length === 0) {
-      return `${indent}<${name}>\n${nextIndent}<${singular}/>\n${indent}</${name}>\n`;
-    }
-    let xml = `${indent}<${name}>\n`;
-    for (const item of value) {
-      xml += jsonToXml(item, singular, depth + 1);
-    }
-    xml += `${indent}</${name}>\n`;
-    return xml;
-  }
-
-  if (typeof value === "object") {
-    let xml = `${indent}<${name}>\n`;
-    for (const [key, val] of Object.entries(value as Record<string, unknown>)) {
-      xml += jsonToXml(val, key, depth + 1);
-    }
-    xml += `${indent}</${name}>\n`;
-    return xml;
-  }
-
-  return `${indent}<${name}>${escapeXml(String(value))}</${name}>\n`;
-}
 
 export default function JsonToXml() {
   const { markInteraction, recordSuccess, clearInteraction } = useToolTelemetry();
@@ -72,11 +23,13 @@ export default function JsonToXml() {
     const name = rootName.trim() || "root";
 
     try {
+      if (input.length > 100000) throw new Error("Use at most 100,000 input characters.");
       const parsed = JSON.parse(input);
-      const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + jsonToXml(parsed, name, 0);
-      setOutput(xml);
+      const xml = jsonToXmlDocument(parsed, name);
       const xmlDocument = new DOMParser().parseFromString(xml, "application/xml");
-      if (!xmlDocument.querySelector("parsererror")) recordSuccess("convert");
+      if (xmlDocument.querySelector("parsererror")) throw new Error("Unable to represent this JSON as valid XML.");
+      setOutput(xml);
+      recordSuccess("convert");
       setError("");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Invalid JSON";
@@ -94,6 +47,7 @@ export default function JsonToXml() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Object keys become element names; arrays contain repeated &lt;item&gt; elements. Empty arrays remain empty, and null uses the declared xsi:nil attribute. This mapping does not preserve all JSON types for a round trip.</p>
       <div>
         <label htmlFor="json-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Paste your JSON
@@ -101,7 +55,7 @@ export default function JsonToXml() {
         <textarea
           id="json-input"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { setInput(e.target.value); setOutput(""); setError(""); }}
           placeholder='{"name": "John", "age": 30, "items": [1, 2, 3]}'
           rows={8}
           className="w-full p-4 border rounded-lg text-sm resize-y outline-none transition-colors duration-150"
@@ -146,7 +100,7 @@ export default function JsonToXml() {
             id="root-name"
             type="text"
             value={rootName}
-            onChange={(e) => setRootName(e.target.value)}
+            onChange={(e) => { setRootName(e.target.value); setOutput(""); setError(""); }}
             className="h-8 px-2 text-xs border rounded-md outline-none w-24"
             style={{
               backgroundColor: "var(--color-canvas)",

@@ -1,5 +1,7 @@
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { metadataUrlError } from "../../helpers/metadata-urls";
+import ErrorBanner from "../ErrorBanner";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -95,8 +97,10 @@ export default function RobotsTxtGenerator() {
   }, []);
 
   const effectiveUserAgent = userAgent === "Custom" ? customUserAgent : userAgent.replace(/\s*\(.*\)/, "").trim();
+  const inputError = !/^(?:\*|[A-Za-z0-9_-]+)$/.test(effectiveUserAgent) ? "Enter a user-agent token using letters, digits, hyphens or underscores." : rules.some(rule => rule.path.trim() && (!rule.path.trim().startsWith("/") || /[\s#]/.test(rule.path.trim()))) ? "Rule paths must start with / and contain no spaces or # fragments." : crawlDelay.trim() && (!Number.isFinite(Number(crawlDelay)) || Number(crawlDelay) < 0) ? "Crawl delay must be a finite nonnegative number; Googlebot ignores this directive." : metadataUrlError(Object.fromEntries(sitemaps.map((row,i)=>[`Sitemap ${i+1}`,row.url])));
 
   const robotsTxt = useMemo(() => {
+    if (inputError) return "";
     const lines: string[] = [];
     if (!effectiveUserAgent) {
       lines.push("# Configure the user-agent above to generate robots.txt");
@@ -125,18 +129,20 @@ export default function RobotsTxtGenerator() {
       lines.push(`Sitemap: ${s.url.trim()}`);
     }
     return lines.join("\n");
-  }, [effectiveUserAgent, rules, crawlDelay, sitemaps]);
+  }, [effectiveUserAgent, rules, crawlDelay, sitemaps, inputError]);
 
   const handleGenerateCopy = useCallback(() => {
     if (robotsTxt) handleCopy(robotsTxt);
   }, [handleCopy, robotsTxt]);
 
   useEffect(() => {
-    if (effectiveUserAgent.trim().length > 0 && (!crawlDelay.trim() || (Number.isFinite(Number(crawlDelay)) && Number(crawlDelay) >= 0)) && sitemaps.every(s => !s.url.trim() || isAbsoluteHttpUrl(s.url))) recordSuccess("generate");
+    if (robotsTxt && effectiveUserAgent.trim().length > 0 && (!crawlDelay.trim() || (Number.isFinite(Number(crawlDelay)) && Number(crawlDelay) >= 0)) && sitemaps.every(s => !s.url.trim() || isAbsoluteHttpUrl(s.url))) recordSuccess("generate");
   }, [robotsTxt, effectiveUserAgent, crawlDelay, sitemaps, recordSuccess]);
 
   return (
     <div onChangeCapture={markInteraction} className="space-y-6">
+      <p className="text-sm">Crawler requests, not access controls. Googlebot ignores crawl-delay. Review the draft before replacing your site’s existing robots.txt.</p>
+      <ErrorBanner message={inputError} />
       {/* Presets */}
       <div className="flex flex-wrap gap-2">
         <span className="text-sm self-center" style={{ color: "var(--color-mute)" }}>Presets:</span>

@@ -1,0 +1,85 @@
+{
+  "baseCommit": "86838d7",
+  "reviewDate": "2026-10-04",
+  "scope": "Owner-authorized content and output repairs; exact Text Humanizer retirement is approved separately. No advertising, indexing or canonical overrides.",
+  "pages": {
+    "/blog/image-compressor-browser-only/": {
+      "description": {
+        "before": "Most image compressors upload your photos to a server. Here's how we built a browser-only image compressor that keeps your files private.",
+        "after": "Follow the actual Canvas image workflow, choose format and quality, measure the saved result and understand local-processing limits.",
+        "reason": "Replace unsupported claims with implementation-based guidance and checkable examples."
+      },
+      "ownedTextHash": {
+        "before": "f756a764aac6a8c79e43b3e6a4aa1684855cbb0def60e9c3baca379684c38af8",
+        "after": "614c29faa5ee9afd34283f909c12ae41c330623e09e1cae3fe0ca222f878b35c",
+        "reason": "Replace unsupported claims with implementation-based guidance and checkable examples."
+      }
+    },
+    "/categories/pdf-tools/": {
+      "ownedTextHash": {
+        "before": "980fb267ca7fcee5f89aec0264b9312e6114c8aa0ee06527702939f449d0dfd5",
+        "after": "223ed1d095fff7ffc60bb3e80fb3110164c9b62fcfabd0acbf8217bdf04f0586",
+        "reason": "Reflect the 82 retained tools and revised descriptions in the existing directory, navigation and discovery content."
+      }
+    },
+    "/categories/text-tools/": {
+      "ownedTextHash": {
+        "before": "a2bb7579f1b63195591f0eebaf95c684dc8411c2d994deb148be4f32b8d40216",
+        "after": "a8ec4eea69e8040e694ff17c40d54ccc079740d3a785513e562ea051b22ed88b",
+        "reason": "Reflect the 82 retained tools and revised descriptions in the existing directory, navigation and discovery content."
+      }
+    },
+    "/tools/image-compressor/": {
+      "ownedTextHash": {
+        "before": "3f894809fa179d832e778d6ded65ed2a55a2b0f51a6120e465f8da010ebe243d",
+        "after": "5aeb17c778731d2d9576e0bfd090637242f144678b61a0c76501d5cdfb017839",
+        "reason": "Correct implemented feature claims, checkable examples, errors and tested output behavior for retained tools."
+      }
+    },
+    "/tools/random-number-generator/": {
+      "ownedTextHash": {
+        "before": "ad1c83470bc2a6ea333e7f8a6a390660fbe641f75d6faf4eeee7666453224073",
+        "after": "0729cee858af211f8d32fa78fe282e5234dfa235758dd05aeececfb7bb99f2b5",
+        "reason": "Correct implemented feature claims, checkable examples, errors and tested output behavior for retained tools."
+      }
+    },
+    "/tools/seo-length-checker/": {
+      "ownedTextHash": {
+        "before": "5640624f6c87657662854e2060b5a7a077d52abf12b793258486826358d0e17c",
+        "after": "c5d3400bd382223d288a6d9615f06c8f9c8248564f3c0dd9c5ce99b9c1746265",
+        "reason": "Correct implemented feature claims, checkable examples, errors and tested output behavior for retained tools."
+      }
+    },
+    "/tools/serp-preview-generator/": {
+      "ownedTextHash": {
+        "before": "0c8cca4b80ac2ee34cf7d67829a234ecced33e15c8bcaa1df3a97d3efb0b53b4",
+        "after": "cfb13a6da816bacb86dcb2de72542f11da75abba510919dc4e5e23595d944cc9",
+        "reason": "Correct implemented feature claims, checkable examples, errors and tested output behavior for retained tools."
+      }
+    },
+    "/tools/word-cloud-generator/": {
+      "ownedTextHash": {
+        "before": "e1c92d27c22db9c972b90a6534a2dbbafe9cb5027740eb7a9fd6ad43ccb805cd",
+        "after": "fe7588e9457e2d56678b994ba9c5e54fd4f6fc6949c1c92a78dd9e7cc503e398",
+        "reason": "Correct implemented feature claims, checkable examples, errors and tested output behavior for retained tools."
+      }
+    }
+  },
+  "sources": {
+    "src/data/tools.ts": {
+      "before": "f037134a796bc4518e14f7351f01d1fb94d886b8769054b27a67e7b648327cce",
+      "after": "8f2cf8f4f42bb87ab1293f189a71aa82970ebe2dfed91ef27dfa0d06fb62f572",
+      "reason": "Owner-approved truthful content, controls and output repairs; see the quality completion report."
+    },
+    "src/data/tool-quality.ts": {
+      "before": "e13a9e0eedcf2a26cfe995642fe92c39435d6da95bdb95ca338f7880b1a34e36",
+      "after": "d7a7e399b407b84d086cfe6891121d311fc396d2ac47b9e0b9d637e5358a76bb",
+      "reason": "Owner-approved truthful content, controls and output repairs; see the quality completion report."
+    },
+    "src/content/blog/image-compressor-browser-only.md": {
+      "before": "367b9fa6dcb9e824cdbcae16cbf77a3ee95a08bf21d6fdd6dd3bb618abca02e7",
+      "after": "35fa4602f870e80298e11b2b44bcde44bb8732bdecb951eb848870067fe0d923",
+      "reason": "Remove unsupported benchmark and privacy claims; preserve article URL and real publication date."
+    }
+  }
+}

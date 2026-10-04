@@ -37,14 +37,10 @@ function dossier(input: QualityInput, verifiedOn = VERIFIED_ON): ToolQuality {
       {
         heading: "When to use another workflow",
         content: input.alternative,
-        comparison: [
-          { option: "This browser tool", bestFor: "Quick, private, one-off work", tradeoff: "Limited by browser memory and the documented feature set" },
-          { option: "Desktop or command-line tool", bestFor: "Batch jobs and repeatable automation", tradeoff: "Requires installation and setup" },
-        ],
       },
       {
         heading: "Verification",
-        content: verifiedOn ? input.reviewEvidence ? `Implementation checked on ${verifiedOn}. ${input.reviewEvidence}` : `Reviewed by the Free Online Tools Nest Team on ${verifiedOn}. The interface, output path, and documented limitations were checked against the current implementation. See our testing methodology for the review process.` : "Verification is pending. This tool is not yet included in the sitemap.",
+        content: verifiedOn ? input.reviewEvidence ? `Implementation checked on ${verifiedOn}. ${input.reviewEvidence}` : `Review record: ${verifiedOn}. See the documented behavior and limitations above, and the testing standards for the scope of review.` : "Verification is pending. This tool is not yet included in the sitemap.",
       },
     ],
   };
@@ -377,3 +373,23 @@ TOOL_QUALITY["seo-length-checker"] = dossier({
   "alternative": "Inspect actual search results and official search documentation when investigating how a page is displayed.",
   "reviewEvidence": "The displayed example and documented limits were checked with synthetic inputs. Unsupported input and the distinction between an estimate and a verified result were reviewed."
 }, "2026-09-27");
+
+// Dated source/copy review for these three retained historical dossiers.
+{
+  const quality = TOOL_QUALITY["qr-code-generator"];
+  quality.verifiedOn = "2026-10-04";
+  const review = quality.sections.find(section => section.heading === "Verification");
+  if (review) review.content = "Source and copy reviewed on 2026-10-04. The source and page copy were checked for PNG-only download, size settings and fixed colors. Scan the final code on the intended device before printing.";
+}
+{
+  const quality = TOOL_QUALITY["pdf-merger"];
+  quality.verifiedOn = "2026-10-04";
+  const review = quality.sections.find(section => section.heading === "Verification");
+  if (review) review.content = "Source and copy reviewed on 2026-10-04. The source and page copy were checked for whole-file ordering with Move up/down, and limits on encrypted or advanced PDF features. Inspect the final document in a viewer.";
+}
+{
+  const quality = TOOL_QUALITY["password-generator"];
+  quality.verifiedOn = "2026-10-04";
+  const review = quality.sections.find(section => section.heading === "Verification");
+  if (review) review.content = "Source and copy reviewed on 2026-10-04. The source and page copy were checked for browser cryptographic randomness and heuristic indicator limits. No uncrackable-password claim is made.";
+}

@@ -1,3 +1,4 @@
+import { computeDiscount as compute } from "../../helpers/quality-calculators";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useMemo, useEffect } from "react";
 
@@ -11,51 +12,6 @@ const MODES: { key: CalcMode; label: string; desc: string }[] = [
 
 function formatCurrency(val: number): string {
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(val);
-}
-
-interface ResultData {
-  savings: number;
-  finalPrice: number;
-  discountPct: number;
-}
-
-function compute(mode: CalcMode, a: string, b: string): ResultData | null {
-  const numA = parseFloat(a);
-  const numB = parseFloat(b);
-
-  if (isNaN(numA) || isNaN(numB) || numA <= 0) return null;
-
-  switch (mode) {
-    case "savings": {
-      if (numB < 0 || numB > 100) return null;
-      const savings = numA * (numB / 100);
-      return {
-        savings: parseFloat(savings.toFixed(2)),
-        finalPrice: parseFloat((numA - savings).toFixed(2)),
-        discountPct: numB,
-      };
-    }
-    case "discount-pct": {
-      if (numB >= numA || numB < 0) return null;
-      const pct = ((numA - numB) / numA) * 100;
-      return {
-        savings: parseFloat((numA - numB).toFixed(2)),
-        finalPrice: parseFloat(numB.toFixed(2)),
-        discountPct: parseFloat(pct.toFixed(2)),
-      };
-    }
-    case "final-price": {
-      if (numB >= numA || numB < 0) return null;
-      const pct = (numB / numA) * 100;
-      return {
-        savings: parseFloat(numB.toFixed(2)),
-        finalPrice: parseFloat((numA - numB).toFixed(2)),
-        discountPct: parseFloat(pct.toFixed(2)),
-      };
-    }
-    default:
-      return null;
-  }
 }
 
 function getLabels(mode: CalcMode) {
@@ -82,11 +38,12 @@ export default function DiscountCalculator() {
     const a = parseFloat(inputA);
     const b = parseFloat(inputB);
     if (!inputA || !inputB) return "";
-    if (isNaN(a) || isNaN(b)) return "";
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return "Enter finite numeric values.";
+    if (b < 0) return "Sale price or discount must not be negative.";
     if (a <= 0) return "Original price must be greater than zero.";
     if (mode === "savings" && (b < 0 || b > 100)) return "Discount must be between 0 and 100.";
-    if (mode === "discount-pct" && b >= a) return "Sale price must be less than original price.";
-    if (mode === "final-price" && b >= a) return "Discount amount must be less than original price.";
+    if (mode === "discount-pct" && b > a) return "Sale price must not exceed original price.";
+    if (mode === "final-price" && b > a) return "Discount amount must not exceed original price.";
     return "";
   }, [mode, inputA, inputB]);
 

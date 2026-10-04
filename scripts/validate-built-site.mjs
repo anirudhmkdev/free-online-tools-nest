@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { applyContentChanges, applyApprovedDeltas, checkProtection, checkHubMetadata, ownedSignals } from "./phase-3-protection.mjs";
+import { applyApprovedRetirements } from "./approved-retirements.mjs";
 
 export const SITE_URL = "https://freeonlinetoolsnest.com";
 export const EXPECTED_ADS_TXT = "google.com, pub-7189536685341014, DIRECT, f08c47fec0942fa0";
@@ -159,7 +160,10 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   const policies = JSON.parse(readFileSync(new URL("../src/data/page-policies.json", import.meta.url), "utf8"));
   const baseline = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/post-phase-2-routes.json", import.meta.url), "utf8"));
   const allowedAdditions = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-additions.json", import.meta.url), "utf8"));
-  const result = validateBuiltSite(rootPath, { policies, baseline, allowedAdditions });
+  const retirements = JSON.parse(readFileSync(new URL("../src/data/approved-tool-retirements.json", import.meta.url), "utf8"));
+  const retiredBaseline = applyApprovedRetirements(baseline, retirements);
+  const result = validateBuiltSite(rootPath, { policies, baseline: retiredBaseline.fixture, allowedAdditions });
+  result.failures.push(...retiredBaseline.failures);
   const protection = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/phase-3-organic-protection.json", import.meta.url), "utf8"));
   const contentChanges = JSON.parse(readFileSync(new URL("../src/data/__fixtures__/content-remediation-changes.json", import.meta.url), "utf8"));
   const contentApproved = applyContentChanges(protection, contentChanges);
@@ -172,11 +176,18 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   result.failures.push(...integrationApproved.failures);
   // Campus is a separate presentation layer over main's reviewed content and exact approvals.
   const frontendChanges = JSON.parse(readFileSync(new URL("../src/data/campus-frontend-delta.json", import.meta.url), "utf8"));
-  result.failures.push(...checkProtection(fileURLToPath(new URL("../", import.meta.url)), integrationApproved.fixture, frontendChanges));
+  const frontendApproved = applyApprovedDeltas(integrationApproved.fixture, frontendChanges);
+  const retiredProtection = applyApprovedRetirements(frontendApproved.fixture, retirements);
+  const qualityChanges = JSON.parse(readFileSync(new URL("../src/data/quality-completion-delta.json", import.meta.url), "utf8"));
+  const qualityApproved = applyContentChanges(retiredProtection.fixture, qualityChanges);
+  result.failures.push(...frontendApproved.failures, ...retiredProtection.failures, ...qualityApproved.failures, ...checkProtection(fileURLToPath(new URL("../", import.meta.url)), qualityApproved.fixture));
+  for (const route of retiredBaseline.routes) {
+    if (policies[route] || existsSync(join(rootPath, route.slice(1), "index.html"))) result.failures.push(route + ": retired tool is still published");
+  }
   const actualAdMembers = Object.keys(policies).filter(route => inspectPage(readFileSync(join(rootPath, route === "/" ? "index.html" : route.endsWith(".html") ? route.slice(1) : route.slice(1) + "index.html"), "utf8"), route).adEligible).sort();
   const frozenAdMembers = baseline.pages.filter(page => page.adEligible).map(page => page.route).sort();
   if (JSON.stringify(actualAdMembers) !== JSON.stringify(frozenAdMembers)) result.failures.push("Exact historical AdSense loader membership changed");
-  if (result.pageCount !== 191 || result.sitemapCount !== 89 || actualAdMembers.length !== 117) result.failures.push("Demand cleanup must preserve 191 routes, 89 sitemap URLs and 117 AdSense loader members");
+  if (result.pageCount !== 190 || result.sitemapCount !== 88 || actualAdMembers.length !== 117) result.failures.push("Quality completion must preserve 190 retained routes, 88 sitemap URLs and 117 AdSense loader members");
   for (const [hub, category] of [["/document-tools/", "/categories/pdf-tools/"], ["/writing-tools/", "/categories/text-tools/"]]) {
     if (policies[hub]?.indexable) {
       const signals = route => ownedSignals(readFileSync(join(rootPath, route.slice(1), "index.html"), "utf8"), route);

@@ -1,6 +1,6 @@
 # Free Online Tools Nest
 
-**83 free browser tools for students, assignments and everyday tasks, including attendance, SGPA, CGPA, marks and Image to PDF. No signups or tool-input uploads. Selected existing content pages may carry clearly separated advertising.**
+**82 free browser tools for students, assignments and everyday tasks, including attendance, SGPA, CGPA, marks and Image to PDF. No signups or tool-input uploads. Selected existing content pages may carry clearly separated advertising.**
 
 Tool inputs are processed in your browser and are not sent to a Free Online Tools Nest processing server. Analytics and advertising resources are documented separately.
 
@@ -10,7 +10,7 @@ Tool inputs are processed in your browser and are not sent to a Free Online Tool
 
 | Category | Count | What |
 |----------|-------|------|
-| ✏️ Text Tools | 15 | Word counter, text summarizer, grammar checker, plagiarism checker, text diff, case converter, and more |
+| ✏️ Text Tools | 14 | Word counter, text summarizer, grammar checker, plagiarism checker, text diff, case converter, and more |
 | ⚡ Developer Tools | 16 | JSON/HTML/SQL formatter, regex tester, JWT decoder, Base64 encoder, password generator, and more |
 | 🔢 Calculators | 15 | Attendance, SGPA, CGPA, marks percentage, required marks and the ten existing calculators |
 | 🔄 Converters | 16 | Unit converter, QR code generator, image compressor/cropper/resizer, CSV/JSON/YAML, epoch converter |
@@ -19,6 +19,8 @@ Tool inputs are processed in your browser and are not sent to a Free Online Tool
 | 🎨 Design Tools | 4 | Color contrast checker, color palette generator, gradient generator, border radius generator |
 
 ## Tech Stack
+
+The 2026-10-04 content-quality release removes Text Humanizer and repairs tool outputs, claims and practical guidance while preserving the approved Campus design and existing integrations. See [verification and AdSense limitations](docs/adsense-quality-completion-2026-10-04.md) and the [retained tool inventory](docs/retained-tool-quality-review.md). Historical phase counts below describe those releases.
 
 - **Framework**: [Astro](https://astro.build) (static HTML with shared UI scripts and interactive tool islands)
 - **UI**: React 19 + TypeScript (`client:load` islands for interactive tools)

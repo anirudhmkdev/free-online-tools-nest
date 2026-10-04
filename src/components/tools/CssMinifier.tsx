@@ -1,24 +1,8 @@
+import { minifyCss } from "../../helpers/quality-converters";
+import ErrorBanner from "../ErrorBanner";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useMemo, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
-
-function minifyCss(input: string): string {
-  let result = input;
-
-  result = result.replace(/\/\*[\s\S]*?\*\//g, "");
-
-  result = result.replace(/\s+/g, " ");
-
-  result = result.replace(/\s*({|}|;|,|>|~|\+|:)\s*/g, "$1");
-
-  result = result.replace(/;}/g, "}");
-
-  result = result.replace(/\s*:\s*/g, ":");
-
-  result = result.trim();
-
-  return result;
-}
 
 export default function CssMinifier() {
   const { markInteraction, recordSuccess } = useToolTelemetry();
@@ -27,7 +11,8 @@ export default function CssMinifier() {
   );
   const [copied, handleCopy] = useCopyToClipboard();
 
-  const output = useMemo(() => minifyCss(input), [input]);
+  const converted = useMemo(() => { try { return {output:minifyCss(input), error:""}; } catch (error) { return {output:"", error:error instanceof Error ? error.message : "Unable to compact CSS."}; } }, [input]);
+  const { output, error } = converted;
 
   const stats = useMemo(() => {
     const original = input.length;
@@ -48,6 +33,8 @@ export default function CssMinifier() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Conservative whitespace compaction. Strings, escapes and CSS math spacing are preserved; comments become empty token separators. This does not validate or optimize CSS rules.</p>
+      <ErrorBanner message={error} />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Input */}
         <div className="flex flex-col">
@@ -109,7 +96,7 @@ export default function CssMinifier() {
       </div>
 
       {/* Stats */}
-      {input.trim() && (
+      {input.trim() && !error && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="p-4 rounded-lg text-center" style={{ backgroundColor: "var(--color-canvas-soft-2)" }}>
             <div className="text-xs uppercase tracking-wider mb-1" style={{ color: "var(--color-mute)", fontFamily: "var(--font-mono)" }}>

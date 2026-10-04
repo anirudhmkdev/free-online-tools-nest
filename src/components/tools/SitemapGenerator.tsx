@@ -1,5 +1,6 @@
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
-import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
+import { generateSitemap } from "../../helpers/sitemap-generator";
+import ErrorBanner from "../ErrorBanner";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -43,42 +44,21 @@ export default function SitemapGenerator() {
     );
   }, []);
 
-  const xmlOutput = useMemo(() => {
-    const hasContent = entries.some((e) => e.url.trim().length > 0);
-    if (!hasContent) return "";
-
-    const lines: string[] = [
-      '<?xml version="1.0" encoding="UTF-8"?>',
-      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ];
-
-    for (const entry of entries) {
-      if (!entry.url.trim()) continue;
-      const url = escapeXml(entry.url.trim());
-      lines.push("  <url>");
-      lines.push(`    <loc>${url}</loc>`);
-      if (entry.lastmod) {
-        lines.push(`    <lastmod>${entry.lastmod}</lastmod>`);
-      }
-      lines.push(`    <changefreq>${entry.changeFreq}</changefreq>`);
-      lines.push(`    <priority>${entry.priority}</priority>`);
-      lines.push("  </url>");
-    }
-
-    lines.push("</urlset>");
-    return lines.join("\n");
-  }, [entries]);
+  const generated = useMemo(() => { try { return {xml:generateSitemap(entries),error:""}; } catch (error) { return {xml:"",error:error instanceof Error ? error.message : "Unable to generate sitemap."}; } }, [entries]);
+  const xmlOutput = generated.xml;
 
   const handleGenerateCopy = useCallback(() => {
     if (xmlOutput) handleCopy(xmlOutput);
   }, [handleCopy, xmlOutput]);
 
   useEffect(() => {
-    if (xmlOutput && entries.filter(entry => entry.url.trim()).every(entry => isAbsoluteHttpUrl(entry.url))) recordSuccess("generate");
+    if (xmlOutput) recordSuccess("generate");
   }, [xmlOutput, entries, recordSuccess]);
 
   return (
     <div onChangeCapture={markInteraction} className="space-y-6">
+      <p className="text-sm">Use absolute URLs from one protocol and host. Enter real modification dates or leave them blank. Google ignores priority and change frequency; a sitemap does not guarantee crawling or indexing.</p>
+      <ErrorBanner message={generated.error} />
       <div className="space-y-3">
         {entries.map((entry, index) => (
           <div
@@ -200,8 +180,4 @@ export default function SitemapGenerator() {
       )}
     </div>
   );
-}
-
-function escapeXml(text: string): string {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }

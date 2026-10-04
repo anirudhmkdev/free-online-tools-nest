@@ -1,0 +1,44 @@
+{
+  "baseCommit": "86838d7",
+  "reviewDate": "2026-10-04",
+  "retirements": [
+    {
+      "route": "/tools/text-humanizer/",
+      "reason": "The owner explicitly requested complete removal of Text Humanizer. No equivalent replacement is available; return the existing real 404 rather than redirecting to unrelated content.",
+      "beforePolicy": {
+        "indexable": true,
+        "sitemapEligible": true,
+        "canonicalPath": "/tools/text-humanizer/",
+        "primaryAudience": "general-users",
+        "primaryIntent": "Rewrite AI-generated text to sound more natural and human-like.",
+        "hub": "writing",
+        "tier": "legacy",
+        "lastReviewed": null,
+        "adEligible": false,
+        "relatedGuides": [],
+        "relatedWorkflows": [],
+        "reviewStatus": "pending-evidence"
+      },
+      "sources": [
+        "src/pages/tools/text-humanizer.astro",
+        "src/components/tools/TextHumanizer.tsx"
+      ],
+      "beforePage": {
+        "title": "Humanize AI Text - Free Natural Rewrite Tool | Free Onlin…",
+        "description": "Humanize AI text with a free browser-based rewrite helper. Make draft copy sound clearer, more natural, and easier to read before publishing.",
+        "canonicals": [
+          "https://freeonlinetoolsnest.com/tools/text-humanizer/"
+        ],
+        "robots": "index, follow",
+        "h1": [
+          "Text Humanizer"
+        ],
+        "ownedTextHash": "2a5f8022f7302331f419bbba4be7a806d942f6857ea43231a64c09bfcf6c018c"
+      },
+      "beforeSources": {
+        "src/pages/tools/text-humanizer.astro": "12273d2ab4ae1ab44d0a503f593dc540527519e868b615cea2132a537658ef3d",
+        "src/components/tools/TextHumanizer.tsx": "267d9692aa9b57657b9d75d887b2a721cf4c0e37f0c0a556d38a3977e6079889"
+      }
+    }
+  ]
+}

@@ -5,7 +5,6 @@ interface ImageResult {
   index: number;
   tagSnippet: string;
   altText: string | null;
-  lineNumber: number;
   status: "pass" | "warning" | "fail";
 }
 
@@ -17,49 +16,14 @@ export default function AltTextChecker() {
   const results = useMemo((): ImageResult[] => {
     if (!checked || !html.trim()) return [];
 
-    const imgRegex = /<img[^>]*>/gi;
-    const resultsArr: ImageResult[] = [];
-    let match: RegExpExecArray | null;
-    let index = 0;
-
-    while ((match = imgRegex.exec(html)) !== null) {
-      const tag = match[0];
-      const lineNumber = html.substring(0, match.index).split("\n").length;
-
-      const altMatch = tag.match(/alt\s*=\s*"([^"]*)"/i) || tag.match(/alt\s*=\s*'([^']*)'/i) || tag.match(/alt\s*=\s*([^\s>"']+)/i);
-      const altValue = altMatch ? altMatch[1] : null;
-
-      const hasRolePresentation = /\srole\s*=\s*"(?:presentation|none)"/i.test(tag);
-      const hasAriaHidden = /\saria-hidden\s*=\s*"(?:true)"/i.test(tag);
-
-      let status: "pass" | "warning" | "fail";
-      let altText: string | null;
-
-      if (altValue !== null && altValue.trim().length > 0) {
-        status = "pass";
-        altText = altValue.trim();
-      } else if (altValue !== null && altValue.trim() === "") {
-        if (hasRolePresentation || hasAriaHidden) {
-          status = "pass";
-          altText = '(empty: decorative)';
-        } else {
-          status = "warning";
-          altText = '(empty)';
-        }
-      } else if (hasRolePresentation || hasAriaHidden) {
-        status = "pass";
-        altText = '(decorative)';
-      } else {
-        status = "fail";
-        altText = null;
-      }
-
-      const tagSnippet = tag.length > 80 ? tag.slice(0, 77) + "..." : tag;
-
-      resultsArr.push({ index: ++index, tagSnippet, altText, lineNumber, status });
-    }
-
-    return resultsArr;
+    const template = document.createElement("template");
+    template.innerHTML = html;
+    return Array.from(template.content.querySelectorAll("img")).map((image, index) => {
+      const alt = image.getAttribute("alt");
+      const status = alt === null ? "fail" : alt.trim() ? "pass" : "warning";
+      const tag = image.outerHTML;
+      return {index:index+1,tagSnippet:tag.length>100?tag.slice(0,97)+"...":tag,altText:alt === null ? null : alt.trim() || "(empty: review purpose)",status} as ImageResult;
+    });
   }, [html, checked]);
 
   const totalImages = results.length;
@@ -96,6 +60,7 @@ export default function AltTextChecker() {
 
   return (
     <div className="space-y-6">
+      <p className="text-sm">Checks img attribute presence in detached HTML. Present text may still be unsuitable; an empty alt can be correct for a decorative image. Review the context yourself.</p>
       <div>
         <label htmlFor="atc-input" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>
           Paste your HTML
@@ -138,7 +103,7 @@ export default function AltTextChecker() {
           {[
             { label: "Total Images", value: totalImages, color: "var(--color-ink)" },
             { label: "With Alt Text", value: passCount, color: "var(--color-success, #22c55e)" },
-            { label: "Missing Alt Text", value: failCount + warningCount, color: failCount > 0 ? "var(--color-error)" : "var(--color-warning, #d97706)" },
+            { label: "Missing Alt Text", value: failCount, color: failCount > 0 ? "var(--color-error)" : "var(--color-warning, #d97706)" },
           ].map((item) => (
             <div
               key={item.label}
@@ -165,7 +130,7 @@ export default function AltTextChecker() {
                 <th className="px-4 py-2 text-left font-medium" style={{ color: "var(--color-ink)", width: "48px" }}>#</th>
                 <th className="px-4 py-2 text-left font-medium" style={{ color: "var(--color-ink)" }}>Image Tag</th>
                 <th className="px-4 py-2 text-left font-medium" style={{ color: "var(--color-ink)" }}>Alt Text</th>
-                <th className="px-4 py-2 text-center font-medium" style={{ color: "var(--color-ink)", width: "80px" }}>Line</th>
+                <th className="px-4 py-2 text-center font-medium" style={{ color: "var(--color-ink)", width: "80px" }}>Image</th>
                 <th className="px-4 py-2 text-center font-medium" style={{ color: "var(--color-ink)", width: "80px" }}>Status</th>
               </tr>
             </thead>
@@ -183,7 +148,7 @@ export default function AltTextChecker() {
                       <span className="font-semibold" style={{ color: "var(--color-error)" }}>[MISSING]</span>
                     )}
                   </td>
-                  <td className="px-4 py-2 text-center text-xs" style={{ color: "var(--color-mute)" }}>{img.lineNumber}</td>
+                  <td className="px-4 py-2 text-center text-xs" style={{ color: "var(--color-mute)" }}>{img.index}</td>
                   <td className="px-4 py-2 text-center">
                     <span
                       className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
@@ -209,15 +174,13 @@ export default function AltTextChecker() {
       {/* WCAG note */}
       <div
         className="p-3 rounded-lg text-xs leading-relaxed"
-        style={{ backgroundColor: "var(--color-canvas-soft)", borderLeft: "4px solid var(--color-link)" }}
+        style={{ backgroundColor: "var(--color-canvas-soft)", border: "1px solid var(--color-hairline)" }}
       >
-        <strong style={{ color: "var(--color-ink)" }}>WCAG Compliance:</strong>{" "}
+        <strong style={{ color: "var(--color-ink)" }}>Accessibility review:</strong>{" "}
         <span style={{ color: "var(--color-body)" }}>
-          WCAG 2.1 Success Criterion 1.1.1 (Non-text Content, Level A) requires all
-          <code style={{ fontFamily: "var(--font-mono)" }}>&lt;img&gt;</code> elements to have meaningful alternative text.
-          Decorative images should use either <code style={{ fontFamily: "var(--font-mono)" }}>alt=""</code> with
-          <code style={{ fontFamily: "var(--font-mono)" }}>role="presentation"</code> or
-          <code style={{ fontFamily: "var(--font-mono)" }}>aria-hidden="true"</code>.
+          Informative images need text that conveys their purpose. For a purely decorative image,
+          an empty <code style={{ fontFamily: "var(--font-mono)" }}>alt=""</code> can be appropriate.
+          Attribute presence alone does not establish WCAG conformance. Review each image in context.
         </span>
       </div>
     </div>

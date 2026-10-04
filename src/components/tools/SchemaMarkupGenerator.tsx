@@ -1,5 +1,6 @@
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { hasValidSchemaValues } from "../../helpers/tool-output-validity";
+import ErrorBanner from "../ErrorBanner";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
 
@@ -197,15 +198,17 @@ export default function SchemaMarkupGenerator() {
   const [copied, handleCopy] = useCopyToClipboard();
 
   const currentType = SCHEMA_TYPES.find((t) => t.value === schemaType) || SCHEMA_TYPES[0];
+  const validValues = hasValidSchemaValues(schemaType, values, currentType.fields.filter(field => field.required).map(field => field.key));
 
   const setValue = useCallback((key: string, value: string) => {
     setValues((prev) => ({ ...prev, [key]: value }));
   }, []);
 
   const jsonLd = useMemo(() => {
+    if (!validValues) return "";
     const obj = buildSchema(schemaType, values);
-    return obj ? JSON.stringify(obj, null, 2) : "";
-  }, [schemaType, values]);
+    return obj ? JSON.stringify(obj, null, 2).replace(/</g, "\\u003c") : "";
+  }, [schemaType, values, validValues]);
 
   const handleCopyJson = useCallback(() => {
     if (jsonLd) handleCopy(jsonLd);
@@ -217,6 +220,8 @@ export default function SchemaMarkupGenerator() {
 
   return (
     <div onChangeCapture={markInteraction} className="space-y-6">
+      <p className="text-sm">Draft JSON-LD from the displayed fields. Use facts visible on the actual page. Basic field checks do not establish schema completeness or Google rich-result eligibility.</p>
+      <ErrorBanner message={Object.values(values).some(value => value.trim()) && !validValues ? "Complete the required fields and check dates, URLs, currency, price and duration formats for this type." : ""} />
       <div>
         <label htmlFor="sm-schema-type" className="block text-sm font-medium mb-1" style={{ color: "var(--color-ink)" }}>
           Schema Type

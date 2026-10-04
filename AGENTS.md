@@ -1,5 +1,15 @@
 # Free Online Tools Nest — Project Knowledge Base
 
+## Current owner-authorized quality completion — 2026-10-04
+
+This override follows the approved Campus Search Desk rollout and explicit owner authorization to remove Text Humanizer, repair content/tool quality and publish the release. Historical phase records and frozen fixtures below remain unchanged evidence.
+
+- There are now 82 tools, 25 primary and 57 secondary; 190 generated pages (122 English, 34 Spanish, 34 Hindi), 187 indexable directives, three noindex pages and 88 sitemap URLs.
+- Text Humanizer is the sole authorized retirement. `src/data/approved-tool-retirements.json` records its exact route and source removal. Do not infer permission to retire other tools or alter indexing.
+- Preserve all 117 existing AdSense loader members, GA4 snippets and event context, Cloudflare settings and remaining canonicals/hreflang. Content-only changes are recorded separately in `quality-completion-delta.json`; never rewrite original fixtures.
+- The approved Campus design remains the frontend system. Browser and unit checks are evidence for their actual scope, not an exhaustive certification of all 82 tools.
+- See `docs/adsense-quality-completion-2026-10-04.md` for repairs, checks and browser limitations. Google approval is pending external review; do not submit a review or promise acceptance/earnings automatically.
+
 ## Current Phase 3 override — 2026-09-26
 
 Phase 3 is implemented and locally verified on `codex/hubs-workflows-phase-3`, based on `d1ac0edf58dbd2ca9e7e19b2680620a0001650a5`. This section supersedes the historical sections below.

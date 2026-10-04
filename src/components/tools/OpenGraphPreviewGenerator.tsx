@@ -1,3 +1,5 @@
+import { metadataUrlError } from "../../helpers/metadata-urls";
+import ErrorBanner from "../ErrorBanner";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { isAbsoluteHttpUrl } from "../../helpers/tool-output-validity";
 import { useState, useMemo, useCallback, useEffect } from "react";
@@ -26,7 +28,9 @@ export default function OpenGraphPreviewGenerator() {
   const [twitterCard, setTwitterCard] = useState("summary_large_image");
   const [copied, handleCopy] = useCopyToClipboard();
 
+  const urlError = metadataUrlError({"OG image":ogImage,"Page URL":ogUrl});
   const metaHtml = useMemo(() => {
+    if (urlError) return "";
     const lines: string[] = [];
     if (ogTitle) {
       lines.push(`<meta property="og:title" content="${escapeAttr(ogTitle)}" />`);
@@ -49,13 +53,13 @@ export default function OpenGraphPreviewGenerator() {
     }
     lines.push(`<meta name="twitter:card" content="${escapeAttr(twitterCard)}" />`);
     return lines.join("\n");
-  }, [ogTitle, ogDesc, ogImage, ogUrl, ogType, ogSiteName, twitterCard]);
+  }, [ogTitle, ogDesc, ogImage, ogUrl, ogType, ogSiteName, twitterCard, urlError]);
 
   const displayTitle = ogTitle || "Open Graph Title";
   const displayDesc = ogDesc || "Description will appear here…";
   const displaySiteName = ogSiteName || "example.com";
   const displayUrl = ogUrl || "https://example.com/page";
-  const displayImage = ogImage || "";
+  const displayImage = metadataUrlError({Image:ogImage}) ? "" : ogImage;
 
   const handleCopyMeta = useCallback(() => {
     if (metaHtml) handleCopy(metaHtml);
@@ -67,6 +71,8 @@ export default function OpenGraphPreviewGenerator() {
 
   return (
     <div onChangeCapture={markInteraction} className="space-y-6">
+      <ErrorBanner message={urlError} />
+      <p className="text-sm">Generated tags are drafts. Preview layouts are illustrative; they do not guarantee search or social display, indexing or rankings.</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Inputs */}
         <div className="space-y-4">

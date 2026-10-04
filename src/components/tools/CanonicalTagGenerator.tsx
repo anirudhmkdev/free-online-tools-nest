@@ -1,3 +1,5 @@
+import { metadataUrlError } from "../../helpers/metadata-urls";
+import ErrorBanner from "../ErrorBanner";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
@@ -59,7 +61,9 @@ export default function CanonicalTagGenerator() {
     );
   }, [markInteraction]);
 
+  const urlError = metadataUrlError({"Canonical URL":canonicalUrl,...Object.fromEntries(hreflangs.map((row,i)=>[`Alternate URL ${i+1}`,row.href]))}) || (new Set(hreflangs.filter(row=>row.href.trim()).map(row=>row.lang)).size !== hreflangs.filter(row=>row.href.trim()).length ? "Use one URL per language label." : "");
   const generatedTags = useMemo(() => {
+    if (urlError) return "";
     const lines: string[] = [];
     if (canonicalUrl.trim()) {
       lines.push(`<link rel="canonical" href="${escapeAttr(canonicalUrl.trim())}" />`);
@@ -70,7 +74,7 @@ export default function CanonicalTagGenerator() {
       }
     }
     return lines.join("\n");
-  }, [canonicalUrl, hreflangs]);
+  }, [canonicalUrl, hreflangs, urlError]);
 
   const handleCopyTags = useCallback(() => {
     if (generatedTags) handleCopy(generatedTags);
@@ -80,18 +84,20 @@ export default function CanonicalTagGenerator() {
 
   useEffect(() => {
     const urls = [canonicalUrl.trim(), ...hreflangs.filter(row => row.lang).map(row => row.href.trim())].filter(Boolean);
-    if (!generatedTags || !urls.length) return;
+    if (!generatedTags || !urls.length || urlError) return;
     try {
       if (urls.every(value => ["http:", "https:"].includes(new URL(value).protocol))) recordSuccess("generate");
     } catch { /* incomplete URLs do not produce a successful result */ }
-  }, [canonicalUrl, hreflangs, generatedTags, recordSuccess]);
+  }, [canonicalUrl, hreflangs, generatedTags, recordSuccess, urlError]);
 
   return (
     <div className="space-y-6">
+      <ErrorBanner message={urlError} />
+      <p className="text-sm">Generated tags are drafts. Preview layouts are illustrative; they do not guarantee search or social display, indexing or rankings.</p>
       {/* Info box */}
       <div
         className="p-4 rounded-lg text-sm leading-relaxed"
-        style={{ backgroundColor: "var(--color-canvas-soft)", borderLeft: "4px solid var(--color-link)" }}
+        style={{ backgroundColor: "var(--color-canvas-soft)", border: "1px solid var(--color-hairline)" }}
       >
         <strong style={{ color: "var(--color-ink)" }}>What is a canonical tag?</strong>
         <span style={{ color: "var(--color-body)" }}>
@@ -174,7 +180,7 @@ export default function CanonicalTagGenerator() {
       </div>
 
       {/* Output */}
-      {hasContent && (
+      {hasContent && !urlError && generatedTags && (
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium" style={{ color: "var(--color-ink)" }}>Generated Tag{generatedTags.includes("\n") ? "s" : ""}</span>

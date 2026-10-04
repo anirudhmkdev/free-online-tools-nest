@@ -1,59 +1,7 @@
+import { calculateMortgage } from "../../helpers/quality-calculators";
+import ErrorBanner from "../ErrorBanner";
 import { useToolTelemetry } from "../../hooks/useToolTelemetry";
 import { useState, useMemo, useCallback, useEffect } from "react";
-
-interface MonthlyBreakdown {
-  principalAndInterest: number;
-  propertyTax: number;
-  insurance: number;
-  pmi: number;
-  total: number;
-}
-
-function calculateMortgage(
-  homePrice: number,
-  downPayment: number,
-  annualRate: number,
-  years: number,
-  annualTaxRate: number,
-  annualInsurance: number,
-  monthlyPmiRate: number
-): { breakdown: MonthlyBreakdown; totalInterest: number; loanAmount: number; monthlyRate: number } | null {
-  const loanAmount = homePrice - downPayment;
-  if (loanAmount <= 0 || annualRate < 0 || years <= 0 || homePrice <= 0) return null;
-
-  const monthlyRate = annualRate / 100 / 12;
-  const totalPayments = years * 12;
-
-  let principalAndInterest: number;
-  if (monthlyRate === 0) {
-    principalAndInterest = loanAmount / totalPayments;
-  } else {
-    principalAndInterest =
-      (loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, totalPayments))) /
-      (Math.pow(1 + monthlyRate, totalPayments) - 1);
-  }
-
-  const propertyTax = (homePrice * (annualTaxRate / 100)) / 12;
-  const insurance = annualInsurance / 12;
-  const pmi = loanAmount * (monthlyPmiRate / 100);
-
-  const total = principalAndInterest + propertyTax + insurance + pmi;
-
-  const totalInterest = parseFloat((principalAndInterest * totalPayments - loanAmount).toFixed(2));
-
-  return {
-    breakdown: {
-      principalAndInterest: parseFloat(principalAndInterest.toFixed(2)),
-      propertyTax: parseFloat(propertyTax.toFixed(2)),
-      insurance: parseFloat(insurance.toFixed(2)),
-      pmi: parseFloat(pmi.toFixed(2)),
-      total: parseFloat(total.toFixed(2)),
-    },
-    totalInterest,
-    loanAmount: parseFloat(loanAmount.toFixed(2)),
-    monthlyRate,
-  };
-}
 
 export default function MortgageCalculator() {
   const { markInteraction, recordSuccess } = useToolTelemetry();
@@ -133,6 +81,8 @@ export default function MortgageCalculator() {
 
   return (
     <div onChangeCapture={markInteraction} className="space-y-6">
+      <p className="text-sm">Fixed-rate estimate in USD. PMI is entered as a monthly percentage of the loan. Taxes, insurance and PMI stay constant; closing fees and HOA costs are excluded.</p>
+      <ErrorBanner message={!result ? "Use finite nonnegative amounts, a down payment below the home price, 0–100% annual interest and a term of 1–1200 whole months." : ""} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
           <label htmlFor="mc-price" className="block text-sm font-medium mb-2" style={{ color: "var(--color-ink)" }}>

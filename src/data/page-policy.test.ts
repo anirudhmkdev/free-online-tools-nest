@@ -3,10 +3,13 @@ import baseline from "./__fixtures__/pre-pivot-routes.json";
 import phase3 from "./__fixtures__/phase-3-additions.json";
 import additions from "./__fixtures__/phase-2-additions.json";
 import { getPagePolicy, isSitemapEligible, PAGE_POLICIES } from "./page-policy";
+import retirements from "./approved-tool-retirements.json";
 
 describe("Phase 1 publishing migration", () => {
   it("preserves every route, indexing decision, sitemap member and ad eligibility", () => {
-    const legacyRoutes = baseline.pages.map(page => page.route);
+    const retired = retirements.retirements.map(item => item.route);
+    expect(retired).toEqual(["/tools/text-humanizer/"]);
+    const legacyRoutes = baseline.pages.map(page => page.route).filter(route => !retired.includes(route));
     expect(Object.keys(PAGE_POLICIES).filter(route => !additions.includes(route) && !phase3.includes(route)).sort()).toEqual(legacyRoutes.sort());
     for (const route of additions) {
       const policy = PAGE_POLICIES[route];
@@ -15,6 +18,11 @@ describe("Phase 1 publishing migration", () => {
       expect(policy.lastReviewed, route).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     }
     for (const page of baseline.pages) {
+      if (retired.includes(page.route)) {
+        expect(PAGE_POLICIES[page.route]).toBeUndefined();
+        expect(isSitemapEligible(`https://freeonlinetoolsnest.com${page.route}`)).toBe(false);
+        continue;
+      }
       const policy = getPagePolicy(page.route);
       expect(policy.indexable, page.route).toBe(page.indexable);
       expect(policy.adEligible, page.route).toBe(page.adEligible);
